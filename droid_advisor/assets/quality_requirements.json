@@ -1,0 +1,550 @@
+{
+  "1": {
+    "1": [
+      "BASE",
+      "BASE",
+      "BASE"
+    ],
+    "2": [
+      "BASE",
+      "BASE",
+      "BASE"
+    ],
+    "3": [
+      "BASE",
+      "BASE",
+      "GOLD"
+    ],
+    "4": [
+      "GOLD",
+      "GOLD",
+      "BASE"
+    ],
+    "5": [
+      "GOLD",
+      "GOLD",
+      "DIAMOND"
+    ],
+    "6": [
+      "GOLD",
+      "DIAMOND",
+      "DIAMOND"
+    ],
+    "7": [
+      "GOLD",
+      "DIAMOND",
+      "DIAMOND"
+    ],
+    "8": [
+      "GOLD",
+      "GOLD",
+      "DIAMOND"
+    ],
+    "9": [
+      "RAINBOW",
+      "GOLD",
+      "GOLD"
+    ],
+    "10": [
+      "RAINBOW",
+      "RAINBOW",
+      "GOLD"
+    ],
+    "11": [
+      "RAINBOW",
+      "RAINBOW",
+      "BASE"
+    ],
+    "12": [
+      "GOLD",
+      "BASE",
+      "BASE"
+    ],
+    "13": [
+      "BASE",
+      "BASE",
+      "BASE"
+    ],
+    "14": [
+      "BASE",
+      "GOLD",
+      "GOLD"
+    ],
+    "15": [
+      "GOLD",
+      "GOLD",
+      "GOLD"
+    ],
+    "16": [
+      "GOLD",
+      "DIAMOND",
+      "DIAMOND"
+    ],
+    "17": [
+      "DIAMOND",
+      "DIAMOND",
+      "DIAMOND"
+    ],
+    "18": [
+      "DIAMOND",
+      "DIAMOND",
+      "RAINBOW"
+    ],
+    "19": [
+      "RAINBOW",
+      "RAINBOW",
+      "RAINBOW"
+    ],
+    "20": [
+      "RAINBOW",
+      "RAINBOW",
+      "RAINBOW"
+    ],
+    "21": [
+      "BESKAR",
+      "BESKAR",
+      "BESKAR"
+    ],
+    "22": [
+      "BESKAR",
+      "BESKAR",
+      "BESKAR"
+    ],
+    "23": [
+      "BESKAR",
+      "BESKAR",
+      "BESKAR"
+    ],
+    "24": [
+      "BESKAR",
+      "BESKAR",
+      "BASE"
+    ],
+    "25": [
+      "BESKAR",
+      "BASE",
+      "GOLD"
+    ],
+    "26": [
+      "GOLD",
+      "DIAMOND",
+      "RAINBOW"
+    ],
+    "27": [
+      "DIAMOND",
+      "RAINBOW",
+      "BESKAR"
+    ]
+  },
+  "2": {
+    "1": [
+      "BASE",
+      "BASE",
+      "BASE"
+    ],
+    "2": [
+      "BASE",
+      "BASE",
+      "BASE"
+    ],
+    "3": [
+      "BASE",
+      "BASE",
+      "GOLD"
+    ],
+    "4": [
+      "GOLD",
+      "GOLD",
+      "BASE"
+    ],
+    "5": [
+      "GOLD",
+      "GOLD",
+      "GOLD"
+    ],
+    "6": [
+      "BASE",
+      "DIAMOND",
+      "DIAMOND"
+    ],
+    "7": [
+      "DIAMOND",
+      "DIAMOND",
+      "GOLD"
+    ],
+    "8": [
+      "DIAMOND",
+      "GOLD",
+      "GOLD"
+    ],
+    "9": [
+      "RAINBOW",
+      "GOLD",
+      "GOLD"
+    ],
+    "10": [
+      "RAINBOW",
+      "DIAMOND",
+      "DIAMOND"
+    ],
+    "11": [
+      "DIAMOND",
+      "DIAMOND",
+      "RAINBOW"
+    ],
+    "12": [
+      "RAINBOW",
+      "RAINBOW",
+      "BASE"
+    ],
+    "13": [
+      "RAINBOW",
+      "BASE",
+      "BASE"
+    ],
+    "14": [
+      "RAINBOW",
+      "GOLD",
+      "GOLD"
+    ],
+    "15": [
+      "RAINBOW",
+      "GOLD",
+      "GOLD"
+    ],
+    "16": [
+      "DIAMOND",
+      "RAINBOW",
+      "GOLD"
+    ],
+    "17": [
+      "RAINBOW",
+      "DIAMOND",
+      "GOLD"
+    ],
+    "18": [
+      "RAINBOW",
+      "DIAMOND",
+      "DIAMOND"
+    ],
+    "19": [
+      "DIAMOND",
+      "RAINBOW",
+      "RAINBOW"
+    ],
+    "20": [
+      "RAINBOW",
+      "RAINBOW",
+      "RAINBOW"
+    ],
+    "21": [
+      "BESKAR",
+      "BESKAR",
+      "BESKAR"
+    ],
+    "22": [
+      "BESKAR",
+      "BESKAR",
+      "BESKAR"
+    ],
+    "23": [
+      "BESKAR",
+      "BESKAR",
+      "BESKAR"
+    ],
+    "24": [
+      "BESKAR",
+      "BESKAR",
+      "BASE"
+    ],
+    "25": [
+      "BESKAR",
+      "GOLD",
+      "BASE"
+    ],
+    "26": [
+      "GOLD",
+      "DIAMOND",
+      "RAINBOW"
+    ],
+    "27": [
+      "DIAMOND",
+      "RAINBOW",
+      "BESKAR"
+    ]
+  },
+  "3": {
+    "1": [
+      "BASE",
+      "BASE",
+      "BASE"
+    ],
+    "2": [
+      "BASE",
+      "BASE",
+      "BASE"
+    ],
+    "3": [
+      "BASE",
+      "BASE",
+      "BASE"
+    ],
+    "4": [
+      "GOLD",
+      "GOLD",
+      "GOLD"
+    ],
+    "5": [
+      "GOLD",
+      "GOLD",
+      "GOLD"
+    ],
+    "6": [
+      "DIAMOND",
+      "DIAMOND",
+      "DIAMOND"
+    ],
+    "7": [
+      "DIAMOND",
+      "DIAMOND",
+      "DIAMOND"
+    ],
+    "8": [
+      "RAINBOW",
+      "RAINBOW",
+      "RAINBOW"
+    ],
+    "9": [
+      "RAINBOW",
+      "RAINBOW",
+      "RAINBOW"
+    ],
+    "10": [
+      "BASE",
+      "BASE",
+      "RAINBOW"
+    ],
+    "11": [
+      "BASE",
+      "BASE",
+      "BASE"
+    ],
+    "12": [
+      "GOLD",
+      "GOLD",
+      "RAINBOW"
+    ],
+    "13": [
+      "RAINBOW",
+      "BASE",
+      "BASE"
+    ],
+    "14": [
+      "RAINBOW",
+      "GOLD",
+      "GOLD"
+    ],
+    "15": [
+      "RAINBOW",
+      "GOLD",
+      "GOLD"
+    ],
+    "16": [
+      "DIAMOND",
+      "RAINBOW",
+      "GOLD"
+    ],
+    "17": [
+      "RAINBOW",
+      "DIAMOND",
+      "GOLD"
+    ],
+    "18": [
+      "RAINBOW",
+      "DIAMOND",
+      "DIAMOND"
+    ],
+    "19": [
+      "DIAMOND",
+      "RAINBOW",
+      "RAINBOW"
+    ],
+    "20": [
+      "RAINBOW",
+      "RAINBOW",
+      "RAINBOW"
+    ],
+    "21": [
+      "BESKAR",
+      "BESKAR",
+      "BESKAR"
+    ],
+    "22": [
+      "BESKAR",
+      "BESKAR",
+      "BESKAR"
+    ],
+    "23": [
+      "BESKAR",
+      "BESKAR",
+      "BESKAR"
+    ],
+    "24": [
+      "BESKAR",
+      "BESKAR",
+      "BASE"
+    ],
+    "25": [
+      "BESKAR",
+      "BASE",
+      "GOLD"
+    ],
+    "26": [
+      "GOLD",
+      "DIAMOND",
+      "RAINBOW"
+    ],
+    "27": [
+      "DIAMOND",
+      "RAINBOW",
+      "BESKAR"
+    ]
+  },
+  "4": {
+    "1": [
+      "BASE",
+      "BASE",
+      "BASE"
+    ],
+    "2": [
+      "BASE",
+      "BASE",
+      "BASE"
+    ],
+    "3": [
+      "BASE",
+      "GOLD",
+      "GOLD"
+    ],
+    "4": [
+      "GOLD",
+      "GOLD",
+      "GOLD"
+    ],
+    "5": [
+      "GOLD",
+      "GOLD",
+      "GOLD"
+    ],
+    "6": [
+      "DIAMOND",
+      "DIAMOND",
+      "DIAMOND"
+    ],
+    "7": [
+      "DIAMOND",
+      "DIAMOND",
+      "DIAMOND"
+    ],
+    "8": [
+      "RAINBOW",
+      "RAINBOW",
+      "RAINBOW"
+    ],
+    "9": [
+      "RAINBOW",
+      "RAINBOW",
+      "RAINBOW"
+    ],
+    "10": [
+      "BASE",
+      "BASE",
+      "RAINBOW"
+    ],
+    "11": [
+      "BASE",
+      "BASE",
+      "BASE"
+    ],
+    "12": [
+      "GOLD",
+      "GOLD",
+      "RAINBOW"
+    ],
+    "13": [
+      "RAINBOW",
+      "BASE",
+      "BASE"
+    ],
+    "14": [
+      "DIAMOND",
+      "DIAMOND",
+      "RAINBOW"
+    ],
+    "15": [
+      "DIAMOND",
+      "RAINBOW",
+      "BASE"
+    ],
+    "16": [
+      "RAINBOW",
+      "BASE",
+      "GOLD"
+    ],
+    "17": [
+      "BASE",
+      "GOLD",
+      "GOLD"
+    ],
+    "18": [
+      "GOLD",
+      "GOLD",
+      "DIAMOND"
+    ],
+    "19": [
+      "DIAMOND",
+      "RAINBOW",
+      "RAINBOW"
+    ],
+    "20": [
+      "RAINBOW",
+      "RAINBOW",
+      "RAINBOW"
+    ],
+    "21": [
+      "BESKAR",
+      "BESKAR",
+      "BESKAR"
+    ],
+    "22": [
+      "BESKAR",
+      "BESKAR",
+      "BESKAR"
+    ],
+    "23": [
+      "BESKAR",
+      "BESKAR",
+      "BESKAR"
+    ],
+    "24": [
+      "BESKAR",
+      "BESKAR",
+      "BASE"
+    ],
+    "25": [
+      "BESKAR",
+      "BASE",
+      "GOLD"
+    ],
+    "26": [
+      "GOLD",
+      "DIAMOND",
+      "RAINBOW"
+    ],
+    "27": [
+      "DIAMOND",
+      "RAINBOW",
+      "BESKAR"
+    ]
+  }
+}

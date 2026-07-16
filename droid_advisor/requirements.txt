@@ -1,0 +1,6 @@
+mss==10.1.0
+Pillow==11.3.0
+pynput==1.8.1
+pystray==0.19.5
+rapidocr-onnxruntime==1.4.4
+

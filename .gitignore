@@ -1,0 +1,12 @@
+**/.venv/
+**/__pycache__/
+*.pyc
+**/build/
+**/dist/
+**/dist-installer/
+droid_advisor/assets/source_cycles/
+droid_advisor/assets/thumbnails/
+droid_advisor/assets/quality_parts/
+*.log
+.coverage
+**/.pytest_cache/

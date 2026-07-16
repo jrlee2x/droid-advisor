@@ -1,0 +1,3 @@
+"""Passive on-screen advisor for Droid Tycoon rebirth decisions."""
+
+__version__ = "0.4.0"
