@@ -58,6 +58,15 @@ class OfflineOcr:
         ]
 
 
+CARD_BUTTONS = ("WORK", "SWAP", "LOUNGE", "CUSTOMIZE", "SELL")
+
+
+def is_card_button_text(text: str) -> bool:
+    """Accept button labels while rejecting tooltip sentences containing a cue."""
+    upper = text.strip().upper()
+    return any(upper.startswith(cue) and len(upper) <= len(cue) + 12 for cue in CARD_BUTTONS)
+
+
 def game_window_rect(title_terms: Iterable[str] = ("fortnite", "droid tycoon")) -> tuple[int, int, int, int] | None:
     user32 = ctypes.windll.user32
     matches: list[tuple[int, int, int, int]] = []
@@ -99,15 +108,13 @@ def capture_game() -> Image.Image | None:
 
 def panel_is_open(tokens: list[OcrToken], width: int, height: int) -> bool:
     """Recognize the vertically stacked card controls, not stray world text."""
-    cue_names = ("WORK", "SWAP", "LOUNGE", "CUSTOMIZE", "SELL")
     card_cues = []
     for token in tokens:
         cx, cy = token.center
         if not (0.18 * width <= cx <= 0.82 * width and 0.30 * height <= cy <= 0.86 * height):
             continue
-        upper = token.text.upper()
-        if any(cue in upper for cue in cue_names):
-            card_cues.append((cx, cy, upper))
+        if is_card_button_text(token.text):
+            card_cues.append((cx, cy, token.text.upper()))
     if len(card_cues) < 3:
         return False
     # Real card buttons form a vertical column; unrelated UI labels do not.
@@ -123,10 +130,7 @@ def card_header_rect(tokens: list[OcrToken], width: int, height: int) -> tuple[i
     cues = []
     for token in tokens:
         cx, cy = token.center
-        upper = token.text.upper()
-        if 0.25 * height <= cy <= 0.88 * height and any(
-            cue in upper for cue in ("WORK", "SWAP", "LOUNGE", "CUSTOMIZE", "SELL")
-        ):
+        if 0.25 * height <= cy <= 0.88 * height and is_card_button_text(token.text):
             cues.append((cx, cy))
     if len(cues) < 3:
         return None
@@ -234,10 +238,7 @@ def selected_droid(tokens: list[OcrToken], width: int, height: int) -> tuple[str
     button_cues = []
     for token in tokens:
         cx, cy = token.center
-        upper = token.text.upper()
-        if 0.25 * height <= cy <= 0.88 * height and any(
-            cue in upper for cue in ("WORK", "SWAP", "LOUNGE", "CUSTOMIZE", "SELL")
-        ):
+        if 0.25 * height <= cy <= 0.88 * height and is_card_button_text(token.text):
             button_cues.append((cx, cy))
     anchor_x = sum(x for x, _ in button_cues) / len(button_cues) if button_cues else width * 0.42
     first_button_y = min((y for _, y in button_cues), default=height * 0.56)

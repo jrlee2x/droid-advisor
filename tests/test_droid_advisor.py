@@ -1,5 +1,5 @@
 from droid_advisor.engine import advise, canonical, detect_cycle, match_droid
-from droid_advisor.vision import OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, card_header_rect, high_value_spawn, panel_is_open, selected_droid
+from droid_advisor.vision import OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, card_header_rect, high_value_spawn, is_card_button_text, panel_is_open, selected_droid
 from droid_advisor.inventory import InventoryLedger
 from droid_advisor.updater import parse_release, version_tuple
 
@@ -108,6 +108,17 @@ def test_card_header_crop_tracks_left_positioned_button_column():
     assert top == 40
     assert right == 460
     assert bottom == 470
+
+
+def test_tooltip_sentence_does_not_break_card_button_detection():
+    tokens = [
+        _token("WORK", 500, 450),
+        _token("LOUNGE", 500, 600),
+        _token("CUSTOMIZE", 500, 750),
+        _token("Droid follows you around, aiding in your work.", 800, 650),
+    ]
+    assert is_card_button_text(tokens[-1].text) is False
+    assert panel_is_open(tokens, 1000, 1000) is True
 
 
 def test_blueprint_finish_and_rarity_are_optional_context():
