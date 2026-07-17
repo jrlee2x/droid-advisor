@@ -1,5 +1,5 @@
 from droid_advisor.engine import advise, canonical, detect_cycle, match_droid
-from droid_advisor.vision import OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, high_value_spawn, panel_is_open, selected_droid
+from droid_advisor.vision import OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, card_header_rect, high_value_spawn, panel_is_open, selected_droid
 from droid_advisor.inventory import InventoryLedger
 from droid_advisor.updater import parse_release, version_tuple
 
@@ -95,6 +95,19 @@ def test_advisor_banner_cannot_reinforce_wrong_droid():
         _token("LOUNGE", 250, 720),
     ]
     assert selected_droid(tokens, 1000, 1000)[0] is None
+
+
+def test_card_header_crop_tracks_left_positioned_button_column():
+    tokens = [
+        _token("WORK", 180, 470),
+        _token("SWAP", 180, 590),
+        _token("LOUNGE", 180, 710),
+    ]
+    left, top, right, bottom = card_header_rect(tokens, 1000, 1000)
+    assert left == 0
+    assert top == 40
+    assert right == 460
+    assert bottom == 470
 
 
 def test_blueprint_finish_and_rarity_are_optional_context():

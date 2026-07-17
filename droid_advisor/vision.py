@@ -118,6 +118,28 @@ def panel_is_open(tokens: list[OcrToken], width: int, height: int) -> bool:
     return aligned and vertically_spread
 
 
+def card_header_rect(tokens: list[OcrToken], width: int, height: int) -> tuple[int, int, int, int] | None:
+    """Locate the name/quality header above an opened card's button column."""
+    cues = []
+    for token in tokens:
+        cx, cy = token.center
+        upper = token.text.upper()
+        if 0.25 * height <= cy <= 0.88 * height and any(
+            cue in upper for cue in ("WORK", "SWAP", "LOUNGE", "CUSTOMIZE", "SELL")
+        ):
+            cues.append((cx, cy))
+    if len(cues) < 3:
+        return None
+    anchor_x = sum(x for x, _ in cues) / len(cues)
+    first_button_y = min(y for _, y in cues)
+    return (
+        max(0, int(anchor_x - 0.22 * width)),
+        max(0, int(0.04 * height)),
+        min(width, int(anchor_x + 0.28 * width)),
+        min(height, int(first_button_y)),
+    )
+
+
 def rebirth_view_is_open(tokens: list[OcrToken]) -> bool:
     """Require menu-language evidence before changing the configured cycle."""
     text = " ".join(token.text.upper() for token in tokens)

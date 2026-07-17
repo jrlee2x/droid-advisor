@@ -28,6 +28,7 @@ from .vision import (
     blueprint_droid,
     blueprint_is_visible,
     capture_game,
+    card_header_rect,
     panel_is_open,
     rebirth_rank,
     rebirth_view_is_open,
@@ -400,6 +401,12 @@ class DroidAdvisorApp:
 
                         if not blueprint_open and panel_is_open(tokens, image.width, image.height):
                             droid, confidence = selected_droid(tokens, image.width, image.height)
+                            header_rect = card_header_rect(tokens, image.width, image.height)
+                            if header_rect:
+                                header_tokens = ocr.read(image.crop(header_rect))
+                                focused_droid, focused_confidence = blueprint_droid(header_tokens)
+                                if focused_droid:
+                                    droid, confidence = focused_droid, focused_confidence
                             if droid:
                                 current_rb = int(self.config["completed_rebirth"])
                                 decision = advise(int(self.config["cycle"]), current_rb, droid)
