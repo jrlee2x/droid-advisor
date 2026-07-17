@@ -221,11 +221,18 @@ def selected_droid(tokens: list[OcrToken], width: int, height: int) -> tuple[str
     first_button_y = min((y for _, y in button_cues), default=height * 0.56)
 
     candidates = []
+    role_labels = {"BATTLE", "WORKER", "COMPANION"}
     for token in tokens:
         cx, cy = token.center
         if not (0.03 * width <= cx <= 0.82 * width and 0.08 * height <= cy < first_button_y):
             continue
         if button_cues and abs(cx - anchor_x) > 0.28 * width:
+            continue
+        token_key = canonical(token.text)
+        if token_key in role_labels or any(
+            phrase in token.text.upper()
+            for phrase in ("SAFE TO SELL", "KEEP", "NEEDED AT", "NOT USED IN THIS CYCLE")
+        ):
             continue
         name, score = match_droid(token.text, threshold=0.70)
         if name:

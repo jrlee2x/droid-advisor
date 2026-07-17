@@ -77,6 +77,26 @@ def test_left_positioned_card_prefers_ig_above_its_buttons():
     assert selected_droid(tokens, 1000, 1000)[0] == "IG"
 
 
+def test_card_role_label_does_not_become_b1_battle():
+    tokens = [
+        _token("Battle", 500, 90),
+        _token("WORK", 250, 480),
+        _token("SWAP", 250, 600),
+        _token("LOUNGE", 250, 720),
+    ]
+    assert selected_droid(tokens, 1000, 1000)[0] is None
+
+
+def test_advisor_banner_cannot_reinforce_wrong_droid():
+    tokens = [
+        _token("B1 BATTLE: SAFE TO SELL: NOT USED IN THIS CYCLE", 250, 430),
+        _token("WORK", 250, 480),
+        _token("SWAP", 250, 600),
+        _token("LOUNGE", 250, 720),
+    ]
+    assert selected_droid(tokens, 1000, 1000)[0] is None
+
+
 def test_blueprint_finish_and_rarity_are_optional_context():
     assert blueprint_details([_token("RAINBOW", 10, 10), _token("LEGENDARY", 20, 20)]) == ("RAINBOW", "LEGENDARY")
 
