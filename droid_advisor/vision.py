@@ -209,15 +209,28 @@ def visible_droids(tokens: list[OcrToken]) -> set[str]:
 
 
 def selected_droid(tokens: list[OcrToken], width: int, height: int) -> tuple[str | None, float]:
+    button_cues = []
+    for token in tokens:
+        cx, cy = token.center
+        upper = token.text.upper()
+        if 0.25 * height <= cy <= 0.88 * height and any(
+            cue in upper for cue in ("WORK", "SWAP", "LOUNGE", "CUSTOMIZE", "SELL")
+        ):
+            button_cues.append((cx, cy))
+    anchor_x = sum(x for x, _ in button_cues) / len(button_cues) if button_cues else width * 0.42
+    first_button_y = min((y for _, y in button_cues), default=height * 0.56)
+
     candidates = []
     for token in tokens:
         cx, cy = token.center
-        if not (0.18 * width <= cx <= 0.65 * width and 0.12 * height <= cy <= 0.55 * height):
+        if not (0.03 * width <= cx <= 0.82 * width and 0.08 * height <= cy < first_button_y):
+            continue
+        if button_cues and abs(cx - anchor_x) > 0.28 * width:
             continue
         name, score = match_droid(token.text, threshold=0.70)
         if name:
             exact = canonical(name) in canonical(token.text)
-            rank = score * 100 + token.height + (35 if exact else 0) + min(len(name), 20)
+            rank = score * 100 + token.height + (80 if exact else 0) + min(len(name), 20)
             candidates.append((rank, name, score))
     if not candidates:
         return None, 0.0

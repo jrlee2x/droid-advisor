@@ -1,5 +1,5 @@
 from droid_advisor.engine import advise, canonical, detect_cycle, match_droid
-from droid_advisor.vision import OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, high_value_spawn, panel_is_open
+from droid_advisor.vision import OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, high_value_spawn, panel_is_open, selected_droid
 from droid_advisor.inventory import InventoryLedger
 from droid_advisor.updater import parse_release, version_tuple
 
@@ -64,6 +64,17 @@ def test_blueprint_prompt_can_be_split_across_ocr_tokens():
 def test_blueprint_droid_recognizes_exact_short_ig_token():
     assert blueprint_droid([_token("IG", 100, 100)]) == ("IG", 1.0)
     assert blueprint_droid([_token("LEGENDARY", 100, 100)])[0] is None
+
+
+def test_left_positioned_card_prefers_ig_above_its_buttons():
+    tokens = [
+        _token("IG", 100, 330),
+        _token("WORK", 250, 480),
+        _token("SWAP", 250, 600),
+        _token("LOUNGE", 250, 720),
+        _token("A-LT", 800, 300),
+    ]
+    assert selected_droid(tokens, 1000, 1000)[0] == "IG"
 
 
 def test_blueprint_finish_and_rarity_are_optional_context():
