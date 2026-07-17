@@ -12,7 +12,7 @@ import sys
 import threading
 import time
 import tkinter as tk
-from tkinter import ttk
+from tkinter import messagebox, ttk
 
 from PIL import Image, ImageDraw
 import pystray
@@ -21,9 +21,11 @@ from pynput import keyboard
 from . import __version__
 from .cycles import CYCLES
 from .engine import advise, detect_cycle
+from .updater import check_for_update, download_update, launch_installer
 from .vision import (
     OfflineOcr,
     blueprint_details,
+    blueprint_droid,
     blueprint_is_visible,
     capture_game,
     panel_is_open,
@@ -46,6 +48,7 @@ DEFAULTS = {
     "requirements_overlay_x": -1,
     "requirements_overlay_y": 55,
     "spawn_alerts_enabled": True,
+    "automatic_updates": True,
 }
 
 
@@ -73,7 +76,7 @@ class DroidAdvisorApp:
         self.stop_event = threading.Event()
         self.root = tk.Tk()
         self.root.title("Droid Advisor")
-        self.root.geometry("460x285")
+        self.root.geometry("500x325")
         self.root.protocol("WM_DELETE_WINDOW", self.hide_settings)
         self._build_settings()
         self._build_overlay()
@@ -117,6 +120,13 @@ class DroidAdvisorApp:
             controls, text="High-value conveyor alerts", variable=self.spawn_alert_var,
             command=self._settings_changed,
         ).grid(row=2, column=0, columnspan=2, sticky="w", pady=(7, 0))
+
+        self.update_var = tk.BooleanVar(value=bool(self.config["automatic_updates"]))
+        ttk.Checkbutton(
+            controls, text="Automatically check for updates", variable=self.update_var,
+            command=self._settings_changed,
+        ).grid(row=3, column=0, columnspan=2, sticky="w", pady=(5, 0))
+        ttk.Button(controls, text="Check now", command=self.check_updates).grid(row=3, column=2, padx=8)
 
         initial_state = "Paused" if self.config["paused"] else "Monitoring"
         self.status_var = tk.StringVar(
@@ -283,6 +293,7 @@ class DroidAdvisorApp:
             self.config["cycle"] = int(self.cycle_var.get())
             self.config["completed_rebirth"] = max(0, min(27, int(self.rb_var.get())))
             self.config["spawn_alerts_enabled"] = bool(self.spawn_alert_var.get())
+            self.config["automatic_updates"] = bool(self.update_var.get())
             save_config(self.config)
             state = "Paused" if self.config["paused"] else "Monitoring"
             self.status_var.set(
@@ -357,6 +368,13 @@ class DroidAdvisorApp:
                         blueprint_open = blueprint_is_visible(tokens, image.width, image.height)
                         if blueprint_open:
                             droid, confidence = selected_droid(tokens, image.width, image.height)
+                            card_left, card_top = int(image.width * 0.03), int(image.height * 0.08)
+                            card_right, card_bottom = int(image.width * 0.70), int(image.height * 0.60)
+                            card_image = image.crop((card_left, card_top, card_right, card_bottom))
+                            card_tokens = ocr.read(card_image)
+                            focused_droid, focused_confidence = blueprint_droid(card_tokens)
+                            if focused_droid:
+                                droid, confidence = focused_droid, focused_confidence
                             if droid:
                                 left, top = int(image.width * 0.20), int(image.height * 0.10)
                                 right, bottom = int(image.width * 0.68), int(image.height * 0.62)
@@ -427,6 +445,10 @@ class DroidAdvisorApp:
                 elif kind == "exit":
                     self.shutdown()
                     return
+                elif kind == "update_available":
+                    self._offer_update(payload)
+                elif kind == "update_error":
+                    self.status_var.set(f"Update check failed: {payload}")
         except queue.Empty:
             pass
         self.root.after(100, self._drain_events)
@@ -442,7 +464,39 @@ class DroidAdvisorApp:
         self.listener.start()
         self.worker.start()
         self.root.after(100, self._drain_events)
+        if self.config["automatic_updates"]:
+            self.root.after(4000, self.check_updates)
         self.root.mainloop()
+
+    def check_updates(self) -> None:
+        self.status_var.set("Checking for updates...")
+        def worker() -> None:
+            try:
+                info = check_for_update(__version__)
+                self.events.put(("update_available", info))
+            except Exception as exc:
+                self.events.put(("update_error", str(exc)))
+        threading.Thread(target=worker, name="update-check", daemon=True).start()
+
+    def _offer_update(self, info) -> None:
+        if info is None:
+            self.status_var.set(f"Droid Advisor v{__version__} is up to date")
+            return
+        if not messagebox.askyesno(
+            "Droid Advisor Update",
+            f"Version {info.version} is available. Download and install it now?",
+        ):
+            self.status_var.set(f"Update {info.version} available")
+            return
+        self.status_var.set(f"Downloading update {info.version}...")
+        def worker() -> None:
+            try:
+                installer = download_update(info)
+                launch_installer(installer)
+                self.events.put(("exit", None))
+            except Exception as exc:
+                self.events.put(("update_error", str(exc)))
+        threading.Thread(target=worker, name="update-download", daemon=True).start()
 
 
 def main() -> None:

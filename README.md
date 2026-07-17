@@ -15,6 +15,8 @@ This project is alpha software under active development. The current public feat
 
 ## Privacy and behavior
 
+Starting with version 0.5.0, Droid Advisor checks published GitHub Releases at startup. It asks before updating, verifies GitHub's SHA-256 asset digest, installs the update silently, and restarts itself. Raw commits, drafts, and prereleases are not installed automatically.
+
 Droid Advisor:
 
 - Captures only a visible Fortnite or Droid Tycoon window.
@@ -66,4 +68,3 @@ Bug reports and focused pull requests are welcome. Please include the Windows ve
 ## License
 
 The source code is licensed under the MIT License. Third-party guide and game artwork is not covered by the MIT License.
-

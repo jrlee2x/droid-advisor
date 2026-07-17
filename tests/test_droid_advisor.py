@@ -1,6 +1,7 @@
 from droid_advisor.engine import advise, canonical, detect_cycle, match_droid
-from droid_advisor.vision import OcrToken, blueprint_details, blueprint_is_visible, high_value_spawn, panel_is_open
+from droid_advisor.vision import OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, high_value_spawn, panel_is_open
 from droid_advisor.inventory import InventoryLedger
+from droid_advisor.updater import parse_release, version_tuple
 
 
 def test_proto_roller_at_completed_22_varies_by_cycle():
@@ -55,6 +56,16 @@ def test_blueprint_requires_pickup_prompt_in_lower_screen():
     assert blueprint_is_visible([_token("BLUEPRINT", 500, 200)], 1000, 1000) is False
 
 
+def test_blueprint_prompt_can_be_split_across_ocr_tokens():
+    prompt = [_token("TOSS BLUEPRINT", 400, 800), _token("ON CRAFTING STATION", 650, 800)]
+    assert blueprint_is_visible(prompt, 1000, 1000) is True
+
+
+def test_blueprint_droid_recognizes_exact_short_ig_token():
+    assert blueprint_droid([_token("IG", 100, 100)]) == ("IG", 1.0)
+    assert blueprint_droid([_token("LEGENDARY", 100, 100)])[0] is None
+
+
 def test_blueprint_finish_and_rarity_are_optional_context():
     assert blueprint_details([_token("RAINBOW", 10, 10), _token("LEGENDARY", 20, 20)]) == ("RAINBOW", "LEGENDARY")
 
@@ -83,3 +94,13 @@ def test_inventory_persists_and_clears(tmp_path):
     assert loaded.get("BB9").quantity == 2
     loaded.clear()
     assert InventoryLedger(path).get("BB9") is None
+
+
+def test_update_release_requires_newer_version_and_digest():
+    release = {"tag_name": "v0.5.0", "html_url": "https://example.test/release", "assets": [{
+        "name": "DroidAdvisor-Setup-0.5.0.exe", "browser_download_url": "https://example.test/app.exe",
+        "digest": "sha256:" + "a" * 64,
+    }]}
+    assert parse_release(release, "0.4.1").version == "0.5.0"
+    assert parse_release(release, "0.5.0") is None
+    assert version_tuple("v1.2.10") > version_tuple("1.2.9")

@@ -126,12 +126,41 @@ def rebirth_view_is_open(tokens: list[OcrToken]) -> bool:
 
 def blueprint_is_visible(tokens: list[OcrToken], width: int, height: int) -> bool:
     """Trigger only on the held-blueprint pickup prompt."""
+    lower_text = canonical(" ".join(
+        token.text for token in tokens if token.center[1] >= 0.60 * height
+    ))
+    if "BLUEPRINT" in lower_text and "CRAFTING" in lower_text:
+        return True
     for token in tokens:
         cx, cy = token.center
         compact = canonical(token.text)
         if cy >= 0.60 * height and "BLUEPRINT" in compact and "CRAFTING" in compact:
             return True
     return False
+
+
+def blueprint_droid(tokens: list[OcrToken]) -> tuple[str | None, float]:
+    """Match a droid inside a tightly cropped blueprint card.
+
+    Exact token matching is important for short names such as IG, which are too
+    small to safely locate in combined full-screen OCR text.
+    """
+    candidates = []
+    for token in tokens:
+        raw = canonical(token.text)
+        if not raw:
+            continue
+        for name in ALL_DROIDS:
+            key = canonical(name)
+            exact = raw == key
+            contained = len(key) >= 4 and key in raw
+            if exact or contained:
+                rank = (100 if exact else 80) + token.height + min(len(key), 20)
+                candidates.append((rank, name, 1.0))
+    if not candidates:
+        return None, 0.0
+    _, name, score = max(candidates)
+    return name, score
 
 
 def blueprint_details(tokens: list[OcrToken]) -> tuple[str | None, str | None]:
