@@ -103,6 +103,11 @@ def test_existing_finishes_still_require_legendary_or_mythic():
     assert high_value_spawn(mythic, 1000, 1000) == ("BESKAR", "MYTHIC")
 
 
+def test_galactic_alert_survives_partial_ocr_notification():
+    tokens = [_token("Galactic Droid", 300, 500)]
+    assert high_value_spawn(tokens, 1000, 1000) == ("GALACTIC", "DROID")
+
+
 def test_panel_requires_aligned_vertical_card_controls():
     card = [_token("WORK", 500, 450), _token("SWAP", 505, 600), _token("LOUNGE", 510, 750)]
     assert panel_is_open(card, 1000, 1000) is True

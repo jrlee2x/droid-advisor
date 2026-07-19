@@ -368,14 +368,20 @@ def high_value_spawn(tokens: list[OcrToken], width: int, height: int) -> tuple[s
         if cx <= 0.68 * width and 0.20 * height <= cy <= 0.82 * height:
             relevant.append(token.text)
     compact = canonical(" ".join(relevant)).replace("BESKER", "BESKAR")
+    if "GALACTICDROID" in compact:
+        rarity = next(
+            (value for value in ("MYTHIC", "LEGENDARY", "EPIC", "RARE", "COMMON") if value in compact),
+            "DROID",
+        )
+        return "GALACTIC", rarity
     match = re.search(
-        r"(DIAMOND|RAINBOW|BESKAR|GALACTIC)DROID(COMMON|RARE|EPIC|LEGENDARY|MYTHIC)SPAWNED",
+        r"(DIAMOND|RAINBOW|BESKAR)DROID(COMMON|RARE|EPIC|LEGENDARY|MYTHIC)SPAWNED",
         compact,
     )
     if not match:
         return None
     finish, rarity = match.group(1), match.group(2)
-    if finish != "GALACTIC" and rarity not in ("LEGENDARY", "MYTHIC"):
+    if rarity not in ("LEGENDARY", "MYTHIC"):
         return None
     return finish, rarity
 

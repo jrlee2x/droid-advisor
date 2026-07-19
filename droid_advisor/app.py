@@ -404,7 +404,7 @@ class DroidAdvisorApp:
 
                         now = time.monotonic()
                         spawn = None
-                        if self.config["spawn_alerts_enabled"] and now - self.last_spawn_scan_at >= 3.0:
+                        if self.config["spawn_alerts_enabled"] and now - self.last_spawn_scan_at >= 1.0:
                             self.last_spawn_scan_at = now
                             spawn_box = (
                                 0, int(image.height * 0.30),
