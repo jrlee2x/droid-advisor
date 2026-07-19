@@ -368,10 +368,16 @@ def high_value_spawn(tokens: list[OcrToken], width: int, height: int) -> tuple[s
         if cx <= 0.68 * width and 0.20 * height <= cy <= 0.82 * height:
             relevant.append(token.text)
     compact = canonical(" ".join(relevant)).replace("BESKER", "BESKAR")
-    match = re.search(r"(DIAMOND|RAINBOW|BESKAR)DROID(LEGENDARY|MYTHIC)SPAWNED", compact)
+    match = re.search(
+        r"(DIAMOND|RAINBOW|BESKAR|GALACTIC)DROID(COMMON|RARE|EPIC|LEGENDARY|MYTHIC)SPAWNED",
+        compact,
+    )
     if not match:
         return None
-    return match.group(1), match.group(2)
+    finish, rarity = match.group(1), match.group(2)
+    if finish != "GALACTIC" and rarity not in ("LEGENDARY", "MYTHIC"):
+        return None
+    return finish, rarity
 
 
 def rebirth_rank(tokens: list[OcrToken]) -> int | None:

@@ -90,6 +90,19 @@ def test_visual_gates_reject_plain_gameplay_and_detect_target_chrome():
     assert blueprint_visual_gate(blueprint) is True
 
 
+def test_all_galactic_spawn_rarities_trigger_alerts():
+    for rarity in ("Common", "Rare", "Epic", "Legendary", "Mythic"):
+        tokens = [_token(f"Galactic Droid ({rarity}) spawned at the Sandcrawler", 300, 500)]
+        assert high_value_spawn(tokens, 1000, 1000) == ("GALACTIC", rarity.upper())
+
+
+def test_existing_finishes_still_require_legendary_or_mythic():
+    rare = [_token("Rainbow Droid (Rare) spawned at the Sandcrawler", 300, 500)]
+    mythic = [_token("Beskar Droid (Mythic) spawned at the Sandcrawler", 300, 500)]
+    assert high_value_spawn(rare, 1000, 1000) is None
+    assert high_value_spawn(mythic, 1000, 1000) == ("BESKAR", "MYTHIC")
+
+
 def test_panel_requires_aligned_vertical_card_controls():
     card = [_token("WORK", 500, 450), _token("SWAP", 505, 600), _token("LOUNGE", 510, 750)]
     assert panel_is_open(card, 1000, 1000) is True
