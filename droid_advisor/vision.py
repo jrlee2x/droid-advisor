@@ -39,9 +39,9 @@ class OfflineOcr:
         # full-screen scan block focused UI checks for more than a minute.
         self._engine = RapidOCR(intra_op_num_threads=threads, inter_op_num_threads=1)
 
-    def read(self, image: Image.Image) -> list[OcrToken]:
+    def read(self, image: Image.Image, max_width: int = 1400) -> list[OcrToken]:
         # Limiting width keeps continuous monitoring light on typical gaming PCs.
-        scale = min(1.0, 1400 / image.width)
+        scale = min(1.0, max_width / image.width)
         if scale < 1:
             image = image.resize((int(image.width * scale), int(image.height * scale)))
         prepared = ImageEnhance.Contrast(ImageOps.grayscale(image)).enhance(1.35)
@@ -58,6 +58,25 @@ class OfflineOcr:
             for item in result
             if len(item) >= 3 and float(item[2]) >= 0.35
         ]
+
+
+def read_region(
+    ocr: OfflineOcr,
+    image: Image.Image,
+    box: tuple[int, int, int, int],
+    max_width: int = 1400,
+) -> list[OcrToken]:
+    """OCR a crop and translate token boxes back to full-image coordinates."""
+    left, top, right, bottom = box
+    tokens = ocr.read(image.crop(box), max_width=max_width)
+    return [
+        OcrToken(
+            text=token.text,
+            confidence=token.confidence,
+            box=tuple((x + left, y + top) for x, y in token.box),
+        )
+        for token in tokens
+    ]
 
 
 CARD_BUTTONS = ("WORK", "SWAP", "LOUNGE", "CUSTOMIZE", "SELL")

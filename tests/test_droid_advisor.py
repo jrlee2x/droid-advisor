@@ -1,5 +1,5 @@
 from droid_advisor.engine import advise, canonical, detect_cycle, match_droid
-from droid_advisor.vision import OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, card_header_rect, high_value_spawn, is_card_button_text, panel_is_open, rebirth_header_is_open, selected_droid
+from droid_advisor.vision import OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, card_header_rect, high_value_spawn, is_card_button_text, panel_is_open, read_region, rebirth_header_is_open, selected_droid
 from droid_advisor.inventory import InventoryLedger
 from droid_advisor.updater import parse_release, version_tuple
 
@@ -124,6 +124,17 @@ def test_tooltip_sentence_does_not_break_card_button_detection():
 def test_focused_rebirth_header_requires_rebirth_and_rank():
     assert rebirth_header_is_open([_token("REBIRTH", 100, 50), _token("Rank 8", 300, 50)]) is True
     assert rebirth_header_is_open([_token("Rank 8", 300, 50)]) is False
+
+
+def test_region_ocr_translates_tokens_to_full_frame():
+    class FakeOcr:
+        def read(self, _image, max_width=1400):
+            assert max_width == 900
+            return [_token("IG", 20, 30)]
+
+    from PIL import Image
+    tokens = read_region(FakeOcr(), Image.new("RGB", (1000, 1000)), (100, 200, 500, 600), max_width=900)
+    assert tokens[0].center == (120, 230)
 
 
 def test_blueprint_finish_and_rarity_are_optional_context():
