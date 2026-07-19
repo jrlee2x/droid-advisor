@@ -1,5 +1,5 @@
 from droid_advisor.engine import advise, canonical, detect_cycle, match_droid
-from droid_advisor.vision import OfflineOcr, OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, card_header_rect, high_value_spawn, is_card_button_text, panel_is_open, read_region, rebirth_header_is_open, selected_droid
+from droid_advisor.vision import OfflineOcr, OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, blueprint_visual_gate, card_header_rect, card_visual_gate, high_value_spawn, is_card_button_text, panel_is_open, read_region, rebirth_header_is_open, rebirth_visual_gate, selected_droid
 from droid_advisor.inventory import InventoryLedger
 from droid_advisor.updater import parse_release, version_tuple
 
@@ -65,6 +65,29 @@ def test_offline_ocr_uses_low_impact_runtime_settings(monkeypatch):
         "det_limit_side_len": 736,
     }
     assert calls["read"] == {"use_cls": False}
+
+
+def test_visual_gates_reject_plain_gameplay_and_detect_target_chrome():
+    from PIL import Image, ImageDraw
+
+    plain = Image.new("RGB", (1280, 720), "#74685c")
+    assert card_visual_gate(plain) is False
+    assert rebirth_visual_gate(plain) is False
+    assert blueprint_visual_gate(plain) is False
+
+    card = plain.copy()
+    draw = ImageDraw.Draw(card)
+    for top in (300, 390, 480, 570):
+        draw.rectangle((390, top, 810, top + 55), fill="#e5aa00")
+    assert card_visual_gate(card) is True
+
+    rebirth = plain.copy()
+    ImageDraw.Draw(rebirth).rectangle((20, 20, 360, 75), fill="#00ee55")
+    assert rebirth_visual_gate(rebirth) is True
+
+    blueprint = plain.copy()
+    ImageDraw.Draw(blueprint).rectangle((360, 450, 900, 500), fill="#00d9ee")
+    assert blueprint_visual_gate(blueprint) is True
 
 
 def test_panel_requires_aligned_vertical_card_controls():

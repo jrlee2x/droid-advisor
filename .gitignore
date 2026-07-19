@@ -10,3 +10,4 @@ droid_advisor/assets/quality_parts/
 *.log
 .coverage
 **/.pytest_cache/
+.tmp/

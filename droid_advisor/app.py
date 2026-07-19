@@ -24,10 +24,10 @@ from .engine import advise, detect_cycle
 from .updater import check_for_update, download_update, launch_installer
 from .vision import (
     OfflineOcr,
+    GameCapture,
     blueprint_details,
     blueprint_droid,
     blueprint_is_visible,
-    capture_game,
     game_window_rect,
     card_header_rect,
     panel_is_open,
@@ -36,6 +36,7 @@ from .vision import (
     read_region,
     high_value_spawn,
     selected_droid,
+    visual_gates,
     visible_droids,
 )
 
@@ -103,6 +104,7 @@ class DroidAdvisorApp:
         self.pending_blueprint_count = 0
         self.last_spawn_signature = None
         self.last_spawn_at = 0.0
+        self.last_spawn_scan_at = 0.0
 
     def _build_settings(self) -> None:
         frame = ttk.Frame(self.root, padding=18)
@@ -368,8 +370,12 @@ class DroidAdvisorApp:
                             int(image.width * 0.07), int(image.height * 0.02),
                             int(image.width * 0.28), int(image.height * 0.11),
                         )
-                        header_tokens = read_region(ocr, image, header_box, max_width=736)
-                        if rebirth_header_is_open(header_tokens):
+                        card_gate, rebirth_gate, blueprint_gate = visual_gates(image)
+                        if rebirth_gate:
+                            header_tokens = read_region(ocr, image, header_box, max_width=736)
+                        else:
+                            header_tokens = []
+                        if header_tokens and rebirth_header_is_open(header_tokens):
                             rank = rebirth_rank(header_tokens)
                             if rank:
                                 completed = max(0, rank - 1)
@@ -388,20 +394,31 @@ class DroidAdvisorApp:
                             self.stop_event.wait(0.20)
                             continue
 
-                        interaction_box = (
-                            0, int(image.height * 0.22),
-                            int(image.width * 0.85), int(image.height * 0.94),
-                        )
-                        tokens = read_region(ocr, image, interaction_box, max_width=1000)
-                        spawn = high_value_spawn(tokens, image.width, image.height) if self.config["spawn_alerts_enabled"] else None
+                        tokens = []
+                        if card_gate or blueprint_gate:
+                            interaction_box = (
+                                0, int(image.height * 0.22),
+                                int(image.width * 0.85), int(image.height * 0.94),
+                            )
+                            tokens = read_region(ocr, image, interaction_box, max_width=1000)
+
                         now = time.monotonic()
+                        spawn = None
+                        if self.config["spawn_alerts_enabled"] and now - self.last_spawn_scan_at >= 3.0:
+                            self.last_spawn_scan_at = now
+                            spawn_box = (
+                                0, int(image.height * 0.30),
+                                int(image.width * 0.58), int(image.height * 0.62),
+                            )
+                            spawn_tokens = read_region(ocr, image, spawn_box, max_width=900)
+                            spawn = high_value_spawn(spawn_tokens, image.width, image.height)
                         if spawn and (
                             spawn != self.last_spawn_signature or now - self.last_spawn_at >= 30.0
                         ):
                             self.last_spawn_signature = spawn
                             self.last_spawn_at = now
                             self.events.put(("spawn_alert", spawn))
-                        blueprint_open = blueprint_is_visible(tokens, image.width, image.height)
+                        blueprint_open = blueprint_gate and blueprint_is_visible(tokens, image.width, image.height)
                         if blueprint_open:
                             droid, confidence = selected_droid(tokens, image.width, image.height)
                             card_left, card_top = int(image.width * 0.03), int(image.height * 0.08)
@@ -434,7 +451,7 @@ class DroidAdvisorApp:
                             self.pending_blueprint_signature = None
                             self.pending_blueprint_count = 0
 
-                        if not blueprint_open and panel_is_open(tokens, image.width, image.height):
+                        if not blueprint_open and card_gate and panel_is_open(tokens, image.width, image.height):
                             droid, confidence = selected_droid(tokens, image.width, image.height)
                             header_rect = card_header_rect(tokens, image.width, image.height)
                             if header_rect:
@@ -465,17 +482,21 @@ class DroidAdvisorApp:
 
     def _capture_frames(self) -> None:
         """Capture once for all OCR workers to avoid competing screen grabs."""
-        while not self.stop_event.is_set():
-            if not self.config["paused"]:
-                try:
-                    image = capture_game()
-                    if image is not None:
-                        with self.frame_lock:
-                            self.latest_frame = image
-                            self.frame_number += 1
-                except Exception as exc:
-                    self.events.put(("status", f"Capture warning: {type(exc).__name__}"))
-            self.stop_event.wait(3.0)
+        capture = GameCapture()
+        try:
+            while not self.stop_event.is_set():
+                if not self.config["paused"]:
+                    try:
+                        image = capture.capture()
+                        if image is not None:
+                            with self.frame_lock:
+                                self.latest_frame = image
+                                self.frame_number += 1
+                    except Exception as exc:
+                        self.events.put(("status", f"Capture warning: {type(exc).__name__}"))
+                self.stop_event.wait(0.75)
+        finally:
+            capture.close()
 
     def _drain_events(self) -> None:
         try:

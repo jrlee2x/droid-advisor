@@ -6,9 +6,11 @@ import ctypes
 from ctypes import wintypes
 from dataclasses import dataclass
 import re
+import time
 from typing import Iterable
 
 from PIL import Image, ImageEnhance, ImageOps
+import numpy as np
 
 from .engine import ALL_DROIDS, canonical, match_droid
 
@@ -90,6 +92,102 @@ def read_region(
 CARD_BUTTONS = ("WORK", "SWAP", "LOUNGE", "CUSTOMIZE", "SELL")
 
 
+def _max_true_run(row: np.ndarray) -> int:
+    padded = np.pad(row.astype(np.int8), (1, 1))
+    changes = np.diff(padded)
+    starts = np.flatnonzero(changes == 1)
+    ends = np.flatnonzero(changes == -1)
+    return int((ends - starts).max()) if len(starts) else 0
+
+
+def _rows_with_run(mask: np.ndarray, run_length: int) -> np.ndarray:
+    """Vectorized test for rows containing a contiguous run of true pixels."""
+    if run_length <= 1:
+        return mask.any(axis=1)
+    cumulative = np.pad(np.cumsum(mask, axis=1, dtype=np.int32), ((0, 0), (1, 0)))
+    windows = cumulative[:, run_length:] - cumulative[:, :-run_length]
+    return (windows >= run_length).any(axis=1)
+
+
+def _probe_pixels(image: Image.Image) -> np.ndarray:
+    probe = image.copy()
+    probe.thumbnail((640, 360))
+    return np.asarray(probe.convert("RGB"))
+
+
+def card_visual_gate(image: Image.Image) -> bool:
+    """Detect the stable stack of yellow card controls without running OCR."""
+    pixels = _probe_pixels(image)
+    red, green, blue = pixels[..., 0], pixels[..., 1], pixels[..., 2]
+    yellow = (
+        (red > 170) & (green > 100) & (green < 235) &
+        (blue < 95) & ((red.astype(int) - blue.astype(int)) > 100)
+    )
+    minimum_run = int(pixels.shape[1] * 0.10)
+    active_rows = _rows_with_run(yellow, minimum_run)
+    padded = np.pad(active_rows.astype(np.int8), (1, 1))
+    changes = np.diff(padded)
+    starts = np.flatnonzero(changes == 1)
+    ends = np.flatnonzero(changes == -1)
+    bands = sum((end - start) >= 4 for start, end in zip(starts, ends))
+    return bool(bands >= 3)
+
+
+def rebirth_visual_gate(image: Image.Image) -> bool:
+    """Detect the bright green REBIRTH header in the top-left client area."""
+    pixels = _probe_pixels(image)
+    top = pixels[: max(1, int(pixels.shape[0] * 0.14)), : int(pixels.shape[1] * 0.33)]
+    red, green, blue = top[..., 0], top[..., 1], top[..., 2]
+    vivid_green = (
+        (green > 150) &
+        (green.astype(float) > red.astype(float) * 1.5) &
+        (green.astype(float) > blue.astype(float) * 1.3)
+    )
+    return float(vivid_green.mean()) >= 0.035
+
+
+def blueprint_visual_gate(image: Image.Image) -> bool:
+    """Detect the wide cyan held-blueprint prompt without reading its text."""
+    pixels = _probe_pixels(image)
+    lower = pixels[int(pixels.shape[0] * 0.38): int(pixels.shape[0] * 0.82)]
+    red, green, blue = lower[..., 0], lower[..., 1], lower[..., 2]
+    cyan = (red < 105) & (green > 125) & (blue > 140)
+    minimum_run = int(pixels.shape[1] * 0.18)
+    return bool(_rows_with_run(cyan, minimum_run).any())
+
+
+def visual_gates(image: Image.Image) -> tuple[bool, bool, bool]:
+    """Return card, Rebirth, and blueprint gates from one downsample pass."""
+    pixels = _probe_pixels(image)
+
+    red, green, blue = pixels[..., 0], pixels[..., 1], pixels[..., 2]
+    yellow = (
+        (red > 170) & (green > 100) & (green < 235) &
+        (blue < 95) & ((red.astype(int) - blue.astype(int)) > 100)
+    )
+    active_rows = _rows_with_run(yellow, int(pixels.shape[1] * 0.10))
+    padded = np.pad(active_rows.astype(np.int8), (1, 1))
+    changes = np.diff(padded)
+    starts = np.flatnonzero(changes == 1)
+    ends = np.flatnonzero(changes == -1)
+    card = sum((end - start) >= 4 for start, end in zip(starts, ends)) >= 3
+
+    top = pixels[: max(1, int(pixels.shape[0] * 0.14)), : int(pixels.shape[1] * 0.33)]
+    tr, tg, tb = top[..., 0], top[..., 1], top[..., 2]
+    vivid_green = (
+        (tg > 150) &
+        (tg.astype(float) > tr.astype(float) * 1.5) &
+        (tg.astype(float) > tb.astype(float) * 1.3)
+    )
+    rebirth = float(vivid_green.mean()) >= 0.035
+
+    lower = pixels[int(pixels.shape[0] * 0.38): int(pixels.shape[0] * 0.82)]
+    lr, lg, lb = lower[..., 0], lower[..., 1], lower[..., 2]
+    cyan = (lr < 105) & (lg > 125) & (lb > 140)
+    blueprint = _rows_with_run(cyan, int(pixels.shape[1] * 0.18)).any()
+    return bool(card), bool(rebirth), bool(blueprint)
+
+
 def is_card_button_text(text: str) -> bool:
     """Accept button labels while rejecting tooltip sentences containing a cue."""
     upper = text.strip().upper()
@@ -133,6 +231,36 @@ def capture_game() -> Image.Image | None:
     with mss() as camera:
         shot = camera.grab({"left": left, "top": top, "width": width, "height": height})
         return Image.frombytes("RGB", shot.size, shot.rgb)
+
+
+class GameCapture:
+    """Thread-owned persistent capture session with a briefly cached game rect."""
+
+    def __init__(self, rect_refresh_seconds: float = 2.0) -> None:
+        from mss import mss
+
+        self._camera = mss()
+        self._rect_refresh_seconds = rect_refresh_seconds
+        self._rect = None
+        self._rect_checked_at = 0.0
+
+    def capture(self) -> Image.Image | None:
+        now = time.monotonic()
+        if self._rect is None or now - self._rect_checked_at >= self._rect_refresh_seconds:
+            self._rect = game_window_rect()
+            self._rect_checked_at = now
+        if self._rect is None:
+            return None
+        left, top, width, height = self._rect
+        try:
+            shot = self._camera.grab({"left": left, "top": top, "width": width, "height": height})
+        except Exception:
+            self._rect = None
+            raise
+        return Image.frombytes("RGB", shot.size, shot.rgb)
+
+    def close(self) -> None:
+        self._camera.close()
 
 
 def panel_is_open(tokens: list[OcrToken], width: int, height: int) -> bool:
