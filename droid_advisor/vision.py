@@ -32,12 +32,12 @@ class OcrToken:
 
 
 class OfflineOcr:
-    def __init__(self) -> None:
+    def __init__(self, threads: int = 4) -> None:
         from rapidocr_onnxruntime import RapidOCR
 
         # Unrestricted ONNX defaults can consume every logical CPU and make a
         # full-screen scan block focused UI checks for more than a minute.
-        self._engine = RapidOCR(intra_op_num_threads=4, inter_op_num_threads=1)
+        self._engine = RapidOCR(intra_op_num_threads=threads, inter_op_num_threads=1)
 
     def read(self, image: Image.Image) -> list[OcrToken]:
         # Limiting width keeps continuous monitoring light on typical gaming PCs.

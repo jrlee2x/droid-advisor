@@ -90,6 +90,7 @@ class DroidAdvisorApp:
             "<ctrl>+<shift>+r": lambda: self.events.put(("requirements_toggle", None)),
         })
         self.worker = threading.Thread(target=self._monitor, name="droid-monitor", daemon=True)
+        self.rank_worker = threading.Thread(target=self._monitor_rebirth_rank, name="rebirth-rank-monitor", daemon=True)
         self.last_signature = None
         self.pending_signature = None
         self.pending_count = 0
@@ -346,18 +347,6 @@ class DroidAdvisorApp:
                 try:
                     image = capture_game()
                     if image is not None:
-                        header_height = max(1, int(image.height * 0.18))
-                        header_width = max(1, int(image.width * 0.48))
-                        rebirth_header_tokens = ocr.read(image.crop((0, 0, header_width, header_height)))
-                        if rebirth_header_is_open(rebirth_header_tokens):
-                            quick_rank = rebirth_rank(rebirth_header_tokens)
-                            if quick_rank:
-                                quick_completed = max(0, quick_rank - 1)
-                                if quick_completed != self.config["completed_rebirth"]:
-                                    self.config["completed_rebirth"] = quick_completed
-                                    save_config(self.config)
-                                    self.events.put(("cycle", (int(self.config["cycle"]), quick_completed)))
-                                    self.events.put(("overlay", (f"AUTO-DETECTED: WORKING ON RB{quick_rank}", "#235ea8", 4200)))
                         tokens = ocr.read(image)
                         found = visible_droids(tokens)
                         spawn = high_value_spawn(tokens, image.width, image.height) if self.config["spawn_alerts_enabled"] else None
@@ -442,6 +431,35 @@ class DroidAdvisorApp:
             elapsed = time.monotonic() - started
             self.stop_event.wait(max(0.15, float(self.config["interval_seconds"]) - elapsed))
 
+    def _monitor_rebirth_rank(self) -> None:
+        """Keep rank updates independent from potentially slow full-screen OCR."""
+        try:
+            ocr = OfflineOcr(threads=2)
+        except Exception as exc:
+            self.events.put(("status", f"Rank OCR unavailable: {type(exc).__name__}"))
+            return
+        while not self.stop_event.is_set():
+            started = time.monotonic()
+            if not self.config["paused"]:
+                try:
+                    image = capture_game()
+                    if image is not None:
+                        header = image.crop((0, 0, int(image.width * 0.48), int(image.height * 0.18)))
+                        tokens = ocr.read(header)
+                        if rebirth_header_is_open(tokens):
+                            rank = rebirth_rank(tokens)
+                            if rank:
+                                completed = max(0, rank - 1)
+                                if completed != self.config["completed_rebirth"]:
+                                    self.config["completed_rebirth"] = completed
+                                    save_config(self.config)
+                                    self.events.put(("cycle", (int(self.config["cycle"]), completed)))
+                                    self.events.put(("overlay", (f"AUTO-DETECTED: WORKING ON RB{rank}", "#235ea8", 4200)))
+                except Exception as exc:
+                    self.events.put(("status", f"Rank monitor warning: {type(exc).__name__}"))
+            elapsed = time.monotonic() - started
+            self.stop_event.wait(max(0.5, 2.0 - elapsed))
+
     def _drain_events(self) -> None:
         try:
             while True:
@@ -483,6 +501,7 @@ class DroidAdvisorApp:
         self.tray.run_detached()
         self.listener.start()
         self.worker.start()
+        self.rank_worker.start()
         self.root.after(100, self._drain_events)
         if self.config["automatic_updates"]:
             self.root.after(4000, self.check_updates)
