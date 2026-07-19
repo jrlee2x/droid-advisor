@@ -46,12 +46,12 @@ class OfflineOcr:
             det_limit_side_len=736,
         )
 
-    def read(self, image: Image.Image, max_width: int = 1400) -> list[OcrToken]:
+    def read(self, image: Image.Image, max_width: int = 1400, grayscale: bool = True) -> list[OcrToken]:
         # Limiting width keeps continuous monitoring light on typical gaming PCs.
         scale = min(1.0, max_width / image.width)
         if scale < 1:
             image = image.resize((int(image.width * scale), int(image.height * scale)))
-        prepared = ImageEnhance.Contrast(ImageOps.grayscale(image)).enhance(1.35)
+        prepared = ImageEnhance.Contrast(ImageOps.grayscale(image) if grayscale else image).enhance(1.35)
         # Droid Tycoon UI text is upright. Skipping the angle classifier avoids
         # another model pass, and max-side limiting prevents thin crops from
         # being enlarged into multi-million-pixel detector inputs.
@@ -75,10 +75,11 @@ def read_region(
     image: Image.Image,
     box: tuple[int, int, int, int],
     max_width: int = 1400,
+    grayscale: bool = True,
 ) -> list[OcrToken]:
     """OCR a crop and translate token boxes back to full-image coordinates."""
     left, top, right, bottom = box
-    tokens = ocr.read(image.crop(box), max_width=max_width)
+    tokens = ocr.read(image.crop(box), max_width=max_width, grayscale=grayscale)
     return [
         OcrToken(
             text=token.text,

@@ -67,6 +67,26 @@ def test_offline_ocr_uses_low_impact_runtime_settings(monkeypatch):
     assert calls["read"] == {"use_cls": False}
 
 
+def test_offline_ocr_can_preserve_notification_colors(monkeypatch):
+    import sys
+    import types
+    from PIL import Image
+
+    seen = {}
+
+    class FakeRapidOcr:
+        def __init__(self, **kwargs):
+            pass
+
+        def __call__(self, image, **kwargs):
+            seen["mode"] = image.mode
+            return None, None
+
+    monkeypatch.setitem(sys.modules, "rapidocr_onnxruntime", types.SimpleNamespace(RapidOCR=FakeRapidOcr))
+    OfflineOcr().read(Image.new("RGB", (100, 30)), grayscale=False)
+    assert seen["mode"] == "RGB"
+
+
 def test_visual_gates_reject_plain_gameplay_and_detect_target_chrome():
     from PIL import Image, ImageDraw
 
@@ -196,8 +216,9 @@ def test_focused_rebirth_header_requires_rebirth_and_rank():
 
 def test_region_ocr_translates_tokens_to_full_frame():
     class FakeOcr:
-        def read(self, _image, max_width=1400):
+        def read(self, _image, max_width=1400, grayscale=True):
             assert max_width == 900
+            assert grayscale is True
             return [_token("IG", 20, 30)]
 
     from PIL import Image

@@ -105,6 +105,7 @@ class DroidAdvisorApp:
         self.last_spawn_signature = None
         self.last_spawn_at = 0.0
         self.last_spawn_scan_at = 0.0
+        self.spawn_scan_count = 0
 
     def _build_settings(self) -> None:
         frame = ttk.Frame(self.root, padding=18)
@@ -404,13 +405,20 @@ class DroidAdvisorApp:
 
                         now = time.monotonic()
                         spawn = None
-                        if self.config["spawn_alerts_enabled"] and now - self.last_spawn_scan_at >= 1.0:
+                        if self.config["spawn_alerts_enabled"] and now - self.last_spawn_scan_at >= 0.65:
                             self.last_spawn_scan_at = now
+                            self.spawn_scan_count += 1
                             spawn_box = (
-                                0, int(image.height * 0.30),
-                                int(image.width * 0.58), int(image.height * 0.62),
+                                0, int(image.height * 0.34),
+                                int(image.width * 0.65), int(image.height * 0.56),
                             )
-                            spawn_tokens = read_region(ocr, image, spawn_box, max_width=900)
+                            spawn_tokens = read_region(
+                                ocr,
+                                image,
+                                spawn_box,
+                                max_width=1500,
+                                grayscale=self.spawn_scan_count % 2 == 0,
+                            )
                             spawn = high_value_spawn(spawn_tokens, image.width, image.height)
                         if spawn and (
                             spawn != self.last_spawn_signature or now - self.last_spawn_at >= 30.0
