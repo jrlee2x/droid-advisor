@@ -31,6 +31,7 @@ from .vision import (
     card_header_rect,
     panel_is_open,
     rebirth_rank,
+    rebirth_header_is_open,
     rebirth_view_is_open,
     high_value_spawn,
     selected_droid,
@@ -345,6 +346,18 @@ class DroidAdvisorApp:
                 try:
                     image = capture_game()
                     if image is not None:
+                        header_height = max(1, int(image.height * 0.18))
+                        header_width = max(1, int(image.width * 0.48))
+                        rebirth_header_tokens = ocr.read(image.crop((0, 0, header_width, header_height)))
+                        if rebirth_header_is_open(rebirth_header_tokens):
+                            quick_rank = rebirth_rank(rebirth_header_tokens)
+                            if quick_rank:
+                                quick_completed = max(0, quick_rank - 1)
+                                if quick_completed != self.config["completed_rebirth"]:
+                                    self.config["completed_rebirth"] = quick_completed
+                                    save_config(self.config)
+                                    self.events.put(("cycle", (int(self.config["cycle"]), quick_completed)))
+                                    self.events.put(("overlay", (f"AUTO-DETECTED: WORKING ON RB{quick_rank}", "#235ea8", 4200)))
                         tokens = ocr.read(image)
                         found = visible_droids(tokens)
                         spawn = high_value_spawn(tokens, image.width, image.height) if self.config["spawn_alerts_enabled"] else None

@@ -35,7 +35,9 @@ class OfflineOcr:
     def __init__(self) -> None:
         from rapidocr_onnxruntime import RapidOCR
 
-        self._engine = RapidOCR()
+        # Unrestricted ONNX defaults can consume every logical CPU and make a
+        # full-screen scan block focused UI checks for more than a minute.
+        self._engine = RapidOCR(intra_op_num_threads=4, inter_op_num_threads=1)
 
     def read(self, image: Image.Image) -> list[OcrToken]:
         # Limiting width keeps continuous monitoring light on typical gaming PCs.
@@ -148,6 +150,12 @@ def rebirth_view_is_open(tokens: list[OcrToken]) -> bool:
     """Require menu-language evidence before changing the configured cycle."""
     text = " ".join(token.text.upper() for token in tokens)
     return "REBIRTH" in text and any(cue in text for cue in ("RANK", "NEED", "DROID", "REQUIRED", "COST"))
+
+
+def rebirth_header_is_open(tokens: list[OcrToken]) -> bool:
+    """Recognize the focused top strip of the View Rebirth menu."""
+    text = " ".join(token.text.upper() for token in tokens)
+    return "REBIRTH" in text and "RANK" in text
 
 
 def blueprint_is_visible(tokens: list[OcrToken], width: int, height: int) -> bool:

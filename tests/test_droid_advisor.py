@@ -1,5 +1,5 @@
 from droid_advisor.engine import advise, canonical, detect_cycle, match_droid
-from droid_advisor.vision import OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, card_header_rect, high_value_spawn, is_card_button_text, panel_is_open, selected_droid
+from droid_advisor.vision import OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, card_header_rect, high_value_spawn, is_card_button_text, panel_is_open, rebirth_header_is_open, selected_droid
 from droid_advisor.inventory import InventoryLedger
 from droid_advisor.updater import parse_release, version_tuple
 
@@ -119,6 +119,11 @@ def test_tooltip_sentence_does_not_break_card_button_detection():
     ]
     assert is_card_button_text(tokens[-1].text) is False
     assert panel_is_open(tokens, 1000, 1000) is True
+
+
+def test_focused_rebirth_header_requires_rebirth_and_rank():
+    assert rebirth_header_is_open([_token("REBIRTH", 100, 50), _token("Rank 8", 300, 50)]) is True
+    assert rebirth_header_is_open([_token("Rank 8", 300, 50)]) is False
 
 
 def test_blueprint_finish_and_rarity_are_optional_context():
