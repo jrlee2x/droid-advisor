@@ -1,5 +1,5 @@
 #define MyAppName "Droid Advisor"
-#define MyAppVersion "0.5.9"
+#define MyAppVersion "0.6.0"
 #define MyAppPublisher "Droid Advisor Contributors"
 
 #define MyAppExeName "DroidAdvisor.exe"

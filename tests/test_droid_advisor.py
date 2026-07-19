@@ -1,5 +1,5 @@
 from droid_advisor.engine import advise, canonical, detect_cycle, match_droid
-from droid_advisor.vision import OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, card_header_rect, high_value_spawn, is_card_button_text, panel_is_open, read_region, rebirth_header_is_open, selected_droid
+from droid_advisor.vision import OfflineOcr, OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, card_header_rect, high_value_spawn, is_card_button_text, panel_is_open, read_region, rebirth_header_is_open, selected_droid
 from droid_advisor.inventory import InventoryLedger
 from droid_advisor.updater import parse_release, version_tuple
 
@@ -38,6 +38,33 @@ def test_bb9_is_not_shortened_to_bb():
 
 def _token(text, x, y):
     return OcrToken(text, 1.0, ((x - 5, y - 5), (x + 5, y - 5), (x + 5, y + 5), (x - 5, y + 5)))
+
+
+def test_offline_ocr_uses_low_impact_runtime_settings(monkeypatch):
+    import sys
+    import types
+
+    calls = {}
+
+    class FakeRapidOcr:
+        def __init__(self, **kwargs):
+            calls["init"] = kwargs
+
+        def __call__(self, image, **kwargs):
+            calls["read"] = kwargs
+            return None, None
+
+    monkeypatch.setitem(sys.modules, "rapidocr_onnxruntime", types.SimpleNamespace(RapidOCR=FakeRapidOcr))
+    ocr = OfflineOcr()
+    from PIL import Image
+    assert ocr.read(Image.new("RGB", (100, 30))) == []
+    assert calls["init"] == {
+        "intra_op_num_threads": 1,
+        "inter_op_num_threads": 1,
+        "det_limit_type": "max",
+        "det_limit_side_len": 736,
+    }
+    assert calls["read"] == {"use_cls": False}
 
 
 def test_panel_requires_aligned_vertical_card_controls():

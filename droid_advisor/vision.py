@@ -32,12 +32,17 @@ class OcrToken:
 
 
 class OfflineOcr:
-    def __init__(self, threads: int = 4) -> None:
+    def __init__(self, threads: int = 1) -> None:
         from rapidocr_onnxruntime import RapidOCR
 
         # Unrestricted ONNX defaults can consume every logical CPU and make a
         # full-screen scan block focused UI checks for more than a minute.
-        self._engine = RapidOCR(intra_op_num_threads=threads, inter_op_num_threads=1)
+        self._engine = RapidOCR(
+            intra_op_num_threads=threads,
+            inter_op_num_threads=1,
+            det_limit_type="max",
+            det_limit_side_len=736,
+        )
 
     def read(self, image: Image.Image, max_width: int = 1400) -> list[OcrToken]:
         # Limiting width keeps continuous monitoring light on typical gaming PCs.
@@ -45,7 +50,10 @@ class OfflineOcr:
         if scale < 1:
             image = image.resize((int(image.width * scale), int(image.height * scale)))
         prepared = ImageEnhance.Contrast(ImageOps.grayscale(image)).enhance(1.35)
-        result, _ = self._engine(prepared)
+        # Droid Tycoon UI text is upright. Skipping the angle classifier avoids
+        # another model pass, and max-side limiting prevents thin crops from
+        # being enlarged into multi-million-pixel detector inputs.
+        result, _ = self._engine(prepared, use_cls=False)
         if not result:
             return []
         inverse = 1 / scale

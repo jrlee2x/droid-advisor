@@ -28,6 +28,7 @@ from .vision import (
     blueprint_droid,
     blueprint_is_visible,
     capture_game,
+    game_window_rect,
     card_header_rect,
     panel_is_open,
     rebirth_rank,
@@ -93,7 +94,6 @@ class DroidAdvisorApp:
             "<ctrl>+<shift>+r": lambda: self.events.put(("requirements_toggle", None)),
         })
         self.worker = threading.Thread(target=self._monitor, name="droid-monitor", daemon=True)
-        self.rank_worker = threading.Thread(target=self._monitor_rebirth_rank, name="rebirth-rank-monitor", daemon=True)
         self.frame_worker = threading.Thread(target=self._capture_frames, name="game-frame-capture", daemon=True)
         self.last_signature = None
         self.pending_signature = None
@@ -102,6 +102,7 @@ class DroidAdvisorApp:
         self.pending_blueprint_signature = None
         self.pending_blueprint_count = 0
         self.last_spawn_signature = None
+        self.last_spawn_at = 0.0
 
     def _build_settings(self) -> None:
         frame = ttk.Frame(self.root, padding=18)
@@ -201,15 +202,17 @@ class DroidAdvisorApp:
         self.spawn_alert_label.configure(text=f"{quality} {rarity}\nAT THE SANDCRAWLER")
         self.spawn_alert.update_idletasks()
         width, height = self.spawn_alert.winfo_reqwidth(), self.spawn_alert.winfo_reqheight()
-        x = (self.spawn_alert.winfo_screenwidth() - width) // 2
-        y = int(self.spawn_alert.winfo_screenheight() * 0.16)
+        game_rect = game_window_rect()
+        if game_rect:
+            left, top, game_width, game_height = game_rect
+            x = left + (game_width - width) // 2
+            y = top + int(game_height * 0.16)
+        else:
+            x = (self.spawn_alert.winfo_screenwidth() - width) // 2
+            y = int(self.spawn_alert.winfo_screenheight() * 0.16)
         self.spawn_alert.geometry(f"+{x}+{y}")
         self.spawn_alert.deiconify()
-        colors = ("#b00020", "#ff7a00", "#6f00ff", "#d00000")
-        for index in range(12):
-            self.spawn_alert_jobs.append(
-                self.spawn_alert.after(index * 250, lambda c=colors[index % len(colors)]: self.spawn_alert_label.configure(bg=c))
-            )
+        self.spawn_alert_label.configure(bg="#b00020")
         self.spawn_alert_jobs.append(self.spawn_alert.after(5000, self.spawn_alert.withdraw))
 
     def _requirements_drag_start(self, event) -> None:
@@ -328,9 +331,14 @@ class DroidAdvisorApp:
         self.overlay.update_idletasks()
         width = self.overlay.winfo_reqwidth()
         height = self.overlay.winfo_reqheight()
-        x = (self.overlay.winfo_screenwidth() - width) // 2
-        # Place advice in the card gap below the droid name and above WORK.
-        y = int(self.overlay.winfo_screenheight() * y_ratio)
+        game_rect = game_window_rect()
+        if game_rect:
+            left, top, game_width, game_height = game_rect
+            x = left + (game_width - width) // 2
+            y = top + int(game_height * y_ratio)
+        else:
+            x = (self.overlay.winfo_screenwidth() - width) // 2
+            y = int(self.overlay.winfo_screenheight() * y_ratio)
         self.overlay.geometry(f"+{x}+{y}")
         self.overlay.deiconify()
         if self.overlay_after:
@@ -345,24 +353,54 @@ class DroidAdvisorApp:
             self.events.put(("status", "OCR unavailable"))
             return
 
+        last_frame_number = -1
         while not self.stop_event.is_set():
-            started = time.monotonic()
             if not self.config["paused"]:
                 try:
                     with self.frame_lock:
                         image = self.latest_frame
-                    if image is not None:
+                        frame_number = self.frame_number
+                    if image is not None and frame_number != last_frame_number:
+                        last_frame_number = frame_number
+                        # Rebirth gets first priority. It is narrow and, when
+                        # present, no card scan is useful on the same frame.
+                        header_box = (
+                            int(image.width * 0.07), int(image.height * 0.02),
+                            int(image.width * 0.28), int(image.height * 0.11),
+                        )
+                        header_tokens = read_region(ocr, image, header_box, max_width=736)
+                        if rebirth_header_is_open(header_tokens):
+                            rank = rebirth_rank(header_tokens)
+                            if rank:
+                                completed = max(0, rank - 1)
+                                requirements_box = (
+                                    int(image.width * 0.40), int(image.height * 0.64),
+                                    int(image.width * 0.64), int(image.height * 0.78),
+                                )
+                                requirement_tokens = read_region(ocr, image, requirements_box, max_width=736)
+                                cycle_match = detect_cycle(visible_droids(requirement_tokens))
+                                cycle = cycle_match[0] if cycle_match else int(self.config["cycle"])
+                                if completed != self.config["completed_rebirth"] or cycle != self.config["cycle"]:
+                                    self.config.update(cycle=cycle, completed_rebirth=completed)
+                                    save_config(self.config)
+                                    self.events.put(("cycle", (cycle, completed)))
+                                    self.events.put(("overlay", (f"AUTO-DETECTED RBC{cycle}: WORKING ON RB{rank}", "#235ea8", 8000)))
+                            self.stop_event.wait(0.20)
+                            continue
+
                         interaction_box = (
                             0, int(image.height * 0.22),
                             int(image.width * 0.85), int(image.height * 0.94),
                         )
                         tokens = read_region(ocr, image, interaction_box, max_width=1000)
                         spawn = high_value_spawn(tokens, image.width, image.height) if self.config["spawn_alerts_enabled"] else None
-                        if spawn and spawn != self.last_spawn_signature:
+                        now = time.monotonic()
+                        if spawn and (
+                            spawn != self.last_spawn_signature or now - self.last_spawn_at >= 30.0
+                        ):
                             self.last_spawn_signature = spawn
+                            self.last_spawn_at = now
                             self.events.put(("spawn_alert", spawn))
-                        elif not spawn:
-                            self.last_spawn_signature = None
                         blueprint_open = blueprint_is_visible(tokens, image.width, image.height)
                         if blueprint_open:
                             droid, confidence = selected_droid(tokens, image.width, image.height)
@@ -385,7 +423,7 @@ class DroidAdvisorApp:
                                 else:
                                     self.pending_blueprint_signature = signature
                                     self.pending_blueprint_count = 1
-                                if self.pending_blueprint_count >= 2 and signature != self.last_blueprint_signature:
+                                if self.pending_blueprint_count >= 1 and signature != self.last_blueprint_signature:
                                     self.last_blueprint_signature = signature
                                     labels = " ".join(value for value in (finish, rarity) if value)
                                     descriptor = f" ({labels})" if labels else ""
@@ -413,7 +451,7 @@ class DroidAdvisorApp:
                                 else:
                                     self.pending_signature = signature
                                     self.pending_count = 1
-                                if self.pending_count >= 2 and signature != self.last_signature:
+                                if self.pending_count >= 1 and signature != self.last_signature:
                                     self.last_signature = signature
                                     color = "#137a43" if decision.safe_to_sell else "#a8232e"
                                     self.events.put(("overlay", (f"{droid}: {decision.message}", color, 4500)))
@@ -423,7 +461,7 @@ class DroidAdvisorApp:
                             self.pending_count = 0
                 except Exception as exc:
                     self.events.put(("status", f"Monitor warning: {type(exc).__name__}"))
-            self.stop_event.wait(max(1.0, float(self.config["interval_seconds"])))
+            self.stop_event.wait(0.25)
 
     def _capture_frames(self) -> None:
         """Capture once for all OCR workers to avoid competing screen grabs."""
@@ -438,42 +476,6 @@ class DroidAdvisorApp:
                 except Exception as exc:
                     self.events.put(("status", f"Capture warning: {type(exc).__name__}"))
             self.stop_event.wait(3.0)
-
-    def _monitor_rebirth_rank(self) -> None:
-        """Keep rank updates independent from potentially slow full-screen OCR."""
-        try:
-            ocr = OfflineOcr(threads=2)
-        except Exception as exc:
-            self.events.put(("status", f"Rank OCR unavailable: {type(exc).__name__}"))
-            return
-        while not self.stop_event.is_set():
-            started = time.monotonic()
-            if not self.config["paused"]:
-                try:
-                    with self.frame_lock:
-                        image = self.latest_frame
-                    if image is not None:
-                        header = image.crop((0, 0, int(image.width * 0.48), int(image.height * 0.18)))
-                        tokens = ocr.read(header, max_width=1100)
-                        if rebirth_header_is_open(tokens):
-                            rank = rebirth_rank(tokens)
-                            if rank:
-                                completed = max(0, rank - 1)
-                                requirements_box = (
-                                    int(image.width * 0.40), int(image.height * 0.64),
-                                    int(image.width * 0.64), int(image.height * 0.78),
-                                )
-                                requirement_tokens = ocr.read(image.crop(requirements_box), max_width=900)
-                                cycle_match = detect_cycle(visible_droids(requirement_tokens))
-                                cycle = cycle_match[0] if cycle_match else int(self.config["cycle"])
-                                if completed != self.config["completed_rebirth"] or cycle != self.config["cycle"]:
-                                    self.config.update(cycle=cycle, completed_rebirth=completed)
-                                    save_config(self.config)
-                                    self.events.put(("cycle", (cycle, completed)))
-                                    self.events.put(("overlay", (f"AUTO-DETECTED RBC{cycle}: WORKING ON RB{rank}", "#235ea8", 4200)))
-                except Exception as exc:
-                    self.events.put(("status", f"Rank monitor warning: {type(exc).__name__}"))
-            self.stop_event.wait(2.0)
 
     def _drain_events(self) -> None:
         try:
@@ -517,7 +519,6 @@ class DroidAdvisorApp:
         self.listener.start()
         self.frame_worker.start()
         self.worker.start()
-        self.rank_worker.start()
         self.root.after(100, self._drain_events)
         if self.config["automatic_updates"]:
             self.root.after(4000, self.check_updates)
