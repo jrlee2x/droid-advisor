@@ -197,12 +197,17 @@ def is_card_button_text(text: str) -> bool:
 
 def game_window_rect(title_terms: Iterable[str] = ("fortnite", "droid tycoon")) -> tuple[int, int, int, int] | None:
     user32 = ctypes.windll.user32
+    user32.GetForegroundWindow.restype = wintypes.HWND
     matches: list[tuple[int, int, int, int]] = []
     terms = tuple(term.lower() for term in title_terms)
+    foreground = user32.GetForegroundWindow()
 
     @ctypes.WINFUNCTYPE(ctypes.c_bool, ctypes.c_void_p, ctypes.c_void_p)
     def callback(hwnd, _):
-        if not user32.IsWindowVisible(hwnd):
+        # MSS reads visible desktop pixels, not an obscured window's private
+        # back buffer. Scanning while another application covers Fortnite can
+        # therefore interpret browser or chat text as an in-game notification.
+        if hwnd != foreground or not user32.IsWindowVisible(hwnd) or user32.IsIconic(hwnd):
             return True
         length = user32.GetWindowTextLengthW(hwnd)
         if not length:
@@ -237,7 +242,7 @@ def capture_game() -> Image.Image | None:
 class GameCapture:
     """Thread-owned persistent capture session with a briefly cached game rect."""
 
-    def __init__(self, rect_refresh_seconds: float = 2.0) -> None:
+    def __init__(self, rect_refresh_seconds: float = 0.0) -> None:
         from mss import mss
 
         self._camera = mss()
@@ -247,6 +252,9 @@ class GameCapture:
 
     def capture(self) -> Image.Image | None:
         now = time.monotonic()
+        # Revalidate on every probe by default. This immediately suspends
+        # capture when Fortnite loses focus instead of scanning the window
+        # that is visibly covering it.
         if self._rect is None or now - self._rect_checked_at >= self._rect_refresh_seconds:
             self._rect = game_window_rect()
             self._rect_checked_at = now
