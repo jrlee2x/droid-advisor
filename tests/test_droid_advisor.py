@@ -128,6 +128,19 @@ def test_galactic_alert_survives_partial_ocr_notification():
     assert high_value_spawn(tokens, 1000, 1000) == ("GALACTIC", "DROID")
 
 
+def test_unrelated_mythic_text_cannot_override_galactic_rare():
+    tokens = [
+        _token("Galactic Droid (Rare) spawned at the Sandcrawler", 300, 500),
+        _token("MYTHIC", 500, 600),
+    ]
+    assert high_value_spawn(tokens, 1000, 1000) == ("GALACTIC", "RARE")
+
+
+def test_unrelated_rarity_is_not_guessed_for_partial_galactic_ocr():
+    tokens = [_token("Galactic Droid", 300, 500), _token("MYTHIC", 500, 600)]
+    assert high_value_spawn(tokens, 1000, 1000) == ("GALACTIC", "DROID")
+
+
 def test_panel_requires_aligned_vertical_card_controls():
     card = [_token("WORK", 500, 450), _token("SWAP", 505, 600), _token("LOUNGE", 510, 750)]
     assert panel_is_open(card, 1000, 1000) is True

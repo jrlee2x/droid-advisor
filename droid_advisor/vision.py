@@ -363,17 +363,36 @@ def blueprint_details(tokens: list[OcrToken]) -> tuple[str | None, str | None]:
 
 def high_value_spawn(tokens: list[OcrToken], width: int, height: int) -> tuple[str, str] | None:
     """Read strict high-value conveyor notifications from the left-side feed."""
-    relevant = []
+    relevant_tokens = []
     for token in tokens:
         cx, cy = token.center
         if cx <= 0.68 * width and 0.20 * height <= cy <= 0.82 * height:
-            relevant.append(token.text)
-    compact = canonical(" ".join(relevant)).replace("BESKER", "BESKAR")
-    if "GALACTICDROID" in compact:
-        rarity = next(
-            (value for value in ("MYTHIC", "LEGENDARY", "EPIC", "RARE", "COMMON") if value in compact),
-            "DROID",
+            relevant_tokens.append(token)
+    lines: list[list[OcrToken]] = []
+    for token in sorted(relevant_tokens, key=lambda item: (item.center[1], item.center[0])):
+        cy = token.center[1]
+        line = next(
+            (
+                candidate for candidate in lines
+                if abs(sum(item.center[1] for item in candidate) / len(candidate) - cy)
+                <= max(18.0, token.height * 1.5)
+            ),
+            None,
         )
+        if line is None:
+            lines.append([token])
+        else:
+            line.append(token)
+    line_texts = [
+        canonical(" ".join(item.text for item in sorted(line, key=lambda token: token.center[0])))
+        .replace("BESKER", "BESKAR")
+        for line in lines
+    ]
+    compact = canonical(" ".join(token.text for token in relevant_tokens)).replace("BESKER", "BESKAR")
+    if "GALACTICDROID" in compact:
+        galactic_line = next((line for line in line_texts if "GALACTICDROID" in line), "GALACTICDROID")
+        galactic = re.search(r"GALACTICDROID(COMMON|RARE|EPIC|LEGENDARY|MYTHIC)", galactic_line)
+        rarity = galactic.group(1) if galactic else "DROID"
         return "GALACTIC", rarity
     match = re.search(
         r"(DIAMOND|RAINBOW|BESKAR)DROID(COMMON|RARE|EPIC|LEGENDARY|MYTHIC)SPAWNED",
