@@ -124,7 +124,7 @@ def test_existing_finishes_still_require_legendary_or_mythic():
 
 
 def test_galactic_alert_survives_partial_ocr_notification():
-    tokens = [_token("Galactic Droid", 300, 500)]
+    tokens = [_token("Galactic Droid spawned at the Sandcrawler", 300, 500)]
     assert high_value_spawn(tokens, 1000, 1000) == ("GALACTIC", "DROID")
 
 
@@ -137,8 +137,21 @@ def test_unrelated_mythic_text_cannot_override_galactic_rare():
 
 
 def test_unrelated_rarity_is_not_guessed_for_partial_galactic_ocr():
-    tokens = [_token("Galactic Droid", 300, 500), _token("MYTHIC", 500, 600)]
+    tokens = [
+        _token("Galactic Droid spawned at the Sandcrawler", 300, 500),
+        _token("MYTHIC", 500, 600),
+    ]
     assert high_value_spawn(tokens, 1000, 1000) == ("GALACTIC", "DROID")
+
+
+def test_galactic_droid_card_is_not_a_spawn_notification():
+    tokens = [
+        _token("ID10", 300, 400),
+        _token("GALACTIC COMMON", 300, 450),
+        _token("GALACTIC DROID", 500, 500),
+        _token("AT THE SANDCRAWLER", 500, 560),
+    ]
+    assert high_value_spawn(tokens, 1000, 1000) is None
 
 
 def test_panel_requires_aligned_vertical_card_controls():

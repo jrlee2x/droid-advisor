@@ -405,7 +405,12 @@ class DroidAdvisorApp:
 
                         now = time.monotonic()
                         spawn = None
-                        if self.config["spawn_alerts_enabled"] and now - self.last_spawn_scan_at >= 0.65:
+                        if (
+                            self.config["spawn_alerts_enabled"]
+                            and not card_gate
+                            and not blueprint_gate
+                            and now - self.last_spawn_scan_at >= 0.65
+                        ):
                             self.last_spawn_scan_at = now
                             self.spawn_scan_count += 1
                             spawn_box = (

@@ -397,8 +397,14 @@ def high_value_spawn(tokens: list[OcrToken], width: int, height: int) -> tuple[s
         for line in lines
     ]
     compact = canonical(" ".join(token.text for token in relevant_tokens)).replace("BESKER", "BESKAR")
-    if "GALACTICDROID" in compact:
-        galactic_line = next((line for line in line_texts if "GALACTICDROID" in line), "GALACTICDROID")
+    galactic_line = next(
+        (
+            line for line in line_texts
+            if "GALACTICDROID" in line and ("SPAWN" in line or "SANDCRAWLER" in line)
+        ),
+        None,
+    )
+    if galactic_line:
         galactic = re.search(r"GALACTICDROID(COMMON|RARE|EPIC|LEGENDARY|MYTHIC)", galactic_line)
         rarity = galactic.group(1) if galactic else "DROID"
         return "GALACTIC", rarity
