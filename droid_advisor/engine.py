@@ -55,6 +55,15 @@ def advise(cycle: int, completed_rebirth: int, droid: str) -> Advice:
     )
 
 
+def safe_to_sell_droids(cycle: int, completed_rebirth: int) -> list[Advice]:
+    """Return every known droid with no remaining use in the selected cycle."""
+    return [
+        result
+        for name in ALL_DROIDS
+        if (result := advise(cycle, completed_rebirth, name)).safe_to_sell
+    ]
+
+
 def match_droid(text: str, threshold: float = 0.72) -> tuple[str | None, float]:
     normalized = canonical(text)
     exact = [name for name in ALL_DROIDS if canonical(name) == normalized]

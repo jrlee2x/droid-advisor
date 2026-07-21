@@ -1,4 +1,4 @@
-from droid_advisor.engine import advise, canonical, detect_cycle, match_droid
+from droid_advisor.engine import advise, canonical, detect_cycle, match_droid, safe_to_sell_droids
 from droid_advisor.vision import OfflineOcr, OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, blueprint_visual_gate, card_header_rect, card_visual_gate, high_value_spawn, is_card_button_text, panel_is_open, read_region, rebirth_header_is_open, rebirth_visual_gate, selected_droid
 from droid_advisor.inventory import InventoryLedger
 from droid_advisor.updater import parse_release, version_tuple
@@ -16,6 +16,13 @@ def test_rbc2_proto_roller_is_not_needed_after_rb22():
     assert result.safe_to_sell is True
     assert result.last_needed == 22
     assert result.message == "SAFE TO SELL: LAST NEEDED AT RB22"
+
+
+def test_safe_to_sell_list_uses_current_cycle_and_completed_level():
+    results = {result.droid: result for result in safe_to_sell_droids(2, 22)}
+    assert results["PROTO-ROLLER"].last_needed == 22
+    assert "OPTI-STRK" not in results
+    assert results["A-LT"].last_needed is None
 
 
 def test_spelling_variants_are_canonicalized():

@@ -20,7 +20,7 @@ from pynput import keyboard
 
 from . import __version__
 from .cycles import CYCLES
-from .engine import advise, detect_cycle
+from .engine import advise, detect_cycle, safe_to_sell_droids
 from .updater import check_for_update, download_update, launch_installer
 from .vision import (
     OfflineOcr,
@@ -88,11 +88,13 @@ class DroidAdvisorApp:
         self._build_settings()
         self._build_overlay()
         self._build_requirements_overlay()
+        self._build_sell_list_overlay()
         self._build_spawn_alert()
         self.tray = pystray.Icon("droid-advisor", self._tray_image(), "Droid Advisor", self._tray_menu())
         self.listener = keyboard.GlobalHotKeys({
             "<ctrl>+<shift>+d": self.toggle_pause,
             "<ctrl>+<shift>+r": lambda: self.events.put(("requirements_toggle", None)),
+            "<ctrl>+<shift>+s": lambda: self.events.put(("sell_list_toggle", None)),
         })
         self.worker = threading.Thread(target=self._monitor, name="droid-monitor", daemon=True)
         self.frame_worker = threading.Thread(target=self._capture_frames, name="game-frame-capture", daemon=True)
@@ -144,7 +146,7 @@ class DroidAdvisorApp:
             value=f"{initial_state} | RBC{self.config['cycle']}, working on RB{int(self.config['completed_rebirth']) + 1}"
         )
         ttk.Label(frame, textvariable=self.status_var, font=("Segoe UI", 11, "bold")).pack(anchor="w", pady=(16, 2))
-        ttk.Label(frame, text="Ctrl+Shift+D pauses/resumes monitoring. Ctrl+Shift+R toggles targets.\nCycle and level update automatically from View Rebirth when uniquely matched.").pack(anchor="w")
+        ttk.Label(frame, text="Ctrl+Shift+D pauses/resumes. Ctrl+Shift+R toggles targets. Ctrl+Shift+S shows safe-to-sell droids.\nCycle and level update automatically from View Rebirth when uniquely matched.").pack(anchor="w")
 
     def _build_overlay(self) -> None:
         self.overlay = tk.Toplevel(self.root)
@@ -194,6 +196,68 @@ class DroidAdvisorApp:
         )
         self.spawn_alert_label.pack()
         self.spawn_alert_jobs = []
+
+    def _build_sell_list_overlay(self) -> None:
+        self.sell_list_overlay = tk.Toplevel(self.root)
+        self.sell_list_overlay.withdraw()
+        self.sell_list_overlay.overrideredirect(True)
+        self.sell_list_overlay.attributes("-topmost", True)
+        self.sell_list_overlay.attributes("-alpha", 0.97)
+        self.sell_list_frame = tk.Frame(self.sell_list_overlay, bg="#111820", bd=3, relief="solid")
+        self.sell_list_frame.pack(fill="both", expand=True)
+        self.sell_list_overlay.bind("<Escape>", lambda _event: self.sell_list_overlay.withdraw())
+
+    def render_sell_list_overlay(self) -> None:
+        for child in self.sell_list_frame.winfo_children():
+            child.destroy()
+        cycle = int(self.config["cycle"])
+        completed = int(self.config["completed_rebirth"])
+        results = safe_to_sell_droids(cycle, completed)
+        header = tk.Frame(self.sell_list_frame, bg="#111820")
+        header.grid(row=0, column=0, columnspan=3, sticky="ew")
+        tk.Label(
+            header, text=f"SAFE TO SELL  |  RBC{cycle}  |  {completed} COMPLETE",
+            bg="#111820", fg="#72f2a0", font=("Segoe UI", 13, "bold"), padx=14, pady=10,
+        ).pack(side="left")
+        tk.Button(
+            header, text="X", command=self.sell_list_overlay.withdraw,
+            bg="#a8232e", fg="white", activebackground="#c92b39", relief="flat",
+            font=("Segoe UI", 10, "bold"), padx=10,
+        ).pack(side="right", padx=8, pady=7)
+        per_column = max(1, (len(results) + 2) // 3)
+        for index, result in enumerate(results):
+            column = index // per_column
+            row = index % per_column + 1
+            detail = f"last RB{result.last_needed}" if result.last_needed else "not used"
+            tk.Label(
+                self.sell_list_frame, text=f"{result.droid}  ({detail})",
+                bg="#19232d" if row % 2 else "#141c24", fg="white",
+                anchor="w", width=28, padx=9, pady=3, font=("Segoe UI", 9),
+            ).grid(row=row, column=column, sticky="ew", padx=2, pady=1)
+        tk.Label(
+            self.sell_list_frame,
+            text="No remaining rebirth use in this RBC. Higher-quality duplicates are still your choice.  |  Ctrl+Shift+S or Esc to close",
+            bg="#111820", fg="#aebdca", font=("Segoe UI", 8), padx=12, pady=8,
+        ).grid(row=per_column + 1, column=0, columnspan=3, sticky="ew")
+
+    def toggle_sell_list_overlay(self) -> None:
+        if self.sell_list_overlay.state() != "withdrawn":
+            self.sell_list_overlay.withdraw()
+            return
+        self.render_sell_list_overlay()
+        self.sell_list_overlay.update_idletasks()
+        game_rect = game_window_rect()
+        if game_rect:
+            left, top, width, height = game_rect
+            x = left + max(10, (width - self.sell_list_overlay.winfo_reqwidth()) // 2)
+            y = top + max(10, (height - self.sell_list_overlay.winfo_reqheight()) // 2)
+        else:
+            x = max(10, (self.sell_list_overlay.winfo_screenwidth() - self.sell_list_overlay.winfo_reqwidth()) // 2)
+            y = max(10, (self.sell_list_overlay.winfo_screenheight() - self.sell_list_overlay.winfo_reqheight()) // 2)
+        self.sell_list_overlay.geometry(f"+{x}+{y}")
+        self.sell_list_overlay.deiconify()
+        self.sell_list_overlay.lift()
+        self.sell_list_overlay.focus_force()
 
     def show_spawn_alert(self, quality: str, rarity: str) -> None:
         for job in self.spawn_alert_jobs:
@@ -297,6 +361,7 @@ class DroidAdvisorApp:
         return pystray.Menu(
             pystray.MenuItem("Pause / Resume", lambda: self.toggle_pause()),
             pystray.MenuItem("Show / Hide rebirth targets", lambda: self.events.put(("requirements_toggle", None))),
+            pystray.MenuItem("Show / Hide safe-to-sell list", lambda: self.events.put(("sell_list_toggle", None))),
             pystray.MenuItem("Settings", lambda: self.events.put(("settings", None))),
             pystray.MenuItem("Exit", lambda: self.events.put(("exit", None))),
         )
@@ -527,6 +592,8 @@ class DroidAdvisorApp:
                     self.render_requirements_overlay()
                 elif kind == "requirements_toggle":
                     self.toggle_requirements_overlay()
+                elif kind == "sell_list_toggle":
+                    self.toggle_sell_list_overlay()
                 elif kind == "spawn_alert":
                     self.show_spawn_alert(*payload)
                 elif kind == "settings":

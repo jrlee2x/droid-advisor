@@ -11,6 +11,7 @@ This project is alpha software under active development. The current public feat
 - Keep or sell guidance for opened droid cards.
 - Held-blueprint recognition.
 - Optional high-value Sandcrawler spawn alerts.
+- A `Ctrl+Shift+S` overlay listing every known droid with no remaining use in the current cycle.
 - A tested inventory data layer. The inventory user interface and automatic build, sale, and reset reconciliation are still in progress.
 
 ## Privacy and behavior
