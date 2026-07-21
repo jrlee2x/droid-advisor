@@ -36,8 +36,20 @@ def test_unique_view_rebirth_triple_detects_cycle_and_level():
     assert detect_cycle({"LEP", "LOADLIFTER", "MO-TRAK"}) == (2, 27)
 
 
-def test_rbc4_rb21_names_match_thumbnail_order():
-    assert CYCLES[4][20] == ("AMP WALKER", "GROUNDMECH", "HAUL-R")
+def test_rebirth_names_match_audited_thumbnail_order():
+    expected_rows = {
+        (1, 1): ("PIT", "CB", "DRK-1 PROBE"),
+        (1, 2): ("BDX EXPLORER", "BAL-CORE", "2BB"),
+        (2, 9): ("NAV-EX", "AMP WALKER", "STRIKE-ORB"),
+        (3, 16): ("B2-RP", "AMP WALKER", "MECHA-DROID"),
+        (4, 2): ("2BB", "R3", "SENATE HOVERCAM"),
+        (4, 12): ("TRAK-R", "GROUNDMECH", "BAL-CORE"),
+        (4, 21): ("AMP WALKER", "GROUNDMECH", "HAUL-R"),
+        (4, 22): ("GUNRUNNER", "STRIKE-ORB", "B2 SUPER"),
+        (4, 23): ("MONO-WLKR", "B2-RP", "CYCLO-GRAV"),
+    }
+    for (cycle, rebirth), expected in expected_rows.items():
+        assert CYCLES[cycle][rebirth - 1] == expected
 
 
 def test_ambiguous_triple_does_not_change_cycle():
