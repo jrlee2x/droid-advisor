@@ -94,7 +94,7 @@ class DroidAdvisorApp:
         self.listener = keyboard.GlobalHotKeys({
             "<ctrl>+<shift>+d": self.toggle_pause,
             "<ctrl>+<shift>+r": lambda: self.events.put(("requirements_toggle", None)),
-            "<ctrl>+<shift>+s": lambda: self.events.put(("sell_list_toggle", None)),
+            "<ctrl>+<shift>+z": lambda: self.events.put(("sell_list_toggle", None)),
         })
         self.worker = threading.Thread(target=self._monitor, name="droid-monitor", daemon=True)
         self.frame_worker = threading.Thread(target=self._capture_frames, name="game-frame-capture", daemon=True)
@@ -146,7 +146,7 @@ class DroidAdvisorApp:
             value=f"{initial_state} | RBC{self.config['cycle']}, working on RB{int(self.config['completed_rebirth']) + 1}"
         )
         ttk.Label(frame, textvariable=self.status_var, font=("Segoe UI", 11, "bold")).pack(anchor="w", pady=(16, 2))
-        ttk.Label(frame, text="Ctrl+Shift+D pauses/resumes. Ctrl+Shift+R toggles targets. Ctrl+Shift+S shows safe-to-sell droids.\nCycle and level update automatically from View Rebirth when uniquely matched.").pack(anchor="w")
+        ttk.Label(frame, text="Ctrl+Shift+D pauses/resumes. Ctrl+Shift+R toggles targets. Ctrl+Shift+Z shows safe-to-sell droids.\nCycle and level update automatically from View Rebirth when uniquely matched.").pack(anchor="w")
 
     def _build_overlay(self) -> None:
         self.overlay = tk.Toplevel(self.root)
@@ -205,7 +205,6 @@ class DroidAdvisorApp:
         self.sell_list_overlay.attributes("-alpha", 0.97)
         self.sell_list_frame = tk.Frame(self.sell_list_overlay, bg="#111820", bd=3, relief="solid")
         self.sell_list_frame.pack(fill="both", expand=True)
-        self.sell_list_overlay.bind("<Escape>", lambda _event: self.sell_list_overlay.withdraw())
 
     def render_sell_list_overlay(self) -> None:
         for child in self.sell_list_frame.winfo_children():
@@ -236,7 +235,7 @@ class DroidAdvisorApp:
             ).grid(row=row, column=column, sticky="ew", padx=2, pady=1)
         tk.Label(
             self.sell_list_frame,
-            text="Previously required in this RBC, with no remaining rebirth use.  |  Ctrl+Shift+S or Esc to close",
+            text="Previously required in this RBC, with no remaining rebirth use.  |  Ctrl+Shift+Z or X to close",
             bg="#111820", fg="#aebdca", font=("Segoe UI", 8), padx=12, pady=8,
         ).grid(row=per_column + 1, column=0, columnspan=3, sticky="ew")
 
@@ -314,11 +313,18 @@ class DroidAdvisorApp:
         self.requirements_photos.clear()
         cycle = int(self.config["cycle"])
         completed = int(self.config["completed_rebirth"])
+        header = tk.Frame(self.requirements_frame, bg="#111820")
+        header.grid(row=0, column=0, columnspan=4, sticky="ew")
         tk.Label(
-            self.requirements_frame,
+            header,
             text=f"REBIRTH TARGETS  •  RBC{cycle}  •  {completed} COMPLETE",
             bg="#111820", fg="#72f2a0", font=("Segoe UI", 9, "bold"), padx=8, pady=5,
-        ).grid(row=0, column=0, columnspan=4, sticky="ew")
+        ).pack(side="left", fill="x", expand=True)
+        tk.Button(
+            header, text="X", command=self.toggle_requirements_overlay,
+            bg="#a8232e", fg="white", activebackground="#c92b39", relief="flat",
+            font=("Segoe UI", 8, "bold"), padx=7,
+        ).pack(side="right", padx=4, pady=3)
         for row_index, (row_cycle, rb, row_label) in enumerate(self._display_rebirths(), start=1):
             tk.Label(
                 self.requirements_frame, text=f"{row_label}\nRBC{row_cycle}\nRB{rb}",
