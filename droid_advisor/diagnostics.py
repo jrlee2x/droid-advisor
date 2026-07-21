@@ -3,11 +3,58 @@
 from __future__ import annotations
 
 from collections import deque
+import ctypes
 from datetime import datetime
 import platform
 import threading
 import time
 from typing import Iterable
+
+
+def copy_text_to_clipboard(text: str) -> None:
+    """Place Unicode text on the Windows clipboard without temporary files."""
+    user32 = ctypes.windll.user32
+    kernel32 = ctypes.windll.kernel32
+    kernel32.GlobalAlloc.argtypes = (ctypes.c_uint, ctypes.c_size_t)
+    kernel32.GlobalAlloc.restype = ctypes.c_void_p
+    kernel32.GlobalLock.argtypes = (ctypes.c_void_p,)
+    kernel32.GlobalLock.restype = ctypes.c_void_p
+    kernel32.GlobalUnlock.argtypes = (ctypes.c_void_p,)
+    kernel32.GlobalFree.argtypes = (ctypes.c_void_p,)
+    kernel32.GlobalFree.restype = ctypes.c_void_p
+    user32.SetClipboardData.argtypes = (ctypes.c_uint, ctypes.c_void_p)
+    user32.SetClipboardData.restype = ctypes.c_void_p
+    opened = False
+    for _ in range(20):
+        if user32.OpenClipboard(None):
+            opened = True
+            break
+        time.sleep(0.025)
+    if not opened:
+        raise OSError("Windows clipboard is busy")
+    handle = None
+    transferred = False
+    try:
+        if not user32.EmptyClipboard():
+            raise OSError("Could not clear Windows clipboard")
+        data = (text + "\0").encode("utf-16-le")
+        handle = kernel32.GlobalAlloc(0x0042, len(data))  # GMEM_MOVEABLE | GMEM_ZEROINIT
+        if not handle:
+            raise MemoryError("Could not allocate clipboard memory")
+        pointer = kernel32.GlobalLock(handle)
+        if not pointer:
+            raise OSError("Could not lock clipboard memory")
+        try:
+            ctypes.memmove(pointer, data, len(data))
+        finally:
+            kernel32.GlobalUnlock(handle)
+        if not user32.SetClipboardData(13, handle):  # CF_UNICODETEXT
+            raise OSError("Could not place diagnostic report on clipboard")
+        transferred = True
+    finally:
+        user32.CloseClipboard()
+        if handle and not transferred:
+            kernel32.GlobalFree(handle)
 
 
 class DiagnosticBuffer:

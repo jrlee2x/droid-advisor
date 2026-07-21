@@ -22,7 +22,7 @@ from pynput import keyboard
 
 from . import __version__
 from .cycles import CYCLES
-from .diagnostics import DiagnosticBuffer
+from .diagnostics import DiagnosticBuffer, copy_text_to_clipboard
 from .engine import advise, detect_cycle, safe_to_sell_droids
 from .updater import check_for_update, download_update, launch_installer
 from .vision import (
@@ -100,6 +100,7 @@ class DroidAdvisorApp:
             "<ctrl>+<shift>+d": self.toggle_pause,
             "<ctrl>+<shift>+r": lambda: self.events.put(("requirements_toggle", None)),
             "<ctrl>+<shift>+z": lambda: self.events.put(("sell_list_toggle", None)),
+            "<ctrl>+<shift>+l": lambda: self.events.put(("diagnostics_copy", None)),
         })
         self.worker = threading.Thread(target=self._monitor, name="droid-monitor", daemon=True)
         self.frame_worker = threading.Thread(target=self._capture_frames, name="game-frame-capture", daemon=True)
@@ -151,7 +152,7 @@ class DroidAdvisorApp:
             value=f"{initial_state} | RBC{self.config['cycle']}, working on RB{int(self.config['completed_rebirth']) + 1}"
         )
         ttk.Label(frame, textvariable=self.status_var, font=("Segoe UI", 11, "bold")).pack(anchor="w", pady=(16, 2))
-        ttk.Label(frame, text="Ctrl+Shift+D pauses/resumes. Ctrl+Shift+R toggles targets. Ctrl+Shift+Z shows safe-to-sell droids.\nCycle and level update automatically from View Rebirth when uniquely matched.").pack(anchor="w")
+        ttk.Label(frame, text="Ctrl+Shift+D pauses/resumes. Ctrl+Shift+R toggles targets. Ctrl+Shift+Z shows safe-to-sell droids.\nCtrl+Shift+L copies diagnostics. Cycle and level update from View Rebirth.").pack(anchor="w")
 
     def _build_overlay(self) -> None:
         self.overlay = tk.Toplevel(self.root)
@@ -684,12 +685,18 @@ class DroidAdvisorApp:
         self.root.after(100, self._drain_events)
 
     def copy_diagnostic_report(self) -> None:
-        report = self.diagnostics.report(__version__, self.config, game_window_rect())
-        self.root.clipboard_clear()
-        self.root.clipboard_append(report)
-        self.root.update_idletasks()
-        self.status_var.set("Diagnostic report copied to clipboard")
-        self.show_overlay("DIAGNOSTIC REPORT COPIED", "#235ea8", 2200)
+        try:
+            report = self.diagnostics.report(__version__, self.config, game_window_rect())
+            copy_text_to_clipboard(report)
+            self.diagnostics.record(f"Diagnostic report copied ({len(report)} characters)")
+            self.status_var.set("Diagnostic report copied to clipboard")
+            self.show_overlay("DIAGNOSTIC REPORT COPIED", "#235ea8", 2200)
+        except Exception as exc:
+            detail = f"{type(exc).__name__}: {exc}"
+            self.diagnostics.set(last_error=detail, last_traceback=traceback.format_exc(limit=8).strip())
+            self.diagnostics.record(f"Diagnostic copy failed: {detail}")
+            self.status_var.set(f"Diagnostic copy failed: {exc}")
+            self.show_overlay("DIAGNOSTIC COPY FAILED", "#b4232f", 5000)
 
     def shutdown(self) -> None:
         self.stop_event.set()

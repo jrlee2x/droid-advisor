@@ -16,7 +16,7 @@ This project is alpha software under active development. The current public feat
 
 ## Diagnostics
 
-The system-tray menu includes **Copy diagnostic report**. The report is generated from a bounded in-memory buffer and can be pasted into Discord or a GitHub issue. It includes runtime state, visual-gate results, OCR timing, and trapped exception details. It does not include screenshots and is not uploaded automatically.
+The system-tray menu includes **Copy diagnostic report**. The same command is available with `Ctrl+Shift+L`. The report is generated from a bounded in-memory buffer and can be pasted into Discord or a GitHub issue. It includes runtime state, visual-gate results, OCR timing, and trapped exception details. It does not include screenshots and is not uploaded automatically.
 
 For recognition problems, choose **Enable detailed diagnostics (2 minutes)**, reproduce the problem, then choose **Copy diagnostic report** before the two minutes expire. Detailed mode temporarily includes OCR text from the advisor's target regions. The samples are removed from memory when detailed mode expires. No diagnostic file is written to disk.
 
