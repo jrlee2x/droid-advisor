@@ -22,7 +22,7 @@ def test_safe_to_sell_list_uses_current_cycle_and_completed_level():
     results = {result.droid: result for result in safe_to_sell_droids(2, 22)}
     assert results["PROTO-ROLLER"].last_needed == 22
     assert "OPTI-STRK" not in results
-    assert results["A-LT"].last_needed is None
+    assert "A-LT" not in results
 
 
 def test_spelling_variants_are_canonicalized():

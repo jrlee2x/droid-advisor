@@ -228,7 +228,7 @@ class DroidAdvisorApp:
         for index, result in enumerate(results):
             column = index // per_column
             row = index % per_column + 1
-            detail = f"last RB{result.last_needed}" if result.last_needed else "not used"
+            detail = f"last RB{result.last_needed}"
             tk.Label(
                 self.sell_list_frame, text=f"{result.droid}  ({detail})",
                 bg="#19232d" if row % 2 else "#141c24", fg="white",
@@ -236,7 +236,7 @@ class DroidAdvisorApp:
             ).grid(row=row, column=column, sticky="ew", padx=2, pady=1)
         tk.Label(
             self.sell_list_frame,
-            text="No remaining rebirth use in this RBC. Higher-quality duplicates are still your choice.  |  Ctrl+Shift+S or Esc to close",
+            text="Previously required in this RBC, with no remaining rebirth use.  |  Ctrl+Shift+S or Esc to close",
             bg="#111820", fg="#aebdca", font=("Segoe UI", 8), padx=12, pady=8,
         ).grid(row=per_column + 1, column=0, columnspan=3, sticky="ew")
 

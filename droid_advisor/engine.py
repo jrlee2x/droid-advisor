@@ -56,11 +56,15 @@ def advise(cycle: int, completed_rebirth: int, droid: str) -> Advice:
 
 
 def safe_to_sell_droids(cycle: int, completed_rebirth: int) -> list[Advice]:
-    """Return every known droid with no remaining use in the selected cycle."""
+    """Return previously required droids with no remaining use in this cycle."""
     return [
         result
         for name in ALL_DROIDS
-        if (result := advise(cycle, completed_rebirth, name)).safe_to_sell
+        if (
+            (result := advise(cycle, completed_rebirth, name)).safe_to_sell
+            and result.last_needed is not None
+            and result.last_needed <= completed_rebirth
+        )
     ]
 
 
