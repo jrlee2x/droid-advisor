@@ -60,10 +60,9 @@ CYCLES = {
         ("B2 HEAVY", "B2 SUPER", "B2-RP"), ("UTIL-TEC", "BB9", "R7"),
         ("OPTI-STRK", "CYCLO-GRAV", "MECHA-DROID"), ("B2-RP", "BB9", "R7"),
         ("MECHA-DROID", "R7", "B2-RP"), ("MONO-WLKR", "OPTI-STRK", "CYCLO-GRAV"),
-        ("HAUL-R", "GROUNDMECH", "AMP WALKER"), ("B2 SUPER", "STRIKE-ORB", "GUNRUNNER"),
+        ("AMP WALKER", "GROUNDMECH", "HAUL-R"), ("B2 SUPER", "STRIKE-ORB", "GUNRUNNER"),
         ("MONO-WLKR", "CYCLO-GRAV", "B2-RP"), ("MECHA-DROID", "PROTO-ROLLER", "MO-TRAK"),
         ("OPTI-STRK", "TRI-TEK", "DRFT-R"), ("CYCLENS", "LEP", "MO-TRAK"),
         ("RIC-1200", "SNOW MOUSE", "LOADLIFTER"),
     ],
 }
-

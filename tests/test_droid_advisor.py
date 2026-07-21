@@ -2,6 +2,7 @@ from droid_advisor.engine import advise, canonical, detect_cycle, match_droid, s
 from droid_advisor.vision import OfflineOcr, OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, blueprint_visual_gate, card_header_rect, card_visual_gate, high_value_spawn, is_card_button_text, panel_is_open, read_region, rebirth_header_is_open, rebirth_visual_gate, selected_droid
 from droid_advisor.inventory import InventoryLedger
 from droid_advisor.updater import parse_release, version_tuple
+from droid_advisor.cycles import CYCLES
 
 
 def test_proto_roller_at_completed_22_varies_by_cycle():
@@ -33,6 +34,10 @@ def test_spelling_variants_are_canonicalized():
 def test_unique_view_rebirth_triple_detects_cycle_and_level():
     assert detect_cycle({"KX", "TRI-TEK", "SNOW MOUSE"}) == (1, 27)
     assert detect_cycle({"LEP", "LOADLIFTER", "MO-TRAK"}) == (2, 27)
+
+
+def test_rbc4_rb21_names_match_thumbnail_order():
+    assert CYCLES[4][20] == ("AMP WALKER", "GROUNDMECH", "HAUL-R")
 
 
 def test_ambiguous_triple_does_not_change_cycle():
