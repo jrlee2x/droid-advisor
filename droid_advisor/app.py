@@ -6,11 +6,13 @@ import json
 import os
 import ctypes
 from ctypes import wintypes
+from datetime import datetime
 from pathlib import Path
 import queue
 import sys
 import threading
 import time
+import traceback
 import tkinter as tk
 from tkinter import messagebox, ttk
 
@@ -20,6 +22,7 @@ from pynput import keyboard
 
 from . import __version__
 from .cycles import CYCLES
+from .diagnostics import DiagnosticBuffer
 from .engine import advise, detect_cycle, safe_to_sell_droids
 from .updater import check_for_update, download_update, launch_installer
 from .vision import (
@@ -76,6 +79,8 @@ def save_config(config: dict) -> None:
 class DroidAdvisorApp:
     def __init__(self) -> None:
         self.config = load_config()
+        self.diagnostics = DiagnosticBuffer()
+        self.diagnostics.record(f"Droid Advisor v{__version__} started")
         self.events: queue.Queue[tuple[str, object]] = queue.Queue()
         self.stop_event = threading.Event()
         self.frame_lock = threading.Lock()
@@ -368,6 +373,8 @@ class DroidAdvisorApp:
             pystray.MenuItem("Pause / Resume", lambda: self.toggle_pause()),
             pystray.MenuItem("Show / Hide rebirth targets", lambda: self.events.put(("requirements_toggle", None))),
             pystray.MenuItem("Show / Hide safe-to-sell list", lambda: self.events.put(("sell_list_toggle", None))),
+            pystray.MenuItem("Copy diagnostic report", lambda: self.events.put(("diagnostics_copy", None))),
+            pystray.MenuItem("Enable detailed diagnostics (2 minutes)", lambda: self.events.put(("diagnostics_detailed", None))),
             pystray.MenuItem("Settings", lambda: self.events.put(("settings", None))),
             pystray.MenuItem("Exit", lambda: self.events.put(("exit", None))),
         )
@@ -389,6 +396,7 @@ class DroidAdvisorApp:
 
     def toggle_pause(self) -> None:
         self.config["paused"] = not bool(self.config["paused"])
+        self.diagnostics.record("Monitoring paused" if self.config["paused"] else "Monitoring resumed")
         save_config(self.config)
         self.events.put(("status", "Paused" if self.config["paused"] else "Monitoring"))
         self.events.put(("overlay", ("PAUSED" if self.config["paused"] else "MONITORING", "#59636e", 1400)))
@@ -422,7 +430,11 @@ class DroidAdvisorApp:
     def _monitor(self) -> None:
         try:
             ocr = OfflineOcr()
+            self.diagnostics.set(ocr_initialized=True)
+            self.diagnostics.record("Offline OCR initialized")
         except Exception as exc:
+            self.diagnostics.set(ocr_initialized=False, last_error=f"{type(exc).__name__}: {exc}")
+            self.diagnostics.record(f"OCR initialization failed: {type(exc).__name__}: {exc}")
             self.events.put(("overlay", (f"OCR FAILED: {exc}", "#b4232f", 8000)))
             self.events.put(("status", "OCR unavailable"))
             return
@@ -443,12 +455,27 @@ class DroidAdvisorApp:
                             int(image.width * 0.28), int(image.height * 0.11),
                         )
                         card_gate, rebirth_gate, blueprint_gate = visual_gates(image)
+                        self.diagnostics.set(
+                            monitor_frame_number=frame_number,
+                            card_visual_gate=card_gate,
+                            rebirth_visual_gate=rebirth_gate,
+                            blueprint_visual_gate=blueprint_gate,
+                        )
                         if rebirth_gate:
+                            started = time.monotonic()
                             header_tokens = read_region(ocr, image, header_box, max_width=736)
+                            self.diagnostics.set(
+                                rebirth_header_token_count=len(header_tokens),
+                                rebirth_header_ocr_ms=round((time.monotonic() - started) * 1000),
+                            )
+                            self.diagnostics.sample("rebirth_header_ocr_sample", header_tokens)
                         else:
                             header_tokens = []
-                        if header_tokens and rebirth_header_is_open(header_tokens):
+                        header_open = bool(header_tokens and rebirth_header_is_open(header_tokens))
+                        self.diagnostics.set(rebirth_header_recognized=header_open)
+                        if header_open:
                             rank = rebirth_rank(header_tokens)
+                            self.diagnostics.set(rebirth_rank_read=rank or "not recognized")
                             if rank:
                                 completed = max(0, rank - 1)
                                 requirements_box = (
@@ -456,7 +483,10 @@ class DroidAdvisorApp:
                                     int(image.width * 0.64), int(image.height * 0.78),
                                 )
                                 requirement_tokens = read_region(ocr, image, requirements_box, max_width=736)
+                                self.diagnostics.set(rebirth_requirement_token_count=len(requirement_tokens))
+                                self.diagnostics.sample("rebirth_requirements_ocr_sample", requirement_tokens)
                                 cycle_match = detect_cycle(visible_droids(requirement_tokens))
+                                self.diagnostics.set(rebirth_cycle_match=cycle_match or "not uniquely matched")
                                 cycle = cycle_match[0] if cycle_match else int(self.config["cycle"])
                                 if completed != self.config["completed_rebirth"] or cycle != self.config["cycle"]:
                                     self.config.update(cycle=cycle, completed_rebirth=completed)
@@ -468,11 +498,17 @@ class DroidAdvisorApp:
 
                         tokens = []
                         if card_gate or blueprint_gate:
+                            started = time.monotonic()
                             interaction_box = (
                                 0, int(image.height * 0.22),
                                 int(image.width * 0.85), int(image.height * 0.94),
                             )
                             tokens = read_region(ocr, image, interaction_box, max_width=1000)
+                            self.diagnostics.set(
+                                interaction_token_count=len(tokens),
+                                interaction_ocr_ms=round((time.monotonic() - started) * 1000),
+                            )
+                            self.diagnostics.sample("interaction_ocr_sample", tokens)
 
                         now = time.monotonic()
                         spawn = None
@@ -503,6 +539,7 @@ class DroidAdvisorApp:
                             self.last_spawn_at = now
                             self.events.put(("spawn_alert", spawn))
                         blueprint_open = blueprint_gate and blueprint_is_visible(tokens, image.width, image.height)
+                        self.diagnostics.set(blueprint_recognized=blueprint_open)
                         if blueprint_open:
                             droid, confidence = selected_droid(tokens, image.width, image.height)
                             card_left, card_top = int(image.width * 0.03), int(image.height * 0.08)
@@ -512,6 +549,10 @@ class DroidAdvisorApp:
                             focused_droid, focused_confidence = blueprint_droid(card_tokens)
                             if focused_droid:
                                 droid, confidence = focused_droid, focused_confidence
+                            self.diagnostics.set(
+                                blueprint_droid_read=droid or "not recognized",
+                                blueprint_droid_confidence=round(confidence, 3),
+                            )
                             if droid:
                                 left, top = int(image.width * 0.20), int(image.height * 0.10)
                                 right, bottom = int(image.width * 0.68), int(image.height * 0.62)
@@ -536,13 +577,20 @@ class DroidAdvisorApp:
                             self.pending_blueprint_count = 0
 
                         if not blueprint_open and card_gate and panel_is_open(tokens, image.width, image.height):
+                            self.diagnostics.set(card_panel_recognized=True)
                             droid, confidence = selected_droid(tokens, image.width, image.height)
                             header_rect = card_header_rect(tokens, image.width, image.height)
                             if header_rect:
                                 header_tokens = ocr.read(image.crop(header_rect), max_width=1200)
+                                self.diagnostics.set(card_header_token_count=len(header_tokens))
+                                self.diagnostics.sample("card_header_ocr_sample", header_tokens)
                                 focused_droid, focused_confidence = blueprint_droid(header_tokens)
                                 if focused_droid:
                                     droid, confidence = focused_droid, focused_confidence
+                            self.diagnostics.set(
+                                card_droid_read=droid or "not recognized",
+                                card_droid_confidence=round(confidence, 3),
+                            )
                             if droid:
                                 current_rb = int(self.config["completed_rebirth"])
                                 decision = advise(int(self.config["cycle"]), current_rb, droid)
@@ -557,10 +605,14 @@ class DroidAdvisorApp:
                                     color = "#137a43" if decision.safe_to_sell else "#a8232e"
                                     self.events.put(("overlay", (f"{droid}: {decision.message}", color, 4500)))
                         elif not blueprint_open:
+                            self.diagnostics.set(card_panel_recognized=False)
                             self.last_signature = None
                             self.pending_signature = None
                             self.pending_count = 0
                 except Exception as exc:
+                    detail = f"{type(exc).__name__}: {exc}"
+                    self.diagnostics.set(last_error=detail, last_traceback=traceback.format_exc(limit=8).strip())
+                    self.diagnostics.record(f"Monitor exception: {detail}")
                     self.events.put(("status", f"Monitor warning: {type(exc).__name__}"))
             self.stop_event.wait(0.25)
 
@@ -573,10 +625,20 @@ class DroidAdvisorApp:
                     try:
                         image = capture.capture()
                         if image is not None:
+                            self.diagnostics.set(
+                                capture_active=True,
+                                last_capture_at=datetime.now().astimezone().isoformat(timespec="seconds"),
+                                captured_frame_size=f"{image.width}x{image.height}",
+                            )
                             with self.frame_lock:
                                 self.latest_frame = image
                                 self.frame_number += 1
+                        else:
+                            self.diagnostics.set(capture_active=False, capture_reason="Fortnite not foreground or not visible")
                     except Exception as exc:
+                        detail = f"{type(exc).__name__}: {exc}"
+                        self.diagnostics.set(capture_active=False, last_error=detail, last_traceback=traceback.format_exc(limit=8).strip())
+                        self.diagnostics.record(f"Capture exception: {detail}")
                         self.events.put(("status", f"Capture warning: {type(exc).__name__}"))
                 self.stop_event.wait(0.75)
         finally:
@@ -600,6 +662,12 @@ class DroidAdvisorApp:
                     self.toggle_requirements_overlay()
                 elif kind == "sell_list_toggle":
                     self.toggle_sell_list_overlay()
+                elif kind == "diagnostics_copy":
+                    self.copy_diagnostic_report()
+                elif kind == "diagnostics_detailed":
+                    self.diagnostics.enable_detailed(120)
+                    self.status_var.set("Detailed diagnostics enabled for 2 minutes")
+                    self.show_overlay("DETAILED DIAGNOSTICS: 2 MINUTES", "#59636e", 2200)
                 elif kind == "spawn_alert":
                     self.show_spawn_alert(*payload)
                 elif kind == "settings":
@@ -614,6 +682,14 @@ class DroidAdvisorApp:
         except queue.Empty:
             pass
         self.root.after(100, self._drain_events)
+
+    def copy_diagnostic_report(self) -> None:
+        report = self.diagnostics.report(__version__, self.config, game_window_rect())
+        self.root.clipboard_clear()
+        self.root.clipboard_append(report)
+        self.root.update_idletasks()
+        self.status_var.set("Diagnostic report copied to clipboard")
+        self.show_overlay("DIAGNOSTIC REPORT COPIED", "#235ea8", 2200)
 
     def shutdown(self) -> None:
         self.stop_event.set()

@@ -14,6 +14,12 @@ This project is alpha software under active development. The current public feat
 - A `Ctrl+Shift+Z` overlay listing previously required droids with no remaining use in the current cycle.
 - A tested inventory data layer. The inventory user interface and automatic build, sale, and reset reconciliation are still in progress.
 
+## Diagnostics
+
+The system-tray menu includes **Copy diagnostic report**. The report is generated from a bounded in-memory buffer and can be pasted into Discord or a GitHub issue. It includes runtime state, visual-gate results, OCR timing, and trapped exception details. It does not include screenshots and is not uploaded automatically.
+
+For recognition problems, choose **Enable detailed diagnostics (2 minutes)**, reproduce the problem, then choose **Copy diagnostic report** before the two minutes expire. Detailed mode temporarily includes OCR text from the advisor's target regions. The samples are removed from memory when detailed mode expires. No diagnostic file is written to disk.
+
 ## Privacy and behavior
 
 Starting with version 0.5.0, Droid Advisor checks published GitHub Releases at startup. It asks before updating, verifies GitHub's SHA-256 asset digest, installs the update silently, and restarts itself. Raw commits, drafts, and prereleases are not installed automatically.

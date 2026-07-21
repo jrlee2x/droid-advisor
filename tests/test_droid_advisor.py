@@ -3,6 +3,7 @@ from droid_advisor.vision import OfflineOcr, OcrToken, blueprint_details, bluepr
 from droid_advisor.inventory import InventoryLedger
 from droid_advisor.updater import parse_release, version_tuple
 from droid_advisor.cycles import CYCLES
+from droid_advisor.diagnostics import DiagnosticBuffer
 
 
 def test_proto_roller_at_completed_22_varies_by_cycle():
@@ -314,3 +315,23 @@ def test_update_release_requires_newer_version_and_digest():
     assert parse_release(release, "0.4.1").version == "0.5.0"
     assert parse_release(release, "0.5.0") is None
     assert version_tuple("v1.2.10") > version_tuple("1.2.9")
+
+
+def test_diagnostics_are_in_memory_and_report_runtime_state():
+    diagnostics = DiagnosticBuffer(max_events=2)
+    diagnostics.set(card_visual_gate=True, interaction_token_count=7)
+    diagnostics.record("Offline OCR initialized")
+    report = diagnostics.report("1.2.3", {"cycle": 4, "completed_rebirth": 20}, (0, 0, 1920, 1080))
+    assert "Version: 1.2.3" in report
+    assert "card_visual_gate: True" in report
+    assert "Offline OCR initialized" in report
+    assert "Screenshots saved: no" in report
+
+
+def test_detailed_ocr_samples_require_explicit_enablement():
+    diagnostics = DiagnosticBuffer()
+    diagnostics.sample("interaction_ocr_sample", ["WORK", "SELL"])
+    assert "interaction_ocr_sample" not in diagnostics.report("1", {}, None)
+    diagnostics.enable_detailed(120)
+    diagnostics.sample("interaction_ocr_sample", ["WORK", "SELL"])
+    assert "interaction_ocr_sample: WORK | SELL" in diagnostics.report("1", {}, None)
