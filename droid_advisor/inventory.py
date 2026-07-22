@@ -5,18 +5,10 @@ from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
-import sys
 
 from .cycles import CYCLES
 from .engine import canonical
-
-
-QUALITY_ORDER = {"BASE": 0, "GOLD": 1, "DIAMOND": 2, "RAINBOW": 3, "BESKAR": 4}
-
-
-def _quality_table() -> dict:
-    base = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent))
-    return json.loads((base / "assets" / "quality_requirements.json").read_text(encoding="utf-8"))
+from .qualities import QUALITY_ORDER, quality_table
 
 
 @dataclass
@@ -34,6 +26,7 @@ class InventoryAssessment:
     quantity: int
     owned_quality: str | None
     next_needed: int | None
+    next_required_quality: str | None
     required_quality: str | None
     covered: bool
 
@@ -42,10 +35,12 @@ class InventoryAssessment:
         if self.next_needed is None:
             return "NOT NEEDED AGAIN THIS CYCLE"
         if self.quantity <= 0:
-            return f"KEEP: NEED {self.required_quality} AT RB{self.next_needed}; NONE OWNED"
+            return f"KEEP: NEED {self.next_required_quality} AT RB{self.next_needed}; NONE OWNED"
         if self.covered:
             return f"DUPLICATE: ALREADY OWN {self.owned_quality}; COVERED FOR RB{self.next_needed}"
-        return f"KEEP/UPGRADE: OWN {self.owned_quality}, NEED {self.required_quality} AT RB{self.next_needed}"
+        if QUALITY_ORDER[self.owned_quality] >= QUALITY_ORDER[self.next_required_quality]:
+            return f"KEEP: OWN {self.owned_quality}; NEED {self.required_quality} LATER"
+        return f"KEEP/UPGRADE: OWN {self.owned_quality}, NEED {self.next_required_quality} AT RB{self.next_needed}"
 
 
 class InventoryLedger:
@@ -90,7 +85,7 @@ class InventoryLedger:
 
     def assess(self, cycle: int, completed_rebirth: int, droid: str) -> InventoryAssessment:
         target = canonical(droid)
-        qualities = _quality_table()[str(cycle)]
+        qualities = quality_table()[str(cycle)]
         future = []
         for rb, required in enumerate(CYCLES[cycle], start=1):
             if rb <= completed_rebirth:
@@ -100,8 +95,9 @@ class InventoryLedger:
                     future.append((rb, qualities[str(rb)][slot]))
         entry = self.get(droid)
         if not future:
-            return InventoryAssessment(droid, entry.quantity if entry else 0, entry.quality if entry else None, None, None, True)
+            return InventoryAssessment(droid, entry.quantity if entry else 0, entry.quality if entry else None, None, None, None, True)
         next_rb = min(rb for rb, _ in future)
+        next_quality = next(quality for rb, quality in future if rb == next_rb)
         max_quality = max((quality for _, quality in future), key=QUALITY_ORDER.get)
         covered = bool(entry and entry.quantity > 0 and QUALITY_ORDER[entry.quality] >= QUALITY_ORDER[max_quality])
         return InventoryAssessment(
@@ -109,6 +105,7 @@ class InventoryLedger:
             quantity=entry.quantity if entry else 0,
             owned_quality=entry.quality if entry else None,
             next_needed=next_rb,
+            next_required_quality=next_quality,
             required_quality=max_quality,
             covered=covered,
         )

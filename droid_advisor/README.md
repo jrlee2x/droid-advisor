@@ -31,7 +31,7 @@ When a held blueprint pickup screen displays `TOSS BLUEPRINT ON CRAFTING STATION
 
 Press **Ctrl+Shift+D** to pause or resume. Tray controls also expose pause, settings, and exit.
 
-The draggable top-right **Rebirth Targets** overlay shows the exact three labeled droid cards for the rebirth currently being worked and the following rebirth. Press **Ctrl+Shift+R** or use the tray menu to show/hide it. Its screen position and visibility persist. At RB27, the second row previews RB1 of the next cycle.
+The draggable top-right **Rebirth Targets** overlay shows the exact three labeled droid cards for the rebirth currently being worked and the following rebirth. Press **Ctrl+Shift+R** or use the tray menu to show/hide it. Its screen position and visibility persist. At RB30, the second row previews RB1 of the next cycle. Galactic is the highest quality and satisfies requirements for Beskar and every lower quality.
 
 The optional **High-value conveyor alerts** setting watches the left-side spawn notification only. A large flashing alert appears for Diamond, Rainbow, or Beskar droids when the notification rarity is Legendary or Mythic. Common, Rare, and Epic notifications are ignored, as are Base/Gold qualities. Identical text is deduplicated until the original notification disappears.
 

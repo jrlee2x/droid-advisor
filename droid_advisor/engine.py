@@ -5,6 +5,7 @@ from difflib import SequenceMatcher
 import re
 
 from .cycles import CYCLES
+from .qualities import QUALITY_ORDER, quality_table
 
 
 ALIASES = {
@@ -30,28 +31,46 @@ class Advice:
     completed_rebirth: int
     next_needed: int | None
     last_needed: int | None
+    quality: str | None = None
+    next_required_quality: str | None = None
 
     @property
     def message(self) -> str:
         if self.safe_to_sell:
             suffix = f"LAST NEEDED AT RB{self.last_needed}" if self.last_needed else "NOT USED IN THIS CYCLE"
             return f"SAFE TO SELL: {suffix}"
+        if (
+            self.quality
+            and self.next_required_quality
+            and QUALITY_ORDER[self.quality] < QUALITY_ORDER[self.next_required_quality]
+        ):
+            return f"KEEP: UPGRADE TO {self.next_required_quality} FOR RB{self.next_needed}"
         return f"KEEP: NEEDED AT RB{self.next_needed}"
 
 
-def advise(cycle: int, completed_rebirth: int, droid: str) -> Advice:
+def advise(cycle: int, completed_rebirth: int, droid: str, quality: str | None = None) -> Advice:
     target = canonical(droid)
-    appearances = [
-        rb for rb, required in enumerate(CYCLES[cycle], start=1)
-        if target in {canonical(item) for item in required}
-    ]
-    future = [rb for rb in appearances if rb > completed_rebirth]
+    normalized_quality = quality.upper() if quality and quality.upper() in QUALITY_ORDER else None
+    requirements = quality_table()[str(cycle)]
+    appearances = []
+    for rb, required in enumerate(CYCLES[cycle], start=1):
+        for slot, item in enumerate(required):
+            if canonical(item) != target:
+                continue
+            required_quality = requirements[str(rb)][slot]
+            # Any owned quality can satisfy a future requirement. A higher quality
+            # already outranks it, while a lower quality can be upgraded into it.
+            appearances.append((rb, required_quality))
+    future = [(rb, required_quality) for rb, required_quality in appearances if rb > completed_rebirth]
+    next_future = min(future, default=None, key=lambda item: item[0])
     return Advice(
         droid=droid,
         safe_to_sell=not future,
         completed_rebirth=completed_rebirth,
-        next_needed=min(future) if future else None,
-        last_needed=max(appearances) if appearances else None,
+        next_needed=next_future[0] if next_future else None,
+        last_needed=max((rb for rb, _ in appearances), default=None),
+        quality=normalized_quality,
+        next_required_quality=next_future[1] if next_future else None,
     )
 
 

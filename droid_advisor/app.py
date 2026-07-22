@@ -21,7 +21,8 @@ import pystray
 from pynput import keyboard
 
 from . import __version__
-from .cycles import CYCLES
+from .cycles import CYCLES, MAX_REBIRTH
+from .qualities import quality_table
 from .diagnostics import DiagnosticBuffer, copy_text_to_clipboard
 from .engine import advise, detect_cycle, safe_to_sell_droids
 from .updater import check_for_update, download_update, launch_installer
@@ -131,7 +132,7 @@ class DroidAdvisorApp:
 
         ttk.Label(controls, text="Rebirths completed:").grid(row=1, column=0, sticky="w", pady=4)
         self.rb_var = tk.IntVar(value=int(self.config["completed_rebirth"]))
-        rb_spin = ttk.Spinbox(controls, from_=0, to=27, width=7, textvariable=self.rb_var, command=self._settings_changed)
+        rb_spin = ttk.Spinbox(controls, from_=0, to=MAX_REBIRTH, width=7, textvariable=self.rb_var, command=self._settings_changed)
         rb_spin.grid(row=1, column=1, sticky="w", padx=10)
 
         self.spawn_alert_var = tk.BooleanVar(value=bool(self.config["spawn_alerts_enabled"]))
@@ -306,10 +307,10 @@ class DroidAdvisorApp:
         cycle = int(self.config["cycle"])
         completed = int(self.config["completed_rebirth"])
         current = completed + 1
-        if current <= 26:
+        if current < MAX_REBIRTH:
             return [(cycle, current, "NOW"), (cycle, current + 1, "NEXT")]
-        if current == 27:
-            return [(cycle, 27, "NOW"), ((cycle % 4) + 1, 1, "NEXT CYCLE")]
+        if current == MAX_REBIRTH:
+            return [(cycle, MAX_REBIRTH, "NOW"), ((cycle % 4) + 1, 1, "NEXT CYCLE")]
         next_cycle = (cycle % 4) + 1
         return [(next_cycle, 1, "NOW"), (next_cycle, 2, "NEXT")]
 
@@ -336,7 +337,9 @@ class DroidAdvisorApp:
                 self.requirements_frame, text=f"{row_label}\nRBC{row_cycle}\nRB{rb}",
                 bg="#19232d", fg="white", width=9, font=("Segoe UI", 8, "bold"),
             ).grid(row=row_index, column=0, sticky="nsew", padx=(4, 3), pady=3)
+            qualities = quality_table()[str(row_cycle)][str(rb)]
             for slot, name in enumerate(CYCLES[row_cycle][rb - 1], start=1):
+                quality = qualities[slot - 1]
                 card = tk.Frame(self.requirements_frame, bg="#0b0f14")
                 card.grid(row=row_index, column=slot, padx=2, pady=3, sticky="nsew")
                 path = resource_path("assets", "thumbnails", f"rbc{row_cycle}", f"rb{rb:02d}", f"{slot}.png")
@@ -345,7 +348,14 @@ class DroidAdvisorApp:
                     self.requirements_photos.append(photo)
                     tk.Label(card, image=photo, bg="#0b0f14").pack()
                 except tk.TclError:
-                    tk.Label(card, text="?", width=10, height=5, bg="#26313b", fg="white").pack()
+                    quality_colors = {
+                        "BASE": "#d8d8d8", "GOLD": "#f2b21b", "DIAMOND": "#35d9ff",
+                        "RAINBOW": "#c353ff", "BESKAR": "#b8c0c8", "GALACTIC": "#a92cff",
+                    }
+                    tk.Label(
+                        card, text=quality, width=12, height=5, bg="#26313b",
+                        fg=quality_colors[quality], font=("Segoe UI", 8, "bold"),
+                    ).pack()
                 tk.Label(
                     card, text=name, bg="#0b0f14", fg="white", font=("Segoe UI", 7, "bold"),
                     width=14, wraplength=92,
@@ -383,7 +393,7 @@ class DroidAdvisorApp:
     def _settings_changed(self) -> None:
         try:
             self.config["cycle"] = int(self.cycle_var.get())
-            self.config["completed_rebirth"] = max(0, min(27, int(self.rb_var.get())))
+            self.config["completed_rebirth"] = max(0, min(MAX_REBIRTH, int(self.rb_var.get())))
             self.config["spawn_alerts_enabled"] = bool(self.spawn_alert_var.get())
             self.config["automatic_updates"] = bool(self.update_var.get())
             save_config(self.config)
@@ -559,7 +569,9 @@ class DroidAdvisorApp:
                                 right, bottom = int(image.width * 0.68), int(image.height * 0.62)
                                 detail_tokens = ocr.read(image.crop((left, top, right, bottom)), max_width=1100)
                                 finish, rarity = blueprint_details(detail_tokens)
-                                decision = advise(int(self.config["cycle"]), int(self.config["completed_rebirth"]), droid)
+                                decision = advise(
+                                    int(self.config["cycle"]), int(self.config["completed_rebirth"]), droid, finish
+                                )
                                 signature = (droid, finish, rarity, self.config["cycle"], self.config["completed_rebirth"])
                                 if signature == self.pending_blueprint_signature:
                                     self.pending_blueprint_count += 1
@@ -594,7 +606,10 @@ class DroidAdvisorApp:
                             )
                             if droid:
                                 current_rb = int(self.config["completed_rebirth"])
-                                decision = advise(int(self.config["cycle"]), current_rb, droid)
+                                finish = None
+                                if header_rect:
+                                    finish, _ = blueprint_details(header_tokens)
+                                decision = advise(int(self.config["cycle"]), current_rb, droid, finish)
                                 signature = (droid, current_rb, self.config["cycle"], decision.safe_to_sell)
                                 if signature == self.pending_signature:
                                     self.pending_count += 1

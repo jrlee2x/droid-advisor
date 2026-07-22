@@ -423,7 +423,7 @@ def high_value_spawn(tokens: list[OcrToken], width: int, height: int) -> tuple[s
 def rebirth_rank(tokens: list[OcrToken]) -> int | None:
     """Read the target rank shown by the View Rebirth menu (for example Rank23)."""
     text = " ".join(token.text for token in tokens)
-    match = re.search(r"RANK\s*([1-9]|1[0-9]|2[0-7])\b", text, re.IGNORECASE)
+    match = re.search(r"RANK\s*([1-9]|[12][0-9]|30)\b", text, re.IGNORECASE)
     return int(match.group(1)) if match else None
 
 
@@ -483,7 +483,7 @@ def completed_rebirth(tokens: list[OcrToken], width: int, height: int) -> int | 
         cx, cy = token.center
         if not (0.10 * width <= cx <= 0.32 * width and 0.70 * height <= cy <= 0.91 * height):
             continue
-        for raw in re.findall(r"\b(?:[0-9]|1[0-9]|2[0-7])\b", token.text):
+        for raw in re.findall(r"\b(?:[0-9]|[12][0-9]|30)\b", token.text):
             candidates.append((cy, int(raw), token.confidence))
     if not candidates:
         return None

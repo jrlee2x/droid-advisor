@@ -134,6 +134,21 @@
       "DIAMOND",
       "RAINBOW",
       "BESKAR"
+    ],
+    "28": [
+      "RAINBOW",
+      "BESKAR",
+      "GALACTIC"
+    ],
+    "29": [
+      "BESKAR",
+      "GALACTIC",
+      "GALACTIC"
+    ],
+    "30": [
+      "GALACTIC",
+      "BESKAR",
+      "GALACTIC"
     ]
   },
   "2": {
@@ -271,6 +286,21 @@
       "DIAMOND",
       "RAINBOW",
       "BESKAR"
+    ],
+    "28": [
+      "RAINBOW",
+      "BESKAR",
+      "GALACTIC"
+    ],
+    "29": [
+      "BESKAR",
+      "GALACTIC",
+      "GALACTIC"
+    ],
+    "30": [
+      "GALACTIC",
+      "BESKAR",
+      "GALACTIC"
     ]
   },
   "3": {
@@ -408,6 +438,21 @@
       "DIAMOND",
       "RAINBOW",
       "BESKAR"
+    ],
+    "28": [
+      "RAINBOW",
+      "BESKAR",
+      "GALACTIC"
+    ],
+    "29": [
+      "BESKAR",
+      "GALACTIC",
+      "GALACTIC"
+    ],
+    "30": [
+      "GALACTIC",
+      "BESKAR",
+      "GALACTIC"
     ]
   },
   "4": {
@@ -545,6 +590,21 @@
       "DIAMOND",
       "RAINBOW",
       "BESKAR"
+    ],
+    "28": [
+      "RAINBOW",
+      "BESKAR",
+      "GALACTIC"
+    ],
+    "29": [
+      "BESKAR",
+      "GALACTIC",
+      "GALACTIC"
+    ],
+    "30": [
+      "GALACTIC",
+      "BESKAR",
+      "GALACTIC"
     ]
   }
 }

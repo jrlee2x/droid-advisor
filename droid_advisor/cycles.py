@@ -1,4 +1,6 @@
-"""Embedded rebirth-cycle data transcribed from the shared workbook."""
+"""Verified rebirth-cycle data shared by the workbook and advisor."""
+
+MAX_REBIRTH = 30
 
 CYCLES = {
     1: [
@@ -16,6 +18,9 @@ CYCLES = {
         ("OPTI-STRK", "MONO-WLKR", "R7"), ("BB9", "CYCLO-GRAV", "MO-TRAK"),
         ("B2-RP", "IG", "DRFT-R"), ("CYCLENS", "LOADLIFTER", "RIC-1200"),
         ("KX", "TRI-TEK", "SNOW MOUSE"),
+        ("MO-TRAK", "DRFT-R", "PROTO-ROLLER"),
+        ("IG", "MONO-WLKR", "MECHA-DROID"),
+        ("B2-RP", "CYCLENS", "LOADLIFTER"),
     ],
     2: [
         ("MOUSE", "GONK", "ID10"), ("ROLL-R", "NAV-EX", "SENATE HOVERCAM"),
@@ -32,6 +37,9 @@ CYCLES = {
         ("BB9", "CYCLO-GRAV", "B2-RP"), ("OPTI-STRK", "B2-RP", "SNOW MOUSE"),
         ("MONO-WLKR", "TRI-TEK", "RIC-1200"), ("KX", "DRFT-R", "IG"),
         ("LEP", "LOADLIFTER", "MO-TRAK"),
+        ("SNOW MOUSE", "TRI-TEK", "MECHA-DROID"),
+        ("RIC", "CYCLO-GRAV", "R7"),
+        ("OPTI-STRK", "KX", "DRFT-R"),
     ],
     3: [
         ("MOUSE", "PIT", "GONK"), ("2BB", "R3", "SENATE HOVERCAM"),
@@ -48,6 +56,9 @@ CYCLES = {
         ("MONO-WLKR", "MECHA-DROID", "CYCLO-GRAV"), ("BB9", "B2-RP", "RIC"),
         ("PROTO-ROLLER", "LOADLIFTER", "MO-TRAK"), ("LEP", "TRI-TEK", "SNOW MOUSE"),
         ("RIC-1200", "IG", "DRFT-R"),
+        ("RIC", "MO-TRAK", "BB9"),
+        ("IG", "MECHA-DROID", "OPTI-STRK"),
+        ("R7", "LEP", "DRFT-R"),
     ],
     4: [
         ("ID10", "PIT", "DRK-1 PROBE"), ("2BB", "R3", "SENATE HOVERCAM"),
@@ -64,5 +75,8 @@ CYCLES = {
         ("MONO-WLKR", "B2-RP", "CYCLO-GRAV"), ("MECHA-DROID", "PROTO-ROLLER", "MO-TRAK"),
         ("OPTI-STRK", "TRI-TEK", "DRFT-R"), ("CYCLENS", "LEP", "MO-TRAK"),
         ("RIC-1200", "SNOW MOUSE", "LOADLIFTER"),
+        ("IG", "KX", "OPTI-STRK"),
+        ("TRI-TEK", "R7", "BB9"),
+        ("MONO-WLKR", "CYCLENS", "IG"),
     ],
 }

@@ -7,7 +7,7 @@ from droid_advisor.diagnostics import DiagnosticBuffer
 
 
 def test_proto_roller_at_completed_22_varies_by_cycle():
-    assert advise(1, 22, "PROTO-ROLLER").safe_to_sell is True
+    assert advise(1, 22, "PROTO-ROLLER").next_needed == 28
     assert advise(2, 22, "PROTO-ROLLER").safe_to_sell is True
     assert advise(3, 22, "PROTO-ROLLER").next_needed == 25
     assert advise(4, 22, "PROTO-ROLLER").next_needed == 24
@@ -18,6 +18,25 @@ def test_rbc2_proto_roller_is_not_needed_after_rb22():
     assert result.safe_to_sell is True
     assert result.last_needed == 22
     assert result.message == "SAFE TO SELL: LAST NEEDED AT RB22"
+
+
+def test_card_quality_can_be_upgraded_to_future_requirement():
+    beskar = advise(1, 27, "PROTO-ROLLER", "BESKAR")
+    assert beskar.safe_to_sell is False
+    assert beskar.next_needed == 28
+    assert beskar.next_required_quality == "GALACTIC"
+    assert beskar.message == "KEEP: UPGRADE TO GALACTIC FOR RB28"
+    assert advise(1, 27, "PROTO-ROLLER", "GALACTIC").next_needed == 28
+    assert advise(4, 27, "IG", "RAINBOW").next_needed == 28
+    assert advise(4, 27, "IG", "GALACTIC").next_needed == 28
+
+
+def test_rbc4_gold_ric_1200_is_kept_for_future_diamond_requirement():
+    result = advise(4, 22, "RIC-1200", "GOLD")
+    assert result.safe_to_sell is False
+    assert result.next_needed == 27
+    assert result.next_required_quality == "DIAMOND"
+    assert result.message == "KEEP: UPGRADE TO DIAMOND FOR RB27"
 
 
 def test_safe_to_sell_list_uses_current_cycle_and_completed_level():
@@ -48,6 +67,18 @@ def test_rebirth_names_match_audited_thumbnail_order():
         (4, 21): ("AMP WALKER", "GROUNDMECH", "HAUL-R"),
         (4, 22): ("GUNRUNNER", "STRIKE-ORB", "B2 SUPER"),
         (4, 23): ("MONO-WLKR", "B2-RP", "CYCLO-GRAV"),
+        (1, 28): ("MO-TRAK", "DRFT-R", "PROTO-ROLLER"),
+        (1, 29): ("IG", "MONO-WLKR", "MECHA-DROID"),
+        (1, 30): ("B2-RP", "CYCLENS", "LOADLIFTER"),
+        (2, 28): ("SNOW MOUSE", "TRI-TEK", "MECHA-DROID"),
+        (2, 29): ("RIC", "CYCLO-GRAV", "R7"),
+        (2, 30): ("OPTI-STRK", "KX", "DRFT-R"),
+        (3, 28): ("RIC", "MO-TRAK", "BB9"),
+        (3, 29): ("IG", "MECHA-DROID", "OPTI-STRK"),
+        (3, 30): ("R7", "LEP", "DRFT-R"),
+        (4, 28): ("IG", "KX", "OPTI-STRK"),
+        (4, 29): ("TRI-TEK", "R7", "BB9"),
+        (4, 30): ("MONO-WLKR", "CYCLENS", "IG"),
     }
     for (cycle, rebirth), expected in expected_rows.items():
         assert CYCLES[cycle][rebirth - 1] == expected
@@ -293,9 +324,17 @@ def test_inventory_distinguishes_missing_duplicate_and_underleveled(tmp_path):
     missing = ledger.assess(2, 22, "OPTI-STRK")
     assert missing.message == "KEEP: NEED BESKAR AT RB24; NONE OWNED"
     ledger.set("OPTI-STRK", 1, "BESKAR")
-    assert ledger.assess(2, 22, "OPTI-STRK").covered is True
+    assert ledger.assess(2, 22, "OPTI-STRK").message == "KEEP: OWN BESKAR; NEED GALACTIC LATER"
     ledger.set("OPTI-STRK", 1, "GOLD")
     assert ledger.assess(2, 22, "OPTI-STRK").message == "KEEP/UPGRADE: OWN GOLD, NEED BESKAR AT RB24"
+
+
+def test_galactic_outranks_beskar_and_lower_requirements(tmp_path):
+    ledger = InventoryLedger(tmp_path / "inventory.json")
+    ledger.set("OPTI-STRK", 1, "GALACTIC")
+    assessment = ledger.assess(4, 22, "OPTI-STRK")
+    assert assessment.required_quality == "GALACTIC"
+    assert assessment.covered is True
 
 
 def test_inventory_persists_and_clears(tmp_path):
