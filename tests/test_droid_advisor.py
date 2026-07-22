@@ -166,8 +166,11 @@ def test_visual_gates_reject_plain_gameplay_and_detect_target_chrome():
     assert blueprint_visual_gate(blueprint) is True
 
 
-def test_all_galactic_spawn_rarities_trigger_alerts():
-    for rarity in ("Common", "Rare", "Epic", "Legendary", "Mythic"):
+def test_only_epic_and_higher_galactic_spawns_trigger_alerts():
+    for rarity in ("Common", "Rare"):
+        tokens = [_token(f"Galactic Droid ({rarity}) spawned at the Sandcrawler", 300, 500)]
+        assert high_value_spawn(tokens, 1000, 1000) is None
+    for rarity in ("Epic", "Legendary", "Mythic"):
         tokens = [_token(f"Galactic Droid ({rarity}) spawned at the Sandcrawler", 300, 500)]
         assert high_value_spawn(tokens, 1000, 1000) == ("GALACTIC", rarity.upper())
 
@@ -179,9 +182,9 @@ def test_existing_finishes_still_require_legendary_or_mythic():
     assert high_value_spawn(mythic, 1000, 1000) == ("BESKAR", "MYTHIC")
 
 
-def test_galactic_alert_survives_partial_ocr_notification():
+def test_galactic_alert_requires_readable_epic_or_higher_rarity():
     tokens = [_token("Galactic Droid spawned at the Sandcrawler", 300, 500)]
-    assert high_value_spawn(tokens, 1000, 1000) == ("GALACTIC", "DROID")
+    assert high_value_spawn(tokens, 1000, 1000) is None
 
 
 def test_unrelated_mythic_text_cannot_override_galactic_rare():
@@ -189,7 +192,7 @@ def test_unrelated_mythic_text_cannot_override_galactic_rare():
         _token("Galactic Droid (Rare) spawned at the Sandcrawler", 300, 500),
         _token("MYTHIC", 500, 600),
     ]
-    assert high_value_spawn(tokens, 1000, 1000) == ("GALACTIC", "RARE")
+    assert high_value_spawn(tokens, 1000, 1000) is None
 
 
 def test_unrelated_rarity_is_not_guessed_for_partial_galactic_ocr():
@@ -197,7 +200,7 @@ def test_unrelated_rarity_is_not_guessed_for_partial_galactic_ocr():
         _token("Galactic Droid spawned at the Sandcrawler", 300, 500),
         _token("MYTHIC", 500, 600),
     ]
-    assert high_value_spawn(tokens, 1000, 1000) == ("GALACTIC", "DROID")
+    assert high_value_spawn(tokens, 1000, 1000) is None
 
 
 def test_galactic_droid_card_is_not_a_spawn_notification():

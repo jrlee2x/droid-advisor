@@ -406,7 +406,11 @@ def high_value_spawn(tokens: list[OcrToken], width: int, height: int) -> tuple[s
     )
     if galactic_line:
         galactic = re.search(r"GALACTICDROID(COMMON|RARE|EPIC|LEGENDARY|MYTHIC)", galactic_line)
-        rarity = galactic.group(1) if galactic else "DROID"
+        if not galactic:
+            return None
+        rarity = galactic.group(1)
+        if rarity not in ("EPIC", "LEGENDARY", "MYTHIC"):
+            return None
         return "GALACTIC", rarity
     match = re.search(
         r"(DIAMOND|RAINBOW|BESKAR)DROID(COMMON|RARE|EPIC|LEGENDARY|MYTHIC)SPAWNED",
