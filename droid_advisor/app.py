@@ -643,6 +643,7 @@ class DroidAdvisorApp:
                         if image is not None:
                             self.diagnostics.set(
                                 capture_active=True,
+                                capture_reason="active",
                                 last_capture_at=datetime.now().astimezone().isoformat(timespec="seconds"),
                                 captured_frame_size=f"{image.width}x{image.height}",
                             )

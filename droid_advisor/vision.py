@@ -317,9 +317,14 @@ def rebirth_view_is_open(tokens: list[OcrToken]) -> bool:
 
 
 def rebirth_header_is_open(tokens: list[OcrToken]) -> bool:
-    """Recognize the focused top strip of the View Rebirth menu."""
-    text = " ".join(token.text.upper() for token in tokens)
-    return "REBIRTH" in text and "RANK" in text
+    """Recognize a valid rank in the focused View Rebirth header strip.
+
+    The caller has already confirmed the menu's visual gate. On very wide
+    displays the word REBIRTH can fall outside this narrow OCR crop even while
+    the adjacent Rank label remains clear, so requiring both words rejects a
+    valid menu.
+    """
+    return rebirth_rank(tokens) is not None
 
 
 def blueprint_is_visible(tokens: list[OcrToken], width: int, height: int) -> bool:
@@ -406,7 +411,11 @@ def high_value_spawn(tokens: list[OcrToken], width: int, height: int) -> tuple[s
     )
     if galactic_line:
         galactic = re.search(r"GALACTICDROID(COMMON|RARE|EPIC|LEGENDARY|MYTHIC)", galactic_line)
-        rarity = galactic.group(1) if galactic else "DROID"
+        if not galactic:
+            return None
+        rarity = galactic.group(1)
+        if rarity not in ("EPIC", "LEGENDARY", "MYTHIC"):
+            return None
         return "GALACTIC", rarity
     match = re.search(
         r"(DIAMOND|RAINBOW|BESKAR)DROID(COMMON|RARE|EPIC|LEGENDARY|MYTHIC)SPAWNED",
