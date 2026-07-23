@@ -1,9 +1,10 @@
 from droid_advisor.engine import advise, canonical, detect_cycle, match_droid, safe_to_sell_droids
-from droid_advisor.vision import OfflineOcr, OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, blueprint_visual_gate, card_header_rect, card_visual_gate, high_value_spawn, is_card_button_text, panel_is_open, read_region, rebirth_header_is_open, rebirth_visual_gate, selected_droid
+from droid_advisor.vision import OfflineOcr, OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, blueprint_visual_gate, card_header_rect, card_visual_gate, game_ui_viewport, high_value_spawn, is_card_button_text, panel_is_open, read_region, rebirth_header_is_open, rebirth_visual_gate, selected_droid
 from droid_advisor.inventory import InventoryLedger
 from droid_advisor.updater import parse_release, version_tuple
 from droid_advisor.cycles import CYCLES
 from droid_advisor.diagnostics import DiagnosticBuffer
+from PIL import Image
 
 
 def test_proto_roller_at_completed_22_varies_by_cycle():
@@ -59,6 +60,17 @@ def test_unique_view_rebirth_triple_detects_cycle_and_level():
 def test_rebirth_header_accepts_rank_when_rebirth_word_is_outside_crop():
     tokens = [_token("26.36 KB/s", 100, 30), _token("Rank 25", 220, 30)]
     assert rebirth_header_is_open(tokens) is True
+
+
+def test_ultrawide_interactions_use_centered_16_by_9_viewport():
+    image = Image.new("RGB", (5120, 1440), "black")
+    viewport = game_ui_viewport(image)
+    assert viewport.size == (2560, 1440)
+
+
+def test_standard_widescreen_interactions_keep_full_frame():
+    image = Image.new("RGB", (2560, 1440), "black")
+    assert game_ui_viewport(image) is image
 
 
 def test_rebirth_names_match_audited_thumbnail_order():

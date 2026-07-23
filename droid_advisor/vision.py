@@ -239,6 +239,20 @@ def capture_game() -> Image.Image | None:
         return Image.frombytes("RGB", shot.size, shot.rgb)
 
 
+def game_ui_viewport(image: Image.Image, target_aspect: float = 16 / 9) -> Image.Image:
+    """Return Fortnite's centered UI viewport on ultrawide captures.
+
+    Fortnite keeps interaction panels and prompts in a centered 16:9 safe
+    area on 21:9 and 32:9 displays. Coordinate ratios calculated against the
+    full ultrawide frame otherwise miss those controls.
+    """
+    if image.width / image.height <= 1.90:
+        return image
+    viewport_width = min(image.width, round(image.height * target_aspect))
+    left = max(0, (image.width - viewport_width) // 2)
+    return image.crop((left, 0, left + viewport_width, image.height))
+
+
 class GameCapture:
     """Thread-owned persistent capture session with a briefly cached game rect."""
 

@@ -33,6 +33,7 @@ from .vision import (
     blueprint_droid,
     blueprint_is_visible,
     game_window_rect,
+    game_ui_viewport,
     card_header_rect,
     panel_is_open,
     rebirth_rank,
@@ -459,6 +460,9 @@ class DroidAdvisorApp:
                         frame_number = self.frame_number
                     if image is not None and frame_number != last_frame_number:
                         last_frame_number = frame_number
+                        full_image = image
+                        image = game_ui_viewport(full_image)
+                        self.diagnostics.set(ui_frame_size=f"{image.width}x{image.height}")
                         # Rebirth gets first priority. It is narrow and, when
                         # present, no card scan is useful on the same frame.
                         header_box = (
@@ -532,17 +536,17 @@ class DroidAdvisorApp:
                             self.last_spawn_scan_at = now
                             self.spawn_scan_count += 1
                             spawn_box = (
-                                0, int(image.height * 0.34),
-                                int(image.width * 0.65), int(image.height * 0.56),
+                                0, int(full_image.height * 0.34),
+                                int(full_image.width * 0.65), int(full_image.height * 0.56),
                             )
                             spawn_tokens = read_region(
                                 ocr,
-                                image,
+                                full_image,
                                 spawn_box,
                                 max_width=1500,
                                 grayscale=self.spawn_scan_count % 2 == 0,
                             )
-                            spawn = high_value_spawn(spawn_tokens, image.width, image.height)
+                            spawn = high_value_spawn(spawn_tokens, full_image.width, full_image.height)
                         if spawn and (
                             spawn != self.last_spawn_signature or now - self.last_spawn_at >= 30.0
                         ):
