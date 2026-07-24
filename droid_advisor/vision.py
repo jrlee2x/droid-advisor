@@ -253,6 +253,34 @@ def game_ui_viewport(image: Image.Image, target_aspect: float = 16 / 9) -> Image
     return image.crop((left, 0, left + viewport_width, image.height))
 
 
+def game_ui_viewports(
+    image: Image.Image, target_aspect: float = 16 / 9
+) -> list[tuple[str, Image.Image]]:
+    """Return candidate Fortnite UI viewports for wide multi-monitor layouts.
+
+    Most ultrawide clients use a centered 16:9 safe area, but some 32:9 and
+    spanning-window configurations anchor menus to the left or right display.
+    Returning all plausible regions lets the monitor learn the active layout
+    without asking the player to configure a resolution preset.
+    """
+    if image.width / image.height <= 1.90:
+        return [("full", image)]
+    viewport_width = min(image.width, round(image.height * target_aspect))
+    positions = (
+        ("center", max(0, (image.width - viewport_width) // 2)),
+        ("left", 0),
+        ("right", max(0, image.width - viewport_width)),
+    )
+    result = []
+    seen = set()
+    for name, left in positions:
+        if left in seen:
+            continue
+        seen.add(left)
+        result.append((name, image.crop((left, 0, left + viewport_width, image.height))))
+    return result
+
+
 class GameCapture:
     """Thread-owned persistent capture session with a briefly cached game rect."""
 

@@ -33,7 +33,7 @@ from .vision import (
     blueprint_droid,
     blueprint_is_visible,
     game_window_rect,
-    game_ui_viewport,
+    game_ui_viewports,
     card_header_rect,
     panel_is_open,
     rebirth_rank,
@@ -116,6 +116,8 @@ class DroidAdvisorApp:
         self.last_spawn_at = 0.0
         self.last_spawn_scan_at = 0.0
         self.spawn_scan_count = 0
+        self.preferred_ui_region = None
+        self.ui_fallback_index = 0
 
     def _build_settings(self) -> None:
         frame = ttk.Frame(self.root, padding=18)
@@ -461,34 +463,77 @@ class DroidAdvisorApp:
                     if image is not None and frame_number != last_frame_number:
                         last_frame_number = frame_number
                         full_image = image
-                        image = game_ui_viewport(full_image)
-                        self.diagnostics.set(ui_frame_size=f"{image.width}x{image.height}")
-                        # Rebirth gets first priority. It is narrow and, when
-                        # present, no card scan is useful on the same frame.
-                        header_box = (
-                            int(image.width * 0.07), int(image.height * 0.02),
-                            int(image.width * 0.28), int(image.height * 0.11),
-                        )
-                        card_gate, rebirth_gate, blueprint_gate = visual_gates(image)
+                        candidate_views = game_ui_viewports(full_image)
+                        if self.preferred_ui_region:
+                            candidate_views.sort(
+                                key=lambda item: item[0] != self.preferred_ui_region
+                            )
+                        gated_views = [
+                            (name, candidate, *visual_gates(candidate))
+                            for name, candidate in candidate_views
+                        ]
+                        card_gate = any(item[2] for item in gated_views)
+                        rebirth_gate = any(item[3] for item in gated_views)
+                        blueprint_gate = any(item[4] for item in gated_views)
                         self.diagnostics.set(
                             monitor_frame_number=frame_number,
                             card_visual_gate=card_gate,
                             rebirth_visual_gate=rebirth_gate,
                             blueprint_visual_gate=blueprint_gate,
+                            ui_candidate_regions=", ".join(item[0] for item in gated_views),
+                            rebirth_rank_read="not recognized",
+                            rebirth_requirement_token_count=0,
                         )
-                        if rebirth_gate:
-                            started = time.monotonic()
-                            header_tokens = read_region(ocr, image, header_box, max_width=736)
-                            self.diagnostics.set(
-                                rebirth_header_token_count=len(header_tokens),
-                                rebirth_header_ocr_ms=round((time.monotonic() - started) * 1000),
+
+                        # Rebirth gets first priority. Check every region whose
+                        # inexpensive visual gate fired. When all gates miss,
+                        # probe one candidate per captured frame as a bounded
+                        # fallback. A 32:9 layout is therefore rediscovered in
+                        # at most three frames without continuous full OCR.
+                        rebirth_candidates = [item for item in gated_views if item[3]]
+                        fallback = gated_views[self.ui_fallback_index % len(gated_views)]
+                        self.ui_fallback_index += 1
+                        if all(item[0] != fallback[0] for item in rebirth_candidates):
+                            rebirth_candidates.append(fallback)
+
+                        header_tokens = []
+                        header_open = False
+                        image = candidate_views[0][1]
+                        active_region = candidate_views[0][0]
+                        for region_name, candidate, _, _, _ in rebirth_candidates:
+                            # Use a slightly wider strip than the original
+                            # fixed crop. This tolerates Fortnite safe-zone and
+                            # UI-scale differences while Rank N remains a
+                            # strict parser that rejects network statistics.
+                            header_box = (
+                                int(candidate.width * 0.02), int(candidate.height * 0.01),
+                                int(candidate.width * 0.46), int(candidate.height * 0.18),
                             )
-                            self.diagnostics.sample("rebirth_header_ocr_sample", header_tokens)
-                        else:
-                            header_tokens = []
-                        header_open = bool(header_tokens and rebirth_header_is_open(header_tokens))
+                            started = time.monotonic()
+                            candidate_tokens = read_region(
+                                ocr, candidate, header_box, max_width=900
+                            )
+                            self.diagnostics.set(
+                                rebirth_header_token_count=len(candidate_tokens),
+                                rebirth_header_ocr_ms=round((time.monotonic() - started) * 1000),
+                                rebirth_probe_region=region_name,
+                            )
+                            self.diagnostics.sample(
+                                "rebirth_header_ocr_sample", candidate_tokens
+                            )
+                            if candidate_tokens and rebirth_header_is_open(candidate_tokens):
+                                header_tokens = candidate_tokens
+                                header_open = True
+                                image = candidate
+                                active_region = region_name
+                                self.preferred_ui_region = region_name
+                                break
                         self.diagnostics.set(rebirth_header_recognized=header_open)
                         if header_open:
+                            self.diagnostics.set(
+                                ui_active_region=active_region,
+                                ui_frame_size=f"{image.width}x{image.height}",
+                            )
                             rank = rebirth_rank(header_tokens)
                             self.diagnostics.set(rebirth_rank_read=rank or "not recognized")
                             if rank:
@@ -511,6 +556,23 @@ class DroidAdvisorApp:
                             self.stop_event.wait(0.20)
                             continue
 
+                        interaction_view = next(
+                            (item for item in gated_views if item[2] or item[4]),
+                            gated_views[0],
+                        )
+                        active_region, image, card_gate, _, blueprint_gate = interaction_view
+                        if card_gate or blueprint_gate:
+                            self.preferred_ui_region = active_region
+                        self.diagnostics.set(
+                            ui_active_region=active_region,
+                            ui_frame_size=f"{image.width}x{image.height}",
+                            blueprint_droid_read="not recognized",
+                            blueprint_droid_confidence=0.0,
+                            card_droid_read="not recognized",
+                            card_droid_confidence=0.0,
+                            card_header_token_count=0,
+                            interaction_token_count=0,
+                        )
                         tokens = []
                         if card_gate or blueprint_gate:
                             started = time.monotonic()
