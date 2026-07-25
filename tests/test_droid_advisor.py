@@ -1,7 +1,7 @@
 from droid_advisor.engine import advise, canonical, detect_cycle, match_droid, safe_to_sell_droids
 from droid_advisor.vision import OfflineOcr, OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, blueprint_visual_gate, card_header_rect, card_visual_gate, game_ui_viewport, game_ui_viewports, high_value_spawn, is_card_button_text, panel_is_open, read_region, rebirth_header_is_open, rebirth_visual_gate, selected_droid
 from droid_advisor.inventory import InventoryLedger
-from droid_advisor.updater import parse_release, version_tuple
+from droid_advisor.updater import parse_release, trusted_ssl_context, version_tuple
 from droid_advisor.cycles import CYCLES
 from droid_advisor.diagnostics import DiagnosticBuffer
 from PIL import Image
@@ -388,6 +388,13 @@ def test_update_release_requires_newer_version_and_digest():
     assert parse_release(release, "0.4.1").version == "0.5.0"
     assert parse_release(release, "0.5.0") is None
     assert version_tuple("v1.2.10") > version_tuple("1.2.9")
+
+
+def test_updater_uses_a_packaged_trusted_ca_bundle():
+    context = trusted_ssl_context()
+    assert context.verify_mode.name == "CERT_REQUIRED"
+    assert context.check_hostname is True
+    assert context.cert_store_stats()["x509_ca"] > 0
 
 
 def test_diagnostics_are_in_memory_and_report_runtime_state():

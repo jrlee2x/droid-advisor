@@ -9,13 +9,21 @@ import json
 import os
 from pathlib import Path
 import re
+import ssl
 import subprocess
 import sys
 import tempfile
 import urllib.request
 
+import certifi
+
 
 LATEST_RELEASE_URL = "https://api.github.com/repos/jrlee2x/droid-advisor/releases/latest"
+
+
+def trusted_ssl_context() -> ssl.SSLContext:
+    """Use the packaged Mozilla CA bundle for GitHub HTTPS verification."""
+    return ssl.create_default_context(cafile=certifi.where())
 
 
 def version_tuple(value: str) -> tuple[int, ...]:
@@ -57,7 +65,9 @@ def check_for_update(current_version: str) -> UpdateInfo | None:
         LATEST_RELEASE_URL,
         headers={"Accept": "application/vnd.github+json", "User-Agent": "DroidAdvisor-Updater"},
     )
-    with urllib.request.urlopen(request, timeout=12) as response:
+    with urllib.request.urlopen(
+        request, timeout=12, context=trusted_ssl_context()
+    ) as response:
         return parse_release(json.load(response), current_version)
 
 
@@ -65,7 +75,9 @@ def download_update(info: UpdateInfo) -> Path:
     target = Path(tempfile.gettempdir()) / f"DroidAdvisor-Setup-{info.version}.exe"
     request = urllib.request.Request(info.installer_url, headers={"User-Agent": "DroidAdvisor-Updater"})
     digest = hashlib.sha256()
-    with urllib.request.urlopen(request, timeout=60) as response, target.open("wb") as output:
+    with urllib.request.urlopen(
+        request, timeout=60, context=trusted_ssl_context()
+    ) as response, target.open("wb") as output:
         while chunk := response.read(1024 * 1024):
             output.write(chunk)
             digest.update(chunk)

@@ -1,10 +1,11 @@
 # PyInstaller onedir build. Onedir is intentionally used instead of onefile so
 # antivirus engines can inspect normal files without unpacking a self-extractor.
 
-from PyInstaller.utils.hooks import collect_all
+from PyInstaller.utils.hooks import collect_all, collect_data_files
 
 rapid_data, rapid_bins, rapid_hidden = collect_all("rapidocr_onnxruntime")
 ort_data, ort_bins, ort_hidden = collect_all("onnxruntime")
+certifi_data = collect_data_files("certifi")
 
 a = Analysis(
     ["launcher.py"],
@@ -13,6 +14,7 @@ a = Analysis(
     datas=(
         rapid_data
         + ort_data
+        + certifi_data
         + [
             ("assets/thumbnails", "assets/thumbnails"),
             ("assets/ATTRIBUTION.txt", "assets"),
