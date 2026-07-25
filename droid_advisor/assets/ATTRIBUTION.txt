@@ -10,3 +10,11 @@ The cropped thumbnails remain credited to their original guide creator and are
 included only as reference artwork for the rebirth targets displayed by Droid
 Advisor. Droid Tycoon and its game artwork belong to their respective owners.
 
+Complete Rebirth-rank tiles are cropped from:
+"High-res: Updated Rebirth Charts"
+Creator: u/Gnoembah
+Reddit: https://www.reddit.com/r/StarWarsDroidTycoon/comments/1v2ifpj/
+
+The four high-resolution charts cover RBC1 through RBC4 and Rebirth ranks
+1 through 30. The cropped tiles remain credited to their chart creator and
+are included only as compact reference artwork in the Rebirth target overlay.

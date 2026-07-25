@@ -1,6 +1,6 @@
 #define MyAppName "Droid Advisor"
-#define MyAppVersion "0.9.5"
-#define MyAppPublisher "Droid Advisor Contributors"
+#define MyAppVersion "1.0.0"
+#define MyAppPublisher "Swag Studios"
 
 #define MyAppExeName "DroidAdvisor.exe"
 
@@ -18,6 +18,7 @@ OutputBaseFilename=DroidAdvisor-Setup-{#MyAppVersion}
 Compression=lzma2
 SolidCompression=yes
 WizardStyle=modern
+SetupIconFile=assets\branding\droid-advisor.ico
 ArchitecturesAllowed=x64compatible
 ArchitecturesInstallIn64BitMode=x64compatible
 UninstallDisplayIcon={app}\{#MyAppExeName}
@@ -28,6 +29,7 @@ VersionInfoCompany={#MyAppPublisher}
 VersionInfoDescription=Passive Droid Tycoon rebirth-cycle advisor
 VersionInfoProductName={#MyAppName}
 VersionInfoProductVersion={#MyAppVersion}
+VersionInfoCopyright=Copyright (c) 2026 Swag Studios
 
 [Languages]
 Name: "english"; MessagesFile: "compiler:Default.isl"

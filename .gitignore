@@ -7,6 +7,10 @@
 droid_advisor/assets/source_cycles/
 droid_advisor/assets/thumbnails/
 droid_advisor/assets/quality_parts/
+droid_advisor/assets/source_rebirth_tiles/
+droid_advisor/assets/rebirth_tiles/
+droid_advisor/assets/branding/droid-advisor-logo-signed-source-v1.png
+droid_advisor/assets/branding/droid-advisor-logo-source-v1.png
 *.log
 .coverage
 **/.pytest_cache/

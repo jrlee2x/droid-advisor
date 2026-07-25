@@ -1,4 +1,4 @@
-# Droid Advisor (Python prototype)
+# Droid Advisor
 
 An offline, passive Windows companion for **Droid Tycoon**. It watches the game window, reads an open droid panel, and overlays a sell/keep recommendation based on the selected rebirth cycle and completed rebirth level. It never clicks or sends input to the game.
 
@@ -31,7 +31,9 @@ When a held blueprint pickup screen displays `TOSS BLUEPRINT ON CRAFTING STATION
 
 Press **Ctrl+Shift+D** to pause or resume. Tray controls also expose pause, settings, and exit.
 
-The draggable top-right **Rebirth Targets** overlay shows the exact three labeled droid cards for the rebirth currently being worked and the following rebirth. Press **Ctrl+Shift+R** or use the tray menu to show/hide it. Its screen position and visibility persist. At RB30, the second row previews RB1 of the next cycle. Galactic is the highest quality and satisfies requirements for Beskar and every lower quality.
+Press **Ctrl+Shift+C** to show or hide the Update 1.23 upgrade-chip cost reference.
+
+The draggable top-right **Rebirth Targets** overlay shows the complete guide card for the rebirth currently being worked and the following rebirth, including required droids, finish, rarity, credit cost, crystals, credit multiplier, and XP multiplier when provided by the guide. Press **Ctrl+Shift+R** or use the tray menu to show or hide it. Its screen position and visibility persist. At RB30, the second row previews RB1 of the next cycle. Galactic is the highest quality and satisfies requirements for Beskar and every lower quality.
 
 The optional **High-value conveyor alerts** setting watches the left-side spawn notification only. A large flashing alert appears for Diamond, Rainbow, or Beskar droids when the notification rarity is Legendary or Mythic. Galactic alerts appear for Epic, Legendary, and Mythic only. Identical text is deduplicated until the original notification disappears.
 
@@ -60,3 +62,5 @@ The output is `dist-installer\DroidAdvisor-Setup-<version>.exe` with a neighbori
 The build intentionally uses PyInstaller's inspectable `onedir` layout internally, disables UPX, and wraps it in a conventional Inno Setup installer. The release is currently unsigned, so Windows may display **Unknown publisher** and reputation-based SmartScreen or antivirus warnings remain possible. A reputable Authenticode code-signing certificate is required to materially improve publisher trust; `sign_release.ps1` signs and timestamps a release once such a certificate is installed.
 
 For updates, distribute a newer installer and run it normally over the existing version. Do not ask users to replace individual files inside the installation directory. A future updater should consume a signed release manifest from a stable HTTPS location; executing mutable binaries directly from a shared Google Drive file would create an avoidable supply-chain risk.
+
+Copyright © 2026 Swag Studios.

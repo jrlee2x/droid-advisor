@@ -14,13 +14,15 @@ import threading
 import time
 import traceback
 import tkinter as tk
+import webbrowser
 from tkinter import messagebox, ttk
 
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageTk
 import pystray
 from pynput import keyboard
 
 from . import __version__
+from .chip_costs import CHIP_COSTS_123
 from .cycles import CYCLES, MAX_REBIRTH
 from .qualities import quality_table
 from .diagnostics import DiagnosticBuffer, copy_text_to_clipboard
@@ -48,6 +50,8 @@ from .vision import (
 
 APP_DIR = Path(os.environ.get("APPDATA", Path.home())) / "DroidAdvisor"
 CONFIG_PATH = APP_DIR / "config.json"
+COMMUNITY_URL = "https://www.reddit.com/r/StarWarsDroidTycoon/"
+SWAG_STUDIOS_URL = "https://www.reddit.com/user/DepSwag/"
 DEFAULTS = {
     "cycle": 1,
     "completed_rebirth": 0,
@@ -58,6 +62,18 @@ DEFAULTS = {
     "requirements_overlay_y": 55,
     "spawn_alerts_enabled": True,
     "automatic_updates": True,
+}
+
+COLORS = {
+    "window": "#040b1c",
+    "panel": "#071a38",
+    "panel_alt": "#0c2a53",
+    "border": "#277fd0",
+    "cyan": "#32b7ff",
+    "green": "#72f2a0",
+    "text": "#f4f8fb",
+    "muted": "#91acd0",
+    "danger": "#e21d43",
 }
 
 
@@ -80,6 +96,12 @@ def save_config(config: dict) -> None:
 
 class DroidAdvisorApp:
     def __init__(self) -> None:
+        try:
+            ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(
+                "SwagStudios.DroidAdvisor"
+            )
+        except (AttributeError, OSError):
+            pass
         self.config = load_config()
         self.diagnostics = DiagnosticBuffer()
         self.diagnostics.record(f"Droid Advisor v{__version__} started")
@@ -90,18 +112,36 @@ class DroidAdvisorApp:
         self.frame_number = 0
         self.root = tk.Tk()
         self.root.title("Droid Advisor")
-        self.root.geometry("500x325")
+        self.root.geometry("620x570")
+        self.root.minsize(580, 540)
+        self.root.configure(bg=COLORS["window"])
+        self.brand_logo = self._branding_photo(72)
+        self.window_icon = self._branding_photo(48)
+        self.settings_backdrop = self._branding_photo_asset(
+            "droid-advisor-settings-backdrop.png", (572, 534)
+        )
+        self.settings_header = self._branding_photo_asset(
+            "droid-advisor-settings-header.png", (572, 82)
+        )
+        try:
+            self.root.iconbitmap(str(resource_path("assets", "branding", "droid-advisor.ico")))
+        except tk.TclError:
+            pass
+        if self.window_icon:
+            self.root.iconphoto(True, self.window_icon)
         self.root.protocol("WM_DELETE_WINDOW", self.hide_settings)
         self._build_settings()
         self._build_overlay()
         self._build_requirements_overlay()
         self._build_sell_list_overlay()
+        self._build_chip_cost_overlay()
         self._build_spawn_alert()
         self.tray = pystray.Icon("droid-advisor", self._tray_image(), "Droid Advisor", self._tray_menu())
         self.listener = keyboard.GlobalHotKeys({
             "<ctrl>+<shift>+d": self.toggle_pause,
             "<ctrl>+<shift>+r": lambda: self.events.put(("requirements_toggle", None)),
             "<ctrl>+<shift>+z": lambda: self.events.put(("sell_list_toggle", None)),
+            "<ctrl>+<shift>+c": lambda: self.events.put(("chip_cost_toggle", None)),
             "<ctrl>+<shift>+l": lambda: self.events.put(("diagnostics_copy", None)),
         })
         self.worker = threading.Thread(target=self._monitor, name="droid-monitor", daemon=True)
@@ -119,44 +159,178 @@ class DroidAdvisorApp:
         self.preferred_ui_region = None
         self.ui_fallback_index = 0
 
-    def _build_settings(self) -> None:
-        frame = ttk.Frame(self.root, padding=18)
-        frame.pack(fill="both", expand=True)
-        ttk.Label(frame, text=f"Droid Advisor v{__version__}", font=("Segoe UI", 18, "bold")).pack(anchor="w")
-        ttk.Label(frame, text="Passive rebirth-cycle sell guidance").pack(anchor="w", pady=(0, 15))
+    def _branding_photo(self, size: int) -> ImageTk.PhotoImage | None:
+        try:
+            asset = "droid-advisor-windows-icon.png" if size <= 48 else "droid-advisor-logo-v1.png"
+            image = Image.open(resource_path("assets", "branding", asset)).convert("RGBA")
+            image.thumbnail((size, size), Image.Resampling.LANCZOS)
+            return ImageTk.PhotoImage(image)
+        except (OSError, tk.TclError):
+            return None
 
-        controls = ttk.Frame(frame)
-        controls.pack(fill="x")
-        ttk.Label(controls, text="Rebirth cycle:").grid(row=0, column=0, sticky="w", pady=4)
+    def _branding_photo_asset(
+        self, filename: str, size: tuple[int, int]
+    ) -> ImageTk.PhotoImage | None:
+        try:
+            image = Image.open(resource_path("assets", "branding", filename)).convert("RGB")
+            image = image.resize(size, Image.Resampling.LANCZOS)
+            return ImageTk.PhotoImage(image)
+        except (OSError, tk.TclError):
+            return None
+
+    def _build_settings(self) -> None:
+        style = ttk.Style(self.root)
+        try:
+            style.theme_use("clam")
+        except tk.TclError:
+            pass
+        for style_name in ("Advisor.TCombobox", "Advisor.TSpinbox"):
+            style.configure(
+                style_name,
+                fieldbackground=COLORS["panel_alt"],
+                background=COLORS["panel_alt"],
+                foreground=COLORS["text"],
+                arrowcolor=COLORS["cyan"],
+                bordercolor=COLORS["border"],
+                lightcolor=COLORS["border"],
+                darkcolor=COLORS["border"],
+                padding=6,
+            )
+        style.map(
+            "Advisor.TCombobox",
+            fieldbackground=[("readonly", COLORS["panel_alt"])],
+            foreground=[("readonly", COLORS["text"])],
+            selectbackground=[("readonly", COLORS["panel_alt"])],
+            selectforeground=[("readonly", COLORS["text"])],
+        )
+
+        frame = tk.Label(
+            self.root, image=self.settings_backdrop, bg=COLORS["window"],
+            bd=0, highlightthickness=0, padx=24, pady=18,
+        )
+        frame.pack(fill="both", expand=True)
+
+        header = tk.Canvas(
+            frame, width=572, height=82, bg=COLORS["window"],
+            bd=0, highlightthickness=0,
+        )
+        header.pack(fill="x")
+        if self.settings_header:
+            header.create_image(0, 0, image=self.settings_header, anchor="nw")
+        if self.brand_logo:
+            header.create_image(38, 41, image=self.brand_logo, anchor="center")
+        header.create_text(
+            92, 27, text="DROID ADVISOR", fill=COLORS["text"],
+            font=("Segoe UI Semibold", 21), anchor="w",
+        )
+        header.create_text(
+            92, 57, text=f"REBIRTH INTELLIGENCE  •  VERSION {__version__}",
+            fill=COLORS["cyan"], font=("Segoe UI Semibold", 9), anchor="w",
+        )
+        tk.Frame(frame, bg=COLORS["danger"], height=3).pack(fill="x", pady=(6, 0))
+
+        controls = tk.Frame(
+            frame, bg=COLORS["panel"], highlightbackground=COLORS["border"], highlightthickness=1,
+        )
+        controls.pack(fill="x", pady=(10, 10))
+        tk.Label(
+            controls, text="CURRENT PROGRESS", bg=COLORS["panel"], fg=COLORS["cyan"],
+            font=("Segoe UI Semibold", 10), padx=16, pady=11,
+        ).grid(row=0, column=0, columnspan=4, sticky="w")
+        tk.Label(
+            controls, text="Rebirth cycle", bg=COLORS["panel"], fg=COLORS["muted"],
+            font=("Segoe UI", 10),
+        ).grid(row=1, column=0, sticky="w", padx=(16, 10), pady=(0, 15))
         self.cycle_var = tk.IntVar(value=int(self.config["cycle"]))
-        cycle_box = ttk.Combobox(controls, state="readonly", width=9, values=(1, 2, 3, 4), textvariable=self.cycle_var)
-        cycle_box.grid(row=0, column=1, sticky="w", padx=10)
+        cycle_box = ttk.Combobox(
+            controls, style="Advisor.TCombobox", state="readonly", width=7,
+            values=(1, 2, 3, 4), textvariable=self.cycle_var,
+        )
+        cycle_box.grid(row=1, column=1, sticky="w", pady=(0, 15))
         cycle_box.bind("<<ComboboxSelected>>", lambda _: self._settings_changed())
 
-        ttk.Label(controls, text="Rebirths completed:").grid(row=1, column=0, sticky="w", pady=4)
+        tk.Label(
+            controls, text="Rebirths completed", bg=COLORS["panel"], fg=COLORS["muted"],
+            font=("Segoe UI", 10),
+        ).grid(row=1, column=2, sticky="w", padx=(28, 10), pady=(0, 15))
         self.rb_var = tk.IntVar(value=int(self.config["completed_rebirth"]))
-        rb_spin = ttk.Spinbox(controls, from_=0, to=MAX_REBIRTH, width=7, textvariable=self.rb_var, command=self._settings_changed)
-        rb_spin.grid(row=1, column=1, sticky="w", padx=10)
+        rb_spin = ttk.Spinbox(
+            controls, style="Advisor.TSpinbox", from_=0, to=MAX_REBIRTH,
+            width=7, textvariable=self.rb_var, command=self._settings_changed,
+        )
+        rb_spin.grid(row=1, column=3, sticky="w", pady=(0, 15))
+        rb_spin.bind("<FocusOut>", lambda _: self._settings_changed())
 
         self.spawn_alert_var = tk.BooleanVar(value=bool(self.config["spawn_alerts_enabled"]))
-        ttk.Checkbutton(
+        tk.Checkbutton(
             controls, text="High-value conveyor alerts", variable=self.spawn_alert_var,
-            command=self._settings_changed,
-        ).grid(row=2, column=0, columnspan=2, sticky="w", pady=(7, 0))
+            command=self._settings_changed, bg=COLORS["panel"], fg=COLORS["text"],
+            activebackground=COLORS["panel"], activeforeground=COLORS["text"],
+            selectcolor=COLORS["panel_alt"], font=("Segoe UI", 10), bd=0,
+        ).grid(row=2, column=0, columnspan=2, sticky="w", padx=12, pady=(0, 11))
 
         self.update_var = tk.BooleanVar(value=bool(self.config["automatic_updates"]))
-        ttk.Checkbutton(
+        tk.Checkbutton(
             controls, text="Automatically check for updates", variable=self.update_var,
-            command=self._settings_changed,
-        ).grid(row=3, column=0, columnspan=2, sticky="w", pady=(5, 0))
-        ttk.Button(controls, text="Check now", command=self.check_updates).grid(row=3, column=2, padx=8)
+            command=self._settings_changed, bg=COLORS["panel"], fg=COLORS["text"],
+            activebackground=COLORS["panel"], activeforeground=COLORS["text"],
+            selectcolor=COLORS["panel_alt"], font=("Segoe UI", 10), bd=0,
+        ).grid(row=3, column=0, columnspan=2, sticky="w", padx=12, pady=(0, 13))
+        tk.Button(
+            controls, text="CHECK NOW", command=self.check_updates,
+            bg=COLORS["cyan"], fg="#061018", activebackground="#5cf1fb",
+            activeforeground="#061018", relief="flat", bd=0,
+            font=("Segoe UI Semibold", 9), padx=16, pady=7, cursor="hand2",
+        ).grid(row=3, column=2, columnspan=2, sticky="e", padx=(12, 16), pady=(0, 13))
 
         initial_state = "Paused" if self.config["paused"] else "Monitoring"
         self.status_var = tk.StringVar(
-            value=f"{initial_state} | RBC{self.config['cycle']}, working on RB{int(self.config['completed_rebirth']) + 1}"
+            value=f"{initial_state.upper()}  •  RBC{self.config['cycle']}  •  "
+                  f"WORKING ON RB{int(self.config['completed_rebirth']) + 1}"
         )
-        ttk.Label(frame, textvariable=self.status_var, font=("Segoe UI", 11, "bold")).pack(anchor="w", pady=(16, 2))
-        ttk.Label(frame, text="Ctrl+Shift+D pauses/resumes. Ctrl+Shift+R toggles targets. Ctrl+Shift+Z shows safe-to-sell droids.\nCtrl+Shift+L copies diagnostics. Cycle and level update from View Rebirth.").pack(anchor="w")
+        tk.Label(
+            frame, textvariable=self.status_var, bg=COLORS["panel_alt"], fg=COLORS["green"],
+            font=("Segoe UI Semibold", 11), anchor="w", padx=14, pady=10,
+        ).pack(fill="x", pady=(10, 8))
+        tk.Label(
+            frame,
+            text="Ctrl+Shift+D  Pause     Ctrl+Shift+R  Targets     Ctrl+Shift+Z  Safe to sell\n"
+                 "Ctrl+Shift+C  Chip costs     Ctrl+Shift+L  Diagnostics",
+            bg=COLORS["window"], fg=COLORS["muted"], justify="left", font=("Segoe UI", 9),
+        ).pack(anchor="w", pady=(3, 0))
+
+        community = tk.Frame(
+            frame, bg=COLORS["panel"], highlightbackground=COLORS["border"],
+            highlightthickness=1, padx=14, pady=10,
+        )
+        community.pack(fill="x", pady=(13, 8))
+        community.columnconfigure(0, weight=1)
+        tk.Label(
+            community, text="SWAG STUDIOS COMMUNITY", bg=COLORS["panel"], fg=COLORS["text"],
+            font=("Segoe UI Semibold", 10),
+        ).grid(row=0, column=0, columnspan=2, sticky="w")
+        tk.Label(
+            community, text="News, releases, support, and development updates",
+            bg=COLORS["panel"], fg=COLORS["muted"], font=("Segoe UI", 8),
+        ).grid(row=1, column=0, columnspan=2, sticky="w", pady=(1, 8))
+        tk.Button(
+            community, text="DROID TYCOON COMMUNITY",
+            command=lambda: webbrowser.open(COMMUNITY_URL),
+            bg=COLORS["cyan"], fg="#061018", activebackground="#68c4ff",
+            activeforeground="#061018", relief="flat", bd=0,
+            font=("Segoe UI Semibold", 8), padx=12, pady=6, cursor="hand2",
+        ).grid(row=2, column=0, sticky="w")
+        tk.Button(
+            community, text="DEPSWAG PROFILE",
+            command=lambda: webbrowser.open(SWAG_STUDIOS_URL),
+            bg=COLORS["danger"], fg="white", activebackground="#ff355a",
+            activeforeground="white", relief="flat", bd=0,
+            font=("Segoe UI Semibold", 8), padx=12, pady=6, cursor="hand2",
+        ).grid(row=2, column=1, sticky="e")
+        tk.Label(
+            frame, text="© 2026 Swag Studios", bg=COLORS["window"], fg="#6684ac",
+            font=("Segoe UI", 8),
+        ).pack(side="bottom", anchor="e")
 
     def _build_overlay(self) -> None:
         self.overlay = tk.Toplevel(self.root)
@@ -215,6 +389,73 @@ class DroidAdvisorApp:
         self.sell_list_overlay.attributes("-alpha", 0.97)
         self.sell_list_frame = tk.Frame(self.sell_list_overlay, bg="#111820", bd=3, relief="solid")
         self.sell_list_frame.pack(fill="both", expand=True)
+
+    def _build_chip_cost_overlay(self) -> None:
+        self.chip_cost_overlay = tk.Toplevel(self.root)
+        self.chip_cost_overlay.withdraw()
+        self.chip_cost_overlay.overrideredirect(True)
+        self.chip_cost_overlay.attributes("-topmost", True)
+        self.chip_cost_overlay.attributes("-alpha", 0.98)
+        frame = tk.Frame(
+            self.chip_cost_overlay, bg=COLORS["window"],
+            highlightbackground="#ff9e18", highlightthickness=2,
+        )
+        frame.pack(fill="both", expand=True)
+        header = tk.Frame(frame, bg=COLORS["panel"])
+        header.grid(row=0, column=0, columnspan=3, sticky="ew")
+        tk.Label(
+            header, text="UPGRADE CHIP COSTS  •  UPDATE 1.23",
+            bg=COLORS["panel"], fg="#ffad24", font=("Segoe UI Semibold", 14),
+            padx=16, pady=11,
+        ).pack(side="left")
+        tk.Button(
+            header, text="×", command=self.chip_cost_overlay.withdraw,
+            bg=COLORS["danger"], fg="white", activebackground="#d1324a",
+            relief="flat", font=("Segoe UI Semibold", 12), padx=9, pady=2,
+            cursor="hand2",
+        ).pack(side="right", padx=7, pady=6)
+
+        rarity_colors = {"EPIC": "#8f63ff", "LEGENDARY": "#ffad24", "MYTHIC": "#ff2870"}
+        quality_colors = {
+            "GOLD": "#f2b21b", "DIAMOND": "#35d9ff", "RAINBOW": "#c353ff",
+            "BESKAR": "#c4ccd3", "GALACTIC": "#a92cff",
+        }
+        for row, (rarity, quality, cost) in enumerate(CHIP_COSTS_123, start=1):
+            background = COLORS["panel_alt"] if row % 2 else COLORS["panel"]
+            tk.Label(
+                frame, text=rarity, bg=background, fg=rarity_colors[rarity],
+                font=("Segoe UI Semibold", 11), anchor="w", width=13, padx=14, pady=6,
+            ).grid(row=row, column=0, sticky="nsew")
+            tk.Label(
+                frame, text=quality, bg=background, fg=quality_colors[quality],
+                font=("Segoe UI Semibold", 11), anchor="w", width=13, padx=5, pady=6,
+            ).grid(row=row, column=1, sticky="nsew")
+            tk.Label(
+                frame, text=f"{cost:,} CHIPS", bg=background, fg=COLORS["text"],
+                font=("Segoe UI Semibold", 12), anchor="e", width=13, padx=14, pady=6,
+            ).grid(row=row, column=2, sticky="nsew")
+        tk.Label(
+            frame, text="Ctrl+Shift+C toggles this reference",
+            bg=COLORS["window"], fg=COLORS["muted"], font=("Segoe UI", 8),
+            padx=12, pady=8,
+        ).grid(row=len(CHIP_COSTS_123) + 1, column=0, columnspan=3, sticky="ew")
+
+    def toggle_chip_cost_overlay(self) -> None:
+        if self.chip_cost_overlay.state() != "withdrawn":
+            self.chip_cost_overlay.withdraw()
+            return
+        self.chip_cost_overlay.update_idletasks()
+        game_rect = game_window_rect()
+        if game_rect:
+            left, top, width, height = game_rect
+            x = left + max(10, (width - self.chip_cost_overlay.winfo_reqwidth()) // 2)
+            y = top + max(10, (height - self.chip_cost_overlay.winfo_reqheight()) // 2)
+        else:
+            x = max(10, (self.chip_cost_overlay.winfo_screenwidth() - self.chip_cost_overlay.winfo_reqwidth()) // 2)
+            y = max(10, (self.chip_cost_overlay.winfo_screenheight() - self.chip_cost_overlay.winfo_reqheight()) // 2)
+        self.chip_cost_overlay.geometry(f"+{x}+{y}")
+        self.chip_cost_overlay.deiconify()
+        self.chip_cost_overlay.lift()
 
     def render_sell_list_overlay(self) -> None:
         for child in self.sell_list_frame.winfo_children():
@@ -323,46 +564,54 @@ class DroidAdvisorApp:
         self.requirements_photos.clear()
         cycle = int(self.config["cycle"])
         completed = int(self.config["completed_rebirth"])
-        header = tk.Frame(self.requirements_frame, bg="#111820")
-        header.grid(row=0, column=0, columnspan=4, sticky="ew")
+        header = tk.Frame(self.requirements_frame, bg=COLORS["panel"])
+        header.grid(row=0, column=0, sticky="ew")
         tk.Label(
             header,
             text=f"REBIRTH TARGETS  •  RBC{cycle}  •  {completed} COMPLETE",
-            bg="#111820", fg="#72f2a0", font=("Segoe UI", 9, "bold"), padx=8, pady=5,
+            bg=COLORS["panel"], fg=COLORS["green"],
+            font=("Segoe UI Semibold", 10), padx=10, pady=8,
         ).pack(side="left", fill="x", expand=True)
         tk.Button(
-            header, text="X", command=self.toggle_requirements_overlay,
-            bg="#a8232e", fg="white", activebackground="#c92b39", relief="flat",
-            font=("Segoe UI", 8, "bold"), padx=7,
-        ).pack(side="right", padx=4, pady=3)
-        for row_index, (row_cycle, rb, row_label) in enumerate(self._display_rebirths(), start=1):
+            header, text="×", command=self.toggle_requirements_overlay,
+            bg=COLORS["danger"], fg="white", activebackground="#d1324a",
+            relief="flat", font=("Segoe UI Semibold", 12), padx=8, pady=1,
+            cursor="hand2",
+        ).pack(side="right", padx=6, pady=5)
+        for row_index, (row_cycle, rank, row_label) in enumerate(self._display_rebirths(), start=1):
+            section = tk.Frame(self.requirements_frame, bg=COLORS["window"])
+            section.grid(row=row_index, column=0, sticky="ew", padx=5, pady=(5, 2))
             tk.Label(
-                self.requirements_frame, text=f"{row_label}\nRBC{row_cycle}\nRB{rb}",
-                bg="#19232d", fg="white", width=9, font=("Segoe UI", 8, "bold"),
-            ).grid(row=row_index, column=0, sticky="nsew", padx=(4, 3), pady=3)
-            qualities = quality_table()[str(row_cycle)][str(rb)]
-            for slot, name in enumerate(CYCLES[row_cycle][rb - 1], start=1):
-                quality = qualities[slot - 1]
-                card = tk.Frame(self.requirements_frame, bg="#0b0f14")
-                card.grid(row=row_index, column=slot, padx=2, pady=3, sticky="nsew")
-                path = resource_path("assets", "thumbnails", f"rbc{row_cycle}", f"rb{rb:02d}", f"{slot}.png")
-                try:
-                    photo = tk.PhotoImage(file=str(path))
-                    self.requirements_photos.append(photo)
-                    tk.Label(card, image=photo, bg="#0b0f14").pack()
-                except tk.TclError:
-                    quality_colors = {
-                        "BASE": "#d8d8d8", "GOLD": "#f2b21b", "DIAMOND": "#35d9ff",
-                        "RAINBOW": "#c353ff", "BESKAR": "#b8c0c8", "GALACTIC": "#a92cff",
-                    }
-                    tk.Label(
-                        card, text=quality, width=12, height=5, bg="#26313b",
-                        fg=quality_colors[quality], font=("Segoe UI", 8, "bold"),
-                    ).pack()
-                tk.Label(
-                    card, text=name, bg="#0b0f14", fg="white", font=("Segoe UI", 7, "bold"),
-                    width=14, wraplength=92,
-                ).pack(fill="x")
+                section, text=f"{row_label}  •  RBC{row_cycle}  •  RB{rank}",
+                bg=COLORS["panel_alt"], fg=COLORS["text"], anchor="w",
+                font=("Segoe UI Semibold", 9), padx=10, pady=5,
+            ).pack(fill="x")
+            path = resource_path(
+                "assets", "rebirth_tiles", f"rbc{row_cycle}", f"rb{rank:02d}.png",
+            )
+            try:
+                photo = tk.PhotoImage(file=str(path))
+                self.requirements_photos.append(photo)
+                tk.Label(section, image=photo, bg=COLORS["window"], bd=0).pack()
+            except tk.TclError:
+                self._render_rebirth_tile_fallback(section, row_cycle, rank)
+
+    def _render_rebirth_tile_fallback(self, parent: tk.Widget, cycle: int, rank: int) -> None:
+        qualities = quality_table()[str(cycle)][str(rank)]
+        fallback = tk.Frame(parent, bg=COLORS["panel"], padx=10, pady=8)
+        fallback.pack(fill="x")
+        tk.Label(
+            fallback, text=f"RB{rank}", bg=COLORS["panel"], fg=COLORS["cyan"],
+            font=("Segoe UI Semibold", 18), width=5,
+        ).pack(side="left")
+        entries = tk.Frame(fallback, bg=COLORS["panel"])
+        entries.pack(side="left", fill="x", expand=True)
+        for name, quality in zip(CYCLES[cycle][rank - 1], qualities):
+            tk.Label(
+                entries, text=f"{name}  •  {quality}",
+                bg=COLORS["panel"], fg=COLORS["text"], anchor="w",
+                font=("Segoe UI Semibold", 9),
+            ).pack(fill="x", pady=1)
 
     def toggle_requirements_overlay(self) -> None:
         visible = not bool(self.config["requirements_overlay_visible"])
@@ -376,17 +625,25 @@ class DroidAdvisorApp:
             self.requirements_overlay.withdraw()
 
     def _tray_image(self) -> Image.Image:
-        image = Image.new("RGB", (64, 64), "#15202b")
-        draw = ImageDraw.Draw(image)
-        draw.ellipse((7, 7, 57, 57), fill="#26e887")
-        draw.text((19, 15), "D", fill="#101820")
-        return image
+        try:
+            logo = Image.open(resource_path("assets", "branding", "droid-advisor-logo-v1.png")).convert("RGBA")
+            logo.thumbnail((58, 58), Image.Resampling.LANCZOS)
+            image = Image.new("RGBA", (64, 64), COLORS["window"])
+            image.alpha_composite(logo, ((64 - logo.width) // 2, (64 - logo.height) // 2))
+            return image
+        except OSError:
+            image = Image.new("RGB", (64, 64), COLORS["window"])
+            draw = ImageDraw.Draw(image)
+            draw.ellipse((7, 7, 57, 57), fill=COLORS["cyan"])
+            draw.text((19, 15), "D", fill=COLORS["window"])
+            return image
 
     def _tray_menu(self):
         return pystray.Menu(
             pystray.MenuItem("Pause / Resume", lambda: self.toggle_pause()),
             pystray.MenuItem("Show / Hide rebirth targets", lambda: self.events.put(("requirements_toggle", None))),
             pystray.MenuItem("Show / Hide safe-to-sell list", lambda: self.events.put(("sell_list_toggle", None))),
+            pystray.MenuItem("Show / Hide upgrade chip costs", lambda: self.events.put(("chip_cost_toggle", None))),
             pystray.MenuItem("Copy diagnostic report", lambda: self.events.put(("diagnostics_copy", None))),
             pystray.MenuItem("Enable detailed diagnostics (2 minutes)", lambda: self.events.put(("diagnostics_detailed", None))),
             pystray.MenuItem("Settings", lambda: self.events.put(("settings", None))),
@@ -402,7 +659,8 @@ class DroidAdvisorApp:
             save_config(self.config)
             state = "Paused" if self.config["paused"] else "Monitoring"
             self.status_var.set(
-                f"{state} | RBC{self.config['cycle']}, working on RB{self.config['completed_rebirth'] + 1}"
+                f"{state.upper()}  •  RBC{self.config['cycle']}  •  "
+                f"WORKING ON RB{self.config['completed_rebirth'] + 1}"
             )
             self.render_requirements_overlay()
         except (ValueError, tk.TclError):
@@ -556,36 +814,85 @@ class DroidAdvisorApp:
                             self.stop_event.wait(0.20)
                             continue
 
-                        interaction_view = next(
-                            (item for item in gated_views if item[2] or item[4]),
-                            gated_views[0],
+                        interaction_candidates = [
+                            item for item in gated_views if item[2] or item[4]
+                        ]
+                        interaction_view = (
+                            interaction_candidates[0]
+                            if interaction_candidates else gated_views[0]
                         )
                         active_region, image, card_gate, _, blueprint_gate = interaction_view
-                        if card_gate or blueprint_gate:
-                            self.preferred_ui_region = active_region
+                        tokens = []
+                        blueprint_open = False
+                        card_panel_open = False
+                        total_interaction_ms = 0
+                        attempted_regions = []
+                        for candidate_view in interaction_candidates:
+                            (
+                                candidate_region,
+                                candidate_image,
+                                candidate_card_gate,
+                                _,
+                                candidate_blueprint_gate,
+                            ) = candidate_view
+                            started = time.monotonic()
+                            interaction_box = (
+                                0, int(candidate_image.height * 0.22),
+                                int(candidate_image.width * 0.85), int(candidate_image.height * 0.94),
+                            )
+                            candidate_tokens = read_region(
+                                ocr, candidate_image, interaction_box, max_width=1000
+                            )
+                            total_interaction_ms += round(
+                                (time.monotonic() - started) * 1000
+                            )
+                            attempted_regions.append(candidate_region)
+                            candidate_blueprint_open = (
+                                candidate_blueprint_gate
+                                and blueprint_is_visible(
+                                    candidate_tokens,
+                                    candidate_image.width,
+                                    candidate_image.height,
+                                )
+                            )
+                            candidate_card_open = (
+                                not candidate_blueprint_open
+                                and candidate_card_gate
+                                and panel_is_open(
+                                    candidate_tokens,
+                                    candidate_image.width,
+                                    candidate_image.height,
+                                )
+                            )
+                            if not tokens:
+                                tokens = candidate_tokens
+                            if candidate_blueprint_open or candidate_card_open:
+                                (
+                                    active_region,
+                                    image,
+                                    card_gate,
+                                    _,
+                                    blueprint_gate,
+                                ) = candidate_view
+                                tokens = candidate_tokens
+                                blueprint_open = candidate_blueprint_open
+                                card_panel_open = candidate_card_open
+                                self.preferred_ui_region = candidate_region
+                                break
+
                         self.diagnostics.set(
                             ui_active_region=active_region,
                             ui_frame_size=f"{image.width}x{image.height}",
+                            interaction_regions_attempted=", ".join(attempted_regions) or "none",
+                            interaction_token_count=len(tokens),
+                            interaction_ocr_ms=total_interaction_ms,
                             blueprint_droid_read="not recognized",
                             blueprint_droid_confidence=0.0,
                             card_droid_read="not recognized",
                             card_droid_confidence=0.0,
                             card_header_token_count=0,
-                            interaction_token_count=0,
                         )
-                        tokens = []
-                        if card_gate or blueprint_gate:
-                            started = time.monotonic()
-                            interaction_box = (
-                                0, int(image.height * 0.22),
-                                int(image.width * 0.85), int(image.height * 0.94),
-                            )
-                            tokens = read_region(ocr, image, interaction_box, max_width=1000)
-                            self.diagnostics.set(
-                                interaction_token_count=len(tokens),
-                                interaction_ocr_ms=round((time.monotonic() - started) * 1000),
-                            )
-                            self.diagnostics.sample("interaction_ocr_sample", tokens)
+                        self.diagnostics.sample("interaction_ocr_sample", tokens)
 
                         now = time.monotonic()
                         spawn = None
@@ -615,7 +922,6 @@ class DroidAdvisorApp:
                             self.last_spawn_signature = spawn
                             self.last_spawn_at = now
                             self.events.put(("spawn_alert", spawn))
-                        blueprint_open = blueprint_gate and blueprint_is_visible(tokens, image.width, image.height)
                         self.diagnostics.set(blueprint_recognized=blueprint_open)
                         if blueprint_open:
                             droid, confidence = selected_droid(tokens, image.width, image.height)
@@ -655,7 +961,7 @@ class DroidAdvisorApp:
                             self.pending_blueprint_signature = None
                             self.pending_blueprint_count = 0
 
-                        if not blueprint_open and card_gate and panel_is_open(tokens, image.width, image.height):
+                        if card_panel_open:
                             self.diagnostics.set(card_panel_recognized=True)
                             droid, confidence = selected_droid(tokens, image.width, image.height)
                             header_rect = card_header_rect(tokens, image.width, image.height)
@@ -745,6 +1051,8 @@ class DroidAdvisorApp:
                     self.toggle_requirements_overlay()
                 elif kind == "sell_list_toggle":
                     self.toggle_sell_list_overlay()
+                elif kind == "chip_cost_toggle":
+                    self.toggle_chip_cost_overlay()
                 elif kind == "diagnostics_copy":
                     self.copy_diagnostic_report()
                 elif kind == "diagnostics_detailed":

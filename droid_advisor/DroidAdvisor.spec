@@ -17,6 +17,12 @@ a = Analysis(
         + certifi_data
         + [
             ("assets/thumbnails", "assets/thumbnails"),
+            ("assets/rebirth_tiles", "assets/rebirth_tiles"),
+            ("assets/branding/droid-advisor-logo-v1.png", "assets/branding"),
+            ("assets/branding/droid-advisor-windows-icon.png", "assets/branding"),
+            ("assets/branding/droid-advisor-settings-backdrop.png", "assets/branding"),
+            ("assets/branding/droid-advisor-settings-header.png", "assets/branding"),
+            ("assets/branding/droid-advisor.ico", "assets/branding"),
             ("assets/ATTRIBUTION.txt", "assets"),
             ("assets/quality_requirements.json", "assets"),
         ]
@@ -39,6 +45,7 @@ exe = EXE(
     strip=False,
     upx=False,
     console=False,
+    icon="assets/branding/droid-advisor.ico",
     disable_windowed_traceback=False,
     target_arch=None,
     codesign_identity=None,

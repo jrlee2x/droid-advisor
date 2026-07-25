@@ -4,7 +4,36 @@ from droid_advisor.inventory import InventoryLedger
 from droid_advisor.updater import parse_release, trusted_ssl_context, version_tuple
 from droid_advisor.cycles import CYCLES
 from droid_advisor.diagnostics import DiagnosticBuffer
+from droid_advisor.extract_rebirth_tiles import tile_bounds
+from droid_advisor.chip_costs import CHIP_COSTS_123
 from PIL import Image
+
+
+def test_rebirth_tile_bounds_cover_all_ranks_without_overlap():
+    previous_bottom_by_column = {}
+    for rank in range(1, 31):
+        left, top, right, bottom = tile_bounds(rank)
+        assert 0 <= left < right <= 4688
+        assert 0 <= top < bottom <= 6473
+        column = 0 if rank <= 12 else 1 if rank <= 21 else 2
+        if column in previous_bottom_by_column:
+            assert top > previous_bottom_by_column[column]
+        previous_bottom_by_column[column] = bottom
+
+
+def test_update_123_chip_costs_match_published_reference():
+    assert CHIP_COSTS_123 == (
+        ("EPIC", "BESKAR", 3000),
+        ("EPIC", "GALACTIC", 6000),
+        ("LEGENDARY", "RAINBOW", 3000),
+        ("LEGENDARY", "BESKAR", 7500),
+        ("LEGENDARY", "GALACTIC", 20000),
+        ("MYTHIC", "GOLD", 4000),
+        ("MYTHIC", "DIAMOND", 8000),
+        ("MYTHIC", "RAINBOW", 20000),
+        ("MYTHIC", "BESKAR", 40000),
+        ("MYTHIC", "GALACTIC", 70000),
+    )
 
 
 def test_proto_roller_at_completed_22_varies_by_cycle():
