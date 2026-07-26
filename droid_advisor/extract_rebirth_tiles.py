@@ -15,8 +15,12 @@ X_BOUNDS = ((160, 1595), (1670, 3020), (3135, 4485))
 GRID_TOP = 735
 GRID_BOTTOM = 6460
 GROUPS = ((1, 12), (13, 21), (22, 30))
-BOTTOM_TRIMS = (60, 60, 115)
-TOP_PADDING = (0, 0, 42)
+# Every source-chart card begins slightly above its nominal grid row.  The
+# original extractor accounted for that only in the third column, which cut
+# the first requirement line off ranks 1-21.  Shift the first two crop windows
+# upward by the same 42 source pixels while preserving their existing height.
+BOTTOM_TRIMS = (102, 102, 115)
+TOP_PADDING = (42, 42, 42)
 DISPLAY_WIDTH = 430
 
 

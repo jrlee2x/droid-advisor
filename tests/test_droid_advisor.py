@@ -1,10 +1,12 @@
+from pathlib import Path
+
 from droid_advisor.engine import advise, canonical, detect_cycle, match_droid, safe_to_sell_droids
 from droid_advisor.vision import OfflineOcr, OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, blueprint_visual_gate, card_header_rect, card_visual_gate, game_ui_viewport, game_ui_viewports, high_value_spawn, is_card_button_text, panel_is_open, read_region, rebirth_header_is_open, rebirth_visual_gate, selected_droid
 from droid_advisor.inventory import InventoryLedger
 from droid_advisor.updater import parse_release, trusted_ssl_context, version_tuple
 from droid_advisor.cycles import CYCLES
 from droid_advisor.diagnostics import DiagnosticBuffer
-from droid_advisor.extract_rebirth_tiles import tile_bounds
+from droid_advisor.extract_rebirth_tiles import DISPLAY_WIDTH, GRID_TOP, GROUPS, TOP_PADDING, tile_bounds
 from droid_advisor.chip_costs import CHIP_COSTS_123
 from PIL import Image
 
@@ -19,6 +21,30 @@ def test_rebirth_tile_bounds_cover_all_ranks_without_overlap():
         if column in previous_bottom_by_column:
             assert top > previous_bottom_by_column[column]
         previous_bottom_by_column[column] = bottom
+
+
+def test_rebirth_tile_bounds_include_full_card_header_in_every_column():
+    for column, (first, _last) in enumerate(GROUPS):
+        _left, top, _right, _bottom = tile_bounds(first)
+        assert TOP_PADDING[column] == 42
+        assert top == GRID_TOP - 42
+
+
+def test_rebirth_tiles_fit_all_supported_overlay_resolutions():
+    assets = Path(__file__).resolve().parents[1] / "droid_advisor" / "assets" / "rebirth_tiles"
+    viewports = ((1920, 1080), (2560, 1440), (5120, 1440))
+    for cycle in range(1, 5):
+        dimensions = {}
+        for rank in range(1, 31):
+            with Image.open(assets / f"rbc{cycle}" / f"rb{rank:02d}.png") as tile:
+                dimensions[rank] = tile.size
+                assert tile.width == DISPLAY_WIDTH
+        for rank in range(1, 30):
+            overlay_width = max(dimensions[rank][0], dimensions[rank + 1][0]) + 20
+            overlay_height = dimensions[rank][1] + dimensions[rank + 1][1] + 150
+            for viewport_width, viewport_height in viewports:
+                assert overlay_width <= viewport_width
+                assert overlay_height <= viewport_height
 
 
 def test_update_123_chip_costs_match_published_reference():

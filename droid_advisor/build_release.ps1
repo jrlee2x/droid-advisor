@@ -14,6 +14,8 @@ if (-not (Test-Path $python)) {
 Push-Location $root
 try {
     & $python -m pip install --disable-pip-version-check "pyinstaller==6.15.0"
+    & $python (Join-Path $root "extract_rebirth_tiles.py")
+    if ($LASTEXITCODE -ne 0) { throw "Rebirth tile generation failed." }
     Remove-Item -Recurse -Force build, dist, dist-installer -ErrorAction SilentlyContinue
     & $python -m PyInstaller --noconfirm --clean DroidAdvisor.spec
     if ($LASTEXITCODE -ne 0) { throw "PyInstaller failed." }
