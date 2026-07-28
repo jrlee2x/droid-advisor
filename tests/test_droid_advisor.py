@@ -32,7 +32,20 @@ def test_rebirth_tile_bounds_include_full_card_header_in_every_column():
 
 def test_rebirth_tiles_fit_all_supported_overlay_resolutions():
     assets = Path(__file__).resolve().parents[1] / "droid_advisor" / "assets" / "rebirth_tiles"
-    viewports = ((1920, 1080), (2560, 1440), (5120, 1440))
+    viewports = (
+        (1280, 720),
+        (1366, 768),
+        (1600, 900),
+        (1920, 1080),
+        (1920, 1200),
+        (1920, 1440),
+        (2560, 1080),
+        (2560, 1440),
+        (3440, 1440),
+        (3840, 1600),
+        (3840, 2160),
+        (5120, 1440),
+    )
     for cycle in range(1, 5):
         dimensions = {}
         for rank in range(1, 31):
