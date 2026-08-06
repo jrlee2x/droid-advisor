@@ -28,6 +28,14 @@ from .qualities import quality_table
 from .diagnostics import DiagnosticBuffer, copy_text_to_clipboard
 from .engine import advise, detect_cycle, safe_to_sell_droids
 from .updater import check_for_update, download_update, launch_installer
+from .windowing import (
+    clamp_window_position,
+    geometry_position,
+    monitor_topology_signature,
+    monitor_work_areas,
+    primary_work_area,
+    top_right_position,
+)
 from .vision import (
     OfflineOcr,
     GameCapture,
@@ -136,6 +144,8 @@ class DroidAdvisorApp:
         self._build_sell_list_overlay()
         self._build_chip_cost_overlay()
         self._build_spawn_alert()
+        self.display_signature = monitor_topology_signature(monitor_work_areas())
+        self.display_watch_after = self.root.after(1000, self._watch_display_topology)
         self.tray = pystray.Icon("droid-advisor", self._tray_image(), "Droid Advisor", self._tray_menu())
         self.listener = keyboard.GlobalHotKeys({
             "<ctrl>+<shift>+d": self.toggle_pause,
@@ -143,6 +153,7 @@ class DroidAdvisorApp:
             "<ctrl>+<shift>+z": lambda: self.events.put(("sell_list_toggle", None)),
             "<ctrl>+<shift>+c": lambda: self.events.put(("chip_cost_toggle", None)),
             "<ctrl>+<shift>+l": lambda: self.events.put(("diagnostics_copy", None)),
+            "<ctrl>+<shift>+<home>": lambda: self.events.put(("overlay_reset", None)),
         })
         self.worker = threading.Thread(target=self._monitor, name="droid-monitor", daemon=True)
         self.frame_worker = threading.Thread(target=self._capture_frames, name="game-frame-capture", daemon=True)
@@ -361,10 +372,24 @@ class DroidAdvisorApp:
         self.render_requirements_overlay()
         self.requirements_overlay.update_idletasks()
         x = int(self.config["requirements_overlay_x"])
-        if x < 0:
-            x = self.requirements_overlay.winfo_screenwidth() - self.requirements_overlay.winfo_reqwidth() - 25
-        y = int(self.config["requirements_overlay_y"])
-        self.requirements_overlay.geometry(f"+{x}+{y}")
+        if x == -1:
+            x, y = top_right_position(
+                self.requirements_overlay.winfo_reqwidth(),
+                self.requirements_overlay.winfo_reqheight(),
+                primary_work_area(monitor_work_areas()),
+            )
+        else:
+            y = int(self.config["requirements_overlay_y"])
+        x, y = clamp_window_position(
+            x,
+            y,
+            self.requirements_overlay.winfo_reqwidth(),
+            self.requirements_overlay.winfo_reqheight(),
+            monitor_work_areas(),
+        )
+        self.requirements_overlay.geometry(geometry_position(x, y))
+        self.config["requirements_overlay_x"] = x
+        self.config["requirements_overlay_y"] = y
         if not self.config["requirements_overlay_visible"]:
             self.requirements_overlay.withdraw()
 
@@ -453,7 +478,14 @@ class DroidAdvisorApp:
         else:
             x = max(10, (self.chip_cost_overlay.winfo_screenwidth() - self.chip_cost_overlay.winfo_reqwidth()) // 2)
             y = max(10, (self.chip_cost_overlay.winfo_screenheight() - self.chip_cost_overlay.winfo_reqheight()) // 2)
-        self.chip_cost_overlay.geometry(f"+{x}+{y}")
+        x, y = clamp_window_position(
+            x,
+            y,
+            self.chip_cost_overlay.winfo_reqwidth(),
+            self.chip_cost_overlay.winfo_reqheight(),
+            monitor_work_areas(),
+        )
+        self.chip_cost_overlay.geometry(geometry_position(x, y))
         self.chip_cost_overlay.deiconify()
         self.chip_cost_overlay.lift()
 
@@ -504,7 +536,14 @@ class DroidAdvisorApp:
         else:
             x = max(10, (self.sell_list_overlay.winfo_screenwidth() - self.sell_list_overlay.winfo_reqwidth()) // 2)
             y = max(10, (self.sell_list_overlay.winfo_screenheight() - self.sell_list_overlay.winfo_reqheight()) // 2)
-        self.sell_list_overlay.geometry(f"+{x}+{y}")
+        x, y = clamp_window_position(
+            x,
+            y,
+            self.sell_list_overlay.winfo_reqwidth(),
+            self.sell_list_overlay.winfo_reqheight(),
+            monitor_work_areas(),
+        )
+        self.sell_list_overlay.geometry(geometry_position(x, y))
         self.sell_list_overlay.deiconify()
         self.sell_list_overlay.lift()
         self.sell_list_overlay.focus_force()
@@ -527,7 +566,8 @@ class DroidAdvisorApp:
         else:
             x = (self.spawn_alert.winfo_screenwidth() - width) // 2
             y = int(self.spawn_alert.winfo_screenheight() * 0.16)
-        self.spawn_alert.geometry(f"+{x}+{y}")
+        x, y = clamp_window_position(x, y, width, height, monitor_work_areas())
+        self.spawn_alert.geometry(geometry_position(x, y))
         self.spawn_alert.deiconify()
         self.spawn_alert_label.configure(bg="#b00020")
         self.spawn_alert_jobs.append(self.spawn_alert.after(5000, self.spawn_alert.withdraw))
@@ -539,13 +579,71 @@ class DroidAdvisorApp:
         if not self.drag_origin:
             return
         start_x, start_y, window_x, window_y = self.drag_origin
-        self.requirements_overlay.geometry(f"+{window_x + event.x_root - start_x}+{window_y + event.y_root - start_y}")
+        x = window_x + event.x_root - start_x
+        y = window_y + event.y_root - start_y
+        self.requirements_overlay.geometry(geometry_position(x, y))
 
     def _requirements_drag_end(self, _event) -> None:
         self.drag_origin = None
+        self._recover_overlay_window(self.requirements_overlay)
         self.config["requirements_overlay_x"] = self.requirements_overlay.winfo_x()
         self.config["requirements_overlay_y"] = self.requirements_overlay.winfo_y()
         save_config(self.config)
+
+    def _recover_overlay_window(self, window: tk.Toplevel) -> bool:
+        window.update_idletasks()
+        x, y = clamp_window_position(
+            window.winfo_x(),
+            window.winfo_y(),
+            window.winfo_reqwidth(),
+            window.winfo_reqheight(),
+            monitor_work_areas(),
+        )
+        changed = (x, y) != (window.winfo_x(), window.winfo_y())
+        if changed:
+            window.geometry(geometry_position(x, y))
+        return changed
+
+    def reset_overlay_positions(self, *, notify: bool = True) -> None:
+        """Move all advisor overlays to safe positions on the primary monitor."""
+        areas = monitor_work_areas()
+        primary = primary_work_area(areas)
+        self.requirements_overlay.update_idletasks()
+        req_x, req_y = top_right_position(
+            self.requirements_overlay.winfo_reqwidth(),
+            self.requirements_overlay.winfo_reqheight(),
+            primary,
+        )
+        self.requirements_overlay.geometry(geometry_position(req_x, req_y))
+        self.config["requirements_overlay_x"] = req_x
+        self.config["requirements_overlay_y"] = req_y
+        save_config(self.config)
+
+        for window in (self.sell_list_overlay, self.chip_cost_overlay, self.overlay, self.spawn_alert):
+            window.update_idletasks()
+            width, height = window.winfo_reqwidth(), window.winfo_reqheight()
+            x = primary.left + max(8, (primary.width - width) // 2)
+            y = primary.top + max(8, (primary.height - height) // 3)
+            x, y = clamp_window_position(x, y, width, height, areas)
+            window.geometry(geometry_position(x, y))
+
+        if notify:
+            self.show_overlay("OVERLAYS RESET TO PRIMARY DISPLAY", "#235ea8", 2600)
+
+    def _watch_display_topology(self) -> None:
+        areas = monitor_work_areas()
+        signature = monitor_topology_signature(areas)
+        if signature != self.display_signature:
+            self.display_signature = signature
+            moved = self._recover_overlay_window(self.requirements_overlay)
+            if moved:
+                self.config["requirements_overlay_x"] = self.requirements_overlay.winfo_x()
+                self.config["requirements_overlay_y"] = self.requirements_overlay.winfo_y()
+                save_config(self.config)
+            for window in (self.sell_list_overlay, self.chip_cost_overlay, self.overlay, self.spawn_alert):
+                if window.state() != "withdrawn":
+                    self._recover_overlay_window(window)
+        self.display_watch_after = self.root.after(1000, self._watch_display_topology)
 
     def _display_rebirths(self) -> list[tuple[int, int, str]]:
         cycle = int(self.config["cycle"])
@@ -595,6 +693,7 @@ class DroidAdvisorApp:
                 tk.Label(section, image=photo, bg=COLORS["window"], bd=0).pack()
             except tk.TclError:
                 self._render_rebirth_tile_fallback(section, row_cycle, rank)
+        self._recover_overlay_window(self.requirements_overlay)
 
     def _render_rebirth_tile_fallback(self, parent: tk.Widget, cycle: int, rank: int) -> None:
         qualities = quality_table()[str(cycle)][str(rank)]
@@ -619,6 +718,7 @@ class DroidAdvisorApp:
         save_config(self.config)
         if visible:
             self.render_requirements_overlay()
+            self._recover_overlay_window(self.requirements_overlay)
             self.requirements_overlay.deiconify()
             self.requirements_overlay.lift()
         else:
@@ -644,6 +744,7 @@ class DroidAdvisorApp:
             pystray.MenuItem("Show / Hide rebirth targets", lambda: self.events.put(("requirements_toggle", None))),
             pystray.MenuItem("Show / Hide safe-to-sell list", lambda: self.events.put(("sell_list_toggle", None))),
             pystray.MenuItem("Show / Hide upgrade chip costs", lambda: self.events.put(("chip_cost_toggle", None))),
+            pystray.MenuItem("Reset overlay positions", lambda: self.events.put(("overlay_reset", None))),
             pystray.MenuItem("Copy diagnostic report", lambda: self.events.put(("diagnostics_copy", None))),
             pystray.MenuItem("Enable detailed diagnostics (2 minutes)", lambda: self.events.put(("diagnostics_detailed", None))),
             pystray.MenuItem("Settings", lambda: self.events.put(("settings", None))),
@@ -693,7 +794,8 @@ class DroidAdvisorApp:
         else:
             x = (self.overlay.winfo_screenwidth() - width) // 2
             y = int(self.overlay.winfo_screenheight() * y_ratio)
-        self.overlay.geometry(f"+{x}+{y}")
+        x, y = clamp_window_position(x, y, width, height, monitor_work_areas())
+        self.overlay.geometry(geometry_position(x, y))
         self.overlay.deiconify()
         if self.overlay_after:
             self.overlay.after_cancel(self.overlay_after)
@@ -1053,6 +1155,8 @@ class DroidAdvisorApp:
                     self.toggle_sell_list_overlay()
                 elif kind == "chip_cost_toggle":
                     self.toggle_chip_cost_overlay()
+                elif kind == "overlay_reset":
+                    self.reset_overlay_positions()
                 elif kind == "diagnostics_copy":
                     self.copy_diagnostic_report()
                 elif kind == "diagnostics_detailed":

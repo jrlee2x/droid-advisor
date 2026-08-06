@@ -8,7 +8,45 @@ from droid_advisor.cycles import CYCLES
 from droid_advisor.diagnostics import DiagnosticBuffer
 from droid_advisor.extract_rebirth_tiles import DISPLAY_WIDTH, GRID_TOP, GROUPS, TOP_PADDING, tile_bounds
 from droid_advisor.chip_costs import CHIP_COSTS_123
+from droid_advisor.windowing import (
+    WorkArea,
+    clamp_window_position,
+    geometry_position,
+    monitor_topology_signature,
+    top_right_position,
+)
 from PIL import Image
+
+
+def test_offscreen_overlay_moves_to_primary_monitor():
+    areas = (
+        WorkArea(0, 0, 1920, 1040, True),
+        WorkArea(1920, 0, 3840, 1040, False),
+    )
+    assert clamp_window_position(2500, 100, 430, 500, areas) == (2500, 100)
+    assert clamp_window_position(2500, 100, 430, 500, areas[:1]) == (1482, 100)
+
+
+def test_overlay_positions_support_monitors_left_of_primary():
+    areas = (
+        WorkArea(0, 0, 2560, 1400, True),
+        WorkArea(-1920, 0, 0, 1040, False),
+    )
+    assert clamp_window_position(-1800, 70, 430, 500, areas) == (-1800, 70)
+    assert geometry_position(-1800, 70) == "-1800+70"
+
+
+def test_reset_position_uses_primary_monitor_top_right():
+    primary = WorkArea(1920, 0, 4480, 1400, True)
+    assert top_right_position(430, 500, primary) == (4025, 55)
+
+
+def test_monitor_signature_changes_when_display_is_removed():
+    dual = (
+        WorkArea(0, 0, 1920, 1040, True),
+        WorkArea(1920, 0, 3840, 1040, False),
+    )
+    assert monitor_topology_signature(dual) != monitor_topology_signature(dual[:1])
 
 
 def test_rebirth_tile_bounds_cover_all_ranks_without_overlap():

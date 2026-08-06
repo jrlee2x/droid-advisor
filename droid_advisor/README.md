@@ -33,6 +33,8 @@ Press **Ctrl+Shift+D** to pause or resume. Tray controls also expose pause, sett
 
 Press **Ctrl+Shift+C** to show or hide the Update 1.23 upgrade-chip cost reference.
 
+Press **Ctrl+Shift+Home** or choose **Reset overlay positions** from the tray menu to move every overlay back onto the primary display. The advisor also detects monitor connection changes and automatically recovers a saved overlay when its monitor is disconnected.
+
 The draggable top-right **Rebirth Targets** overlay shows the complete guide card for the rebirth currently being worked and the following rebirth, including required droids, finish, rarity, credit cost, crystals, credit multiplier, and XP multiplier when provided by the guide. Press **Ctrl+Shift+R** or use the tray menu to show or hide it. Its screen position and visibility persist. At RB30, the second row previews RB1 of the next cycle. Galactic is the highest quality and satisfies requirements for Beskar and every lower quality.
 
 The optional **High-value conveyor alerts** setting watches the left-side spawn notification only. A large flashing alert appears for Diamond, Rainbow, or Beskar droids when the notification rarity is Legendary or Mythic. Galactic alerts appear for Epic, Legendary, and Mythic only. Identical text is deduplicated until the original notification disappears.
