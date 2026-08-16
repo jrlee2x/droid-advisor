@@ -1,33 +1,61 @@
 """Always-on Windows tray application for passive sell/keep advice."""
 
+# Background and UI boundaries must trap unexpected third-party OCR, capture,
+# network, and Tk failures so one bad frame or event cannot stop monitoring.
+# ruff: noqa: BLE001
+
 from __future__ import annotations
 
-import json
-import os
 import ctypes
-from ctypes import wintypes
-from datetime import datetime
-from pathlib import Path
 import queue
 import sys
 import threading
 import time
-import traceback
 import tkinter as tk
+import traceback
 import webbrowser
-from tkinter import messagebox, ttk
+from ctypes import wintypes
+from datetime import datetime
+from pathlib import Path
+from tkinter import filedialog, messagebox, ttk
 
-from PIL import Image, ImageDraw, ImageTk
 import pystray
+from PIL import Image, ImageDraw, ImageTk
 from pynput import keyboard
 
 from . import __version__
-from .chip_costs import CHIP_COSTS_123
-from .cycles import CYCLES, MAX_REBIRTH
-from .qualities import quality_table
+from .chip_costs import CHIP_COSTS_126
+from .config import APP_DIR, CUSTOM_SOUND_PATH, load_config, save_config
+from .cycles import CYCLES, MAX_REBIRTH, active_rebirth, next_cycle
 from .diagnostics import DiagnosticBuffer, copy_text_to_clipboard
 from .engine import advise, detect_cycle, safe_to_sell_droids
+from .notifications import (
+    SOUND_IDS,
+    SOUND_LABELS,
+    install_custom_sound,
+    play_spawn_notification,
+    update_spawn_presence,
+)
+from .qualities import quality_table
 from .updater import check_for_update, download_update, launch_installer
+from .vision import (
+    GameCapture,
+    OfflineOcr,
+    blueprint_details,
+    blueprint_droid,
+    blueprint_is_visible,
+    card_header_rect,
+    game_ui_viewports,
+    game_window_rect,
+    high_value_spawn,
+    panel_is_open,
+    read_region,
+    rebirth_header_is_open,
+    rebirth_rank,
+    selected_droid,
+    visible_droids,
+    visual_gates,
+)
 from .windowing import (
     clamp_window_position,
     geometry_position,
@@ -36,41 +64,9 @@ from .windowing import (
     primary_work_area,
     top_right_position,
 )
-from .vision import (
-    OfflineOcr,
-    GameCapture,
-    blueprint_details,
-    blueprint_droid,
-    blueprint_is_visible,
-    game_window_rect,
-    game_ui_viewports,
-    card_header_rect,
-    panel_is_open,
-    rebirth_rank,
-    rebirth_header_is_open,
-    read_region,
-    high_value_spawn,
-    selected_droid,
-    visual_gates,
-    visible_droids,
-)
 
-
-APP_DIR = Path(os.environ.get("APPDATA", Path.home())) / "DroidAdvisor"
-CONFIG_PATH = APP_DIR / "config.json"
 COMMUNITY_URL = "https://www.reddit.com/r/StarWarsDroidTycoon/"
 SWAG_STUDIOS_URL = "https://www.reddit.com/user/DepSwag/"
-DEFAULTS = {
-    "cycle": 1,
-    "completed_rebirth": 0,
-    "paused": False,
-    "interval_seconds": 1.25,
-    "requirements_overlay_visible": True,
-    "requirements_overlay_x": -1,
-    "requirements_overlay_y": 55,
-    "spawn_alerts_enabled": True,
-    "automatic_updates": True,
-}
 
 COLORS = {
     "window": "#040b1c",
@@ -84,23 +80,9 @@ COLORS = {
     "danger": "#e21d43",
 }
 
-
 def resource_path(*parts: str) -> Path:
     base = Path(getattr(sys, "_MEIPASS", Path(__file__).resolve().parent))
     return base.joinpath(*parts)
-
-
-def load_config() -> dict:
-    try:
-        return {**DEFAULTS, **json.loads(CONFIG_PATH.read_text(encoding="utf-8"))}
-    except (FileNotFoundError, json.JSONDecodeError, OSError):
-        return dict(DEFAULTS)
-
-
-def save_config(config: dict) -> None:
-    APP_DIR.mkdir(parents=True, exist_ok=True)
-    CONFIG_PATH.write_text(json.dumps(config, indent=2), encoding="utf-8")
-
 
 class DroidAdvisorApp:
     def __init__(self) -> None:
@@ -120,8 +102,8 @@ class DroidAdvisorApp:
         self.frame_number = 0
         self.root = tk.Tk()
         self.root.title("Droid Advisor")
-        self.root.geometry("620x570")
-        self.root.minsize(580, 540)
+        self.root.geometry("620x640")
+        self.root.minsize(580, 620)
         self.root.configure(bg=COLORS["window"])
         self.brand_logo = self._branding_photo(72)
         self.window_icon = self._branding_photo(48)
@@ -164,7 +146,7 @@ class DroidAdvisorApp:
         self.pending_blueprint_signature = None
         self.pending_blueprint_count = 0
         self.last_spawn_signature = None
-        self.last_spawn_at = 0.0
+        self.spawn_absent_scans = 0
         self.last_spawn_scan_at = 0.0
         self.spawn_scan_count = 0
         self.preferred_ui_region = None
@@ -255,7 +237,7 @@ class DroidAdvisorApp:
         self.cycle_var = tk.IntVar(value=int(self.config["cycle"]))
         cycle_box = ttk.Combobox(
             controls, style="Advisor.TCombobox", state="readonly", width=7,
-            values=(1, 2, 3, 4), textvariable=self.cycle_var,
+            values=tuple(CYCLES), textvariable=self.cycle_var,
         )
         cycle_box.grid(row=1, column=1, sticky="w", pady=(0, 15))
         cycle_box.bind("<<ComboboxSelected>>", lambda _: self._settings_changed())
@@ -274,11 +256,55 @@ class DroidAdvisorApp:
 
         self.spawn_alert_var = tk.BooleanVar(value=bool(self.config["spawn_alerts_enabled"]))
         tk.Checkbutton(
-            controls, text="High-value conveyor alerts", variable=self.spawn_alert_var,
+            controls, text="Sandcrawler sound alerts: Beskar/Galactic Legendary+, all Stellar", variable=self.spawn_alert_var,
             command=self._settings_changed, bg=COLORS["panel"], fg=COLORS["text"],
             activebackground=COLORS["panel"], activeforeground=COLORS["text"],
             selectcolor=COLORS["panel_alt"], font=("Segoe UI", 10), bd=0,
-        ).grid(row=2, column=0, columnspan=2, sticky="w", padx=12, pady=(0, 11))
+        ).grid(row=2, column=0, columnspan=4, sticky="w", padx=12, pady=(0, 11))
+
+        sound_id = str(self.config.get("spawn_alert_sound", "droid_chime"))
+        self.spawn_sound_var = tk.StringVar(value=SOUND_LABELS.get(sound_id, "Droid Chime"))
+        tk.Label(
+            controls, text="Alert sound", bg=COLORS["panel"], fg=COLORS["muted"],
+            font=("Segoe UI", 10),
+        ).grid(row=3, column=0, sticky="w", padx=(16, 10), pady=(0, 13))
+        sound_box = ttk.Combobox(
+            controls, style="Advisor.TCombobox", state="readonly", width=18,
+            values=tuple(SOUND_IDS), textvariable=self.spawn_sound_var,
+        )
+        sound_box.grid(row=3, column=1, sticky="w", pady=(0, 13))
+        sound_box.bind("<<ComboboxSelected>>", lambda _: self._sound_selection_changed())
+        tk.Button(
+            controls, text="PREVIEW", command=self.preview_spawn_sound,
+            bg=COLORS["panel_alt"], fg=COLORS["text"], activebackground=COLORS["border"],
+            activeforeground=COLORS["text"], relief="flat", bd=0,
+            font=("Segoe UI Semibold", 9), padx=14, pady=6, cursor="hand2",
+        ).grid(row=3, column=2, sticky="w", padx=(14, 0), pady=(0, 13))
+        tk.Button(
+            controls, text="CHOOSE WAV", command=self.choose_custom_sound,
+            bg=COLORS["panel_alt"], fg=COLORS["text"], activebackground=COLORS["border"],
+            activeforeground=COLORS["text"], relief="flat", bd=0,
+            font=("Segoe UI Semibold", 9), padx=12, pady=6, cursor="hand2",
+        ).grid(row=3, column=3, sticky="w", padx=(8, 16), pady=(0, 13))
+
+        sound_volume = max(0, min(100, int(self.config.get("spawn_alert_volume", 70))))
+        self.spawn_volume_var = tk.IntVar(value=sound_volume)
+        self.spawn_volume_label_var = tk.StringVar(value=f"{sound_volume}%")
+        tk.Label(
+            controls, text="Custom sound volume", bg=COLORS["panel"], fg=COLORS["muted"],
+            font=("Segoe UI", 10),
+        ).grid(row=4, column=0, sticky="w", padx=(16, 10), pady=(0, 13))
+        tk.Scale(
+            controls, from_=0, to=100, orient="horizontal", resolution=5,
+            variable=self.spawn_volume_var, command=self._sound_volume_changed,
+            bg=COLORS["panel"], fg=COLORS["text"], troughcolor=COLORS["panel_alt"],
+            activebackground=COLORS["cyan"], highlightthickness=0, bd=0,
+            sliderlength=18, length=190, showvalue=False,
+        ).grid(row=4, column=1, columnspan=2, sticky="w", pady=(0, 13))
+        tk.Label(
+            controls, textvariable=self.spawn_volume_label_var,
+            bg=COLORS["panel"], fg=COLORS["green"], font=("Segoe UI Semibold", 10),
+        ).grid(row=4, column=3, sticky="w", padx=(4, 16), pady=(0, 13))
 
         self.update_var = tk.BooleanVar(value=bool(self.config["automatic_updates"]))
         tk.Checkbutton(
@@ -286,18 +312,21 @@ class DroidAdvisorApp:
             command=self._settings_changed, bg=COLORS["panel"], fg=COLORS["text"],
             activebackground=COLORS["panel"], activeforeground=COLORS["text"],
             selectcolor=COLORS["panel_alt"], font=("Segoe UI", 10), bd=0,
-        ).grid(row=3, column=0, columnspan=2, sticky="w", padx=12, pady=(0, 13))
+        ).grid(row=5, column=0, columnspan=2, sticky="w", padx=12, pady=(0, 13))
         tk.Button(
             controls, text="CHECK NOW", command=self.check_updates,
             bg=COLORS["cyan"], fg="#061018", activebackground="#5cf1fb",
             activeforeground="#061018", relief="flat", bd=0,
             font=("Segoe UI Semibold", 9), padx=16, pady=7, cursor="hand2",
-        ).grid(row=3, column=2, columnspan=2, sticky="e", padx=(12, 16), pady=(0, 13))
+        ).grid(row=5, column=2, columnspan=2, sticky="e", padx=(12, 16), pady=(0, 13))
 
         initial_state = "Paused" if self.config["paused"] else "Monitoring"
+        active_cycle, active_rank = active_rebirth(
+            int(self.config["cycle"]), int(self.config["completed_rebirth"])
+        )
         self.status_var = tk.StringVar(
-            value=f"{initial_state.upper()}  •  RBC{self.config['cycle']}  •  "
-                  f"WORKING ON RB{int(self.config['completed_rebirth']) + 1}"
+            value=f"{initial_state.upper()}  •  RBC{active_cycle}  •  "
+                  f"WORKING ON RB{active_rank}"
         )
         tk.Label(
             frame, textvariable=self.status_var, bg=COLORS["panel_alt"], fg=COLORS["green"],
@@ -429,7 +458,7 @@ class DroidAdvisorApp:
         header = tk.Frame(frame, bg=COLORS["panel"])
         header.grid(row=0, column=0, columnspan=3, sticky="ew")
         tk.Label(
-            header, text="UPGRADE CHIP COSTS  •  UPDATE 1.23",
+            header, text="UPGRADE CHIP COSTS  •  UPDATE 1.26",
             bg=COLORS["panel"], fg="#ffad24", font=("Segoe UI Semibold", 14),
             padx=16, pady=11,
         ).pack(side="left")
@@ -443,9 +472,9 @@ class DroidAdvisorApp:
         rarity_colors = {"EPIC": "#8f63ff", "LEGENDARY": "#ffad24", "MYTHIC": "#ff2870"}
         quality_colors = {
             "GOLD": "#f2b21b", "DIAMOND": "#35d9ff", "RAINBOW": "#c353ff",
-            "BESKAR": "#c4ccd3", "GALACTIC": "#a92cff",
+            "BESKAR": "#c4ccd3", "GALACTIC": "#a92cff", "STELLAR": "#62efff",
         }
-        for row, (rarity, quality, cost) in enumerate(CHIP_COSTS_123, start=1):
+        for row, (rarity, quality, cost) in enumerate(CHIP_COSTS_126, start=1):
             background = COLORS["panel_alt"] if row % 2 else COLORS["panel"]
             tk.Label(
                 frame, text=rarity, bg=background, fg=rarity_colors[rarity],
@@ -463,7 +492,7 @@ class DroidAdvisorApp:
             frame, text="Ctrl+Shift+C toggles this reference",
             bg=COLORS["window"], fg=COLORS["muted"], font=("Segoe UI", 8),
             padx=12, pady=8,
-        ).grid(row=len(CHIP_COSTS_123) + 1, column=0, columnspan=3, sticky="ew")
+        ).grid(row=len(CHIP_COSTS_126) + 1, column=0, columnspan=3, sticky="ew")
 
     def toggle_chip_cost_overlay(self) -> None:
         if self.chip_cost_overlay.state() != "withdrawn":
@@ -555,6 +584,15 @@ class DroidAdvisorApp:
             except tk.TclError:
                 pass
         self.spawn_alert_jobs.clear()
+        sound_played = play_spawn_notification(
+            str(self.config.get("spawn_alert_sound", "droid_chime")),
+            resource_path("assets", "sounds"),
+            int(self.config.get("spawn_alert_volume", 70)),
+            APP_DIR / "sound-cache",
+            CUSTOM_SOUND_PATH,
+        )
+        if not sound_played:
+            self.diagnostics.record("Spawn alert sound unavailable; visual alert continued")
         self.spawn_alert_label.configure(text=f"{quality} {rarity}\nAT THE SANDCRAWLER")
         self.spawn_alert.update_idletasks()
         width, height = self.spawn_alert.winfo_reqwidth(), self.spawn_alert.winfo_reqheight()
@@ -571,6 +609,57 @@ class DroidAdvisorApp:
         self.spawn_alert.deiconify()
         self.spawn_alert_label.configure(bg="#b00020")
         self.spawn_alert_jobs.append(self.spawn_alert.after(5000, self.spawn_alert.withdraw))
+
+    def preview_spawn_sound(self) -> None:
+        sound_id = SOUND_IDS.get(self.spawn_sound_var.get(), "droid_chime")
+        self.config["spawn_alert_sound"] = sound_id
+        self.config["spawn_alert_volume"] = int(self.spawn_volume_var.get())
+        save_config(self.config)
+        play_spawn_notification(
+            sound_id,
+            resource_path("assets", "sounds"),
+            int(self.spawn_volume_var.get()),
+            APP_DIR / "sound-cache",
+            CUSTOM_SOUND_PATH,
+        )
+
+    def _sound_selection_changed(self) -> None:
+        sound_id = SOUND_IDS.get(self.spawn_sound_var.get(), "droid_chime")
+        if sound_id == "custom_wav" and not CUSTOM_SOUND_PATH.is_file():
+            if not self.choose_custom_sound():
+                current_id = str(self.config.get("spawn_alert_sound", "droid_chime"))
+                self.spawn_sound_var.set(SOUND_LABELS.get(current_id, "Droid Chime"))
+            return
+        self._settings_changed()
+
+    def choose_custom_sound(self) -> bool:
+        selected = filedialog.askopenfilename(
+            parent=self.root,
+            title="Choose a custom alert sound",
+            filetypes=(("WAV audio", "*.wav"), ("All files", "*.*")),
+        )
+        if not selected:
+            return False
+        try:
+            install_custom_sound(Path(selected), CUSTOM_SOUND_PATH)
+        except (OSError, ValueError) as exc:
+            messagebox.showerror("Custom alert sound", str(exc), parent=self.root)
+            return False
+        self.spawn_sound_var.set("Custom WAV")
+        self.config["spawn_alert_sound"] = "custom_wav"
+        self.config["spawn_alert_volume"] = int(self.spawn_volume_var.get())
+        save_config(self.config)
+        self.preview_spawn_sound()
+        return True
+
+    def _sound_volume_changed(self, value: str) -> None:
+        volume = max(0, min(100, round(float(value))))
+        self.spawn_volume_label_var.set(f"{volume}%")
+        self.config["spawn_alert_volume"] = volume
+        pending = getattr(self, "spawn_volume_save_after", None)
+        if pending:
+            self.root.after_cancel(pending)
+        self.spawn_volume_save_after = self.root.after(250, lambda: save_config(self.config))
 
     def _requirements_drag_start(self, event) -> None:
         self.drag_origin = (event.x_root, event.y_root, self.requirements_overlay.winfo_x(), self.requirements_overlay.winfo_y())
@@ -648,13 +737,10 @@ class DroidAdvisorApp:
     def _display_rebirths(self) -> list[tuple[int, int, str]]:
         cycle = int(self.config["cycle"])
         completed = int(self.config["completed_rebirth"])
-        current = completed + 1
-        if current < MAX_REBIRTH:
-            return [(cycle, current, "NOW"), (cycle, current + 1, "NEXT")]
-        if current == MAX_REBIRTH:
-            return [(cycle, MAX_REBIRTH, "NOW"), ((cycle % 4) + 1, 1, "NEXT CYCLE")]
-        next_cycle = (cycle % 4) + 1
-        return [(next_cycle, 1, "NOW"), (next_cycle, 2, "NEXT")]
+        active_cycle, active_rank = active_rebirth(cycle, completed)
+        if active_rank < MAX_REBIRTH:
+            return [(active_cycle, active_rank, "NOW"), (active_cycle, active_rank + 1, "NEXT")]
+        return [(active_cycle, MAX_REBIRTH, "NOW"), (next_cycle(active_cycle), 1, "NEXT CYCLE")]
 
     def render_requirements_overlay(self) -> None:
         for child in self.requirements_frame.winfo_children():
@@ -756,12 +842,20 @@ class DroidAdvisorApp:
             self.config["cycle"] = int(self.cycle_var.get())
             self.config["completed_rebirth"] = max(0, min(MAX_REBIRTH, int(self.rb_var.get())))
             self.config["spawn_alerts_enabled"] = bool(self.spawn_alert_var.get())
+            if not self.config["spawn_alerts_enabled"]:
+                self.last_spawn_signature = None
+                self.spawn_absent_scans = 0
+            self.config["spawn_alert_sound"] = SOUND_IDS.get(self.spawn_sound_var.get(), "droid_chime")
+            self.config["spawn_alert_volume"] = int(self.spawn_volume_var.get())
             self.config["automatic_updates"] = bool(self.update_var.get())
             save_config(self.config)
             state = "Paused" if self.config["paused"] else "Monitoring"
+            active_cycle, active_rank = active_rebirth(
+                self.config["cycle"], self.config["completed_rebirth"]
+            )
             self.status_var.set(
-                f"{state.upper()}  •  RBC{self.config['cycle']}  •  "
-                f"WORKING ON RB{self.config['completed_rebirth'] + 1}"
+                f"{state.upper()}  •  RBC{active_cycle}  •  "
+                f"WORKING ON RB{active_rank}"
             )
             self.render_requirements_overlay()
         except (ValueError, tk.TclError):
@@ -998,12 +1092,12 @@ class DroidAdvisorApp:
 
                         now = time.monotonic()
                         spawn = None
+                        spawn_scanned = False
                         if (
                             self.config["spawn_alerts_enabled"]
-                            and not card_gate
-                            and not blueprint_gate
                             and now - self.last_spawn_scan_at >= 0.65
                         ):
+                            spawn_scanned = True
                             self.last_spawn_scan_at = now
                             self.spawn_scan_count += 1
                             spawn_box = (
@@ -1018,12 +1112,18 @@ class DroidAdvisorApp:
                                 grayscale=self.spawn_scan_count % 2 == 0,
                             )
                             spawn = high_value_spawn(spawn_tokens, full_image.width, full_image.height)
-                        if spawn and (
-                            spawn != self.last_spawn_signature or now - self.last_spawn_at >= 30.0
-                        ):
-                            self.last_spawn_signature = spawn
-                            self.last_spawn_at = now
-                            self.events.put(("spawn_alert", spawn))
+                        if spawn is not None or spawn_scanned:
+                            (
+                                self.last_spawn_signature,
+                                self.spawn_absent_scans,
+                                should_alert,
+                            ) = update_spawn_presence(
+                                self.last_spawn_signature,
+                                self.spawn_absent_scans,
+                                spawn,
+                            )
+                            if should_alert and spawn is not None:
+                                self.events.put(("spawn_alert", spawn))
                         self.diagnostics.set(blueprint_recognized=blueprint_open)
                         if blueprint_open:
                             droid, confidence = selected_droid(tokens, image.width, image.height)
@@ -1126,12 +1226,14 @@ class DroidAdvisorApp:
                                 self.frame_number += 1
                         else:
                             self.diagnostics.set(capture_active=False, capture_reason="Fortnite not foreground or not visible")
+                            with self.frame_lock:
+                                self.latest_frame = None
                     except Exception as exc:
                         detail = f"{type(exc).__name__}: {exc}"
                         self.diagnostics.set(capture_active=False, last_error=detail, last_traceback=traceback.format_exc(limit=8).strip())
                         self.diagnostics.record(f"Capture exception: {detail}")
                         self.events.put(("status", f"Capture warning: {type(exc).__name__}"))
-                self.stop_event.wait(0.75)
+                self.stop_event.wait(float(self.config.get("interval_seconds", 1.25)))
         finally:
             capture.close()
 
@@ -1147,7 +1249,8 @@ class DroidAdvisorApp:
                     cycle, completed = payload
                     self.cycle_var.set(cycle)
                     self.rb_var.set(completed)
-                    self.status_var.set(f"Monitoring | RBC{cycle}, working on RB{completed + 1}")
+                    active_cycle, active_rank = active_rebirth(cycle, completed)
+                    self.status_var.set(f"Monitoring | RBC{active_cycle}, working on RB{active_rank}")
                     self.render_requirements_overlay()
                 elif kind == "requirements_toggle":
                     self.toggle_requirements_overlay()
@@ -1176,7 +1279,14 @@ class DroidAdvisorApp:
                     self.status_var.set(f"Update check failed: {payload}")
         except queue.Empty:
             pass
-        self.root.after(100, self._drain_events)
+        except Exception as exc:
+            detail = f"{type(exc).__name__}: {exc}"
+            self.diagnostics.set(last_error=detail, last_traceback=traceback.format_exc(limit=8).strip())
+            self.diagnostics.record(f"UI event exception: {detail}")
+            self.status_var.set(f"UI warning: {type(exc).__name__}")
+        finally:
+            if not self.stop_event.is_set():
+                self.root.after(100, self._drain_events)
 
     def copy_diagnostic_report(self) -> None:
         try:
@@ -1232,7 +1342,7 @@ class DroidAdvisorApp:
         def worker() -> None:
             try:
                 installer = download_update(info)
-                launch_installer(installer)
+                launch_installer(installer, info.sha256)
                 self.events.put(("exit", None))
             except Exception as exc:
                 self.events.put(("update_error", str(exc)))

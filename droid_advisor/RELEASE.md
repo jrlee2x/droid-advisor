@@ -2,24 +2,24 @@
 
 ## Current distribution
 
-- Installer: `DroidAdvisor-Setup-0.4.0.exe`
+- Installer: `DroidAdvisor-Setup-1.1.5.exe`
 - Platform: 64-bit Windows 10/11
 - Installation scope: current Windows user; no administrator rights requested
 - Runtime: bundled Python and offline OCR; recipients do not install Python
 - Settings: `%APPDATA%\DroidAdvisor\config.json`
-- Network: none required
+- Network: optional startup check for published GitHub Releases; core OCR and advisor features work offline
 
 Share the installer and its `.sha256` file together. Recipients can validate it in PowerShell:
 
 ```powershell
-Get-FileHash .\DroidAdvisor-Setup-0.4.0.exe -Algorithm SHA256
+Get-FileHash .\DroidAdvisor-Setup-1.1.5.exe -Algorithm SHA256
 ```
 
 The output must exactly match the checksum distributed through a separate trusted channel.
 
 ## Antivirus expectations
 
-The build uses ordinary, inspectable files and no UPX packing, obfuscation, persistence tricks, privilege elevation, network download, or automatic execution of remote code. Those choices reduce avoidable heuristic flags, but an unsigned new application cannot guarantee a clean result with every antivirus vendor or Windows SmartScreen.
+The build uses ordinary, inspectable files and no UPX packing, obfuscation, privilege elevation, or hidden persistence. The installed app can download a published GitHub Release only after the user accepts an update prompt. It verifies GitHub's SHA-256 asset digest after download and again immediately before launch. These choices reduce avoidable heuristic flags, but an unsigned new application cannot guarantee a clean result with every antivirus vendor or Windows SmartScreen.
 
 Before broad distribution:
 
@@ -32,6 +32,6 @@ Before broad distribution:
 
 ## Updating friends
 
-Increment the version in `__init__.py` and `installer.iss`, rebuild, and share the new installer. Users run it over the old version. The stable Inno Setup AppId upgrades the installed application while preserving AppData settings.
+Increment the version in `__init__.py` and `installer.iss`, rebuild, and publish the installer as an asset on a non-draft, non-prerelease GitHub Release whose tag and installer filename use the same version. GitHub must report a SHA-256 digest for the asset. Users can run the installer over the old version, or accept the in-app update prompt. The stable Inno Setup AppId upgrades the installed application while preserving AppData settings.
 
-Do not distribute loose replacement DLLs or tell users to copy files into the installation directory. Do not implement a Google Drive binary updater without cryptographic signature verification. If automatic updates become worthwhile, publish signed installers and a signed JSON manifest from a stable HTTPS endpoint such as GitHub Releases.
+Do not distribute loose replacement DLLs or tell users to copy files into the installation directory. Do not publish update installers from Google Drive or another unverified source. Before broad distribution, Authenticode-sign installers and add publisher verification or a separately signed release manifest so release authenticity does not depend only on the GitHub repository.

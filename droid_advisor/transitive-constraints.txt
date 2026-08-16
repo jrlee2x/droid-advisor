@@ -1,0 +1,18 @@
+# Reviewed Windows build set. Update deliberately, then regenerate both lock files.
+altgraph==0.17.5
+colorama==0.4.6
+flatbuffers==25.12.19
+numpy==2.5.1
+onnxruntime==1.27.0
+opencv-python==5.0.0.93
+packaging==26.2
+pefile==2023.2.7
+protobuf==7.35.1
+pyclipper==1.4.0
+pyinstaller-hooks-contrib==2026.6
+pywin32-ctypes==0.2.3
+PyYAML==6.0.3
+setuptools==83.0.0
+shapely==2.1.2
+six==1.17.0
+tqdm==4.68.4

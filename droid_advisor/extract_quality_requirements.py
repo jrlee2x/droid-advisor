@@ -1,14 +1,12 @@
-"""Extract required quality tiers from the four credited guide charts."""
+"""Extract legacy RB1-RB27 quality tiers from the four credited guide charts."""
 
 import argparse
 import json
-from pathlib import Path
 
 from PIL import Image
 
 from droid_advisor.extract_thumbnails import ROOT, SOURCE, X_BOUNDS, Y_BOUNDS, position
 from droid_advisor.vision import OfflineOcr
-
 
 TIERS = ("BESKAR", "RAINBOW", "DIAMOND", "GOLD", "BASE")
 OVERRIDES = {(3, 7, 1): "DIAMOND", (3, 27, 2): "RAINBOW"}
@@ -36,10 +34,14 @@ def extract_cycle(cycle: int) -> None:
 
 
 def combine() -> None:
-    combined = {}
+    try:
+        combined = json.loads(OUTPUT.read_text(encoding="utf-8"))
+    except (FileNotFoundError, json.JSONDecodeError):
+        combined = {}
     for cycle in range(1, 5):
-        combined[str(cycle)] = json.loads((PARTS / f"rbc{cycle}.json").read_text(encoding="utf-8"))
-    OUTPUT.write_text(json.dumps(combined, indent=2), encoding="utf-8")
+        legacy = json.loads((PARTS / f"rbc{cycle}.json").read_text(encoding="utf-8"))
+        combined.setdefault(str(cycle), {}).update(legacy)
+    OUTPUT.write_text(json.dumps(combined, indent=2) + "\n", encoding="utf-8")
     print(f"Wrote {OUTPUT}")
 
 
@@ -54,4 +56,3 @@ if __name__ == "__main__":
         combine()
     else:
         parser.error("use --cycle 1..4 or --combine")
-

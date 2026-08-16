@@ -6,7 +6,5 @@ if (-not (Test-Path $venv)) {
     python -m venv $venv
 }
 
-& "$venv\Scripts\python.exe" -m pip install --upgrade pip
-& "$venv\Scripts\python.exe" -m pip install -r "$root\requirements.txt"
+& "$venv\Scripts\python.exe" -m pip install --require-hashes -r "$root\requirements.lock"
 Write-Host "Setup complete. Start with: $root\run.cmd"
-

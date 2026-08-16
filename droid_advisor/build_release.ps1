@@ -13,9 +13,16 @@ if (-not (Test-Path $python)) {
 
 Push-Location $root
 try {
-    & $python -m pip install --disable-pip-version-check "pyinstaller==6.15.0"
-    & $python (Join-Path $root "extract_rebirth_tiles.py")
-    if ($LASTEXITCODE -ne 0) { throw "Rebirth tile generation failed." }
+    & $python -m pip install --disable-pip-version-check --require-hashes -r build-requirements.lock
+    Push-Location (Split-Path $root -Parent)
+    try {
+        & $python -m droid_advisor.build_alert_sounds
+        if ($LASTEXITCODE -ne 0) { throw "Alert sound generation failed." }
+        & $python -m droid_advisor.build_rebirth_tiles --replace-all
+        if ($LASTEXITCODE -ne 0) { throw "Rebirth card generation failed." }
+    } finally {
+        Pop-Location
+    }
     Remove-Item -Recurse -Force build, dist, dist-installer -ErrorAction SilentlyContinue
     & $python -m PyInstaller --noconfirm --clean DroidAdvisor.spec
     if ($LASTEXITCODE -ne 0) { throw "PyInstaller failed." }

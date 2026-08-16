@@ -12,7 +12,7 @@ Requirements:
 - Never click, type, automate gameplay, inject into the game, read process memory, or send network requests.
 - Perform OCR locally with RapidOCR/ONNX Runtime. Never save or upload screenshots; keep each captured frame only in memory for the current OCR pass.
 - Detect an open droid card from menu cues such as Work, Swap, Lounge, Customize, and Sell. Recognize the selected droid name and show a topmost overlay immediately below the name.
-- Let the user select RBC1–RBC4 and enter **Rebirths completed**. Show that completed 22 means working on RB23.
+- Let the user select RBC1–RBC5 and enter **Rebirths completed** from 0 through 35. Show that completed 22 means working on RB23.
 - On the View Rebirth menu, parse `Rebirth Rank ##` directly and store `rank - 1` as completed. Recognize the three needed droids and change the RBC only when their exact unordered combination uniquely matches one cycle/row. Ambiguous matches must leave the cycle unchanged.
 - For the selected cycle, a droid is safe only when it has no appearance after the number of completed rebirths. Display either `SAFE TO SELL: LAST NEEDED AT RB##` or `KEEP: NEEDED AT RB##`.
 - Normalize obvious spelling variants such as PROTOROLL/PROTO_ROLLER/PROTO-ROLLER and MONOWLKR/MONO-WLKR. Prefer exact droid matches and ensure BB9 is not shortened to BB.

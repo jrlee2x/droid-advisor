@@ -6,7 +6,6 @@ import ctypes
 from ctypes import wintypes
 from dataclasses import dataclass
 
-
 MONITORINFOF_PRIMARY = 1
 
 

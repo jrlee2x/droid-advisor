@@ -1,6 +1,7 @@
 """Verified rebirth-cycle data shared by the workbook and advisor."""
 
-MAX_REBIRTH = 30
+MAX_REBIRTH = 35
+NUM_CYCLES = 5
 
 CYCLES = {
     1: [
@@ -21,6 +22,11 @@ CYCLES = {
         ("MO-TRAK", "DRFT-R", "PROTO-ROLLER"),
         ("IG", "MONO-WLKR", "MECHA-DROID"),
         ("B2-RP", "CYCLENS", "LOADLIFTER"),
+        ("SEN-TRI", "PROTO-ROLLER", "KX"),
+        ("ORB-WALKER", "OPTI-POD", "RIC"),
+        ("B1 HEAVY", "CYCLO-GRAV", "DRFT-R"),
+        ("GROUNDMECH", "BB", "CYCLENS"),
+        ("BB9", "IG", "SNOW MOUSE"),
     ],
     2: [
         ("MOUSE", "GONK", "ID10"), ("ROLL-R", "NAV-EX", "SENATE HOVERCAM"),
@@ -40,6 +46,11 @@ CYCLES = {
         ("SNOW MOUSE", "TRI-TEK", "MECHA-DROID"),
         ("RIC", "CYCLO-GRAV", "R7"),
         ("OPTI-STRK", "KX", "DRFT-R"),
+        ("B2 SUPER", "B2-RP", "LOADLIFTER"),
+        ("GUNRUNNER", "B1 HEAVY", "LEP"),
+        ("R2", "OPTI-STRK", "KX"),
+        ("R6", "LO", "RIC"),
+        ("R7", "DRFT-R", "CYCLENS"),
     ],
     3: [
         ("MOUSE", "PIT", "GONK"), ("2BB", "R3", "SENATE HOVERCAM"),
@@ -59,6 +70,11 @@ CYCLES = {
         ("RIC", "MO-TRAK", "BB9"),
         ("IG", "MECHA-DROID", "OPTI-STRK"),
         ("R7", "LEP", "DRFT-R"),
+        ("RIC-1200", "B2 HEAVY", "MECHA-DROID"),
+        ("GROUNDMECH", "BB", "MO-TRAK"),
+        ("TRAK-R", "MONO-WLKR", "LOADLIFTER"),
+        ("ORB-WALKER", "B2 SUPER", "LEP"),
+        ("PROTO-ROLLER", "KX", "RIC"),
     ],
     4: [
         ("ID10", "PIT", "DRK-1 PROBE"), ("2BB", "R3", "SENATE HOVERCAM"),
@@ -78,5 +94,44 @@ CYCLES = {
         ("IG", "KX", "OPTI-STRK"),
         ("TRI-TEK", "R7", "BB9"),
         ("MONO-WLKR", "CYCLENS", "IG"),
+        ("TRAK-R", "CYCLO-GRAV", "TRI-TEK"),
+        ("R2", "R6", "IG"),
+        ("B2 HEAVY", "BB9", "RIC-1200"),
+        ("STRIKE-ORB", "AMP WALKER", "MO-TRAK"),
+        ("B2-RP", "LOADLIFTER", "LEP"),
+    ],
+    5: [
+        ("ID10", "MOUSE", "GONK"), ("2BB", "IMPERIAL PROBE", "ROLL-R"),
+        ("R4", "VECT-ARM", "BDX EXPLORER"), ("R9", "B1 BATTLE", "B1 SECURITY"),
+        ("BAL-CORE", "R4", "R3"), ("GUNRUNNER", "2BB", "BDX EXPLORER"),
+        ("ROLL-R", "R5", "R2"), ("B2 SUPER", "R8", "B1 BATTLE"),
+        ("NAV-EX", "STRIKE-ORB", "AMP WALKER"), ("IMPERIAL PROBE", "GROUNDMECH", "TRAK-R"),
+        ("B2 HEAVY", "B2 SUPER", "UTIL-TEC"), ("BAL-CORE", "GROUNDMECH", "TRAK-R"),
+        ("B2 SUPER", "B2 HEAVY", "R2"), ("GROUNDMECH", "TRAK-R", "UTIL-TEC"),
+        ("B2 HEAVY", "B2 SUPER", "B2-RP"), ("BB9", "R7", "PROTO-ROLLER"),
+        ("OPTI-STRK", "CYCLO-GRAV", "MECHA-DROID"), ("BB9", "B2-RP", "R7"),
+        ("OPTI-STRK", "CYCLO-GRAV", "MECHA-DROID"), ("B2-RP", "BB9", "R7"),
+        ("LO", "STRIKE-ORB", "HAUL-R"), ("SEN-TRI", "R6", "GUNRUNNER"),
+        ("BB9", "CYCLO-GRAV", "B2-RP"), ("MONO-WLKR", "OPTI-STRK", "MO-TRAK"),
+        ("MECHA-DROID", "RIC", "TRI-TEK"), ("CYCLENS", "LEP", "SNOW MOUSE"),
+        ("RIC-1200", "IG", "LOADLIFTER"), ("RIC", "MO-TRAK", "BB9"),
+        ("IG", "MECHA-DROID", "OPTI-STRK"), ("R7", "LEP", "CYCLENS"),
+        ("AMP WALKER", "OPTI-STRK", "SNOW MOUSE"),
+        ("LO", "TRAK-R", "DRFT-R"),
+        ("UTIL-TEC", "R7", "TRI-TEK"),
+        ("HAUL-R", "LNG-SHOT", "IG"),
+        ("MECHA-DROID", "RIC-1200", "MO-TRAK"),
     ],
 }
+
+
+def next_cycle(cycle: int) -> int:
+    """Return the next rebirth cycle, wrapping cycle 5 back to cycle 1."""
+    return (cycle % NUM_CYCLES) + 1
+
+
+def active_rebirth(cycle: int, completed_rebirth: int) -> tuple[int, int]:
+    """Return the cycle and rank the player is currently working toward."""
+    if completed_rebirth >= MAX_REBIRTH:
+        return next_cycle(cycle), 1
+    return cycle, completed_rebirth + 1

@@ -1,13 +1,50 @@
 from pathlib import Path
 
-from droid_advisor.engine import advise, canonical, detect_cycle, match_droid, safe_to_sell_droids
-from droid_advisor.vision import OfflineOcr, OcrToken, blueprint_details, blueprint_droid, blueprint_is_visible, blueprint_visual_gate, card_header_rect, card_visual_gate, game_ui_viewport, game_ui_viewports, high_value_spawn, is_card_button_text, panel_is_open, read_region, rebirth_header_is_open, rebirth_visual_gate, selected_droid
-from droid_advisor.inventory import InventoryLedger
-from droid_advisor.updater import parse_release, trusted_ssl_context, version_tuple
-from droid_advisor.cycles import CYCLES
+from PIL import Image
+
+from droid_advisor import notifications
+from droid_advisor.build_rebirth_tiles import QUALITY_COLORS, render_card, stellar_icon
+from droid_advisor.chip_costs import CHIP_COSTS_126
+from droid_advisor.cycles import CYCLES, MAX_REBIRTH, active_rebirth, next_cycle
 from droid_advisor.diagnostics import DiagnosticBuffer
-from droid_advisor.extract_rebirth_tiles import DISPLAY_WIDTH, GRID_TOP, GROUPS, TOP_PADDING, tile_bounds
-from droid_advisor.chip_costs import CHIP_COSTS_123
+from droid_advisor.engine import (
+    advise,
+    canonical,
+    detect_cycle,
+    match_droid,
+    safe_to_sell_droids,
+)
+from droid_advisor.extract_rebirth_tiles import (
+    DISPLAY_WIDTH,
+    GRID_TOP,
+    GROUPS,
+    TOP_PADDING,
+    tile_bounds,
+)
+from droid_advisor.inventory import InventoryLedger
+from droid_advisor.notifications import update_spawn_presence
+from droid_advisor.qualities import QUALITY_ORDER, quality_table
+from droid_advisor.updater import parse_release, trusted_ssl_context, version_tuple
+from droid_advisor.vision import (
+    OcrToken,
+    OfflineOcr,
+    blueprint_details,
+    blueprint_droid,
+    blueprint_is_visible,
+    blueprint_visual_gate,
+    card_header_rect,
+    card_visual_gate,
+    game_ui_viewport,
+    game_ui_viewports,
+    high_value_spawn,
+    is_card_button_text,
+    panel_is_open,
+    read_region,
+    rebirth_header_is_open,
+    rebirth_rank,
+    rebirth_visual_gate,
+    selected_droid,
+)
 from droid_advisor.windowing import (
     WorkArea,
     clamp_window_position,
@@ -15,7 +52,6 @@ from droid_advisor.windowing import (
     monitor_topology_signature,
     top_right_position,
 )
-from PIL import Image
 
 
 def test_offscreen_overlay_moves_to_primary_monitor():
@@ -84,13 +120,13 @@ def test_rebirth_tiles_fit_all_supported_overlay_resolutions():
         (3840, 2160),
         (5120, 1440),
     )
-    for cycle in range(1, 5):
+    for cycle in range(1, 6):
         dimensions = {}
-        for rank in range(1, 31):
+        for rank in range(1, MAX_REBIRTH + 1):
             with Image.open(assets / f"rbc{cycle}" / f"rb{rank:02d}.png") as tile:
                 dimensions[rank] = tile.size
                 assert tile.width == DISPLAY_WIDTH
-        for rank in range(1, 30):
+        for rank in range(1, MAX_REBIRTH):
             overlay_width = max(dimensions[rank][0], dimensions[rank + 1][0]) + 20
             overlay_height = dimensions[rank][1] + dimensions[rank + 1][1] + 150
             for viewport_width, viewport_height in viewports:
@@ -98,19 +134,31 @@ def test_rebirth_tiles_fit_all_supported_overlay_resolutions():
                 assert overlay_height <= viewport_height
 
 
-def test_update_123_chip_costs_match_published_reference():
-    assert CHIP_COSTS_123 == (
+def test_update_126_chip_costs_match_published_reference():
+    assert CHIP_COSTS_126 == (
         ("EPIC", "BESKAR", 3000),
-        ("EPIC", "GALACTIC", 6000),
+        ("EPIC", "GALACTIC", 5000),
+        ("EPIC", "STELLAR", 8000),
         ("LEGENDARY", "RAINBOW", 3000),
         ("LEGENDARY", "BESKAR", 7500),
         ("LEGENDARY", "GALACTIC", 20000),
+        ("LEGENDARY", "STELLAR", 24000),
         ("MYTHIC", "GOLD", 4000),
         ("MYTHIC", "DIAMOND", 8000),
-        ("MYTHIC", "RAINBOW", 20000),
-        ("MYTHIC", "BESKAR", 40000),
-        ("MYTHIC", "GALACTIC", 70000),
+        ("MYTHIC", "RAINBOW", 15000),
+        ("MYTHIC", "BESKAR", 30000),
+        ("MYTHIC", "GALACTIC", 60000),
+        ("MYTHIC", "STELLAR", 90000),
     )
+
+
+def test_update_126_extends_every_cycle_and_wraps_after_cycle_five():
+    assert MAX_REBIRTH == 35
+    assert set(CYCLES) == {1, 2, 3, 4, 5}
+    assert all(len(rows) == MAX_REBIRTH for rows in CYCLES.values())
+    assert next_cycle(4) == 5
+    assert next_cycle(5) == 1
+    assert QUALITY_ORDER["STELLAR"] > QUALITY_ORDER["GALACTIC"]
 
 
 def test_proto_roller_at_completed_22_varies_by_cycle():
@@ -215,6 +263,14 @@ def test_rebirth_names_match_audited_thumbnail_order():
         (4, 28): ("IG", "KX", "OPTI-STRK"),
         (4, 29): ("TRI-TEK", "R7", "BB9"),
         (4, 30): ("MONO-WLKR", "CYCLENS", "IG"),
+        (1, 31): ("SEN-TRI", "PROTO-ROLLER", "KX"),
+        (1, 35): ("BB9", "IG", "SNOW MOUSE"),
+        (2, 35): ("R7", "DRFT-R", "CYCLENS"),
+        (3, 35): ("PROTO-ROLLER", "KX", "RIC"),
+        (4, 35): ("B2-RP", "LOADLIFTER", "LEP"),
+        (5, 1): ("ID10", "MOUSE", "GONK"),
+        (5, 30): ("R7", "LEP", "CYCLENS"),
+        (5, 35): ("MECHA-DROID", "RIC-1200", "MO-TRAK"),
     }
     for (cycle, rebirth), expected in expected_rows.items():
         assert CYCLES[cycle][rebirth - 1] == expected
@@ -262,6 +318,7 @@ def test_offline_ocr_uses_low_impact_runtime_settings(monkeypatch):
 def test_offline_ocr_can_preserve_notification_colors(monkeypatch):
     import sys
     import types
+
     from PIL import Image
 
     seen = {}
@@ -302,20 +359,34 @@ def test_visual_gates_reject_plain_gameplay_and_detect_target_chrome():
     assert blueprint_visual_gate(blueprint) is True
 
 
-def test_only_epic_and_higher_galactic_spawns_trigger_alerts():
-    for rarity in ("Common", "Rare"):
+def test_only_legendary_and_higher_galactic_spawns_trigger_alerts():
+    for rarity in ("Common", "Rare", "Epic"):
         tokens = [_token(f"Galactic Droid ({rarity}) spawned at the Sandcrawler", 300, 500)]
         assert high_value_spawn(tokens, 1000, 1000) is None
-    for rarity in ("Epic", "Legendary", "Mythic"):
+    for rarity in ("Legendary", "Mythic"):
         tokens = [_token(f"Galactic Droid ({rarity}) spawned at the Sandcrawler", 300, 500)]
         assert high_value_spawn(tokens, 1000, 1000) == ("GALACTIC", rarity.upper())
 
 
-def test_existing_finishes_still_require_legendary_or_mythic():
-    rare = [_token("Rainbow Droid (Rare) spawned at the Sandcrawler", 300, 500)]
-    mythic = [_token("Beskar Droid (Mythic) spawned at the Sandcrawler", 300, 500)]
-    assert high_value_spawn(rare, 1000, 1000) is None
-    assert high_value_spawn(mythic, 1000, 1000) == ("BESKAR", "MYTHIC")
+def test_every_stellar_spawn_triggers_during_temporary_hunt():
+    for rarity in ("Common", "Rare", "Epic", "Legendary", "Mythic"):
+        tokens = [_token(f"Stellar Droid ({rarity}) spawned at the Sandcrawler", 300, 500)]
+        assert high_value_spawn(tokens, 1000, 1000) == ("STELLAR", rarity.upper())
+
+
+def test_beskar_requires_legendary_or_mythic():
+    for rarity in ("Common", "Rare", "Epic"):
+        tokens = [_token(f"Beskar Droid ({rarity}) spawned at the Sandcrawler", 300, 500)]
+        assert high_value_spawn(tokens, 1000, 1000) is None
+    for rarity in ("Legendary", "Mythic"):
+        tokens = [_token(f"Beskar Droid ({rarity}) spawned at the Sandcrawler", 300, 500)]
+        assert high_value_spawn(tokens, 1000, 1000) == ("BESKAR", rarity.upper())
+
+
+def test_variants_below_beskar_never_trigger_even_when_mythic():
+    for finish in ("Gold", "Diamond", "Rainbow"):
+        tokens = [_token(f"{finish} Droid (Mythic) spawned at the Sandcrawler", 300, 500)]
+        assert high_value_spawn(tokens, 1000, 1000) is None
 
 
 def test_galactic_alert_requires_readable_epic_or_higher_rarity():
@@ -450,13 +521,214 @@ def test_region_ocr_translates_tokens_to_full_frame():
 
 def test_blueprint_finish_and_rarity_are_optional_context():
     assert blueprint_details([_token("RAINBOW", 10, 10), _token("LEGENDARY", 20, 20)]) == ("RAINBOW", "LEGENDARY")
+    assert blueprint_details([_token("STELLAR", 10, 10), _token("MYTHIC", 20, 20)]) == ("STELLAR", "MYTHIC")
+
+
+def test_rebirth_rank_accepts_update_126_range_only():
+    assert rebirth_rank([_token("Rank 35", 100, 30)]) == 35
+    assert rebirth_rank([_token("Rank 36", 100, 30)]) is None
 
 
 def test_high_value_spawn_filter_is_strict():
-    assert high_value_spawn([_token("Rainbow Droid (Mythic) spawned at the Sandcrawler", 300, 500)], 1000, 1000) == ("RAINBOW", "MYTHIC")
+    assert high_value_spawn([_token("Rainbow Droid (Mythic) spawned at the Sandcrawler", 300, 500)], 1000, 1000) is None
     assert high_value_spawn([_token("Beskar Droid (Legendary) spawned at the Sandcrawler", 300, 500)], 1000, 1000) == ("BESKAR", "LEGENDARY")
     assert high_value_spawn([_token("Rainbow Droid (Rare) spawned at the Sandcrawler", 300, 500)], 1000, 1000) is None
     assert high_value_spawn([_token("Gold Droid (Mythic) spawned at the Sandcrawler", 300, 500)], 1000, 1000) is None
+    assert high_value_spawn([_token("Galactic Droid (Epic) spawned at the Sandcrawler", 300, 500)], 1000, 1000) is None
+    assert high_value_spawn([_token("Stellar Droid (Common) spawned at the Sandcrawler", 300, 500)], 1000, 1000) == ("STELLAR", "COMMON")
+
+
+def test_spawn_notification_sound_is_non_blocking(monkeypatch, tmp_path):
+    calls = []
+
+    class FakeWinSound:
+        SND_ALIAS = 1
+        SND_ASYNC = 2
+        SND_NODEFAULT = 4
+        SND_FILENAME = 8
+        MB_ICONEXCLAMATION = 16
+
+        @staticmethod
+        def PlaySound(name, flags):
+            calls.append((name, flags))
+
+        @staticmethod
+        def MessageBeep(_kind):
+            raise AssertionError("fallback should not be needed")
+
+    monkeypatch.setattr(notifications, "winsound", FakeWinSound)
+    sound = tmp_path / "droid-chime.wav"
+    sound.write_bytes(b"RIFF")
+    assert notifications.play_spawn_notification("droid_chime", tmp_path, 100) is True
+    assert calls == [(str(sound), 14)]
+
+
+def test_windows_tone_remains_an_available_fallback(monkeypatch):
+    calls = []
+
+    class FakeWinSound:
+        SND_ALIAS = 1
+        SND_ASYNC = 2
+        SND_NODEFAULT = 4
+        SND_FILENAME = 8
+        MB_ICONEXCLAMATION = 16
+
+        @staticmethod
+        def PlaySound(name, flags):
+            calls.append((name, flags))
+
+        @staticmethod
+        def MessageBeep(_kind):
+            raise AssertionError("fallback should not be needed")
+
+    monkeypatch.setattr(notifications, "winsound", FakeWinSound)
+    assert notifications.play_spawn_notification("windows_tone") is True
+    assert calls == [("SystemExclamation", 7)]
+
+
+def test_windows_tone_ignores_custom_volume_zero(monkeypatch):
+    calls = []
+
+    class FakeWinSound:
+        SND_ALIAS = 1
+        SND_ASYNC = 2
+        SND_NODEFAULT = 4
+        SND_FILENAME = 8
+        MB_ICONEXCLAMATION = 16
+
+        @staticmethod
+        def PlaySound(name, flags):
+            calls.append((name, flags))
+
+    monkeypatch.setattr(notifications, "winsound", FakeWinSound)
+    assert notifications.play_spawn_notification("windows_tone", volume_percent=0) is True
+    assert calls == [("SystemExclamation", 7)]
+
+
+def test_custom_sound_failure_falls_back_without_raising(monkeypatch, tmp_path):
+    calls = []
+
+    class FakeWinSound:
+        SND_ALIAS = 1
+        SND_ASYNC = 2
+        SND_NODEFAULT = 4
+        SND_FILENAME = 8
+        MB_ICONEXCLAMATION = 16
+
+        @staticmethod
+        def PlaySound(name, flags):
+            calls.append((name, flags))
+
+    monkeypatch.setattr(notifications, "winsound", FakeWinSound)
+    sound_dir = Path(__file__).resolve().parents[1] / "droid_advisor" / "assets" / "sounds"
+    invalid_cache = tmp_path / "not-a-directory"
+    invalid_cache.write_text("occupied", encoding="utf-8")
+    assert notifications.play_spawn_notification("droid_chime", sound_dir, 50, invalid_cache) is True
+    assert calls == [("SystemExclamation", 7)]
+
+
+def test_custom_sound_volume_creates_scaled_cached_wav(tmp_path):
+    import wave
+    from array import array
+
+    sound_dir = Path(__file__).resolve().parents[1] / "droid_advisor" / "assets" / "sounds"
+    source = sound_dir / "droid-chime.wav"
+    adjusted = notifications.volume_adjusted_sound(source, 50, tmp_path)
+    with wave.open(str(source), "rb") as original_wav:
+        original = array("h")
+        original.frombytes(original_wav.readframes(original_wav.getnframes()))
+    with wave.open(str(adjusted), "rb") as adjusted_wav:
+        scaled = array("h")
+        scaled.frombytes(adjusted_wav.readframes(adjusted_wav.getnframes()))
+    assert adjusted.name == "droid-chime-volume-50.wav"
+    assert len(scaled) == len(original)
+    assert abs(max(scaled)) in range(round(abs(max(original)) * 0.49), round(abs(max(original)) * 0.51) + 1)
+
+
+def test_corrupt_volume_cache_is_regenerated(tmp_path):
+    import os
+    import wave
+
+    sound_dir = Path(__file__).resolve().parents[1] / "droid_advisor" / "assets" / "sounds"
+    source = sound_dir / "droid-chime.wav"
+    cached = tmp_path / "droid-chime-volume-50.wav"
+    cached.write_bytes(b"not a wav")
+    newer = source.stat().st_mtime + 10
+    os.utime(cached, (newer, newer))
+    adjusted = notifications.volume_adjusted_sound(source, 50, tmp_path)
+    with wave.open(str(adjusted), "rb") as regenerated:
+        assert regenerated.getsampwidth() == 2
+        assert regenerated.getnframes() > 0
+
+
+def test_zero_custom_sound_volume_is_silent(monkeypatch, tmp_path):
+    class FakeWinSound:
+        def __getattr__(self, name):
+            raise AssertionError(f"winsound should not be called at zero volume: {name}")
+
+    monkeypatch.setattr(notifications, "winsound", FakeWinSound())
+    assert notifications.play_spawn_notification("droid_chime", tmp_path, 0) is True
+
+
+def test_bundled_alert_sound_choices_have_valid_wav_assets():
+    sound_dir = Path(__file__).resolve().parents[1] / "droid_advisor" / "assets" / "sounds"
+    assert tuple(label for label, _sound_id in notifications.SOUND_CHOICES) == (
+        "Droid Chime", "Scanner Ping", "Urgent Pulse", "Custom WAV", "Windows Tone",
+    )
+    for filename in notifications.SOUND_FILES.values():
+        data = (sound_dir / filename).read_bytes()
+        assert data[:4] == b"RIFF"
+        assert data[8:12] == b"WAVE"
+
+
+def test_custom_wav_is_validated_copied_and_played(monkeypatch, tmp_path):
+    import wave
+    from array import array
+
+    source = tmp_path / "selected.wav"
+    destination = tmp_path / "managed" / notifications.CUSTOM_SOUND_FILENAME
+    samples = array("h", (0, 500, -500, 0) * 100)
+    with wave.open(str(source), "wb") as output_wav:
+        output_wav.setparams((1, 2, 44100, 0, "NONE", "not compressed"))
+        output_wav.writeframes(samples.tobytes())
+
+    assert notifications.install_custom_sound(source, destination) == destination.resolve()
+    assert destination.read_bytes() == source.read_bytes()
+
+    calls = []
+
+    class FakeWinSound:
+        SND_ALIAS = 1
+        SND_ASYNC = 2
+        SND_NODEFAULT = 4
+        SND_FILENAME = 8
+        MB_ICONEXCLAMATION = 16
+
+        @staticmethod
+        def PlaySound(name, flags):
+            calls.append((name, flags))
+
+    monkeypatch.setattr(notifications, "winsound", FakeWinSound)
+    assert notifications.play_spawn_notification(
+        "custom_wav", volume_percent=100, custom_sound_path=destination
+    ) is True
+    assert calls == [(str(destination), 14)]
+
+
+def test_invalid_custom_wav_is_rejected_without_replacing_existing(tmp_path):
+    destination = tmp_path / notifications.CUSTOM_SOUND_FILENAME
+    destination.write_bytes(b"existing managed sound")
+    invalid = tmp_path / "not-a-wave.wav"
+    invalid.write_bytes(b"not a wave")
+
+    try:
+        notifications.install_custom_sound(invalid, destination)
+    except ValueError as exc:
+        assert "valid PCM WAV" in str(exc)
+    else:
+        raise AssertionError("invalid custom WAV was accepted")
+    assert destination.read_bytes() == b"existing managed sound"
+    assert list(tmp_path.glob("custom-alert-*.tmp")) == []
 
 
 def test_inventory_distinguishes_missing_duplicate_and_underleveled(tmp_path):
@@ -477,6 +749,38 @@ def test_galactic_outranks_beskar_and_lower_requirements(tmp_path):
     assert assessment.covered is True
 
 
+def test_stellar_outranks_galactic_and_covers_cycle_five_endgame(tmp_path):
+    ledger = InventoryLedger(tmp_path / "inventory.json")
+    ledger.set("MECHA-DROID", 1, "STELLAR")
+    assessment = ledger.assess(5, 30, "MECHA-DROID")
+    assert assessment.next_needed == 35
+    assert assessment.required_quality == "STELLAR"
+    assert assessment.covered is True
+
+
+def test_update_126_quality_rows_match_verified_tracker():
+    qualities = quality_table()
+    assert qualities["1"]["31"] == ["STELLAR", "BESKAR", "BESKAR"]
+    assert qualities["4"]["35"] == ["STELLAR", "STELLAR", "STELLAR"]
+    assert qualities["5"]["32"] == ["GALACTIC", "GALACTIC", "BESKAR"]
+
+
+def test_stellar_graphic_uses_warm_orbital_treatment():
+    icon = stellar_icon(27, seed=126)
+    colors = icon.convert("RGB").getcolors(maxcolors=27 * 27)
+    assert QUALITY_COLORS["STELLAR"] == "#fbbf24"
+    assert colors is not None
+    assert len(colors) >= 12
+    assert any(red > 220 and green > 140 and blue < 90 for _count, (red, green, blue) in colors)
+
+
+def test_every_generated_rebirth_card_uses_screen_safe_dimensions():
+    for cycle in range(1, 6):
+        for rank in range(1, MAX_REBIRTH + 1):
+            expected_height = 179 if rank >= 12 else 125
+            assert render_card(cycle, rank).size == (DISPLAY_WIDTH, expected_height)
+
+
 def test_inventory_persists_and_clears(tmp_path):
     path = tmp_path / "inventory.json"
     InventoryLedger(path).set("BB9", 2, "RAINBOW")
@@ -488,12 +792,100 @@ def test_inventory_persists_and_clears(tmp_path):
 
 def test_update_release_requires_newer_version_and_digest():
     release = {"tag_name": "v0.5.0", "html_url": "https://example.test/release", "assets": [{
-        "name": "DroidAdvisor-Setup-0.5.0.exe", "browser_download_url": "https://example.test/app.exe",
+        "name": "DroidAdvisor-Setup-0.5.0.exe", "browser_download_url": "https://github.com/jrlee2x/droid-advisor/releases/download/v0.5.0/DroidAdvisor-Setup-0.5.0.exe",
         "digest": "sha256:" + "a" * 64,
     }]}
     assert parse_release(release, "0.4.1").version == "0.5.0"
     assert parse_release(release, "0.5.0") is None
     assert version_tuple("v1.2.10") > version_tuple("1.2.9")
+
+
+def test_update_release_requires_filename_to_match_tag_exactly():
+    release = {"tag_name": "v1.1.4", "assets": [{
+        "name": "DroidAdvisor-Setup-9.9.9.exe",
+        "browser_download_url": "https://github.com/jrlee2x/droid-advisor/releases/download/v0.5.0/DroidAdvisor-Setup-0.5.0.exe",
+        "digest": "sha256:" + "a" * 64,
+    }]}
+    try:
+        parse_release(release, "1.1.3")
+    except ValueError as exc:
+        assert "matching DroidAdvisor-Setup-1.1.4.exe" in str(exc)
+    else:
+        raise AssertionError("mismatched installer filename was accepted")
+
+
+def test_active_rebirth_wraps_after_rank_35():
+    assert active_rebirth(4, 34) == (4, 35)
+    assert active_rebirth(4, 35) == (5, 1)
+    assert active_rebirth(5, 35) == (1, 1)
+
+
+def test_saved_config_is_normalized_and_written_atomically(monkeypatch, tmp_path):
+    import json
+
+    from droid_advisor import config
+
+    config_path = tmp_path / "config.json"
+    monkeypatch.setattr(config, "APP_DIR", tmp_path)
+    monkeypatch.setattr(config, "CONFIG_PATH", config_path)
+    config_path.write_text(
+        json.dumps({
+            "cycle": 99,
+            "completed_rebirth": 999,
+            "spawn_alert_sound": "made_up",
+            "spawn_alert_volume": "loud",
+        }),
+        encoding="utf-8",
+    )
+    normalized = config.load_config()
+    assert normalized["cycle"] == 1
+    assert normalized["completed_rebirth"] == 35
+    assert normalized["spawn_alert_sound"] == "droid_chime"
+    assert normalized["spawn_alert_volume"] == 70
+    normalized["spawn_alert_volume"] = 55
+    config.save_config(normalized)
+    assert json.loads(config_path.read_text(encoding="utf-8"))["spawn_alert_volume"] == 55
+    assert list(tmp_path.glob("config-*.tmp")) == []
+
+
+def test_config_uses_custom_wav_only_when_managed_copy_exists(monkeypatch, tmp_path):
+    import json
+
+    from droid_advisor import config
+
+    config_path = tmp_path / "config.json"
+    custom_path = tmp_path / notifications.CUSTOM_SOUND_FILENAME
+    monkeypatch.setattr(config, "CONFIG_PATH", config_path)
+    monkeypatch.setattr(config, "CUSTOM_SOUND_PATH", custom_path)
+    config_path.write_text(
+        json.dumps({"spawn_alert_sound": "custom_wav"}), encoding="utf-8"
+    )
+    assert config.load_config()["spawn_alert_sound"] == "droid_chime"
+    custom_path.write_bytes(b"managed")
+    assert config.load_config()["spawn_alert_sound"] == "custom_wav"
+
+
+def test_non_object_config_uses_defaults(monkeypatch, tmp_path):
+    from droid_advisor import config
+
+    config_path = tmp_path / "config.json"
+    config_path.write_text("[]", encoding="utf-8")
+    monkeypatch.setattr(config, "CONFIG_PATH", config_path)
+    assert config.load_config() == config.DEFAULTS
+
+
+def test_spawn_presence_clears_only_after_consecutive_absent_scans():
+    stellar = ("STELLAR", "COMMON")
+    signature, absent, alert = update_spawn_presence(None, 0, stellar)
+    assert (signature, absent, alert) == (stellar, 0, True)
+    signature, absent, alert = update_spawn_presence(signature, absent, stellar)
+    assert (signature, absent, alert) == (stellar, 0, False)
+    for expected_absent in (1, 2):
+        signature, absent, alert = update_spawn_presence(signature, absent, None)
+        assert (signature, absent, alert) == (stellar, expected_absent, False)
+    signature, absent, alert = update_spawn_presence(signature, absent, None)
+    assert (signature, absent, alert) == (None, 0, False)
+    assert update_spawn_presence(signature, absent, stellar) == (stellar, 0, True)
 
 
 def test_updater_uses_a_packaged_trusted_ca_bundle():
@@ -521,3 +913,13 @@ def test_detailed_ocr_samples_require_explicit_enablement():
     diagnostics.enable_detailed(120)
     diagnostics.sample("interaction_ocr_sample", ["WORK", "SELL"])
     assert "interaction_ocr_sample: WORK | SELL" in diagnostics.report("1", {}, None)
+
+
+def test_detailed_ocr_samples_are_purged_without_a_later_report():
+    import time
+
+    diagnostics = DiagnosticBuffer()
+    diagnostics.enable_detailed(0.02)
+    diagnostics.sample("interaction_ocr_sample", ["PRIVATE OCR"])
+    time.sleep(0.08)
+    assert "interaction_ocr_sample" not in diagnostics._state

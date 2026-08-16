@@ -149,6 +149,31 @@
       "GALACTIC",
       "BESKAR",
       "GALACTIC"
+    ],
+    "31": [
+      "STELLAR",
+      "BESKAR",
+      "BESKAR"
+    ],
+    "32": [
+      "GALACTIC",
+      "GALACTIC",
+      "BESKAR"
+    ],
+    "33": [
+      "STELLAR",
+      "GALACTIC",
+      "GALACTIC"
+    ],
+    "34": [
+      "STELLAR",
+      "STELLAR",
+      "GALACTIC"
+    ],
+    "35": [
+      "STELLAR",
+      "STELLAR",
+      "STELLAR"
     ]
   },
   "2": {
@@ -301,6 +326,31 @@
       "GALACTIC",
       "BESKAR",
       "GALACTIC"
+    ],
+    "31": [
+      "STELLAR",
+      "BESKAR",
+      "BESKAR"
+    ],
+    "32": [
+      "GALACTIC",
+      "GALACTIC",
+      "BESKAR"
+    ],
+    "33": [
+      "STELLAR",
+      "GALACTIC",
+      "GALACTIC"
+    ],
+    "34": [
+      "STELLAR",
+      "STELLAR",
+      "GALACTIC"
+    ],
+    "35": [
+      "STELLAR",
+      "STELLAR",
+      "STELLAR"
     ]
   },
   "3": {
@@ -453,6 +503,31 @@
       "GALACTIC",
       "BESKAR",
       "GALACTIC"
+    ],
+    "31": [
+      "BESKAR",
+      "STELLAR",
+      "BESKAR"
+    ],
+    "32": [
+      "GALACTIC",
+      "GALACTIC",
+      "BESKAR"
+    ],
+    "33": [
+      "STELLAR",
+      "GALACTIC",
+      "GALACTIC"
+    ],
+    "34": [
+      "STELLAR",
+      "STELLAR",
+      "GALACTIC"
+    ],
+    "35": [
+      "STELLAR",
+      "STELLAR",
+      "STELLAR"
     ]
   },
   "4": {
@@ -605,6 +680,208 @@
       "GALACTIC",
       "BESKAR",
       "GALACTIC"
+    ],
+    "31": [
+      "STELLAR",
+      "BESKAR",
+      "BESKAR"
+    ],
+    "32": [
+      "GALACTIC",
+      "GALACTIC",
+      "BESKAR"
+    ],
+    "33": [
+      "STELLAR",
+      "GALACTIC",
+      "GALACTIC"
+    ],
+    "34": [
+      "STELLAR",
+      "STELLAR",
+      "GALACTIC"
+    ],
+    "35": [
+      "STELLAR",
+      "STELLAR",
+      "STELLAR"
+    ]
+  },
+  "5": {
+    "1": [
+      "BASE",
+      "BASE",
+      "BASE"
+    ],
+    "2": [
+      "BASE",
+      "GOLD",
+      "BASE"
+    ],
+    "3": [
+      "BASE",
+      "BASE",
+      "GOLD"
+    ],
+    "4": [
+      "GOLD",
+      "GOLD",
+      "GOLD"
+    ],
+    "5": [
+      "GOLD",
+      "GOLD",
+      "GOLD"
+    ],
+    "6": [
+      "BASE",
+      "DIAMOND",
+      "DIAMOND"
+    ],
+    "7": [
+      "DIAMOND",
+      "DIAMOND",
+      "GOLD"
+    ],
+    "8": [
+      "GOLD",
+      "DIAMOND",
+      "DIAMOND"
+    ],
+    "9": [
+      "RAINBOW",
+      "GOLD",
+      "GOLD"
+    ],
+    "10": [
+      "BESKAR",
+      "BASE",
+      "BASE"
+    ],
+    "11": [
+      "BASE",
+      "BASE",
+      "BASE"
+    ],
+    "12": [
+      "RAINBOW",
+      "GOLD",
+      "GOLD"
+    ],
+    "13": [
+      "GOLD",
+      "GOLD",
+      "DIAMOND"
+    ],
+    "14": [
+      "DIAMOND",
+      "DIAMOND",
+      "RAINBOW"
+    ],
+    "15": [
+      "DIAMOND",
+      "DIAMOND",
+      "BASE"
+    ],
+    "16": [
+      "BASE",
+      "GOLD",
+      "GOLD"
+    ],
+    "17": [
+      "BASE",
+      "GOLD",
+      "GOLD"
+    ],
+    "18": [
+      "GOLD",
+      "GOLD",
+      "DIAMOND"
+    ],
+    "19": [
+      "DIAMOND",
+      "DIAMOND",
+      "RAINBOW"
+    ],
+    "20": [
+      "RAINBOW",
+      "RAINBOW",
+      "RAINBOW"
+    ],
+    "21": [
+      "BESKAR",
+      "BESKAR",
+      "BESKAR"
+    ],
+    "22": [
+      "BESKAR",
+      "BESKAR",
+      "BESKAR"
+    ],
+    "23": [
+      "BESKAR",
+      "BESKAR",
+      "BESKAR"
+    ],
+    "24": [
+      "BESKAR",
+      "BESKAR",
+      "BASE"
+    ],
+    "25": [
+      "BESKAR",
+      "BASE",
+      "GOLD"
+    ],
+    "26": [
+      "GOLD",
+      "DIAMOND",
+      "RAINBOW"
+    ],
+    "27": [
+      "DIAMOND",
+      "RAINBOW",
+      "BESKAR"
+    ],
+    "28": [
+      "RAINBOW",
+      "BESKAR",
+      "GALACTIC"
+    ],
+    "29": [
+      "BESKAR",
+      "GALACTIC",
+      "GALACTIC"
+    ],
+    "30": [
+      "GALACTIC",
+      "BESKAR",
+      "GALACTIC"
+    ],
+    "31": [
+      "STELLAR",
+      "BESKAR",
+      "BESKAR"
+    ],
+    "32": [
+      "GALACTIC",
+      "GALACTIC",
+      "BESKAR"
+    ],
+    "33": [
+      "STELLAR",
+      "GALACTIC",
+      "GALACTIC"
+    ],
+    "34": [
+      "STELLAR",
+      "STELLAR",
+      "GALACTIC"
+    ],
+    "35": [
+      "STELLAR",
+      "STELLAR",
+      "STELLAR"
     ]
   }
 }

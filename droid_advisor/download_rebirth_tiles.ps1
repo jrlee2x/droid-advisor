@@ -21,10 +21,10 @@ foreach ($chart in $charts) {
 
 Push-Location (Split-Path $root -Parent)
 try {
-    & $python -m droid_advisor.extract_rebirth_tiles
-    if ($LASTEXITCODE -ne 0) { throw "Rebirth tile extraction failed." }
+    & $python -m droid_advisor.build_rebirth_tiles --replace-all
+    if ($LASTEXITCODE -ne 0) { throw "Rebirth card generation failed." }
 } finally {
     Pop-Location
 }
 
-Write-Host "Complete Rebirth tiles are ready. See assets\ATTRIBUTION.txt."
+Write-Host "All 175 screen-safe Rebirth cards are ready. See assets\ATTRIBUTION.txt."

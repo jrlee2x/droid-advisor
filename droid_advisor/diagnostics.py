@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from collections import deque
 import ctypes
-from datetime import datetime
 import platform
 import threading
 import time
-from typing import Iterable
+from collections import deque
+from collections.abc import Iterable
+from datetime import datetime
 
 
 def copy_text_to_clipboard(text: str) -> None:
@@ -78,10 +78,29 @@ class DiagnosticBuffer:
 
     def enable_detailed(self, seconds: float = 120.0) -> None:
         with self._lock:
-            self._detailed_until = time.monotonic() + seconds
+            deadline = time.monotonic() + seconds
+            self._detailed_until = deadline
             self._events.append(
                 f"{datetime.now().astimezone().strftime('%H:%M:%S')}  Detailed diagnostics enabled for {int(seconds)} seconds"
             )
+        expiry = threading.Timer(seconds, self._expire_detailed, args=(deadline,))
+        expiry.daemon = True
+        expiry.start()
+
+    def _expire_detailed(self, deadline: float) -> None:
+        """Remove detailed OCR samples at expiry even when monitoring is idle."""
+        with self._lock:
+            if self._detailed_until != deadline:
+                return
+            remaining = deadline - time.monotonic()
+            if remaining > 0:
+                expiry = threading.Timer(remaining, self._expire_detailed, args=(deadline,))
+                expiry.daemon = True
+                expiry.start()
+                return
+            self._detailed_until = 0.0
+            for key in [key for key in self._state if key.endswith("_ocr_sample")]:
+                self._state.pop(key, None)
 
     def detailed_enabled(self) -> bool:
         with self._lock:

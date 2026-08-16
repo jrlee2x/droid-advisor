@@ -1,12 +1,11 @@
 """Deterministic rebirth-cycle matching and sell/keep decisions."""
 
+import re
 from dataclasses import dataclass
 from difflib import SequenceMatcher
-import re
 
 from .cycles import CYCLES
 from .qualities import QUALITY_ORDER, quality_table
-
 
 ALIASES = {
     "PROTOROLL": "PROTOROLLER",
@@ -114,5 +113,4 @@ def detect_cycle(visible_droids: set[str]) -> tuple[int, int] | None:
         for rb, required in enumerate(rows, start=1):
             if {canonical(name) for name in required}.issubset(wanted):
                 matches.append((cycle, rb))
-    cycles = {cycle for cycle, _ in matches}
-    return matches[0] if len(matches) == 1 or len(cycles) == 1 and len(matches) == 1 else None
+    return matches[0] if len(matches) == 1 else None

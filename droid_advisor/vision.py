@@ -3,14 +3,14 @@
 from __future__ import annotations
 
 import ctypes
-from ctypes import wintypes
-from dataclasses import dataclass
 import re
 import time
-from typing import Iterable
+from collections.abc import Iterable
+from ctypes import wintypes
+from dataclasses import dataclass
 
-from PIL import Image, ImageEnhance, ImageOps
 import numpy as np
+from PIL import Image, ImageEnhance, ImageOps
 
 from .engine import ALL_DROIDS, canonical, match_droid
 
@@ -78,7 +78,7 @@ def read_region(
     grayscale: bool = True,
 ) -> list[OcrToken]:
     """OCR a crop and translate token boxes back to full-image coordinates."""
-    left, top, right, bottom = box
+    left, top, _right, _bottom = box
     tokens = ocr.read(image.crop(box), max_width=max_width, grayscale=grayscale)
     return [
         OcrToken(
@@ -377,7 +377,7 @@ def blueprint_is_visible(tokens: list[OcrToken], width: int, height: int) -> boo
     if "BLUEPRINT" in lower_text and "CRAFTING" in lower_text:
         return True
     for token in tokens:
-        cx, cy = token.center
+        _cx, cy = token.center
         compact = canonical(token.text)
         if cy >= 0.60 * height and "BLUEPRINT" in compact and "CRAFTING" in compact:
             return True
@@ -411,13 +411,24 @@ def blueprint_droid(tokens: list[OcrToken]) -> tuple[str | None, float]:
 def blueprint_details(tokens: list[OcrToken]) -> tuple[str | None, str | None]:
     """Return optional (finish, rarity) labels from the blueprint card."""
     text = canonical(" ".join(token.text for token in tokens))
-    finish = next((value for value in ("BESKAR", "RAINBOW", "DIAMOND", "GOLD", "DEFAULT") if value in text), None)
+    finish = next(
+        (
+            value
+            for value in ("STELLAR", "GALACTIC", "BESKAR", "RAINBOW", "DIAMOND", "GOLD", "DEFAULT")
+            if value in text
+        ),
+        None,
+    )
     rarity = next((value for value in ("MYTHIC", "LEGENDARY", "EPIC", "RARE", "COMMON") if value in text), None)
     return finish, rarity
 
 
 def high_value_spawn(tokens: list[OcrToken], width: int, height: int) -> tuple[str, str] | None:
-    """Read strict high-value conveyor notifications from the left-side feed."""
+    """Read selected high-value Sandcrawler notifications from the left-side feed.
+
+    The temporary hunt profile alerts for Legendary or Mythic Beskar/Galactic
+    blueprints, plus every Stellar blueprint regardless of rarity.
+    """
     relevant_tokens = []
     for token in tokens:
         cx, cy = token.center
@@ -444,37 +455,32 @@ def high_value_spawn(tokens: list[OcrToken], width: int, height: int) -> tuple[s
         for line in lines
     ]
     compact = canonical(" ".join(token.text for token in relevant_tokens)).replace("BESKER", "BESKAR")
-    galactic_line = next(
+    notification_pattern = re.compile(
+        r"(GOLD|DIAMOND|RAINBOW|BESKAR|GALACTIC|STELLAR)"
+        r"DROID(COMMON|RARE|EPIC|LEGENDARY|MYTHIC)SPAWN(?:ED)?"
+    )
+    match = next(
         (
-            line for line in line_texts
-            if "GALACTICDROID" in line and ("SPAWN" in line or "SANDCRAWLER" in line)
+            candidate
+            for text in (*line_texts, compact)
+            if (candidate := notification_pattern.search(text))
         ),
         None,
     )
-    if galactic_line:
-        galactic = re.search(r"GALACTICDROID(COMMON|RARE|EPIC|LEGENDARY|MYTHIC)", galactic_line)
-        if not galactic:
-            return None
-        rarity = galactic.group(1)
-        if rarity not in ("EPIC", "LEGENDARY", "MYTHIC"):
-            return None
-        return "GALACTIC", rarity
-    match = re.search(
-        r"(DIAMOND|RAINBOW|BESKAR)DROID(COMMON|RARE|EPIC|LEGENDARY|MYTHIC)SPAWNED",
-        compact,
-    )
     if not match:
         return None
-    finish, rarity = match.group(1), match.group(2)
-    if rarity not in ("LEGENDARY", "MYTHIC"):
-        return None
-    return finish, rarity
+    finish, rarity = match.groups()
+    if finish == "STELLAR":
+        return finish, rarity
+    if finish in ("BESKAR", "GALACTIC") and rarity in ("LEGENDARY", "MYTHIC"):
+        return finish, rarity
+    return None
 
 
 def rebirth_rank(tokens: list[OcrToken]) -> int | None:
     """Read the target rank shown by the View Rebirth menu (for example Rank23)."""
     text = " ".join(token.text for token in tokens)
-    match = re.search(r"RANK\s*([1-9]|[12][0-9]|30)\b", text, re.IGNORECASE)
+    match = re.search(r"RANK\s*([1-9]|[12][0-9]|3[0-5])\b", text, re.IGNORECASE)
     return int(match.group(1)) if match else None
 
 
@@ -534,7 +540,7 @@ def completed_rebirth(tokens: list[OcrToken], width: int, height: int) -> int | 
         cx, cy = token.center
         if not (0.10 * width <= cx <= 0.32 * width and 0.70 * height <= cy <= 0.91 * height):
             continue
-        for raw in re.findall(r"\b(?:[0-9]|[12][0-9]|30)\b", token.text):
+        for raw in re.findall(r"\b(?:[0-9]|[12][0-9]|3[0-5])\b", token.text):
             candidates.append((cy, int(raw), token.confidence))
     if not candidates:
         return None

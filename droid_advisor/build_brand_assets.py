@@ -4,7 +4,6 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw
 
-
 ROOT = Path(__file__).resolve().parent
 BRANDING = ROOT / "assets" / "branding"
 SOURCE = BRANDING / "droid-advisor-logo-powered-source-v1.png"

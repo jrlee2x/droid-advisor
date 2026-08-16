@@ -1,8 +1,8 @@
 """Crop the 324 labeled requirement cards from Mr_Veron's 6680x5201 charts."""
 
 from pathlib import Path
-from PIL import Image, ImageOps
 
+from PIL import Image, ImageOps
 
 ROOT = Path(__file__).resolve().parent
 SOURCE = ROOT / "assets" / "source_cycles"

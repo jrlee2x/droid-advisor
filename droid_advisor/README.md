@@ -20,7 +20,7 @@ Double-click `droid_advisor\run.cmd`, or run:
 .\droid_advisor\run.cmd
 ```
 
-Choose RBC1–RBC4 and enter the number of rebirths already completed. For example, completed `22` means you are working on RB23. The settings persist in `%APPDATA%\DroidAdvisor\config.json`. Ordinary droid screens never overwrite that level from a guessed on-screen number; only a unique View Rebirth match can update it automatically.
+Choose RBC1–RBC5 and enter the number of rebirths already completed. For example, completed `22` means you are working on RB23. The settings persist in `%APPDATA%\DroidAdvisor\config.json`. Ordinary droid screens never overwrite that level from a guessed on-screen number; only a unique View Rebirth match can update it automatically.
 
 The app continuously watches a visible Fortnite/Droid Tycoon window. When a droid panel is open, it reads the droid name and completed rebirth indicator and shows one of:
 
@@ -31,17 +31,17 @@ When a held blueprint pickup screen displays `TOSS BLUEPRINT ON CRAFTING STATION
 
 Press **Ctrl+Shift+D** to pause or resume. Tray controls also expose pause, settings, and exit.
 
-Press **Ctrl+Shift+C** to show or hide the Update 1.23 upgrade-chip cost reference.
+Press **Ctrl+Shift+C** to show or hide the Update 1.26 upgrade-chip cost reference.
 
 Press **Ctrl+Shift+Home** or choose **Reset overlay positions** from the tray menu to move every overlay back onto the primary display. The advisor also detects monitor connection changes and automatically recovers a saved overlay when its monitor is disconnected.
 
-The draggable top-right **Rebirth Targets** overlay shows the complete guide card for the rebirth currently being worked and the following rebirth, including required droids, finish, rarity, credit cost, crystals, credit multiplier, and XP multiplier when provided by the guide. Press **Ctrl+Shift+R** or use the tray menu to show or hide it. Its screen position and visibility persist. At RB30, the second row previews RB1 of the next cycle. Galactic is the highest quality and satisfies requirements for Beskar and every lower quality.
+The draggable top-right **Rebirth Targets** overlay shows the complete guide card for the rebirth currently being worked and the following rebirth, including required droids, finish, rarity, credit cost, crystals, credit multiplier, and XP multiplier when provided by the guide. Press **Ctrl+Shift+R** or use the tray menu to show or hide it. Its screen position and visibility persist. At RB35, the second row previews RB1 of the next cycle. Stellar is the highest quality and satisfies requirements for Galactic and every lower quality.
 
-The optional **High-value conveyor alerts** setting watches the left-side spawn notification only. A large flashing alert appears for Diamond, Rainbow, or Beskar droids when the notification rarity is Legendary or Mythic. Galactic alerts appear for Epic, Legendary, and Mythic only. Identical text is deduplicated until the original notification disappears.
+The optional **Sandcrawler alerts + sound** setting watches the left-side spawn notification only. A large flashing alert and a non-blocking selectable sound appear for Beskar or Galactic droids when the rarity is Legendary or Mythic. During the current Stellar hunt, every Stellar notification alerts regardless of rarity. Lower variants are ignored. Choose Droid Chime, Scanner Ping, Urgent Pulse, the Windows tone, or a custom WAV in Settings and use Preview to hear it. Custom WAV files must be 16-bit mono or stereo PCM, no larger than 10 MB, and no longer than 30 seconds. Droid Advisor copies the chosen file into its AppData folder so it remains available if the original moves and through application updates. The saved 0-100% slider controls bundled and custom sounds; Windows Tone follows the Windows system volume. Identical text is deduplicated until the original notification disappears.
 
 ## Automatic RBC detection
 
-When the View Rebirth menu is visible, the watcher compares any three recognized required droids with all RBC1–RBC4 rows. It updates the cycle and completed level only when the match is unique. Shared/ambiguous triples are ignored, leaving the current manual setting unchanged.
+When the View Rebirth menu is visible, the watcher compares any three recognized required droids with all RBC1–RBC5 rows. It updates the cycle and completed level only when the match is unique. Shared or ambiguous triples are ignored, leaving the current manual setting unchanged.
 
 OCR accuracy depends on resolution, UI scale, motion blur, and contrast. Keep the target menu unobstructed for a moment. The first iteration uses general screen regions based on the supplied 1920×1277 screenshot; calibration controls can be added after testing against live captures.
 
@@ -63,6 +63,6 @@ The output is `dist-installer\DroidAdvisor-Setup-<version>.exe` with a neighbori
 
 The build intentionally uses PyInstaller's inspectable `onedir` layout internally, disables UPX, and wraps it in a conventional Inno Setup installer. The release is currently unsigned, so Windows may display **Unknown publisher** and reputation-based SmartScreen or antivirus warnings remain possible. A reputable Authenticode code-signing certificate is required to materially improve publisher trust; `sign_release.ps1` signs and timestamps a release once such a certificate is installed.
 
-For updates, distribute a newer installer and run it normally over the existing version. Do not ask users to replace individual files inside the installation directory. A future updater should consume a signed release manifest from a stable HTTPS location; executing mutable binaries directly from a shared Google Drive file would create an avoidable supply-chain risk.
+For updates, distribute a newer installer and run it normally over the existing version. Do not ask users to replace individual files inside the installation directory. The built-in updater consumes only a matching versioned installer from the repository's published GitHub Releases, requires GitHub's SHA-256 asset digest, verifies it after download and immediately before launch, and asks the user before installation. Authenticode signing remains necessary to give the installer a publisher identity outside the GitHub trust boundary.
 
 Copyright © 2026 Swag Studios.

@@ -4,12 +4,11 @@ from pathlib import Path
 
 from PIL import Image
 
-
 ROOT = Path(__file__).resolve().parent
 SOURCE = ROOT / "assets" / "source_rebirth_tiles"
 OUTPUT = ROOT / "assets" / "rebirth_tiles"
 
-# The four source charts share a 4688x6473 three-column grid. Ranks 1-12
+# The four legacy source charts share a 4688x6473 three-column grid. Ranks 1-12
 # occupy the left column; 13-21 the center; and 22-30 the right.
 X_BOUNDS = ((160, 1595), (1670, 3020), (3135, 4485))
 GRID_TOP = 735

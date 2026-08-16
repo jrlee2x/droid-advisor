@@ -16,5 +16,25 @@ Creator: u/Gnoembah
 Reddit: https://www.reddit.com/r/StarWarsDroidTycoon/comments/1v2ifpj/
 
 The four high-resolution charts cover RBC1 through RBC4 and Rebirth ranks
-1 through 30. The cropped tiles remain credited to their chart creator and
-are included only as compact reference artwork in the Rebirth target overlay.
+1 through 30. They remain credited to their chart creator and are retained as
+visual references. Current release builds generate every overlay card locally
+to guarantee consistent dimensions and prevent source crops from clipping.
+
+Droid Tycoon update 1.26 requirement data
+
+Rebirth ranks 31 through 35, the fifth rebirth path, Stellar requirements,
+credit costs, Super Rebirth rewards, and revised upgrade-chip costs are based
+on the community Rebirth/Inventory Manager v1.5 maintained by u/PreOmegazero:
+https://docs.google.com/spreadsheets/d/1Y1GKi9JdwAOybi3_x8HMmvxXnd2ESImKqKmwBASXRm8/
+
+The initial five-path chart posted by u/nicolaashley97 was used as a visual
+cross-check:
+https://www.reddit.com/r/StarWarsDroidTycoon/comments/1vpjst4/
+
+The warm amber direction for the Stellar variant marker was cross-checked
+against the current community Droid SRB tracker on 2026-08-16:
+https://droidsrb.com/
+
+All 175 locally generated cards contain original Droid Advisor layout,
+typography, shapes, and variant indicators. They do not copy the compressed
+community chart artwork.

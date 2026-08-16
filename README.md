@@ -4,15 +4,16 @@ Droid Advisor is a free, community-built Windows companion for Fortnite Droid Ty
 
 ## Current status
 
-This project is community software under active development. Version 1.0 includes:
+This project is community software under active development. Version 1.1 includes:
 
 - Automatic RBC and rebirth-rank detection from the View Rebirth menu.
-- A draggable current and next rebirth overlay using complete high-resolution rank cards.
+- A draggable current and next rebirth overlay using consistent screen-safe rank cards.
 - Keep or sell guidance for opened droid cards.
 - Held-blueprint recognition.
-- Optional high-value Sandcrawler spawn alerts.
+- Optional high-value Sandcrawler spawn alerts with bundled or user-selected WAV sounds and volume control.
 - A `Ctrl+Shift+Z` overlay listing previously required droids with no remaining use in the current cycle.
-- A `Ctrl+Shift+C` reference for the Update 1.23 upgrade-chip costs.
+- Five rebirth cycles through RB35, including Stellar requirements from Droid Tycoon update 1.26.
+- A `Ctrl+Shift+C` reference for the Update 1.26 upgrade-chip costs.
 - A redesigned Swag Studios interface with direct links to the Droid Tycoon community and the DepSwag profile.
 - A tested inventory data layer. The inventory user interface and automatic build, sale, and reset reconciliation are still in progress.
 
@@ -35,7 +36,7 @@ Droid Advisor:
 - Does not send keyboard, mouse, or controller input.
 - Does not require an account, API key, or network connection at runtime.
 
-Press `Ctrl+Shift+C` to show or hide the Update 1.23 upgrade-chip cost reference.
+Press `Ctrl+Shift+C` to show or hide the Update 1.26 upgrade-chip cost reference.
 
 Review the source and tests before running community software. Release installers are currently unsigned, so Windows may show an Unknown publisher warning.
 
@@ -69,7 +70,7 @@ powershell -ExecutionPolicy Bypass -File .\droid_advisor\build_release.ps1
 
 ## Guide artwork
 
-Guide artwork is not stored in this source repository. `download_guide_assets.ps1` downloads the original thumbnail charts, and `download_rebirth_tiles.ps1` downloads the updated high-resolution charts and generates complete rank-card assets. See `droid_advisor/assets/ATTRIBUTION.txt`.
+Guide artwork is not stored in this source repository. `download_guide_assets.ps1` downloads the original thumbnail charts for visual reference. `download_rebirth_tiles.ps1` retains the credited legacy charts as reference sources, then generates all 175 overlay cards in one consistent, screen-safe Droid Advisor layout from the verified requirement data. See `droid_advisor/assets/ATTRIBUTION.txt`.
 
 Before mirroring or redistributing the guide-derived thumbnails outside release binaries, obtain permission from the guide creator and follow the applicable platform and game-art terms.
 
