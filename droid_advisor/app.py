@@ -28,7 +28,10 @@ from .chip_costs import CHIP_COSTS_126
 from .config import APP_DIR, CUSTOM_SOUND_PATH, load_config, save_config
 from .cycles import CYCLES, MAX_REBIRTH, active_rebirth, next_cycle
 from .diagnostics import DiagnosticBuffer, copy_text_to_clipboard
+from .droid_catalog import droid_metadata, income_per_second, resolve_droid_by_rarity
 from .engine import advise, detect_cycle, safe_to_sell_droids
+from .inventory import InventoryLedger
+from .inventory_map import InventoryMapWindow
 from .notifications import (
     SOUND_IDS,
     SOUND_LABELS,
@@ -36,22 +39,22 @@ from .notifications import (
     play_spawn_notification,
     update_spawn_presence,
 )
-from .qualities import quality_table
+from .qualities import RARITIES, SPAWN_VARIANTS, quality_table
 from .updater import check_for_update, download_update, launch_installer
 from .vision import (
     GameCapture,
     OfflineOcr,
     blueprint_details,
     blueprint_droid,
-    blueprint_is_visible,
     card_header_rect,
+    classify_interaction,
     game_ui_viewports,
     game_window_rect,
     high_value_spawn,
-    panel_is_open,
     read_region,
     rebirth_header_is_open,
     rebirth_rank,
+    scan_priorities,
     selected_droid,
     visible_droids,
     visual_gates,
@@ -93,6 +96,7 @@ class DroidAdvisorApp:
         except (AttributeError, OSError):
             pass
         self.config = load_config()
+        self.inventory = InventoryLedger()
         self.diagnostics = DiagnosticBuffer()
         self.diagnostics.record(f"Droid Advisor v{__version__} started")
         self.events: queue.Queue[tuple[str, object]] = queue.Queue()
@@ -102,8 +106,8 @@ class DroidAdvisorApp:
         self.frame_number = 0
         self.root = tk.Tk()
         self.root.title("Droid Advisor")
-        self.root.geometry("620x640")
-        self.root.minsize(580, 620)
+        self.root.geometry("620x750")
+        self.root.minsize(580, 730)
         self.root.configure(bg=COLORS["window"])
         self.brand_logo = self._branding_photo(72)
         self.window_icon = self._branding_photo(48)
@@ -126,6 +130,11 @@ class DroidAdvisorApp:
         self._build_sell_list_overlay()
         self._build_chip_cost_overlay()
         self._build_spawn_alert()
+        self.inventory_map = InventoryMapWindow(
+            self.root,
+            self.inventory,
+            on_change=lambda: self.diagnostics.record("Base inventory updated"),
+        )
         self.display_signature = monitor_topology_signature(monitor_work_areas())
         self.display_watch_after = self.root.after(1000, self._watch_display_topology)
         self.tray = pystray.Icon("droid-advisor", self._tray_image(), "Droid Advisor", self._tray_menu())
@@ -134,6 +143,7 @@ class DroidAdvisorApp:
             "<ctrl>+<shift>+r": lambda: self.events.put(("requirements_toggle", None)),
             "<ctrl>+<shift>+z": lambda: self.events.put(("sell_list_toggle", None)),
             "<ctrl>+<shift>+c": lambda: self.events.put(("chip_cost_toggle", None)),
+            "<ctrl>+<shift>+i": lambda: self.events.put(("inventory_show", None)),
             "<ctrl>+<shift>+l": lambda: self.events.put(("diagnostics_copy", None)),
             "<ctrl>+<shift>+<home>": lambda: self.events.put(("overlay_reset", None)),
         })
@@ -256,36 +266,65 @@ class DroidAdvisorApp:
 
         self.spawn_alert_var = tk.BooleanVar(value=bool(self.config["spawn_alerts_enabled"]))
         tk.Checkbutton(
-            controls, text="Sandcrawler sound alerts: Beskar/Galactic Legendary+, all Stellar", variable=self.spawn_alert_var,
+            controls, text="Sandcrawler sound alerts", variable=self.spawn_alert_var,
             command=self._settings_changed, bg=COLORS["panel"], fg=COLORS["text"],
             activebackground=COLORS["panel"], activeforeground=COLORS["text"],
             selectcolor=COLORS["panel_alt"], font=("Segoe UI", 10), bd=0,
         ).grid(row=2, column=0, columnspan=4, sticky="w", padx=12, pady=(0, 11))
+
+        self.spawn_variant_var = tk.StringVar(
+            value=str(self.config["spawn_alert_min_variant"]).title()
+        )
+        tk.Label(
+            controls, text="Minimum variant", bg=COLORS["panel"], fg=COLORS["muted"],
+            font=("Segoe UI", 10),
+        ).grid(row=3, column=0, sticky="w", padx=(16, 10), pady=(0, 13))
+        variant_box = ttk.Combobox(
+            controls, style="Advisor.TCombobox", state="readonly", width=12,
+            values=tuple(value.title() for value in SPAWN_VARIANTS),
+            textvariable=self.spawn_variant_var,
+        )
+        variant_box.grid(row=3, column=1, sticky="w", pady=(0, 13))
+        variant_box.bind("<<ComboboxSelected>>", lambda _: self._settings_changed())
+        tk.Label(
+            controls, text="Minimum rarity", bg=COLORS["panel"], fg=COLORS["muted"],
+            font=("Segoe UI", 10),
+        ).grid(row=3, column=2, sticky="w", padx=(28, 10), pady=(0, 13))
+        self.spawn_rarity_var = tk.StringVar(
+            value=str(self.config["spawn_alert_min_rarity"]).title()
+        )
+        rarity_box = ttk.Combobox(
+            controls, style="Advisor.TCombobox", state="readonly", width=12,
+            values=tuple(value.title() for value in RARITIES),
+            textvariable=self.spawn_rarity_var,
+        )
+        rarity_box.grid(row=3, column=3, sticky="w", padx=(0, 16), pady=(0, 13))
+        rarity_box.bind("<<ComboboxSelected>>", lambda _: self._settings_changed())
 
         sound_id = str(self.config.get("spawn_alert_sound", "droid_chime"))
         self.spawn_sound_var = tk.StringVar(value=SOUND_LABELS.get(sound_id, "Droid Chime"))
         tk.Label(
             controls, text="Alert sound", bg=COLORS["panel"], fg=COLORS["muted"],
             font=("Segoe UI", 10),
-        ).grid(row=3, column=0, sticky="w", padx=(16, 10), pady=(0, 13))
+        ).grid(row=4, column=0, sticky="w", padx=(16, 10), pady=(0, 13))
         sound_box = ttk.Combobox(
             controls, style="Advisor.TCombobox", state="readonly", width=18,
             values=tuple(SOUND_IDS), textvariable=self.spawn_sound_var,
         )
-        sound_box.grid(row=3, column=1, sticky="w", pady=(0, 13))
+        sound_box.grid(row=4, column=1, sticky="w", pady=(0, 13))
         sound_box.bind("<<ComboboxSelected>>", lambda _: self._sound_selection_changed())
         tk.Button(
             controls, text="PREVIEW", command=self.preview_spawn_sound,
             bg=COLORS["panel_alt"], fg=COLORS["text"], activebackground=COLORS["border"],
             activeforeground=COLORS["text"], relief="flat", bd=0,
             font=("Segoe UI Semibold", 9), padx=14, pady=6, cursor="hand2",
-        ).grid(row=3, column=2, sticky="w", padx=(14, 0), pady=(0, 13))
+        ).grid(row=4, column=2, sticky="w", padx=(14, 0), pady=(0, 13))
         tk.Button(
             controls, text="CHOOSE WAV", command=self.choose_custom_sound,
             bg=COLORS["panel_alt"], fg=COLORS["text"], activebackground=COLORS["border"],
             activeforeground=COLORS["text"], relief="flat", bd=0,
             font=("Segoe UI Semibold", 9), padx=12, pady=6, cursor="hand2",
-        ).grid(row=3, column=3, sticky="w", padx=(8, 16), pady=(0, 13))
+        ).grid(row=4, column=3, sticky="w", padx=(8, 16), pady=(0, 13))
 
         sound_volume = max(0, min(100, int(self.config.get("spawn_alert_volume", 70))))
         self.spawn_volume_var = tk.IntVar(value=sound_volume)
@@ -293,18 +332,18 @@ class DroidAdvisorApp:
         tk.Label(
             controls, text="Custom sound volume", bg=COLORS["panel"], fg=COLORS["muted"],
             font=("Segoe UI", 10),
-        ).grid(row=4, column=0, sticky="w", padx=(16, 10), pady=(0, 13))
+        ).grid(row=5, column=0, sticky="w", padx=(16, 10), pady=(0, 13))
         tk.Scale(
             controls, from_=0, to=100, orient="horizontal", resolution=5,
             variable=self.spawn_volume_var, command=self._sound_volume_changed,
             bg=COLORS["panel"], fg=COLORS["text"], troughcolor=COLORS["panel_alt"],
             activebackground=COLORS["cyan"], highlightthickness=0, bd=0,
             sliderlength=18, length=190, showvalue=False,
-        ).grid(row=4, column=1, columnspan=2, sticky="w", pady=(0, 13))
+        ).grid(row=5, column=1, columnspan=2, sticky="w", pady=(0, 13))
         tk.Label(
             controls, textvariable=self.spawn_volume_label_var,
             bg=COLORS["panel"], fg=COLORS["green"], font=("Segoe UI Semibold", 10),
-        ).grid(row=4, column=3, sticky="w", padx=(4, 16), pady=(0, 13))
+        ).grid(row=5, column=3, sticky="w", padx=(4, 16), pady=(0, 13))
 
         self.update_var = tk.BooleanVar(value=bool(self.config["automatic_updates"]))
         tk.Checkbutton(
@@ -312,13 +351,22 @@ class DroidAdvisorApp:
             command=self._settings_changed, bg=COLORS["panel"], fg=COLORS["text"],
             activebackground=COLORS["panel"], activeforeground=COLORS["text"],
             selectcolor=COLORS["panel_alt"], font=("Segoe UI", 10), bd=0,
-        ).grid(row=5, column=0, columnspan=2, sticky="w", padx=12, pady=(0, 13))
+        ).grid(row=6, column=0, columnspan=2, sticky="w", padx=12, pady=(0, 13))
         tk.Button(
             controls, text="CHECK NOW", command=self.check_updates,
             bg=COLORS["cyan"], fg="#061018", activebackground="#5cf1fb",
             activeforeground="#061018", relief="flat", bd=0,
             font=("Segoe UI Semibold", 9), padx=16, pady=7, cursor="hand2",
-        ).grid(row=5, column=2, columnspan=2, sticky="e", padx=(12, 16), pady=(0, 13))
+        ).grid(row=6, column=2, columnspan=2, sticky="e", padx=(12, 16), pady=(0, 13))
+
+        tk.Button(
+            frame,
+            text="OPEN BASE INVENTORY MAP",
+            command=lambda: self.events.put(("inventory_show", None)),
+            bg=COLORS["green"], fg="#061018", activebackground="#a7f7c5",
+            activeforeground="#061018", relief="flat", bd=0,
+            font=("Segoe UI Semibold", 10), padx=16, pady=9, cursor="hand2",
+        ).pack(fill="x", pady=(0, 8))
 
         initial_state = "Paused" if self.config["paused"] else "Monitoring"
         active_cycle, active_rank = active_rebirth(
@@ -335,7 +383,7 @@ class DroidAdvisorApp:
         tk.Label(
             frame,
             text="Ctrl+Shift+D  Pause     Ctrl+Shift+R  Targets     Ctrl+Shift+Z  Safe to sell\n"
-                 "Ctrl+Shift+C  Chip costs     Ctrl+Shift+L  Diagnostics",
+                 "Ctrl+Shift+C  Chip costs     Ctrl+Shift+I  Base inventory     Ctrl+Shift+L  Diagnostics",
             bg=COLORS["window"], fg=COLORS["muted"], justify="left", font=("Segoe UI", 9),
         ).pack(anchor="w", pady=(3, 0))
 
@@ -827,6 +875,7 @@ class DroidAdvisorApp:
     def _tray_menu(self):
         return pystray.Menu(
             pystray.MenuItem("Pause / Resume", lambda: self.toggle_pause()),
+            pystray.MenuItem("Open base inventory", lambda: self.events.put(("inventory_show", None))),
             pystray.MenuItem("Show / Hide rebirth targets", lambda: self.events.put(("requirements_toggle", None))),
             pystray.MenuItem("Show / Hide safe-to-sell list", lambda: self.events.put(("sell_list_toggle", None))),
             pystray.MenuItem("Show / Hide upgrade chip costs", lambda: self.events.put(("chip_cost_toggle", None))),
@@ -846,6 +895,10 @@ class DroidAdvisorApp:
                 self.last_spawn_signature = None
                 self.spawn_absent_scans = 0
             self.config["spawn_alert_sound"] = SOUND_IDS.get(self.spawn_sound_var.get(), "droid_chime")
+            variant = self.spawn_variant_var.get().upper()
+            rarity = self.spawn_rarity_var.get().upper()
+            self.config["spawn_alert_min_variant"] = variant if variant in SPAWN_VARIANTS else "BESKAR"
+            self.config["spawn_alert_min_rarity"] = rarity if rarity in RARITIES else "LEGENDARY"
             self.config["spawn_alert_volume"] = int(self.spawn_volume_var.get())
             self.config["automatic_updates"] = bool(self.update_var.get())
             save_config(self.config)
@@ -929,6 +982,11 @@ class DroidAdvisorApp:
                         card_gate = any(item[2] for item in gated_views)
                         rebirth_gate = any(item[3] for item in gated_views)
                         blueprint_gate = any(item[4] for item in gated_views)
+                        priorities = scan_priorities(
+                            card_gate,
+                            rebirth_gate,
+                            blueprint_gate,
+                        )
                         self.diagnostics.set(
                             monitor_frame_number=frame_number,
                             card_visual_gate=card_gate,
@@ -939,16 +997,20 @@ class DroidAdvisorApp:
                             rebirth_requirement_token_count=0,
                         )
 
-                        # Rebirth gets first priority. Check every region whose
-                        # inexpensive visual gate fired. When all gates miss,
-                        # probe one candidate per captured frame as a bounded
-                        # fallback. A 32:9 layout is therefore rediscovered in
-                        # at most three frames without continuous full OCR.
-                        rebirth_candidates = [item for item in gated_views if item[3]]
-                        fallback = gated_views[self.ui_fallback_index % len(gated_views)]
-                        self.ui_fallback_index += 1
-                        if all(item[0] != fallback[0] for item in rebirth_candidates):
-                            rebirth_candidates.append(fallback)
+                        # Check every region whose inexpensive Rebirth gate
+                        # fired. Only use the speculative fallback when no
+                        # focused UI gate is active, so an open droid card or
+                        # blueprint never waits behind unrelated Rebirth OCR.
+                        rebirth_candidates = (
+                            [item for item in gated_views if item[3]]
+                            if priorities.scan_rebirth_gate
+                            else []
+                        )
+                        if priorities.probe_rebirth_fallback:
+                            fallback = gated_views[self.ui_fallback_index % len(gated_views)]
+                            self.ui_fallback_index += 1
+                            if all(item[0] != fallback[0] for item in rebirth_candidates):
+                                rebirth_candidates.append(fallback)
 
                         header_tokens = []
                         header_open = False
@@ -1043,22 +1105,12 @@ class DroidAdvisorApp:
                                 (time.monotonic() - started) * 1000
                             )
                             attempted_regions.append(candidate_region)
-                            candidate_blueprint_open = (
-                                candidate_blueprint_gate
-                                and blueprint_is_visible(
-                                    candidate_tokens,
-                                    candidate_image.width,
-                                    candidate_image.height,
-                                )
-                            )
-                            candidate_card_open = (
-                                not candidate_blueprint_open
-                                and candidate_card_gate
-                                and panel_is_open(
-                                    candidate_tokens,
-                                    candidate_image.width,
-                                    candidate_image.height,
-                                )
+                            candidate_blueprint_open, candidate_card_open = classify_interaction(
+                                candidate_tokens,
+                                candidate_image.width,
+                                candidate_image.height,
+                                candidate_card_gate,
+                                candidate_blueprint_gate,
                             )
                             if not tokens:
                                 tokens = candidate_tokens
@@ -1095,6 +1147,7 @@ class DroidAdvisorApp:
                         spawn_scanned = False
                         if (
                             self.config["spawn_alerts_enabled"]
+                            and priorities.scan_spawn
                             and now - self.last_spawn_scan_at >= 0.65
                         ):
                             spawn_scanned = True
@@ -1111,7 +1164,13 @@ class DroidAdvisorApp:
                                 max_width=1500,
                                 grayscale=self.spawn_scan_count % 2 == 0,
                             )
-                            spawn = high_value_spawn(spawn_tokens, full_image.width, full_image.height)
+                            spawn = high_value_spawn(
+                                spawn_tokens,
+                                full_image.width,
+                                full_image.height,
+                                str(self.config["spawn_alert_min_variant"]),
+                                str(self.config["spawn_alert_min_rarity"]),
+                            )
                         if spawn is not None or spawn_scanned:
                             (
                                 self.last_spawn_signature,
@@ -1174,15 +1233,17 @@ class DroidAdvisorApp:
                                 focused_droid, focused_confidence = blueprint_droid(header_tokens)
                                 if focused_droid:
                                     droid, confidence = focused_droid, focused_confidence
-                            self.diagnostics.set(
-                                card_droid_read=droid or "not recognized",
-                                card_droid_confidence=round(confidence, 3),
-                            )
                             if droid:
                                 current_rb = int(self.config["completed_rebirth"])
                                 finish = None
+                                rarity = None
                                 if header_rect:
-                                    finish, _ = blueprint_details(header_tokens)
+                                    finish, rarity = blueprint_details(header_tokens)
+                                droid = resolve_droid_by_rarity(droid, rarity)
+                                self.diagnostics.set(
+                                    card_droid_read=droid,
+                                    card_droid_confidence=round(confidence, 3),
+                                )
                                 decision = advise(int(self.config["cycle"]), current_rb, droid, finish)
                                 signature = (droid, current_rb, self.config["cycle"], decision.safe_to_sell)
                                 if signature == self.pending_signature:
@@ -1194,6 +1255,26 @@ class DroidAdvisorApp:
                                     self.last_signature = signature
                                     color = "#137a43" if decision.safe_to_sell else "#a8232e"
                                     self.events.put(("overlay", (f"{droid}: {decision.message}", color, 4500)))
+                                if finish and rarity and confidence >= 0.60:
+                                    metadata = droid_metadata(droid)
+                                    _, created = self.inventory.ensure_seen(
+                                        droid,
+                                        finish,
+                                        rarity=rarity,
+                                        role=metadata.role if metadata else "",
+                                        income_per_second=income_per_second(droid, finish),
+                                        confidence=confidence,
+                                    )
+                                    if created:
+                                        self.diagnostics.record(
+                                            f"Inventory confirmed from owned card: {droid} {finish} {rarity}"
+                                        )
+                                        self.events.put(("inventory_refresh", None))
+                            else:
+                                self.diagnostics.set(
+                                    card_droid_read="not recognized",
+                                    card_droid_confidence=round(confidence, 3),
+                                )
                         elif not blueprint_open:
                             self.diagnostics.set(card_panel_recognized=False)
                             self.last_signature = None
@@ -1258,6 +1339,10 @@ class DroidAdvisorApp:
                     self.toggle_sell_list_overlay()
                 elif kind == "chip_cost_toggle":
                     self.toggle_chip_cost_overlay()
+                elif kind == "inventory_show":
+                    self.inventory_map.show()
+                elif kind == "inventory_refresh":
+                    self.inventory_map.refresh()
                 elif kind == "overlay_reset":
                     self.reset_overlay_positions()
                 elif kind == "diagnostics_copy":

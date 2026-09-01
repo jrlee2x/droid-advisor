@@ -13,6 +13,7 @@ import numpy as np
 from PIL import Image, ImageEnhance, ImageOps
 
 from .engine import ALL_DROIDS, canonical, match_droid
+from .qualities import RARITY_ORDER, SPAWN_VARIANT_ORDER
 
 
 @dataclass(frozen=True)
@@ -31,6 +32,32 @@ class OcrToken:
     @property
     def height(self) -> float:
         return max(p[1] for p in self.box) - min(p[1] for p in self.box)
+
+
+@dataclass(frozen=True)
+class ScanPriorities:
+    """Bounded OCR work selected from the inexpensive visual gates."""
+
+    scan_rebirth_gate: bool
+    probe_rebirth_fallback: bool
+    interaction_active: bool
+    scan_spawn: bool
+
+
+def scan_priorities(
+    card_gate: bool,
+    rebirth_gate: bool,
+    blueprint_gate: bool,
+) -> ScanPriorities:
+    """Keep card and blueprint decisions ahead of background OCR."""
+    interaction_active = card_gate or blueprint_gate
+    focused_ui_active = interaction_active or rebirth_gate
+    return ScanPriorities(
+        scan_rebirth_gate=rebirth_gate and not interaction_active,
+        probe_rebirth_fallback=not focused_ui_active,
+        interaction_active=interaction_active,
+        scan_spawn=not focused_ui_active,
+    )
 
 
 class OfflineOcr:
@@ -334,7 +361,7 @@ def panel_is_open(tokens: list[OcrToken], width: int, height: int) -> bool:
 
 
 def card_header_rect(tokens: list[OcrToken], width: int, height: int) -> tuple[int, int, int, int] | None:
-    """Locate the name/quality header above an opened card's button column."""
+    """Locate the name/quality block in either supported card layout."""
     cues = []
     for token in tokens:
         cx, cy = token.center
@@ -344,6 +371,15 @@ def card_header_rect(tokens: list[OcrToken], width: int, height: int) -> tuple[i
         return None
     anchor_x = sum(x for x, _ in cues) / len(cues)
     first_button_y = min(y for _, y in cues)
+    if anchor_x >= 0.55 * width:
+        # Update 1.28 moved the identity block to the left of a right-side
+        # action column. The droid name can now sit below the first button.
+        return (
+            max(0, int(0.12 * width)),
+            max(0, int(0.22 * height)),
+            min(width, int(min(anchor_x - 0.08 * width, 0.58 * width))),
+            min(height, int(0.52 * height)),
+        )
     return (
         max(0, int(anchor_x - 0.22 * width)),
         max(0, int(0.04 * height)),
@@ -384,15 +420,72 @@ def blueprint_is_visible(tokens: list[OcrToken], width: int, height: int) -> boo
     return False
 
 
+def classify_interaction(
+    tokens: list[OcrToken],
+    width: int,
+    height: int,
+    card_gate: bool,
+    blueprint_gate: bool,
+) -> tuple[bool, bool]:
+    """Return blueprint/card state after a visual gate requests focused OCR.
+
+    Update 1.28's cyan card outline can resemble the held-blueprint prompt,
+    while its orange action buttons can miss the legacy yellow-card gate. OCR
+    button geometry is the definitive card check once either visual gate fires.
+    """
+    blueprint_open = blueprint_gate and blueprint_is_visible(tokens, width, height)
+    card_open = (
+        not blueprint_open
+        and (card_gate or blueprint_gate)
+        and panel_is_open(tokens, width, height)
+    )
+    return blueprint_open, card_open
+
+
 def blueprint_droid(tokens: list[OcrToken]) -> tuple[str | None, float]:
     """Match a droid inside a tightly cropped blueprint card.
 
     Exact token matching is important for short names such as IG, which are too
     small to safely locate in combined full-screen OCR text.
     """
+    identity_tokens = [
+        token
+        for token in tokens
+        if not any(
+            phrase in token.text.upper()
+            for phrase in ("SAFE TO SELL", "KEEP", "NEEDED AT", "NOT USED IN THIS CYCLE")
+        )
+    ]
+    lines: list[list[OcrToken]] = []
+    for token in sorted(identity_tokens, key=lambda item: (item.center[1], item.center[0])):
+        cy = token.center[1]
+        line = next(
+            (
+                candidate
+                for candidate in lines
+                if abs(sum(item.center[1] for item in candidate) / len(candidate) - cy)
+                <= max(18.0, token.height * 1.5)
+            ),
+            None,
+        )
+        if line is None:
+            lines.append([token])
+        else:
+            line.append(token)
+
+    phrases = [(token.text, token.height) for token in identity_tokens]
+    phrases.extend(
+        (
+            " ".join(token.text for token in sorted(line, key=lambda item: item.center[0])),
+            max(token.height for token in line),
+        )
+        for line in lines
+        if len(line) > 1
+    )
+
     candidates = []
-    for token in tokens:
-        raw = canonical(token.text)
+    for text, text_height in phrases:
+        raw = canonical(text)
         if not raw:
             continue
         for name in ALL_DROIDS:
@@ -400,7 +493,7 @@ def blueprint_droid(tokens: list[OcrToken]) -> tuple[str | None, float]:
             exact = raw == key
             contained = len(key) >= 4 and key in raw
             if exact or contained:
-                rank = (100 if exact else 80) + token.height + min(len(key), 20)
+                rank = (100 if exact else 80) + text_height + min(len(key), 20)
                 candidates.append((rank, name, 1.0))
     if not candidates:
         return None, 0.0
@@ -423,12 +516,14 @@ def blueprint_details(tokens: list[OcrToken]) -> tuple[str | None, str | None]:
     return finish, rarity
 
 
-def high_value_spawn(tokens: list[OcrToken], width: int, height: int) -> tuple[str, str] | None:
-    """Read selected high-value Sandcrawler notifications from the left-side feed.
-
-    The temporary hunt profile alerts for Legendary or Mythic Beskar/Galactic
-    blueprints, plus every Stellar blueprint regardless of rarity.
-    """
+def high_value_spawn(
+    tokens: list[OcrToken],
+    width: int,
+    height: int,
+    minimum_variant: str = "BESKAR",
+    minimum_rarity: str = "LEGENDARY",
+) -> tuple[str, str] | None:
+    """Read Sandcrawler notifications meeting both configured minimums."""
     relevant_tokens = []
     for token in tokens:
         cx, cy = token.center
@@ -456,7 +551,7 @@ def high_value_spawn(tokens: list[OcrToken], width: int, height: int) -> tuple[s
     ]
     compact = canonical(" ".join(token.text for token in relevant_tokens)).replace("BESKER", "BESKAR")
     notification_pattern = re.compile(
-        r"(GOLD|DIAMOND|RAINBOW|BESKAR|GALACTIC|STELLAR)"
+        r"(DEFAULT|GOLD|DIAMOND|RAINBOW|BESKAR|GALACTIC|STELLAR)"
         r"DROID(COMMON|RARE|EPIC|LEGENDARY|MYTHIC)SPAWN(?:ED)?"
     )
     match = next(
@@ -470,9 +565,9 @@ def high_value_spawn(tokens: list[OcrToken], width: int, height: int) -> tuple[s
     if not match:
         return None
     finish, rarity = match.groups()
-    if finish == "STELLAR":
-        return finish, rarity
-    if finish in ("BESKAR", "GALACTIC") and rarity in ("LEGENDARY", "MYTHIC"):
+    variant_floor = SPAWN_VARIANT_ORDER.get(str(minimum_variant).upper(), SPAWN_VARIANT_ORDER["BESKAR"])
+    rarity_floor = RARITY_ORDER.get(str(minimum_rarity).upper(), RARITY_ORDER["LEGENDARY"])
+    if SPAWN_VARIANT_ORDER[finish] >= variant_floor and RARITY_ORDER[rarity] >= rarity_floor:
         return finish, rarity
     return None
 
@@ -510,12 +605,22 @@ def selected_droid(tokens: list[OcrToken], width: int, height: int) -> tuple[str
     first_button_y = min((y for _, y in button_cues), default=height * 0.56)
 
     candidates = []
+    identity_tokens = []
     role_labels = {"BATTLE", "WORKER", "COMPANION"}
     for token in tokens:
         cx, cy = token.center
-        if not (0.03 * width <= cx <= 0.82 * width and 0.08 * height <= cy < first_button_y):
-            continue
-        if button_cues and abs(cx - anchor_x) > 0.28 * width:
+        classic_header = (
+            0.03 * width <= cx <= 0.82 * width
+            and 0.08 * height <= cy < first_button_y
+            and (not button_cues or abs(cx - anchor_x) <= 0.28 * width)
+        )
+        side_identity = (
+            bool(button_cues)
+            and anchor_x >= 0.55 * width
+            and 0.10 * width <= cx <= anchor_x - 0.12 * width
+            and 0.20 * height <= cy <= 0.56 * height
+        )
+        if not (classic_header or side_identity):
             continue
         token_key = canonical(token.text)
         if token_key in role_labels or any(
@@ -523,11 +628,18 @@ def selected_droid(tokens: list[OcrToken], width: int, height: int) -> tuple[str
             for phrase in ("SAFE TO SELL", "KEEP", "NEEDED AT", "NOT USED IN THIS CYCLE")
         ):
             continue
+        identity_tokens.append(token)
         name, score = match_droid(token.text, threshold=0.70)
         if name:
             exact = canonical(name) in canonical(token.text)
             rank = score * 100 + token.height + (80 if exact else 0) + min(len(name), 20)
             candidates.append((rank, name, score))
+    # OCR commonly splits multi-word card titles into separate tokens. Resolve
+    # same-line phrases before accepting a nested single-word name such as
+    # MOUSE inside SNOW MOUSE.
+    phrase_name, phrase_score = blueprint_droid(identity_tokens)
+    if phrase_name:
+        candidates.append((300 + len(canonical(phrase_name)), phrase_name, phrase_score))
     if not candidates:
         return None, 0.0
     _, name, score = max(candidates)

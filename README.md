@@ -10,12 +10,12 @@ This project is community software under active development. Version 1.1 include
 - A draggable current and next rebirth overlay using consistent screen-safe rank cards.
 - Keep or sell guidance for opened droid cards.
 - Held-blueprint recognition.
-- Optional high-value Sandcrawler spawn alerts with bundled or user-selected WAV sounds and volume control.
+- Optional Sandcrawler spawn alerts with configurable minimum variant and rarity, bundled or user-selected WAV sounds, and volume control.
 - A `Ctrl+Shift+Z` overlay listing previously required droids with no remaining use in the current cycle.
 - Five rebirth cycles through RB35, including Stellar requirements from Droid Tycoon update 1.26.
 - A `Ctrl+Shift+C` reference for the Update 1.26 upgrade-chip costs.
 - A redesigned Swag Studios interface with direct links to the Droid Tycoon community and the DepSwag profile.
-- A tested inventory data layer. The inventory user interface and automatic build, sale, and reset reconciliation are still in progress.
+- An interactive v1.28.0 base inventory map with per-droid records, physical drag-and-drop slots, manual reconciliation, undo, legacy-data migration, and safe owned-card confirmation.
 
 ## Diagnostics
 
@@ -37,6 +37,9 @@ Droid Advisor:
 - Does not require an account, API key, or network connection at runtime.
 
 Press `Ctrl+Shift+C` to show or hide the Update 1.26 upgrade-chip cost reference.
+
+Press `Ctrl+Shift+I` to open the Base Inventory map. Inventory stays on the
+computer in `%APPDATA%\DroidAdvisor\inventory.json`.
 
 Review the source and tests before running community software. Release installers are currently unsigned, so Windows may show an Unknown publisher warning.
 

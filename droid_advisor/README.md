@@ -33,11 +33,28 @@ Press **Ctrl+Shift+D** to pause or resume. Tray controls also expose pause, sett
 
 Press **Ctrl+Shift+C** to show or hide the Update 1.26 upgrade-chip cost reference.
 
+Press **Ctrl+Shift+I**, choose **Open base inventory** from the tray, or use the
+button in Settings to open the interactive Base Inventory map. Add droids to the
+unassigned dock, then drag them onto the physical v1.28.0 base positions:
+
+- Eight worker stations around the circular floor, three worker-row stations,
+  and the separate Upgrade Chip Station slot.
+- Nine astromech positions around the Shipyard.
+- Five first-floor and six second-floor Battle Shipping positions in a cross.
+- Thirteen Lounge positions, three Fusion platforms, and two Companion slots.
+
+Each physical droid is stored separately, including finish, rarity, type,
+income per second, location, source, and confidence. Dropping onto an occupied
+position swaps the droids. Manual add, edit, unassign, remove, and undo controls
+support initial setup and correction after a missed game event. Opening a
+recognized owned-droid card safely confirms at least one matching droid, but
+does not invent duplicate quantities when the same card is seen repeatedly.
+
 Press **Ctrl+Shift+Home** or choose **Reset overlay positions** from the tray menu to move every overlay back onto the primary display. The advisor also detects monitor connection changes and automatically recovers a saved overlay when its monitor is disconnected.
 
 The draggable top-right **Rebirth Targets** overlay shows the complete guide card for the rebirth currently being worked and the following rebirth, including required droids, finish, rarity, credit cost, crystals, credit multiplier, and XP multiplier when provided by the guide. Press **Ctrl+Shift+R** or use the tray menu to show or hide it. Its screen position and visibility persist. At RB35, the second row previews RB1 of the next cycle. Stellar is the highest quality and satisfies requirements for Galactic and every lower quality.
 
-The optional **Sandcrawler alerts + sound** setting watches the left-side spawn notification only. A large flashing alert and a non-blocking selectable sound appear for Beskar or Galactic droids when the rarity is Legendary or Mythic. During the current Stellar hunt, every Stellar notification alerts regardless of rarity. Lower variants are ignored. Choose Droid Chime, Scanner Ping, Urgent Pulse, the Windows tone, or a custom WAV in Settings and use Preview to hear it. Custom WAV files must be 16-bit mono or stereo PCM, no larger than 10 MB, and no longer than 30 seconds. Droid Advisor copies the chosen file into its AppData folder so it remains available if the original moves and through application updates. The saved 0-100% slider controls bundled and custom sounds; Windows Tone follows the Windows system volume. Identical text is deduplicated until the original notification disappears.
+The optional **Sandcrawler alerts + sound** setting watches the left-side spawn notification only. Choose a minimum variant from Default through Stellar and a minimum rarity from Common through Mythic. A notification must meet or exceed both selected minimums before the large visual alert and non-blocking sound appear. Choose Droid Chime, Scanner Ping, Urgent Pulse, the Windows tone, or a custom WAV in Settings and use Preview to hear it. Custom WAV files must be 16-bit mono or stereo PCM, no larger than 10 MB, and no longer than 30 seconds. Droid Advisor copies the chosen file into its AppData folder so it remains available if the original moves and through application updates. The saved 0-100% slider controls bundled and custom sounds; Windows Tone follows the Windows system volume. Identical text is deduplicated until the original notification disappears.
 
 ## Automatic RBC detection
 
@@ -48,6 +65,7 @@ OCR accuracy depends on resolution, UI scale, motion blur, and contrast. Keep th
 ## Privacy and safety
 
 - OCR runs locally; screenshots are not uploaded or retained.
+- Base inventory is stored locally in `%APPDATA%\DroidAdvisor\inventory.json`.
 - The app only captures a visible game window whose title contains `Fortnite` or `Droid Tycoon`.
 - It provides advice only and never performs a sale or sends game input.
 

@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#07111f" />
+    <title>Droid Advisor Rebirth Cycle Chart</title>
+    <meta
+      name="description"
+      content="Droid Advisor's complete Update 1.26 rebirth chart for Cycles 1 through 5 and RB1 through RB35, including horizontal keep and sell quick lists."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Droid Advisor Complete Rebirth Cycle Chart" />
+    <meta
+      property="og:description"
+      content="All five rebirth cycles, RB1 through RB35, with droids, variants, rarities, costs, rewards, next-use guidance, and keep/sell quick lists."
+    />
+    <meta property="og:image" content="/assets/droid-advisor-rebirth-chart-preview.jpg?v=3" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/assets/droid-advisor-logo.png" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="glow glow-one"></div>
+    <div class="glow glow-two"></div>
+    <main>
+      <header class="hero">
+        <img class="logo" src="/assets/droid-advisor-logo.png" alt="Droid Advisor logo" />
+        <div>
+          <p class="eyebrow">DROID ADVISOR • UPDATE 1.26</p>
+          <h1>Complete rebirth cycle chart</h1>
+          <p class="lede">Every droid target for Cycles 1 through 5, from RB1 through RB35.</p>
+          <p class="hero-link-row chart-actions">
+            <a class="download" href="/droids">Open all-droid income</a>
+            <a class="download" href="/fusion">Open fusion recipes</a>
+            <a class="download" href="/fusion#upgrade-chip-costs">Open chip costs</a>
+          </p>
+        </div>
+      </header>
+
+      <section class="stats" aria-label="Chart coverage">
+        <div><strong>5</strong><span>cycles</span></div>
+        <div><strong>35</strong><span>rebirths each</span></div>
+        <div><strong>175</strong><span>target cards</span></div>
+        <div><strong>1.26</strong><span>game update</span></div>
+      </section>
+
+      <section class="quick-lists">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">KEEP / SELL QUICK LIST</p>
+            <h2>One cycle at a glance</h2>
+          </div>
+          <a
+            class="download quick-download"
+            id="quick-download-link"
+            href="/assets/rebirth-quick-list-cycle-1.png?v=3"
+            download
+          >
+            Download Cycle 1 quick list
+          </a>
+        </div>
+
+        <nav class="tabs quick-tabs" aria-label="Keep and sell list cycle">
+          <button class="active" data-quick-cycle="1" type="button">Cycle 1</button>
+          <button data-quick-cycle="2" type="button">Cycle 2</button>
+          <button data-quick-cycle="3" type="button">Cycle 3</button>
+          <button data-quick-cycle="4" type="button">Cycle 4</button>
+          <button data-quick-cycle="5" type="button">Cycle 5</button>
+        </nav>
+
+        <div class="quick-grid-wrap">
+          <div class="quick-grid" id="quick-grid" aria-live="polite"></div>
+        </div>
+        <p class="quick-legend">
+          Name color shows the highest required variant. Last RB is the droid's final use in this cycle. Check the
+          next cycle before clearing anything used through RB35.
+        </p>
+      </section>
+
+      <section class="chart-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">CHOOSE A VIEW</p>
+            <h2>Rebirth targets</h2>
+          </div>
+          <div class="chart-actions">
+            <a class="download" id="download-link" href="/assets/droid-advisor-all-rebirth-cycles.png?v=3" download>
+              Download full chart
+            </a>
+          </div>
+        </div>
+
+        <nav class="tabs" aria-label="Rebirth cycle view">
+          <button class="active" data-view="all" type="button">All cycles</button>
+          <button data-view="1" type="button">Cycle 1</button>
+          <button data-view="2" type="button">Cycle 2</button>
+          <button data-view="3" type="button">Cycle 3</button>
+          <button data-view="4" type="button">Cycle 4</button>
+          <button data-view="5" type="button">Cycle 5</button>
+        </nav>
+
+        <div class="chart-frame" id="chart-frame">
+          <img
+            id="chart-image"
+            src="/assets/droid-advisor-all-rebirth-cycles.png?v=3"
+            alt="All five Droid Advisor rebirth cycles from RB1 through RB35"
+          />
+        </div>
+        <p class="zoom-note">Tip: open one cycle at a time on mobile, or download the full-resolution PNG.</p>
+      </section>
+
+      <section class="guide">
+        <p class="eyebrow">HOW TO READ EACH CARD</p>
+        <div class="guide-grid">
+          <article>
+            <span>01</span>
+            <h3>Build the three droids</h3>
+            <p>Each rebirth card lists the exact three droid targets for that cycle and rank.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Match variant and rarity</h3>
+            <p>The required variant and droid rarity appear directly beneath every droid name.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Keep or sell</h3>
+            <p>The right badge shows the droid's next use. SELL means it is not needed again in that cycle.</p>
+          </article>
+          <article>
+            <span>04</span>
+            <h3>Check super rewards</h3>
+            <p>From RB12 onward, the orange band shows Nova Crystals, credit multiplier, and XP multiplier.</p>
+          </article>
+        </div>
+      </section>
+
+      <footer>
+        <img src="/assets/droid-advisor-logo.png" alt="" />
+        <p>Built from the verified Droid Advisor Update 1.26 cycle table.</p>
+      </footer>
+    </main>
+    <script src="/script.js"></script>
+  </body>
+</html>

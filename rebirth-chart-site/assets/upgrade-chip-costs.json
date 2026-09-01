@@ -1,0 +1,37 @@
+{
+  "update": "1.26",
+  "rarities": [
+    "EPIC",
+    "LEGENDARY",
+    "MYTHIC"
+  ],
+  "qualities": [
+    "GOLD",
+    "DIAMOND",
+    "RAINBOW",
+    "BESKAR",
+    "GALACTIC",
+    "STELLAR"
+  ],
+  "costs": {
+    "EPIC": {
+      "BESKAR": 3000,
+      "GALACTIC": 5000,
+      "STELLAR": 8000
+    },
+    "LEGENDARY": {
+      "RAINBOW": 3000,
+      "BESKAR": 7500,
+      "GALACTIC": 20000,
+      "STELLAR": 24000
+    },
+    "MYTHIC": {
+      "GOLD": 4000,
+      "DIAMOND": 8000,
+      "RAINBOW": 15000,
+      "BESKAR": 30000,
+      "GALACTIC": 60000,
+      "STELLAR": 90000
+    }
+  }
+}

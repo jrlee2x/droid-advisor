@@ -1,5 +1,5 @@
 #define MyAppName "Droid Advisor"
-#define MyAppVersion "1.1.5"
+#define MyAppVersion "1.2.6"
 #define MyAppPublisher "Swag Studios"
 
 #define MyAppExeName "DroidAdvisor.exe"
@@ -40,6 +40,10 @@ Name: "startup"; Description: "Start Droid Advisor when I sign in"; GroupDescrip
 
 [Files]
 Source: "dist\DroidAdvisor\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+
+[InstallDelete]
+Type: filesandordirs; Name: "{app}\_internal"
+Type: files; Name: "{app}\DroidAdvisor.exe"
 
 [Icons]
 Name: "{group}\Droid Advisor"; Filename: "{app}\{#MyAppExeName}"
