@@ -1,0 +1,194 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#07111f" />
+    <title>Droid Advisor Fusion Recipes</title>
+    <meta
+      name="description"
+      content="All 17 Droid Tycoon fusion recipes, base earnings per second for every variant, a complete shopping list, and upgrade-chip costs through Stellar."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Droid Advisor Fusion Recipe Chart" />
+    <meta property="og:description" content="17 fusion recipes with earnings per second for every variant, plus the complete shopping list." />
+    <meta property="og:image" content="/assets/droid-advisor-fusion-preview.jpg?v=4" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/assets/droid-advisor-logo.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/fusion.css" />
+  </head>
+  <body>
+    <main>
+      <header class="hero fusion-hero">
+        <img class="logo" src="/assets/droid-advisor-logo.png" alt="Droid Advisor logo" />
+        <div>
+          <p class="eyebrow">DROID ADVISOR • FUSION RECIPES</p>
+          <h1>Build every fusion droid</h1>
+          <p class="lede">All 17 recipes, income per second for every variant, the complete shopping list, and upgrade-chip costs.</p>
+          <p class="hero-link-row chart-actions">
+            <a class="download" href="/droids">Open all-droid income</a>
+            <a class="back-link" href="/">Back to rebirth charts</a>
+          </p>
+        </div>
+      </header>
+
+      <section class="stats" aria-label="Fusion chart totals">
+        <div><strong>17</strong><span>recipes</span></div>
+        <div><strong>29</strong><span>unique droids</span></div>
+        <div><strong>51</strong><span>droid units</span></div>
+        <div><strong>4</strong><span>output rarities</span></div>
+      </section>
+
+      <section class="fusion-chart-callout">
+        <div>
+          <p class="eyebrow">DOWNLOADABLE CHART</p>
+          <h2>Recipes and buy list together</h2>
+          <p>The landscape chart places every recipe beside the totaled ingredient list.</p>
+        </div>
+        <a class="download" href="/assets/droid-advisor-fusion-chart.png?v=4" download>Download fusion chart</a>
+      </section>
+
+      <section class="fusion-recipes-section">
+        <p class="eyebrow">FUSION OUTPUTS</p>
+        <h2>Fusion recipes</h2>
+        <div class="fusion-groups" id="fusion-groups">Loading recipes…</div>
+      </section>
+
+      <section class="fusion-income-section" id="fusion-income">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">BASE EARNINGS REFERENCE</p>
+            <h2>Fusion droid income per second</h2>
+          </div>
+        </div>
+        <p class="fusion-income-note">
+          Base credits before slot, Droidex, rebirth, event, and other multipliers. The smaller secondary value
+          is the calculated income per hour.
+        </p>
+        <div class="fusion-income-table-wrap">
+          <table class="fusion-income-table" id="fusion-income-table">
+            <caption>Loading fusion droid income...</caption>
+          </table>
+        </div>
+        <p class="fusion-income-sources">
+          Community-maintained values cross-checked with the
+          <a href="https://docs.google.com/spreadsheets/d/1otLCKSCMKICMlnefirQ8KZhh_rdZTd5Mp8h0UYFUiqg/edit?usp=sharing">public income sheet</a>,
+          <a href="https://droid-tycoon.pages.dev/">Droid Tycoon Tracker</a>, and a
+          <a href="https://www.reddit.com/r/StarWarsDroidTycoon/comments/1vwiknw/droid_fusion_recipes/">Reddit fusion-income thread</a>.
+          Values may change after game updates.
+        </p>
+      </section>
+
+      <section class="fusion-impact-section" id="fusion-impact">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">FUSE OR KEEP?</p>
+            <h2>Fusion income gain or loss</h2>
+          </div>
+          <a class="download" href="/assets/droid-advisor-fusion-income-impact.png?v=1" download>
+            Download income-impact chart
+          </a>
+        </div>
+        <p class="fusion-impact-note">
+          Each result compares one fusion output against the combined income of all three consumed ingredients at
+          the same variant. Green is an immediate gain; red is an immediate loss.
+        </p>
+        <div class="fusion-impact-summary" id="fusion-impact-summary" aria-live="polite">Loading comparison summary...</div>
+        <div class="fusion-impact-chart-frame">
+          <img
+            id="fusion-impact-image"
+            src="/assets/droid-advisor-fusion-income-impact-web.webp?v=1"
+            data-full-src="/assets/droid-advisor-fusion-income-impact.png?v=1"
+            alt="Droid Advisor chart showing the direct income gain or loss for every Droid Tycoon fusion recipe and variant"
+            tabindex="0"
+            role="button"
+            aria-label="Open the fusion income-impact chart in the zoom viewer"
+          />
+          <button class="open-chart-viewer" id="open-impact-viewer" type="button">Open zoom viewer</button>
+        </div>
+        <div class="fusion-impact-table-wrap">
+          <table class="fusion-impact-table" id="fusion-impact-table">
+            <caption>Loading fusion income comparisons...</caption>
+          </table>
+        </div>
+        <p class="fusion-impact-context">
+          This is the immediate one-for-three comparison only. Fusion also frees two droid slots, so replacement
+          droids can offset a direct loss. The output takes the lowest variant among the three inputs; mixed-variant
+          fusions can therefore perform worse than this same-variant reference.
+        </p>
+      </section>
+
+      <section class="shopping-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">SHOPPING LIST</p>
+            <h2>Droids to buy</h2>
+          </div>
+          <button class="copy-button" id="copy-shopping" type="button">Copy shopping list</button>
+        </div>
+        <p class="shopping-note">Quantities below craft one of every fusion recipe shown above.</p>
+        <div class="shopping-grid" id="shopping-grid">Loading shopping list…</div>
+      </section>
+
+      <section class="chip-cost-section" id="upgrade-chip-costs">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">UPDATE 1.26 REFERENCE</p>
+            <h2>Upgrade chip costs</h2>
+          </div>
+          <a class="download" href="/assets/droid-advisor-upgrade-chip-costs.png?v=1" download>
+            Download chip-cost chart
+          </a>
+        </div>
+        <p class="chip-cost-note">
+          Cost to upgrade one Epic, Legendary, or Mythic droid to each available variant, through Stellar.
+        </p>
+        <div class="chip-chart-frame">
+          <img
+            src="/assets/droid-advisor-upgrade-chip-costs-web.webp?v=1"
+            alt="Droid Tycoon upgrade-chip costs for Epic, Legendary, and Mythic droids through Stellar"
+          />
+        </div>
+        <div class="chip-table-wrap">
+          <table class="chip-cost-table" id="chip-cost-table">
+            <caption>Loading upgrade-chip costs...</caption>
+          </table>
+        </div>
+        <p class="chip-cost-legend">
+          Each value is the cost to reach the listed variant. Not used means that rarity has no upgrade at that
+          tier in the published Update 1.26 table.
+        </p>
+      </section>
+
+      <footer>
+        <img src="/assets/droid-advisor-logo.png" alt="" />
+        <p>Recipes and base income values were cross-checked against current public community references after Update 1.27.</p>
+      </footer>
+    </main>
+
+    <dialog class="chart-lightbox" id="chart-lightbox" aria-labelledby="chart-lightbox-title">
+      <div class="chart-lightbox-shell">
+        <header class="chart-lightbox-toolbar">
+          <div>
+            <p class="eyebrow">FULL-SIZE CHART</p>
+            <h2 id="chart-lightbox-title">Fusion income gain or loss</h2>
+          </div>
+          <div class="chart-lightbox-controls" aria-label="Chart zoom controls">
+            <button id="chart-zoom-out" type="button" aria-label="Zoom out">−</button>
+            <button id="chart-zoom-reset" type="button"><span id="chart-zoom-label">100%</span></button>
+            <button id="chart-zoom-in" type="button" aria-label="Zoom in">+</button>
+            <button class="chart-lightbox-close" id="chart-lightbox-close" type="button">Close</button>
+          </div>
+        </header>
+        <div class="chart-lightbox-viewport" id="chart-lightbox-viewport">
+          <img id="chart-lightbox-image" alt="Full-size Droid Advisor fusion income-impact chart" />
+        </div>
+        <p class="chart-lightbox-help">Use the controls, the + and − keys, or Ctrl plus the mouse wheel to zoom.</p>
+      </div>
+    </dialog>
+    <script src="/fusion.js"></script>
+  </body>
+</html>

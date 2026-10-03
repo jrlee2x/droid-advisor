@@ -1,0 +1,1295 @@
+{
+  "variants": [
+    "BASIC",
+    "GOLD",
+    "DIAMOND",
+    "RAINBOW",
+    "BESKAR",
+    "GALACTIC",
+    "STELLAR"
+  ],
+  "comparisons": [
+    {
+      "output": "RIV-3T",
+      "rarity": "MYTHIC",
+      "role": "WORKER",
+      "ingredients": [
+        "KX",
+        "IG",
+        "RIC"
+      ],
+      "variants": {
+        "BASIC": {
+          "input_income_per_second": 18100,
+          "output_income_per_second": 8400,
+          "net_income_per_second": -9700,
+          "retained_ratio": 0.46408839779005523,
+          "change_percent": -53.591160220994475,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 4850.0
+        },
+        "GOLD": {
+          "input_income_per_second": 36200,
+          "output_income_per_second": 16800,
+          "net_income_per_second": -19400,
+          "retained_ratio": 0.46408839779005523,
+          "change_percent": -53.591160220994475,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 9700.0
+        },
+        "DIAMOND": {
+          "input_income_per_second": 72400,
+          "output_income_per_second": 33600,
+          "net_income_per_second": -38800,
+          "retained_ratio": 0.46408839779005523,
+          "change_percent": -53.591160220994475,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 19400.0
+        },
+        "RAINBOW": {
+          "input_income_per_second": 144800,
+          "output_income_per_second": 67200,
+          "net_income_per_second": -77600,
+          "retained_ratio": 0.46408839779005523,
+          "change_percent": -53.591160220994475,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 38800.0
+        },
+        "BESKAR": {
+          "input_income_per_second": 289600,
+          "output_income_per_second": 134400,
+          "net_income_per_second": -155200,
+          "retained_ratio": 0.46408839779005523,
+          "change_percent": -53.591160220994475,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 77600.0
+        },
+        "GALACTIC": {
+          "input_income_per_second": 796400,
+          "output_income_per_second": 369600,
+          "net_income_per_second": -426800,
+          "retained_ratio": 0.46408839779005523,
+          "change_percent": -53.591160220994475,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 213400.0
+        },
+        "STELLAR": {
+          "input_income_per_second": 2262500,
+          "output_income_per_second": 1050000,
+          "net_income_per_second": -1212500,
+          "retained_ratio": 0.46408839779005523,
+          "change_percent": -53.591160220994475,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 606250.0
+        }
+      }
+    },
+    {
+      "output": "LUG-G",
+      "rarity": "MYTHIC",
+      "role": "WORKER",
+      "ingredients": [
+        "LOADLIFTER",
+        "ID10",
+        "R5"
+      ],
+      "variants": {
+        "BASIC": {
+          "input_income_per_second": 7207,
+          "output_income_per_second": 7600,
+          "net_income_per_second": 393,
+          "retained_ratio": 1.0545303177466352,
+          "change_percent": 5.453031774663521,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "GOLD": {
+          "input_income_per_second": 14414,
+          "output_income_per_second": 15200,
+          "net_income_per_second": 786,
+          "retained_ratio": 1.0545303177466352,
+          "change_percent": 5.453031774663521,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "DIAMOND": {
+          "input_income_per_second": 28828,
+          "output_income_per_second": 30400,
+          "net_income_per_second": 1572,
+          "retained_ratio": 1.0545303177466352,
+          "change_percent": 5.453031774663521,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "RAINBOW": {
+          "input_income_per_second": 57656,
+          "output_income_per_second": 60800,
+          "net_income_per_second": 3144,
+          "retained_ratio": 1.0545303177466352,
+          "change_percent": 5.453031774663521,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "BESKAR": {
+          "input_income_per_second": 115284,
+          "output_income_per_second": 121600,
+          "net_income_per_second": 6316,
+          "retained_ratio": 1.0547864404427327,
+          "change_percent": 5.478644044273273,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "GALACTIC": {
+          "input_income_per_second": 316968,
+          "output_income_per_second": 334400,
+          "net_income_per_second": 17432,
+          "retained_ratio": 1.0549960879331668,
+          "change_percent": 5.499608793316676,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "STELLAR": {
+          "input_income_per_second": 900224,
+          "output_income_per_second": 950000,
+          "net_income_per_second": 49776,
+          "retained_ratio": 1.0552929048770083,
+          "change_percent": 5.529290487700838,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        }
+      }
+    },
+    {
+      "output": "X-ONK",
+      "rarity": "MYTHIC",
+      "role": "BATTLE",
+      "ingredients": [
+        "KX",
+        "KX",
+        "GONK"
+      ],
+      "variants": {
+        "BASIC": {
+          "input_income_per_second": 14404,
+          "output_income_per_second": 8000,
+          "net_income_per_second": -6404,
+          "retained_ratio": 0.5554012774229381,
+          "change_percent": -44.45987225770619,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 3202.0
+        },
+        "GOLD": {
+          "input_income_per_second": 28808,
+          "output_income_per_second": 16000,
+          "net_income_per_second": -12808,
+          "retained_ratio": 0.5554012774229381,
+          "change_percent": -44.45987225770619,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 6404.0
+        },
+        "DIAMOND": {
+          "input_income_per_second": 57616,
+          "output_income_per_second": 32000,
+          "net_income_per_second": -25616,
+          "retained_ratio": 0.5554012774229381,
+          "change_percent": -44.45987225770619,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 12808.0
+        },
+        "RAINBOW": {
+          "input_income_per_second": 115232,
+          "output_income_per_second": 64000,
+          "net_income_per_second": -51232,
+          "retained_ratio": 0.5554012774229381,
+          "change_percent": -44.45987225770619,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 25616.0
+        },
+        "BESKAR": {
+          "input_income_per_second": 230448,
+          "output_income_per_second": 128000,
+          "net_income_per_second": -102448,
+          "retained_ratio": 0.5554398389224467,
+          "change_percent": -44.45601610775533,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 51224.0
+        },
+        "GALACTIC": {
+          "input_income_per_second": 633696,
+          "output_income_per_second": 352000,
+          "net_income_per_second": -281696,
+          "retained_ratio": 0.555471393223249,
+          "change_percent": -44.4528606776751,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 140848.0
+        },
+        "STELLAR": {
+          "input_income_per_second": 1800128,
+          "output_income_per_second": 1000000,
+          "net_income_per_second": -800128,
+          "retained_ratio": 0.5555160521918442,
+          "change_percent": -44.44839478081558,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 400064.0
+        }
+      }
+    },
+    {
+      "output": "SRV-O",
+      "rarity": "MYTHIC",
+      "role": "BATTLE",
+      "ingredients": [
+        "RIC-1200",
+        "B1 HEAVY",
+        "B1 HEAVY"
+      ],
+      "variants": {
+        "BASIC": {
+          "input_income_per_second": 7060,
+          "output_income_per_second": 7600,
+          "net_income_per_second": 540,
+          "retained_ratio": 1.0764872521246458,
+          "change_percent": 7.64872521246459,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "GOLD": {
+          "input_income_per_second": 14200,
+          "output_income_per_second": 15200,
+          "net_income_per_second": 1000,
+          "retained_ratio": 1.0704225352112675,
+          "change_percent": 7.042253521126761,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "DIAMOND": {
+          "input_income_per_second": 28200,
+          "output_income_per_second": 30400,
+          "net_income_per_second": 2200,
+          "retained_ratio": 1.0780141843971631,
+          "change_percent": 7.801418439716312,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "RAINBOW": {
+          "input_income_per_second": 56000,
+          "output_income_per_second": 60800,
+          "net_income_per_second": 4800,
+          "retained_ratio": 1.0857142857142856,
+          "change_percent": 8.571428571428571,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "BESKAR": {
+          "input_income_per_second": 133600,
+          "output_income_per_second": 121600,
+          "net_income_per_second": -12000,
+          "retained_ratio": 0.9101796407185628,
+          "change_percent": -8.982035928143713,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 6000.0
+        },
+        "GALACTIC": {
+          "input_income_per_second": 317600,
+          "output_income_per_second": 334400,
+          "net_income_per_second": 16800,
+          "retained_ratio": 1.0528967254408061,
+          "change_percent": 5.289672544080604,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "STELLAR": {
+          "input_income_per_second": 821000,
+          "output_income_per_second": 950000,
+          "net_income_per_second": 129000,
+          "retained_ratio": 1.1571254567600486,
+          "change_percent": 15.712545676004872,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        }
+      }
+    },
+    {
+      "output": "AXI-POD",
+      "rarity": "MYTHIC",
+      "role": "ASTRO",
+      "ingredients": [
+        "RIC",
+        "BDX EXPLORER",
+        "R7"
+      ],
+      "variants": {
+        "BASIC": {
+          "input_income_per_second": 6615,
+          "output_income_per_second": 8000,
+          "net_income_per_second": 1385,
+          "retained_ratio": 1.2093726379440666,
+          "change_percent": 20.93726379440665,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "GOLD": {
+          "input_income_per_second": 13230,
+          "output_income_per_second": 16000,
+          "net_income_per_second": 2770,
+          "retained_ratio": 1.2093726379440666,
+          "change_percent": 20.93726379440665,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "DIAMOND": {
+          "input_income_per_second": 26460,
+          "output_income_per_second": 32000,
+          "net_income_per_second": 5540,
+          "retained_ratio": 1.2093726379440666,
+          "change_percent": 20.93726379440665,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "RAINBOW": {
+          "input_income_per_second": 52920,
+          "output_income_per_second": 64000,
+          "net_income_per_second": 11080,
+          "retained_ratio": 1.2093726379440666,
+          "change_percent": 20.93726379440665,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "BESKAR": {
+          "input_income_per_second": 117780,
+          "output_income_per_second": 128000,
+          "net_income_per_second": 10220,
+          "retained_ratio": 1.0867719476991,
+          "change_percent": 8.677194769910002,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "GALACTIC": {
+          "input_income_per_second": 314760,
+          "output_income_per_second": 352000,
+          "net_income_per_second": 37240,
+          "retained_ratio": 1.1183123649764901,
+          "change_percent": 11.831236497649003,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "STELLAR": {
+          "input_income_per_second": 862980,
+          "output_income_per_second": 1000000,
+          "net_income_per_second": 137020,
+          "retained_ratio": 1.1587754061507798,
+          "change_percent": 15.877540615077987,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        }
+      }
+    },
+    {
+      "output": "LOW-MO",
+      "rarity": "MYTHIC",
+      "role": "WORKER",
+      "ingredients": [
+        "A-LT",
+        "A-LT",
+        "LOADLIFTER"
+      ],
+      "variants": {
+        "BASIC": {
+          "input_income_per_second": 7272,
+          "output_income_per_second": 7800,
+          "net_income_per_second": 528,
+          "retained_ratio": 1.0726072607260726,
+          "change_percent": 7.2607260726072615,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "GOLD": {
+          "input_income_per_second": 14544,
+          "output_income_per_second": 15600,
+          "net_income_per_second": 1056,
+          "retained_ratio": 1.0726072607260726,
+          "change_percent": 7.2607260726072615,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "DIAMOND": {
+          "input_income_per_second": 29088,
+          "output_income_per_second": 31200,
+          "net_income_per_second": 2112,
+          "retained_ratio": 1.0726072607260726,
+          "change_percent": 7.2607260726072615,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "RAINBOW": {
+          "input_income_per_second": 58176,
+          "output_income_per_second": 62400,
+          "net_income_per_second": 4224,
+          "retained_ratio": 1.0726072607260726,
+          "change_percent": 7.2607260726072615,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "BESKAR": {
+          "input_income_per_second": 116064,
+          "output_income_per_second": 124800,
+          "net_income_per_second": 8736,
+          "retained_ratio": 1.075268817204301,
+          "change_percent": 7.526881720430108,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "GALACTIC": {
+          "input_income_per_second": 318528,
+          "output_income_per_second": 343200,
+          "net_income_per_second": 24672,
+          "retained_ratio": 1.0774562989752863,
+          "change_percent": 7.745629897528632,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "STELLAR": {
+          "input_income_per_second": 902200,
+          "output_income_per_second": 975000,
+          "net_income_per_second": 72800,
+          "retained_ratio": 1.080691642651297,
+          "change_percent": 8.069164265129682,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        }
+      }
+    },
+    {
+      "output": "RO-TOR",
+      "rarity": "LEGENDARY",
+      "role": "WORKER",
+      "ingredients": [
+        "BB9",
+        "PIT",
+        "B1 BATTLE"
+      ],
+      "variants": {
+        "BASIC": {
+          "input_income_per_second": 1307,
+          "output_income_per_second": 1500,
+          "net_income_per_second": 193,
+          "retained_ratio": 1.1476664116296864,
+          "change_percent": 14.76664116296863,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "GOLD": {
+          "input_income_per_second": 2614,
+          "output_income_per_second": 3000,
+          "net_income_per_second": 386,
+          "retained_ratio": 1.1476664116296864,
+          "change_percent": 14.76664116296863,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "DIAMOND": {
+          "input_income_per_second": 5228,
+          "output_income_per_second": 6000,
+          "net_income_per_second": 772,
+          "retained_ratio": 1.1476664116296864,
+          "change_percent": 14.76664116296863,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "RAINBOW": {
+          "input_income_per_second": 10456,
+          "output_income_per_second": 12000,
+          "net_income_per_second": 1544,
+          "retained_ratio": 1.1476664116296864,
+          "change_percent": 14.76664116296863,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "BESKAR": {
+          "input_income_per_second": 31284,
+          "output_income_per_second": 36000,
+          "net_income_per_second": 4716,
+          "retained_ratio": 1.1507479861910241,
+          "change_percent": 15.074798619102417,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "GALACTIC": {
+          "input_income_per_second": 78168,
+          "output_income_per_second": 90000,
+          "net_income_per_second": 11832,
+          "retained_ratio": 1.1513662879950874,
+          "change_percent": 15.13662879950875,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "STELLAR": {
+          "input_income_per_second": 195224,
+          "output_income_per_second": 225000,
+          "net_income_per_second": 29776,
+          "retained_ratio": 1.1525222308732532,
+          "change_percent": 15.252223087325328,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        }
+      }
+    },
+    {
+      "output": "FUS-3",
+      "rarity": "LEGENDARY",
+      "role": "WORKER",
+      "ingredients": [
+        "R7",
+        "B-U4D",
+        "B-U4D"
+      ],
+      "variants": {
+        "BASIC": {
+          "input_income_per_second": 1616,
+          "output_income_per_second": 1600,
+          "net_income_per_second": -16,
+          "retained_ratio": 0.9900990099009901,
+          "change_percent": -0.9900990099009901,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 8.0
+        },
+        "GOLD": {
+          "input_income_per_second": 3232,
+          "output_income_per_second": 3200,
+          "net_income_per_second": -32,
+          "retained_ratio": 0.9900990099009901,
+          "change_percent": -0.9900990099009901,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 16.0
+        },
+        "DIAMOND": {
+          "input_income_per_second": 6464,
+          "output_income_per_second": 6400,
+          "net_income_per_second": -64,
+          "retained_ratio": 0.9900990099009901,
+          "change_percent": -0.9900990099009901,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 32.0
+        },
+        "RAINBOW": {
+          "input_income_per_second": 12928,
+          "output_income_per_second": 12800,
+          "net_income_per_second": -128,
+          "retained_ratio": 0.9900990099009901,
+          "change_percent": -0.9900990099009901,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 64.0
+        },
+        "BESKAR": {
+          "input_income_per_second": 37392,
+          "output_income_per_second": 38400,
+          "net_income_per_second": 1008,
+          "retained_ratio": 1.0269576379974326,
+          "change_percent": 2.6957637997432604,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "GALACTIC": {
+          "input_income_per_second": 92800,
+          "output_income_per_second": 96000,
+          "net_income_per_second": 3200,
+          "retained_ratio": 1.0344827586206897,
+          "change_percent": 3.4482758620689653,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "STELLAR": {
+          "input_income_per_second": 228800,
+          "output_income_per_second": 240000,
+          "net_income_per_second": 11200,
+          "retained_ratio": 1.048951048951049,
+          "change_percent": 4.895104895104895,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        }
+      }
+    },
+    {
+      "output": "ORB-XL",
+      "rarity": "LEGENDARY",
+      "role": "BATTLE",
+      "ingredients": [
+        "CB",
+        "GUNRUNNER",
+        "B2-RP"
+      ],
+      "variants": {
+        "BASIC": {
+          "input_income_per_second": 1963,
+          "output_income_per_second": 1600,
+          "net_income_per_second": -363,
+          "retained_ratio": 0.8150789607743251,
+          "change_percent": -18.492103922567498,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 181.5
+        },
+        "GOLD": {
+          "input_income_per_second": 3906,
+          "output_income_per_second": 3200,
+          "net_income_per_second": -706,
+          "retained_ratio": 0.819252432155658,
+          "change_percent": -18.074756784434204,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 353.0
+        },
+        "DIAMOND": {
+          "input_income_per_second": 7812,
+          "output_income_per_second": 6400,
+          "net_income_per_second": -1412,
+          "retained_ratio": 0.819252432155658,
+          "change_percent": -18.074756784434204,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 706.0
+        },
+        "RAINBOW": {
+          "input_income_per_second": 15724,
+          "output_income_per_second": 12800,
+          "net_income_per_second": -2924,
+          "retained_ratio": 0.8140422284406004,
+          "change_percent": -18.595777155939963,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 1462.0
+        },
+        "BESKAR": {
+          "input_income_per_second": 53736,
+          "output_income_per_second": 38400,
+          "net_income_per_second": -15336,
+          "retained_ratio": 0.7146047342563644,
+          "change_percent": -28.539526574363556,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 7668.0
+        },
+        "GALACTIC": {
+          "input_income_per_second": 112572,
+          "output_income_per_second": 96000,
+          "net_income_per_second": -16572,
+          "retained_ratio": 0.8527875493017802,
+          "change_percent": -14.72124506982198,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 8286.0
+        },
+        "STELLAR": {
+          "input_income_per_second": 248496,
+          "output_income_per_second": 240000,
+          "net_income_per_second": -8496,
+          "retained_ratio": 0.9658103148541627,
+          "change_percent": -3.418968514583736,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 4248.0
+        }
+      }
+    },
+    {
+      "output": "QIK-BIT",
+      "rarity": "LEGENDARY",
+      "role": "ASTRO",
+      "ingredients": [
+        "GROUNDMECH",
+        "GROUNDMECH",
+        "BB9"
+      ],
+      "variants": {
+        "BASIC": {
+          "input_income_per_second": 1540,
+          "output_income_per_second": 1600,
+          "net_income_per_second": 60,
+          "retained_ratio": 1.0389610389610389,
+          "change_percent": 3.896103896103896,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "GOLD": {
+          "input_income_per_second": 3080,
+          "output_income_per_second": 3200,
+          "net_income_per_second": 120,
+          "retained_ratio": 1.0389610389610389,
+          "change_percent": 3.896103896103896,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "DIAMOND": {
+          "input_income_per_second": 6160,
+          "output_income_per_second": 6400,
+          "net_income_per_second": 240,
+          "retained_ratio": 1.0389610389610389,
+          "change_percent": 3.896103896103896,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "RAINBOW": {
+          "input_income_per_second": 12320,
+          "output_income_per_second": 12800,
+          "net_income_per_second": 480,
+          "retained_ratio": 1.0389610389610389,
+          "change_percent": 3.896103896103896,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "BESKAR": {
+          "input_income_per_second": 39400,
+          "output_income_per_second": 38400,
+          "net_income_per_second": -1000,
+          "retained_ratio": 0.9746192893401016,
+          "change_percent": -2.5380710659898478,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 500.0
+        },
+        "GALACTIC": {
+          "input_income_per_second": 90400,
+          "output_income_per_second": 96000,
+          "net_income_per_second": 5600,
+          "retained_ratio": 1.0619469026548674,
+          "change_percent": 6.1946902654867255,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "STELLAR": {
+          "input_income_per_second": 214200,
+          "output_income_per_second": 240000,
+          "net_income_per_second": 25800,
+          "retained_ratio": 1.1204481792717087,
+          "change_percent": 12.044817927170868,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        }
+      }
+    },
+    {
+      "output": "N-UL",
+      "rarity": "EPIC",
+      "role": "WORKER",
+      "ingredients": [
+        "B1 HEAVY",
+        "GUNRUNNER",
+        "BB"
+      ],
+      "variants": {
+        "BASIC": {
+          "input_income_per_second": 1440,
+          "output_income_per_second": 720,
+          "net_income_per_second": -720,
+          "retained_ratio": 0.5,
+          "change_percent": -50.0,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 360.0
+        },
+        "GOLD": {
+          "input_income_per_second": 2900,
+          "output_income_per_second": 1440,
+          "net_income_per_second": -1460,
+          "retained_ratio": 0.496551724137931,
+          "change_percent": -50.3448275862069,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 730.0
+        },
+        "DIAMOND": {
+          "input_income_per_second": 5700,
+          "output_income_per_second": 2880,
+          "net_income_per_second": -2820,
+          "retained_ratio": 0.5052631578947369,
+          "change_percent": -49.473684210526315,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 1410.0
+        },
+        "RAINBOW": {
+          "input_income_per_second": 11300,
+          "output_income_per_second": 5760,
+          "net_income_per_second": -5540,
+          "retained_ratio": 0.5097345132743363,
+          "change_percent": -49.02654867256637,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 2770.0
+        },
+        "BESKAR": {
+          "input_income_per_second": 47900,
+          "output_income_per_second": 24480,
+          "net_income_per_second": -23420,
+          "retained_ratio": 0.5110647181628393,
+          "change_percent": -48.89352818371607,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 11710.0
+        },
+        "GALACTIC": {
+          "input_income_per_second": 73300,
+          "output_income_per_second": 37440,
+          "net_income_per_second": -35860,
+          "retained_ratio": 0.5107776261937245,
+          "change_percent": -48.92223738062756,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 17930.0
+        },
+        "STELLAR": {
+          "input_income_per_second": 112800,
+          "output_income_per_second": 57600,
+          "net_income_per_second": -55200,
+          "retained_ratio": 0.5106382978723404,
+          "change_percent": -48.93617021276596,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 27600.0
+        }
+      }
+    },
+    {
+      "output": "SCRP-R",
+      "rarity": "EPIC",
+      "role": "ASTRO",
+      "ingredients": [
+        "GONK",
+        "GROUNDMECH",
+        "R6"
+      ],
+      "variants": {
+        "BASIC": {
+          "input_income_per_second": 424,
+          "output_income_per_second": 720,
+          "net_income_per_second": 296,
+          "retained_ratio": 1.6981132075471699,
+          "change_percent": 69.81132075471697,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "GOLD": {
+          "input_income_per_second": 848,
+          "output_income_per_second": 1440,
+          "net_income_per_second": 592,
+          "retained_ratio": 1.6981132075471699,
+          "change_percent": 69.81132075471697,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "DIAMOND": {
+          "input_income_per_second": 1696,
+          "output_income_per_second": 2880,
+          "net_income_per_second": 1184,
+          "retained_ratio": 1.6981132075471699,
+          "change_percent": 69.81132075471697,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "RAINBOW": {
+          "input_income_per_second": 3392,
+          "output_income_per_second": 5760,
+          "net_income_per_second": 2368,
+          "retained_ratio": 1.6981132075471699,
+          "change_percent": 69.81132075471697,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "BESKAR": {
+          "input_income_per_second": 14348,
+          "output_income_per_second": 24480,
+          "net_income_per_second": 10132,
+          "retained_ratio": 1.7061611374407584,
+          "change_percent": 70.61611374407583,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "GALACTIC": {
+          "input_income_per_second": 21896,
+          "output_income_per_second": 37440,
+          "net_income_per_second": 15544,
+          "retained_ratio": 1.7099013518450858,
+          "change_percent": 70.99013518450859,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "STELLAR": {
+          "input_income_per_second": 33728,
+          "output_income_per_second": 57600,
+          "net_income_per_second": 23872,
+          "retained_ratio": 1.7077798861480076,
+          "change_percent": 70.77798861480076,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        }
+      }
+    },
+    {
+      "output": "ARM-CORE",
+      "rarity": "EPIC",
+      "role": "BATTLE",
+      "ingredients": [
+        "ARG",
+        "ARG",
+        "B2 HEAVY"
+      ],
+      "variants": {
+        "BASIC": {
+          "input_income_per_second": 564,
+          "output_income_per_second": 690,
+          "net_income_per_second": 126,
+          "retained_ratio": 1.2234042553191489,
+          "change_percent": 22.340425531914892,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "GOLD": {
+          "input_income_per_second": 1128,
+          "output_income_per_second": 1380,
+          "net_income_per_second": 252,
+          "retained_ratio": 1.2234042553191489,
+          "change_percent": 22.340425531914892,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "DIAMOND": {
+          "input_income_per_second": 2236,
+          "output_income_per_second": 2760,
+          "net_income_per_second": 524,
+          "retained_ratio": 1.2343470483005368,
+          "change_percent": 23.43470483005367,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "RAINBOW": {
+          "input_income_per_second": 4472,
+          "output_income_per_second": 5520,
+          "net_income_per_second": 1048,
+          "retained_ratio": 1.2343470483005368,
+          "change_percent": 23.43470483005367,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "BESKAR": {
+          "input_income_per_second": 17308,
+          "output_income_per_second": 23460,
+          "net_income_per_second": 6152,
+          "retained_ratio": 1.3554425699098682,
+          "change_percent": 35.54425699098683,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "GALACTIC": {
+          "input_income_per_second": 27000,
+          "output_income_per_second": 35880,
+          "net_income_per_second": 8880,
+          "retained_ratio": 1.3288888888888888,
+          "change_percent": 32.88888888888889,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "STELLAR": {
+          "input_income_per_second": 41000,
+          "output_income_per_second": 55200,
+          "net_income_per_second": 14200,
+          "retained_ratio": 1.3463414634146342,
+          "change_percent": 34.63414634146341,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        }
+      }
+    },
+    {
+      "output": "OPT-AR",
+      "rarity": "EPIC",
+      "role": "BATTLE",
+      "ingredients": [
+        "R2",
+        "R2",
+        "B2 SUPER"
+      ],
+      "variants": {
+        "BASIC": {
+          "input_income_per_second": 1140,
+          "output_income_per_second": 720,
+          "net_income_per_second": -420,
+          "retained_ratio": 0.631578947368421,
+          "change_percent": -36.84210526315789,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 210.0
+        },
+        "GOLD": {
+          "input_income_per_second": 2280,
+          "output_income_per_second": 1440,
+          "net_income_per_second": -840,
+          "retained_ratio": 0.631578947368421,
+          "change_percent": -36.84210526315789,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 420.0
+        },
+        "DIAMOND": {
+          "input_income_per_second": 4500,
+          "output_income_per_second": 2880,
+          "net_income_per_second": -1620,
+          "retained_ratio": 0.64,
+          "change_percent": -36.0,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 810.0
+        },
+        "RAINBOW": {
+          "input_income_per_second": 9200,
+          "output_income_per_second": 5760,
+          "net_income_per_second": -3440,
+          "retained_ratio": 0.6260869565217392,
+          "change_percent": -37.391304347826086,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 1720.0
+        },
+        "BESKAR": {
+          "input_income_per_second": 38700,
+          "output_income_per_second": 24480,
+          "net_income_per_second": -14220,
+          "retained_ratio": 0.6325581395348837,
+          "change_percent": -36.74418604651163,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 7110.0
+        },
+        "GALACTIC": {
+          "input_income_per_second": 59200,
+          "output_income_per_second": 37440,
+          "net_income_per_second": -21760,
+          "retained_ratio": 0.6324324324324324,
+          "change_percent": -36.75675675675676,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 10880.0
+        },
+        "STELLAR": {
+          "input_income_per_second": 91200,
+          "output_income_per_second": 57600,
+          "net_income_per_second": -33600,
+          "retained_ratio": 0.631578947368421,
+          "change_percent": -36.84210526315789,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 16800.0
+        }
+      }
+    },
+    {
+      "output": "WHL-EX",
+      "rarity": "RARE",
+      "role": "WORKER",
+      "ingredients": [
+        "ARG",
+        "MOUSE",
+        "MOUSE"
+      ],
+      "variants": {
+        "BASIC": {
+          "input_income_per_second": 46,
+          "output_income_per_second": 72,
+          "net_income_per_second": 26,
+          "retained_ratio": 1.565217391304348,
+          "change_percent": 56.52173913043478,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "GOLD": {
+          "input_income_per_second": 92,
+          "output_income_per_second": 144,
+          "net_income_per_second": 52,
+          "retained_ratio": 1.565217391304348,
+          "change_percent": 56.52173913043478,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "DIAMOND": {
+          "input_income_per_second": 184,
+          "output_income_per_second": 288,
+          "net_income_per_second": 104,
+          "retained_ratio": 1.565217391304348,
+          "change_percent": 56.52173913043478,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "RAINBOW": {
+          "input_income_per_second": 368,
+          "output_income_per_second": 576,
+          "net_income_per_second": 208,
+          "retained_ratio": 1.565217391304348,
+          "change_percent": 56.52173913043478,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "BESKAR": {
+          "input_income_per_second": 552,
+          "output_income_per_second": 864,
+          "net_income_per_second": 312,
+          "retained_ratio": 1.565217391304348,
+          "change_percent": 56.52173913043478,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "GALACTIC": {
+          "input_income_per_second": 1096,
+          "output_income_per_second": 1728,
+          "net_income_per_second": 632,
+          "retained_ratio": 1.5766423357664234,
+          "change_percent": 57.66423357664233,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "STELLAR": {
+          "input_income_per_second": 1428,
+          "output_income_per_second": 2304,
+          "net_income_per_second": 876,
+          "retained_ratio": 1.6134453781512605,
+          "change_percent": 61.34453781512605,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        }
+      }
+    },
+    {
+      "output": "BTL-R",
+      "rarity": "RARE",
+      "role": "BATTLE",
+      "ingredients": [
+        "R9",
+        "BDX EXPLORER",
+        "B1 BATTLE"
+      ],
+      "variants": {
+        "BASIC": {
+          "input_income_per_second": 74,
+          "output_income_per_second": 72,
+          "net_income_per_second": -2,
+          "retained_ratio": 0.972972972972973,
+          "change_percent": -2.7027027027027026,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 1.0
+        },
+        "GOLD": {
+          "input_income_per_second": 148,
+          "output_income_per_second": 144,
+          "net_income_per_second": -4,
+          "retained_ratio": 0.972972972972973,
+          "change_percent": -2.7027027027027026,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 2.0
+        },
+        "DIAMOND": {
+          "input_income_per_second": 296,
+          "output_income_per_second": 288,
+          "net_income_per_second": -8,
+          "retained_ratio": 0.972972972972973,
+          "change_percent": -2.7027027027027026,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 4.0
+        },
+        "RAINBOW": {
+          "input_income_per_second": 592,
+          "output_income_per_second": 576,
+          "net_income_per_second": -16,
+          "retained_ratio": 0.972972972972973,
+          "change_percent": -2.7027027027027026,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 8.0
+        },
+        "BESKAR": {
+          "input_income_per_second": 888,
+          "output_income_per_second": 864,
+          "net_income_per_second": -24,
+          "retained_ratio": 0.972972972972973,
+          "change_percent": -2.7027027027027026,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 12.0
+        },
+        "GALACTIC": {
+          "input_income_per_second": 1780,
+          "output_income_per_second": 1728,
+          "net_income_per_second": -52,
+          "retained_ratio": 0.9707865168539326,
+          "change_percent": -2.9213483146067416,
+          "outcome": "loss",
+          "break_even_per_freed_slot": 26.0
+        },
+        "STELLAR": null
+      }
+    },
+    {
+      "output": "ZRO-TEC",
+      "rarity": "RARE",
+      "role": "ASTRO",
+      "ingredients": [
+        "ID10",
+        "ID10",
+        "2BB"
+      ],
+      "variants": {
+        "BASIC": {
+          "input_income_per_second": 25,
+          "output_income_per_second": 72,
+          "net_income_per_second": 47,
+          "retained_ratio": 2.88,
+          "change_percent": 188.0,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "GOLD": {
+          "input_income_per_second": 50,
+          "output_income_per_second": 144,
+          "net_income_per_second": 94,
+          "retained_ratio": 2.88,
+          "change_percent": 188.0,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "DIAMOND": {
+          "input_income_per_second": 100,
+          "output_income_per_second": 288,
+          "net_income_per_second": 188,
+          "retained_ratio": 2.88,
+          "change_percent": 188.0,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "RAINBOW": {
+          "input_income_per_second": 200,
+          "output_income_per_second": 576,
+          "net_income_per_second": 376,
+          "retained_ratio": 2.88,
+          "change_percent": 188.0,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "BESKAR": {
+          "input_income_per_second": 300,
+          "output_income_per_second": 864,
+          "net_income_per_second": 564,
+          "retained_ratio": 2.88,
+          "change_percent": 188.0,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "GALACTIC": {
+          "input_income_per_second": 600,
+          "output_income_per_second": 1728,
+          "net_income_per_second": 1128,
+          "retained_ratio": 2.88,
+          "change_percent": 188.0,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        },
+        "STELLAR": {
+          "input_income_per_second": 800,
+          "output_income_per_second": 2304,
+          "net_income_per_second": 1504,
+          "retained_ratio": 2.88,
+          "change_percent": 188.0,
+          "outcome": "gain",
+          "break_even_per_freed_slot": 0.0
+        }
+      }
+    }
+  ],
+  "totals": {
+    "recipes": 17,
+    "variant_comparisons": 119,
+    "gain": 71,
+    "loss": 47,
+    "even": 0,
+    "undocumented": 1
+  },
+  "recipe_results": {
+    "gain": 8,
+    "loss": 6,
+    "mixed": 3,
+    "undocumented": 0
+  },
+  "method": "Output income minus the combined income of the three recipe ingredients at the same variant."
+}

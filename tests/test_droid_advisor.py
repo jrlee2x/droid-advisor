@@ -3,6 +3,7 @@ from pathlib import Path
 from PIL import Image
 
 from droid_advisor import notifications
+from droid_advisor.build_chip_cost_chart import chip_cost_payload
 from droid_advisor.build_rebirth_tiles import QUALITY_COLORS, render_card, stellar_icon
 from droid_advisor.chip_costs import CHIP_COSTS_126
 from droid_advisor.cycles import CYCLES, MAX_REBIRTH, active_rebirth, next_cycle
@@ -21,10 +22,21 @@ from droid_advisor.extract_rebirth_tiles import (
     TOP_PADDING,
     tile_bounds,
 )
+from droid_advisor.fusion_recipes import FUSION_INCOME_PER_SECOND, FUSION_RECIPES, FUSION_VARIANTS
 from droid_advisor.inventory import InventoryLedger
 from droid_advisor.notifications import update_spawn_presence
-from droid_advisor.qualities import QUALITY_ORDER, quality_table
-from droid_advisor.updater import parse_release, trusted_ssl_context, version_tuple
+from droid_advisor.qualities import (
+    QUALITY_ORDER,
+    RARITIES,
+    SPAWN_VARIANTS,
+    quality_table,
+)
+from droid_advisor.updater import (
+    build_installer_script,
+    parse_release,
+    trusted_ssl_context,
+    version_tuple,
+)
 from droid_advisor.vision import (
     OcrToken,
     OfflineOcr,
@@ -34,6 +46,7 @@ from droid_advisor.vision import (
     blueprint_visual_gate,
     card_header_rect,
     card_visual_gate,
+    classify_interaction,
     game_ui_viewport,
     game_ui_viewports,
     high_value_spawn,
@@ -43,6 +56,7 @@ from droid_advisor.vision import (
     rebirth_header_is_open,
     rebirth_rank,
     rebirth_visual_gate,
+    scan_priorities,
     selected_droid,
 )
 from droid_advisor.windowing import (
@@ -152,8 +166,41 @@ def test_update_126_chip_costs_match_published_reference():
     )
 
 
-def test_update_126_extends_every_cycle_and_wraps_after_cycle_five():
-    assert MAX_REBIRTH == 35
+def test_hosted_chip_cost_matrix_matches_desktop_reference():
+    payload = chip_cost_payload()
+    assert payload["qualities"][-1] == "STELLAR"
+    assert payload["rarities"] == ["EPIC", "LEGENDARY", "MYTHIC"]
+    assert payload["costs"]["EPIC"] == {"BESKAR": 3000, "GALACTIC": 5000, "STELLAR": 8000}
+    assert payload["costs"]["LEGENDARY"]["STELLAR"] == 24000
+    assert payload["costs"]["MYTHIC"]["STELLAR"] == 90000
+
+
+def test_fusion_output_uses_axi_pod_spelling():
+    outputs = {recipe["output"] for recipe in FUSION_RECIPES}
+    assert "AXI-POD" in outputs
+    assert "AXL-POD" not in outputs
+
+
+def test_every_fusion_has_complete_base_income_data():
+    outputs = {recipe["output"] for recipe in FUSION_RECIPES}
+    assert outputs == set(FUSION_INCOME_PER_SECOND)
+    assert len(FUSION_VARIANTS) == 7
+    for incomes in FUSION_INCOME_PER_SECOND.values():
+        assert len(incomes) == len(FUSION_VARIANTS)
+        assert all(current < following for current, following in zip(incomes, incomes[1:]))
+
+
+def test_fusion_income_and_corrected_names_match_current_references():
+    recipes = {recipe["output"]: recipe for recipe in FUSION_RECIPES}
+    assert "SRV-O" in recipes
+    assert "SRV-0" not in recipes
+    assert recipes["LOW-MO"]["role"] == "WORKER"
+    assert FUSION_INCOME_PER_SECOND["RIV-3T"][-1] == 1_050_000
+    assert FUSION_INCOME_PER_SECOND["AXI-POD"][-1] == 1_000_000
+
+
+def test_update_132_extends_every_cycle_and_wraps_after_cycle_five():
+    assert MAX_REBIRTH == 40
     assert set(CYCLES) == {1, 2, 3, 4, 5}
     assert all(len(rows) == MAX_REBIRTH for rows in CYCLES.values())
     assert next_cycle(4) == 5
@@ -284,6 +331,17 @@ def test_bb9_is_not_shortened_to_bb():
     assert match_droid("BB9") == ("BB9", 1.0)
 
 
+def test_split_snow_mouse_title_outranks_nested_mouse_name():
+    tokens = [
+        _token("SNOW", 240, 300),
+        _token("MOUSE", 310, 300),
+        _token("WORK", 700, 350),
+        _token("SWAP", 700, 450),
+        _token("LOUNGE", 700, 550),
+    ]
+    assert selected_droid(tokens, 1000, 1000) == ("SNOW MOUSE", 1.0)
+
+
 def _token(text, x, y):
     return OcrToken(text, 1.0, ((x - 5, y - 5), (x + 5, y - 5), (x + 5, y + 5), (x - 5, y + 5)))
 
@@ -336,6 +394,33 @@ def test_offline_ocr_can_preserve_notification_colors(monkeypatch):
     assert seen["mode"] == "RGB"
 
 
+def test_card_gate_skips_speculative_ocr_until_decision_is_ready():
+    priorities = scan_priorities(card_gate=True, rebirth_gate=False, blueprint_gate=False)
+
+    assert priorities.interaction_active is True
+    assert priorities.scan_rebirth_gate is False
+    assert priorities.probe_rebirth_fallback is False
+    assert priorities.scan_spawn is False
+
+
+def test_blueprint_gate_gets_the_same_focused_ocr_priority():
+    priorities = scan_priorities(card_gate=False, rebirth_gate=False, blueprint_gate=True)
+
+    assert priorities.interaction_active is True
+    assert priorities.scan_rebirth_gate is False
+    assert priorities.probe_rebirth_fallback is False
+    assert priorities.scan_spawn is False
+
+
+def test_idle_frame_retains_bounded_rebirth_and_spawn_probes():
+    priorities = scan_priorities(card_gate=False, rebirth_gate=False, blueprint_gate=False)
+
+    assert priorities.interaction_active is False
+    assert priorities.scan_rebirth_gate is False
+    assert priorities.probe_rebirth_fallback is True
+    assert priorities.scan_spawn is True
+
+
 def test_visual_gates_reject_plain_gameplay_and_detect_target_chrome():
     from PIL import Image, ImageDraw
 
@@ -368,10 +453,29 @@ def test_only_legendary_and_higher_galactic_spawns_trigger_alerts():
         assert high_value_spawn(tokens, 1000, 1000) == ("GALACTIC", rarity.upper())
 
 
-def test_every_stellar_spawn_triggers_during_temporary_hunt():
-    for rarity in ("Common", "Rare", "Epic", "Legendary", "Mythic"):
+def test_default_threshold_applies_to_stellar_too():
+    for rarity in ("Common", "Rare", "Epic"):
+        tokens = [_token(f"Stellar Droid ({rarity}) spawned at the Sandcrawler", 300, 500)]
+        assert high_value_spawn(tokens, 1000, 1000) is None
+    for rarity in ("Legendary", "Mythic"):
         tokens = [_token(f"Stellar Droid ({rarity}) spawned at the Sandcrawler", 300, 500)]
         assert high_value_spawn(tokens, 1000, 1000) == ("STELLAR", rarity.upper())
+
+
+def test_configurable_spawn_threshold_requires_both_minimums():
+    for finish in SPAWN_VARIANTS:
+        for rarity in RARITIES:
+            tokens = [_token(f"{finish.title()} Droid ({rarity.title()}) spawned at the Sandcrawler", 300, 500)]
+            detected = high_value_spawn(tokens, 1000, 1000, "RAINBOW", "EPIC")
+            qualifies = SPAWN_VARIANTS.index(finish) >= SPAWN_VARIANTS.index("RAINBOW") and RARITIES.index(
+                rarity
+            ) >= RARITIES.index("EPIC")
+            assert detected == ((finish, rarity) if qualifies else None)
+
+
+def test_threshold_can_include_every_variant_and_rarity():
+    tokens = [_token("Default Droid (Common) spawned at the Sandcrawler", 300, 500)]
+    assert high_value_spawn(tokens, 1000, 1000, "DEFAULT", "COMMON") == ("DEFAULT", "COMMON")
 
 
 def test_beskar_requires_legendary_or_mythic():
@@ -425,6 +529,36 @@ def test_panel_requires_aligned_vertical_card_controls():
     assert panel_is_open(card, 1000, 1000) is True
 
 
+def test_card_button_labels_accept_counters_but_reject_worker_role():
+    for label in ("WORK", "WORK 16/16", "WORK16/16", "SWAP 2/2", "LOUNGE 8 / 9", "CUSTOMIZE", "SELL"):
+        assert is_card_button_text(label)
+    for label in ("Worker", "Workers", "WORK IN BASE", "SELL THIS DROID", "SELLER"):
+        assert not is_card_button_text(label)
+
+
+def test_hovercam_worker_role_does_not_shift_action_column_or_header_crop():
+    # Positions from the live 2560x1440 Update 1.33 card. WORK is above the
+    # geometry cue band, so misreading Worker shifts the remaining anchors
+    # into the classic layout and crops out the name entirely.
+    tokens = [
+        _token("WORK", 1501, 352),
+        _token("SWAP", 1486, 476),
+        _token("SENATEHOVERCAM", 885, 525),
+        _token("BESKAR", 769, 574),
+        _token("RARE", 888, 575),
+        _token("FUSION", 1504, 601),
+        _token("LOUNGE", 1517, 725),
+        _token("Worker", 1031, 760),
+        _token("CUSTOMIZE", 1549, 853),
+        _token("SELL", 1406, 978),
+    ]
+    assert classify_interaction(tokens, 2560, 1440, True, True) == (False, True)
+    assert selected_droid(tokens, 2560, 1440) == ("SENATE HOVERCAM", 1.0)
+    left, top, right, bottom = card_header_rect(tokens, 2560, 1440)
+    for x, y in ((885, 525), (769, 574), (888, 575)):
+        assert left < x < right and top < y < bottom
+
+
 def test_scattered_world_words_do_not_open_panel():
     scattered = [_token("WORK", 200, 400), _token("SELL", 800, 450), _token("LOUNGE", 500, 480)]
     assert panel_is_open(scattered, 1000, 1000) is False
@@ -444,6 +578,23 @@ def test_blueprint_prompt_can_be_split_across_ocr_tokens():
 def test_blueprint_droid_recognizes_exact_short_ig_token():
     assert blueprint_droid([_token("IG", 100, 100)]) == ("IG", 1.0)
     assert blueprint_droid([_token("LEGENDARY", 100, 100)])[0] is None
+
+
+def test_focused_card_reader_reconstructs_split_senate_hovercam_name():
+    tokens = [
+        _token("SENATE", 120, 100),
+        _token("HOVERCAM", 235, 102),
+        _token("BESKAR", 120, 155),
+        _token("RARE", 235, 155),
+    ]
+
+    assert blueprint_droid(tokens) == ("SENATE HOVERCAM", 1.0)
+
+
+def test_focused_card_reader_ignores_stale_advisor_banner():
+    tokens = [_token("B1 BATTLE: KEEP: NEEDED AT RB12", 250, 100)]
+
+    assert blueprint_droid(tokens) == (None, 0.0)
 
 
 def test_left_positioned_card_prefers_ig_above_its_buttons():
@@ -490,6 +641,34 @@ def test_card_header_crop_tracks_left_positioned_button_column():
     assert bottom == 470
 
 
+def test_update_128_side_by_side_card_reads_name_below_first_button():
+    tokens = [
+        _token("R4", 220, 350),
+        _token("RAINBOW", 220, 405),
+        _token("RARE", 350, 405),
+        _token("WORK", 700, 240),
+        _token("SWAP", 700, 350),
+        _token("FUSION", 700, 460),
+        _token("LOUNGE", 700, 570),
+        _token("CUSTOMIZE", 700, 680),
+        _token("SELL", 700, 790),
+    ]
+
+    assert panel_is_open(tokens, 1000, 1000) is True
+    assert classify_interaction(tokens, 1000, 1000, False, True) == (False, True)
+    assert selected_droid(tokens, 1000, 1000) == ("R4", 1.0)
+    assert card_header_rect(tokens, 1000, 1000) == (120, 220, 580, 520)
+
+
+def test_interaction_gate_wins_over_false_rebirth_color_gate():
+    priorities = scan_priorities(card_gate=False, rebirth_gate=True, blueprint_gate=True)
+
+    assert priorities.interaction_active is True
+    assert priorities.scan_rebirth_gate is False
+    assert priorities.probe_rebirth_fallback is False
+    assert priorities.scan_spawn is False
+
+
 def test_tooltip_sentence_does_not_break_card_button_detection():
     tokens = [
         _token("WORK", 500, 450),
@@ -524,9 +703,10 @@ def test_blueprint_finish_and_rarity_are_optional_context():
     assert blueprint_details([_token("STELLAR", 10, 10), _token("MYTHIC", 20, 20)]) == ("STELLAR", "MYTHIC")
 
 
-def test_rebirth_rank_accepts_update_126_range_only():
+def test_rebirth_rank_accepts_update_132_range_only():
     assert rebirth_rank([_token("Rank 35", 100, 30)]) == 35
-    assert rebirth_rank([_token("Rank 36", 100, 30)]) is None
+    assert rebirth_rank([_token("Rank 40", 100, 30)]) == 40
+    assert rebirth_rank([_token("Rank 41", 100, 30)]) is None
 
 
 def test_high_value_spawn_filter_is_strict():
@@ -535,7 +715,7 @@ def test_high_value_spawn_filter_is_strict():
     assert high_value_spawn([_token("Rainbow Droid (Rare) spawned at the Sandcrawler", 300, 500)], 1000, 1000) is None
     assert high_value_spawn([_token("Gold Droid (Mythic) spawned at the Sandcrawler", 300, 500)], 1000, 1000) is None
     assert high_value_spawn([_token("Galactic Droid (Epic) spawned at the Sandcrawler", 300, 500)], 1000, 1000) is None
-    assert high_value_spawn([_token("Stellar Droid (Common) spawned at the Sandcrawler", 300, 500)], 1000, 1000) == ("STELLAR", "COMMON")
+    assert high_value_spawn([_token("Stellar Droid (Common) spawned at the Sandcrawler", 300, 500)], 1000, 1000) is None
 
 
 def test_spawn_notification_sound_is_non_blocking(monkeypatch, tmp_path):
@@ -749,13 +929,13 @@ def test_galactic_outranks_beskar_and_lower_requirements(tmp_path):
     assert assessment.covered is True
 
 
-def test_stellar_outranks_galactic_and_covers_cycle_five_endgame(tmp_path):
+def test_stellar_mecha_needs_kyber_for_cycle_five_endgame(tmp_path):
     ledger = InventoryLedger(tmp_path / "inventory.json")
     ledger.set("MECHA-DROID", 1, "STELLAR")
     assessment = ledger.assess(5, 30, "MECHA-DROID")
     assert assessment.next_needed == 35
-    assert assessment.required_quality == "STELLAR"
-    assert assessment.covered is True
+    assert assessment.required_quality == "KYBER"
+    assert assessment.covered is False
 
 
 def test_update_126_quality_rows_match_verified_tracker():
@@ -777,7 +957,7 @@ def test_stellar_graphic_uses_warm_orbital_treatment():
 def test_every_generated_rebirth_card_uses_screen_safe_dimensions():
     for cycle in range(1, 6):
         for rank in range(1, MAX_REBIRTH + 1):
-            expected_height = 179 if rank >= 12 else 125
+            expected_height = 219 if rank >= 12 else 125
             assert render_card(cycle, rank).size == (DISPLAY_WIDTH, expected_height)
 
 
@@ -814,10 +994,11 @@ def test_update_release_requires_filename_to_match_tag_exactly():
         raise AssertionError("mismatched installer filename was accepted")
 
 
-def test_active_rebirth_wraps_after_rank_35():
+def test_active_rebirth_wraps_after_rank_40():
     assert active_rebirth(4, 34) == (4, 35)
-    assert active_rebirth(4, 35) == (5, 1)
-    assert active_rebirth(5, 35) == (1, 1)
+    assert active_rebirth(4, 35) == (4, 36)
+    assert active_rebirth(4, 40) == (5, 1)
+    assert active_rebirth(5, 40) == (1, 1)
 
 
 def test_saved_config_is_normalized_and_written_atomically(monkeypatch, tmp_path):
@@ -834,14 +1015,18 @@ def test_saved_config_is_normalized_and_written_atomically(monkeypatch, tmp_path
             "completed_rebirth": 999,
             "spawn_alert_sound": "made_up",
             "spawn_alert_volume": "loud",
+            "spawn_alert_min_variant": "made_up",
+            "spawn_alert_min_rarity": 99,
         }),
         encoding="utf-8",
     )
     normalized = config.load_config()
     assert normalized["cycle"] == 1
-    assert normalized["completed_rebirth"] == 35
+    assert normalized["completed_rebirth"] == 40
     assert normalized["spawn_alert_sound"] == "droid_chime"
     assert normalized["spawn_alert_volume"] == 70
+    assert normalized["spawn_alert_min_variant"] == "BESKAR"
+    assert normalized["spawn_alert_min_rarity"] == "LEGENDARY"
     normalized["spawn_alert_volume"] = 55
     config.save_config(normalized)
     assert json.loads(config_path.read_text(encoding="utf-8"))["spawn_alert_volume"] == 55
@@ -872,6 +1057,49 @@ def test_non_object_config_uses_defaults(monkeypatch, tmp_path):
     config_path.write_text("[]", encoding="utf-8")
     monkeypatch.setattr(config, "CONFIG_PATH", config_path)
     assert config.load_config() == config.DEFAULTS
+
+
+def test_saved_spawn_thresholds_are_case_normalized(monkeypatch, tmp_path):
+    import json
+
+    from droid_advisor import config
+
+    config_path = tmp_path / "config.json"
+    monkeypatch.setattr(config, "CONFIG_PATH", config_path)
+    config_path.write_text(
+        json.dumps({
+            "spawn_alert_min_variant": "stellar",
+            "spawn_alert_min_rarity": "rare",
+        }),
+        encoding="utf-8",
+    )
+    loaded = config.load_config()
+    assert loaded["spawn_alert_min_variant"] == "STELLAR"
+    assert loaded["spawn_alert_min_rarity"] == "RARE"
+
+
+def test_upgrade_transaction_requires_clean_runtime_and_health_check():
+    script = build_installer_script(
+        "C:\\update\\setup.exe",
+        "a" * 64,
+        "C:\\app\\DroidAdvisor.exe",
+        "C:\\update",
+        123,
+    )
+    assert "/RESTARTEXITCODE=3010" in script
+    assert "/LOGCLOSEAPPLICATIONS" in script
+    assert "update-install.log" in script
+    assert "--health-check" in script
+    installer_script = (
+        Path(__file__).resolve().parents[1] / "droid_advisor" / "installer.iss"
+    ).read_text(encoding="utf-8")
+    assert 'Type: filesandordirs; Name: "{app}\\_internal"' in installer_script
+
+
+def test_runtime_health_check_exercises_pillow_core():
+    from droid_advisor.launcher import runtime_health_check
+
+    assert runtime_health_check() == 0
 
 
 def test_spawn_presence_clears_only_after_consecutive_absent_scans():

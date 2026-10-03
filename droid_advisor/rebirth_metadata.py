@@ -1,4 +1,4 @@
-"""Shared display metadata for Droid Tycoon update 1.26 rebirth cards."""
+"""Shared display metadata for Droid Tycoon update 1.32 rebirth cards."""
 
 from __future__ import annotations
 
@@ -12,10 +12,22 @@ CREDIT_COSTS = {
     21: "3T", 22: "4.5T", 23: "6T", 24: "9T", 25: "13.5T",
     26: "21T", 27: "32T", 28: "45T", 29: "68T", 30: "100T",
     31: "150T", 32: "230T", 33: "345T", 34: "520T", 35: "778T",
+    36: "1.2Qa", 37: "2.5Qa", 38: "4.5Qa", 39: "8Qa", 40: "15Qa",
 }
 
 
-# rank: (Nova Crystals, credit multiplier percent, XP multiplier percent)
+# Paid once when reaching the rank, without a Super Rebirth reset.
+# Cross-checked 2026-09-30: Reddit 1vtgnoy (RB20-35), Droidex v1.32
+# update review (RB36-40), and Droid Archives data/nova-shop.json.
+REGULAR_REBIRTH_NOVA = {
+    20: 5, 21: 10, 22: 15, 23: 20, 24: 25, 25: 40,
+    26: 50, 27: 60, 28: 70, 29: 80, 30: 120,
+    31: 140, 32: 160, 33: 180, 34: 200,
+    35: 300, 36: 300, 37: 300, 38: 300, 39: 300, 40: 300,
+}
+
+# COMPLETED rank: (separate SRB Nova payout, credit multiplier %, XP %).
+# Not the ordinary rebirth award and not a cumulative full-run total.
 SUPER_REBIRTH_REWARDS = {
     12: (11, 22, 110), 13: (16, 32, 160), 14: (22, 44, 220),
     15: (29, 58, 290), 16: (37, 74, 370), 17: (46, 92, 460),
@@ -25,6 +37,8 @@ SUPER_REBIRTH_REWARDS = {
     27: (191, 382, 1910), 28: (211, 422, 2110), 29: (232, 464, 2320),
     30: (254, 508, 2540), 31: (277, 554, 2770), 32: (301, 602, 3010),
     33: (326, 652, 3260), 34: (352, 704, 3520), 35: (379, 758, 3790),
+    36: (407, 814, 4070), 37: (436, 872, 4360), 38: (466, 932, 4660),
+    39: (497, 994, 4970), 40: (529, 1058, 5290),
 }
 
 

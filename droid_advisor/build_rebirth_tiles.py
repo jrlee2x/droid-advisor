@@ -11,7 +11,7 @@ from PIL import Image, ImageDraw, ImageFont
 from .cycles import CYCLES, MAX_REBIRTH
 from .engine import canonical
 from .qualities import quality_table
-from .rebirth_metadata import CREDIT_COSTS, SUPER_REBIRTH_REWARDS, rarity_for
+from .rebirth_metadata import CREDIT_COSTS, REGULAR_REBIRTH_NOVA, SUPER_REBIRTH_REWARDS, rarity_for
 
 ROOT = Path(__file__).resolve().parent
 OUTPUT = ROOT / "assets" / "rebirth_tiles"
@@ -28,6 +28,7 @@ QUALITY_COLORS = {
     # separate from the flat yellow Gold marker with amber depth, orbital rings,
     # and white star points.
     "STELLAR": "#fbbf24",
+    "KYBER": "#63df84",
 }
 RARITY_COLORS = {
     "COMMON": "#b7bec7",
@@ -135,7 +136,7 @@ def quality_icon(
 
 def render_card(cycle: int, rank: int) -> Image.Image:
     rewards = SUPER_REBIRTH_REWARDS.get(rank)
-    height = 179 if rewards else 125
+    height = 219 if rewards else 125
     image = Image.new("RGB", (WIDTH, height), "#07111f")
     draw = ImageDraw.Draw(image)
     # Seeded randomness makes the decorative star field reproducible.
@@ -182,14 +183,22 @@ def render_card(cycle: int, rank: int) -> Image.Image:
 
     if rewards:
         crystals, credit_percent, xp_percent = rewards
-        draw.rounded_rectangle((0, 128, WIDTH, height - 4), radius=15, fill=accent)
+        regular_nova = REGULAR_REBIRTH_NOVA.get(rank, 0)
+        normal_label = f"REBIRTH TO RB{rank}: +{regular_nova} NOVA"
+        draw.rounded_rectangle((0, 128, WIDTH - 1, 153), radius=10, fill="#102a23", outline="#63df84")
+        normal_width = draw.textlength(normal_label, font=FONT_NAME)
+        draw.text(((WIDTH - normal_width) / 2, 133), normal_label, font=FONT_NAME, fill="#b6f5c6")
+        draw.rounded_rectangle((0, 158, WIDTH, height - 4), radius=15, fill=accent)
+        super_label = f"SUPER REBIRTH AFTER COMPLETING RB{rank}"
+        super_width = draw.textlength(super_label, font=FONT_BADGE)
+        draw.text(((WIDTH - super_width) / 2, 162), super_label, font=FONT_BADGE, fill="#05070b")
         metrics = (("NOVA", str(crystals)), ("CRED", f"{credit_percent}%"), ("XP", f"{xp_percent}%"))
         x_positions = (28, 166, 302)
         for x, (label, value) in zip(x_positions, metrics):
-            draw.ellipse((x, 138, x + 28, 166), fill="#05070b")
+            draw.ellipse((x, 178, x + 28, 206), fill="#05070b")
             label_box = draw.textbbox((0, 0), label, font=FONT_SMALL)
-            draw.text((x + 14 - (label_box[2] - label_box[0]) / 2, 148), label, font=FONT_SMALL, fill="white")
-            draw.text((x + 35, 141), value, font=FONT_REWARD, fill="white")
+            draw.text((x + 14 - (label_box[2] - label_box[0]) / 2, 188), label, font=FONT_SMALL, fill="white")
+            draw.text((x + 35, 181), value, font=FONT_REWARD, fill="white")
 
     return image
 
@@ -199,7 +208,7 @@ def main() -> None:
     parser.add_argument(
         "--replace-all",
         action="store_true",
-        help="Regenerate all 175 cards in the consistent Droid Advisor layout.",
+        help="Regenerate all 200 cards in the consistent Droid Advisor layout.",
     )
     args = parser.parse_args()
     written = 0
