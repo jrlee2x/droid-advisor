@@ -8,6 +8,11 @@ from .cycles import CYCLES
 from .qualities import QUALITY_ORDER, quality_table
 
 ALIASES = {
+    "GROUNDMEC": "GROUNDMECH",
+    "GROUNDMEK": "GROUNDMECH",
+    "MONOWALKER": "MONOWLKR",
+    "OPTISTRIKE": "OPTISTRK",
+    "UTILTECULTITECH": "UTILTEC",
     "PROTOROLL": "PROTOROLLER",
     "PROTOROLLER": "PROTOROLLER",
     "MONOWLKR": "MONOWLKR",

@@ -9,6 +9,22 @@ from dataclasses import dataclass
 MONITORINFOF_PRIMARY = 1
 
 
+def exclude_from_capture(window_id: int) -> bool:
+    """Keep advisor text out of capture, including its own OCR screenshots.
+
+    Windows 10 2004+ omits this window; older Windows blanks its contents.
+    https://learn.microsoft.com/windows/win32/api/winuser/nf-winuser-setwindowdisplayaffinity
+    """
+    user32 = ctypes.WinDLL("user32", use_last_error=True)
+    user32.GetAncestor.argtypes = (wintypes.HWND, wintypes.UINT)
+    user32.GetAncestor.restype = wintypes.HWND
+    user32.SetWindowDisplayAffinity.argtypes = (wintypes.HWND, wintypes.DWORD)
+    user32.SetWindowDisplayAffinity.restype = wintypes.BOOL
+    # Tk's ID is the child client window; affinity requires its top-level HWND.
+    hwnd = user32.GetAncestor(window_id, 2)  # GA_ROOT
+    return bool(hwnd and user32.SetWindowDisplayAffinity(hwnd, 0x11))
+
+
 @dataclass(frozen=True)
 class WorkArea:
     left: int

@@ -15,3 +15,16 @@ CHIP_COSTS_126 = (
     ("MYTHIC", "GALACTIC", 60000),
     ("MYTHIC", "STELLAR", 90000),
 )
+
+
+# v1.32 community matrix: https://droidarchives.co.uk/app.js
+CHIP_COSTS = tuple(
+    (rarity, quality, {
+        ("EPIC", "BESKAR"): 2000,
+        ("LEGENDARY", "RAINBOW"): 2500,
+        ("LEGENDARY", "BESKAR"): 6000,
+        ("LEGENDARY", "GALACTIC"): 16000,
+        ("MYTHIC", "RAINBOW"): 14000,
+    }.get((rarity, quality), cost))
+    for rarity, quality, cost in CHIP_COSTS_126
+) + (("EPIC", "KYBER", 12000), ("LEGENDARY", "KYBER", 30000), ("MYTHIC", "KYBER", 110000))

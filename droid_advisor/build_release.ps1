@@ -14,6 +14,7 @@ if (-not (Test-Path $python)) {
 Push-Location $root
 try {
     & $python -m pip install --disable-pip-version-check --require-hashes -r build-requirements.lock
+    if ($LASTEXITCODE -ne 0) { throw "Locked build dependencies failed to install." }
     Push-Location (Split-Path $root -Parent)
     try {
         & $python -m droid_advisor.build_alert_sounds
@@ -23,7 +24,15 @@ try {
     } finally {
         Pop-Location
     }
-    Remove-Item -Recurse -Force build, dist, dist-installer -ErrorAction SilentlyContinue
+    foreach ($directoryName in @("build", "dist", "dist-installer")) {
+        $targetPath = [IO.Path]::GetFullPath((Join-Path $root $directoryName))
+        if ((Split-Path -Parent $targetPath) -ne [IO.Path]::GetFullPath($root)) {
+            throw "Build cleanup path escaped the project: $targetPath"
+        }
+        if (Test-Path -LiteralPath $targetPath) {
+            Remove-Item -LiteralPath $targetPath -Recurse -Force
+        }
+    }
     & $python -m PyInstaller --noconfirm --clean DroidAdvisor.spec
     if ($LASTEXITCODE -ne 0) { throw "PyInstaller failed." }
 
@@ -34,7 +43,9 @@ try {
     & $iscc installer.iss
     if ($LASTEXITCODE -ne 0) { throw "Inno Setup failed." }
 
-    $installer = Get-ChildItem dist-installer\DroidAdvisor-Setup-*.exe | Select-Object -First 1
+    $version = & $python -c "import sys; sys.path.insert(0, '..'); from droid_advisor import __version__; print(__version__)"
+    if ($LASTEXITCODE -ne 0) { throw "Could not determine release version." }
+    $installer = Get-Item -LiteralPath (Join-Path $root "dist-installer\DroidAdvisor-Setup-$version.exe")
     $hash = Get-FileHash $installer.FullName -Algorithm SHA256
     "$($hash.Hash)  $($installer.Name)" | Set-Content -Encoding ascii "$($installer.FullName).sha256"
     Write-Host "Built: $($installer.FullName)"

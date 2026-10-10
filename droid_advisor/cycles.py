@@ -1,6 +1,6 @@
 """Verified rebirth-cycle data shared by the workbook and advisor."""
 
-MAX_REBIRTH = 35
+MAX_REBIRTH = 40
 NUM_CYCLES = 5
 
 CYCLES = {
@@ -123,6 +123,36 @@ CYCLES = {
         ("MECHA-DROID", "RIC-1200", "MO-TRAK"),
     ],
 }
+
+
+# Community v1.32 data, sourced 2026-09-27. See docs/kyber-update-2026-09-27.md.
+KYBER_REBIRTHS = {1: [('BDX EXPLORER', '2BB', 'A-LT'),
+     ('B1 HEAVY', 'GROUNDMECH', 'BB'),
+     ('R2', 'R6', 'BB9'),
+     ('R7', 'PROTO-ROLLER', 'IG'),
+     ('SNOW MOUSE', 'DRFT-R', 'CYCLENS')],
+ 2: [('B1 SECURITY', 'R4', 'R9'),
+     ('LO', 'TRAK-R', 'ORB-WALKER'),
+     ('B2 SUPER', 'B2 HEAVY', 'B2-RP'),
+     ('MECHA-DROID', 'CYCLO-GRAV', 'KX'),
+     ('RIC', 'LOADLIFTER', 'LEP')],
+ 3: [('ARG', 'SENATE HOVERCAM', 'B-U4D'),
+     ('STRIKE-ORB', 'AMP WALKER', 'UTIL-TEC'),
+     ('HAUL-R', 'LNG-SHOT', 'OPTI-STRK'),
+     ('MONO-WLKR', 'BB9', 'RIC-1200'),
+     ('MO-TRAK', 'TRI-TEK', 'IG')],
+ 4: [('NAV-EX', 'BAL-CORE', 'VECT-ARM'),
+     ('SEN-TRI', 'OPTI-POD', 'GUNRUNNER'),
+     ('B1 HEAVY', 'GROUNDMECH', 'R7'),
+     ('PROTO-ROLLER', 'B2-RP', 'SNOW MOUSE'),
+     ('DRFT-R', 'CYCLENS', 'KX')],
+ 5: [('ROLL-R', 'HOV-R', 'MOUSE'),
+     ('BB', 'R2', 'R6'),
+     ('LO', 'TRAK-R', 'MECHA-DROID'),
+     ('CYCLO-GRAV', 'OPTI-STRK', 'RIC'),
+     ('LOADLIFTER', 'LEP', 'RIC-1200')]}
+for _cycle, _rows in KYBER_REBIRTHS.items():
+    CYCLES[_cycle].extend(_rows)
 
 
 def next_cycle(cycle: int) -> int:

@@ -10,6 +10,7 @@ from pathlib import Path
 
 from .cycles import CYCLES, MAX_REBIRTH
 from .notifications import CUSTOM_SOUND_FILENAME, SOUND_LABELS
+from .qualities import RARITIES, SPAWN_VARIANTS
 
 APP_DIR = Path(os.environ.get("APPDATA", Path.home())) / "DroidAdvisor"
 CONFIG_PATH = APP_DIR / "config.json"
@@ -23,6 +24,8 @@ DEFAULTS = {
     "requirements_overlay_x": -1,
     "requirements_overlay_y": 55,
     "spawn_alerts_enabled": True,
+    "spawn_alert_min_variant": "BESKAR",
+    "spawn_alert_min_rarity": "LEGENDARY",
     "spawn_alert_sound": "droid_chime",
     "spawn_alert_volume": 70,
     "automatic_updates": True,
@@ -75,6 +78,12 @@ def load_config() -> dict:
         if sound_id == "custom_wav" and not CUSTOM_SOUND_PATH.is_file():
             sound_id = "droid_chime"
         config["spawn_alert_sound"] = sound_id
+    minimum_variant = saved.get("spawn_alert_min_variant")
+    if isinstance(minimum_variant, str) and minimum_variant.upper() in SPAWN_VARIANTS:
+        config["spawn_alert_min_variant"] = minimum_variant.upper()
+    minimum_rarity = saved.get("spawn_alert_min_rarity")
+    if isinstance(minimum_rarity, str) and minimum_rarity.upper() in RARITIES:
+        config["spawn_alert_min_rarity"] = minimum_rarity.upper()
     return config
 
 

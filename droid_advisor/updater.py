@@ -140,20 +140,12 @@ def launch_installer(
     safe_installer = str(installer).replace("'", "''")
     safe_executable = str(executable).replace("'", "''")
     safe_parent = str(installer.parent).replace("'", "''")
-    script = (
-        f"Wait-Process -Id {os.getpid()} -ErrorAction SilentlyContinue; "
-        f"$installer='{safe_installer}'; $expected='{expected_sha256.lower()}'; "
-        "try { "
-        "$actual=(Get-FileHash -LiteralPath $installer -Algorithm SHA256).Hash.ToLowerInvariant(); "
-        "if ($actual -ne $expected) { exit 3 }; "
-        "$process=Start-Process -FilePath $installer "
-        "-ArgumentList '/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART','/CLOSEAPPLICATIONS' -PassThru -Wait; "
-        f"if ($process.ExitCode -eq 0) {{ Start-Process -FilePath '{safe_executable}' }}; "
-        "exit $process.ExitCode "
-        "} finally { "
-        "Remove-Item -LiteralPath $installer -Force -ErrorAction SilentlyContinue; "
-        f"Remove-Item -LiteralPath '{safe_parent}' -Force -ErrorAction SilentlyContinue "
-        "}"
+    script = build_installer_script(
+        safe_installer,
+        expected_sha256.lower(),
+        safe_executable,
+        safe_parent,
+        os.getpid(),
     )
     encoded = base64.b64encode(script.encode("utf-16le")).decode("ascii")
     powershell = (
@@ -169,4 +161,45 @@ def launch_installer(
         [str(powershell), "-NoProfile", "-NonInteractive", "-WindowStyle", "Hidden", "-EncodedCommand", encoded],
         close_fds=True,
         creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+    )
+
+
+def build_installer_script(
+    safe_installer: str,
+    expected_sha256: str,
+    safe_executable: str,
+    safe_parent: str,
+    parent_pid: int,
+) -> str:
+    """Build the fixed PowerShell upgrade transaction for test inspection."""
+    return (
+        f"Wait-Process -Id {parent_pid} -ErrorAction SilentlyContinue; "
+        f"$installer='{safe_installer}'; $expected='{expected_sha256}'; "
+        "$logDir=Join-Path $env:APPDATA 'DroidAdvisor'; "
+        "New-Item -ItemType Directory -Path $logDir -Force | Out-Null; "
+        "$log=Join-Path $logDir 'update-install.log'; $logArg='/LOG=\"' + $log + '\"'; "
+        "try { "
+        "$actual=(Get-FileHash -LiteralPath $installer -Algorithm SHA256).Hash.ToLowerInvariant(); "
+        "if ($actual -ne $expected) { exit 3 }; "
+        "$process=Start-Process -FilePath $installer "
+        "-ArgumentList @('/VERYSILENT','/SUPPRESSMSGBOXES','/NORESTART','/CLOSEAPPLICATIONS',"
+        "'/RESTARTEXITCODE=3010','/LOGCLOSEAPPLICATIONS',$logArg) -PassThru -Wait; "
+        "if ($process.ExitCode -eq 0) { "
+        f"$health=Start-Process -FilePath '{safe_executable}' -ArgumentList '--health-check' -PassThru -Wait; "
+        f"if ($health.ExitCode -eq 0) {{ Start-Process -FilePath '{safe_executable}'; exit 0 }}; "
+        "Add-Type -AssemblyName System.Windows.Forms; "
+        "[System.Windows.Forms.MessageBox]::Show('The update installed, but its runtime check failed. "
+        "Please uninstall Droid Advisor and install the latest release again.','Droid Advisor Update') | Out-Null; "
+        "exit 20 }; "
+        "if ($process.ExitCode -eq 3010) { Add-Type -AssemblyName System.Windows.Forms; "
+        "[System.Windows.Forms.MessageBox]::Show('Windows must restart before the Droid Advisor update can finish. "
+        "Droid Advisor will not reopen until after the restart.','Droid Advisor Update') | Out-Null; exit 3010 }; "
+        "Add-Type -AssemblyName System.Windows.Forms; "
+        "[System.Windows.Forms.MessageBox]::Show('The Droid Advisor update did not complete. "
+        "See update-install.log in the DroidAdvisor AppData folder.','Droid Advisor Update') | Out-Null; "
+        "exit $process.ExitCode; "
+        "} finally { "
+        "Remove-Item -LiteralPath $installer -Force -ErrorAction SilentlyContinue; "
+        f"Remove-Item -LiteralPath '{safe_parent}' -Force -ErrorAction SilentlyContinue "
+        "}"
     )
