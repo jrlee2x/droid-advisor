@@ -1,5 +1,12 @@
 # Droid Advisor release and update guide
 
+## 1.3.4 short-title and animated-card recognition fix
+
+- Fixed missing R6 advice reproduced on a live Stellar Epic card. Tall short titles could be grouped with an unrelated small event label above them; text grouping now requires vertical overlap.
+- White title validation now separates lettering from animated droid artwork. Moving models no longer invalidate an unchanged title, while changed names and closed cards still clear advice.
+- Verified repeated R6 advice with the saved Cycle 2 / completed RB35 settings. Two independent OCR confirmations and existing freshness, rarity, progress and capture checks remain required.
+- Settings and inventory are preserved when updating.
+
 ## 1.3.3 live recognition and v1.34 catalog update
 
 - Fixed a live AMP Walker failure: correct OCR could take longer than the capture interval and was discarded. Title, rarity and panel text now validate the result against newer captures. Changed titles, closed panels, paused monitoring, missing captures and changed progress still invalidate advice.

@@ -50,6 +50,14 @@ def test_split_snow_mouse_does_not_become_mouse():
     assert owned_droid([token("SNOW"), token("MOUSE", x=180)]) == ("SNOW MOUSE", 0.99)
 
 
+def test_tall_r6_title_does_not_merge_with_event_multiplier_above_it():
+    # Actual R6 scan: the small event label ends where the tall title starts.
+    event = OcrToken("2X", .795, ((11, 66), (42, 66), (42, 80), (11, 80)))
+    title = OcrToken("R6", .995, ((324, 79), (494, 79), (494, 176), (324, 176)))
+    badge = OcrToken("STELLAR EPIC", .91, ((322, 200), (598, 200), (598, 234), (322, 234)))
+    assert focused_identity([event, title, badge]) == ("R6", .995, "STELLAR", "EPIC")
+
+
 def test_low_confidence_ocr_does_not_become_certain_from_an_exact_string_match():
     assert owned_droid([token("R2", confidence=0.4)]) == (None, 0.0)
 

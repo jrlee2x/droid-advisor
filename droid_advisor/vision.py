@@ -469,8 +469,15 @@ def owned_droid(tokens: list[OcrToken]) -> tuple[str | None, float]:
     names.update({canonical(name): name for name in ALL_DROIDS})
     lines: list[list[OcrToken]] = []
     for token in sorted(tokens, key=lambda item: (item.center[1], item.center[0])):
-        line = next((line for line in lines if abs(line[0].center[1] - token.center[1])
-                     <= max(line[0].height, token.height) * 0.6), None)
+        # Tall two-character titles must not absorb small labels above them.
+        # Require actual vertical overlap, not distance scaled by the tallest
+        # token (which grouped an unrelated 2X event label into the R6 title).
+        top = min(y for _, y in token.box)
+        bottom = max(y for _, y in token.box)
+        line = next((line for line in lines if min(
+            max(y for _, y in line[0].box), bottom
+        ) - max(min(y for _, y in line[0].box), top)
+            >= min(line[0].height, token.height) * 0.5), None)
         if line is None:
             lines.append([token])
         else:
@@ -549,7 +556,7 @@ def identity_visual_evidence(full_image, image, region_name, rect, identity_toke
                max(0, int(min(ys)) + rect[1] - margin),
                min(full_image.width, int(max(xs)) + rect[0] + offset + int(token.height * 2)),
                min(full_image.height, int(max(ys)) + rect[1] + margin))
-        patches.append(TextPatch.capture(full_image, box))
+        patches.append(TextPatch.capture(full_image, box, white_text=is_title))
     control_count = 0
     for token in controls:
         prompt_part = canonical(token.text)

@@ -16,7 +16,7 @@ class TextPatch:
     pixels: bytes
 
     @classmethod
-    def capture(cls, image, box):
+    def capture(cls, image, box, *, white_text=False):
         crop = image.crop(box).convert("L")
         crop.thumbnail((384, 80), Image.Resampling.LANCZOS)
         values = np.asarray(crop)
@@ -30,6 +30,10 @@ class TextPatch:
         score = np.divide((moment[-1] * weight - moment * total) ** 2,
                           denominator, out=np.zeros(256), where=denominator > 0)
         threshold = int(np.argmax(score))
+        # Card titles are white over animated artwork. Otsu alone can select
+        # the moving model/background instead of the actual title lettering.
+        if white_text:
+            threshold = max(215, threshold)
         return cls(box, crop.size, threshold, (values > threshold).tobytes())
 
     def matches(self, image):

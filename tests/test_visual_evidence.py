@@ -20,9 +20,10 @@ def title_image(name):
 
 
 @pytest.mark.parametrize("name", [metadata.name for metadata in CATALOG.values()])
-def test_changed_title_and_closed_card_fail_pixel_validation(name):
+@pytest.mark.parametrize("white_text", [False, True])
+def test_changed_title_and_closed_card_fail_pixel_validation(name, white_text):
     frame = title_image(name)
-    guard = VisualEvidence(frame.size, (TextPatch.capture(frame, (0, 0, 700, 70)),))
+    guard = VisualEvidence(frame.size, (TextPatch.capture(frame, (0, 0, 700, 70), white_text=white_text),))
     assert guard.matches(frame.copy())
     assert not guard.matches(None)
     assert not guard.matches(Image.new("RGB", frame.size))
@@ -39,6 +40,21 @@ def test_slow_scan_requires_current_visual_proof():
     assert not evidence_is_current(evidence, 4, 13.4, 2, 35, True, True, True)
     assert not evidence_is_current(evidence, 4, 13.4, 3, 35, False, True, True)
     assert not evidence_is_current(evidence, 4, 13.4, 2, 35, False, False, True)
+
+
+def test_white_title_survives_moving_artwork_but_not_a_different_name():
+    def frame(name, model_x):
+        image = title_image(name)
+        # Moving midtone artwork beside the white title, as on Stellar R6.
+        ImageDraw.Draw(image).rectangle((model_x, 0, model_x + 180, 65), fill=(190, 170, 130))
+        return image
+    first = frame("R6", 150)
+    moved = frame("R6", 190)
+    guard = TextPatch.capture(first, (0, 0, 700, 70), white_text=True)
+    assert guard.matches(moved)
+    assert not guard.matches(frame("R2", 190))
+    assert not guard.matches(frame("R9", 190))
+    assert not guard.matches(frame("", 190))
 
 
 def test_visual_guard_includes_a_title_split_into_single_characters():
