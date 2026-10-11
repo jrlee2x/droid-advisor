@@ -1,0 +1,411 @@
+.hero-link-row { margin: 18px 0 0; }
+
+.back-link {
+  color: var(--cyan);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.back-link:hover { text-decoration: underline; }
+
+.fusion-chart-callout,
+.fusion-recipes-section,
+.fusion-income-section,
+.fusion-impact-section,
+.shopping-section,
+.chip-cost-section {
+  padding: clamp(20px, 3vw, 34px);
+  border: 1px solid var(--line);
+  border-radius: 26px;
+  background: var(--panel);
+}
+
+.fusion-chart-callout {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.fusion-chart-callout p:last-child { margin: 10px 0 0; color: var(--muted); }
+.fusion-recipes-section { margin-bottom: 24px; }
+.fusion-groups { margin-top: 28px; }
+
+.fusion-group + .fusion-group { margin-top: 30px; }
+
+.fusion-group-title {
+  margin: 0 0 12px;
+  color: var(--rarity-color);
+  font-size: 1.05rem;
+  letter-spacing: 0.08em;
+}
+
+.fusion-recipe-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.fusion-recipe-card {
+  padding: 16px;
+  border: 1px solid var(--rarity-color);
+  border-radius: 16px;
+  background: #050d17;
+}
+
+.fusion-recipe-card header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.fusion-output { color: var(--rarity-color); font-size: 1.1rem; font-weight: 900; }
+.fusion-role { color: var(--role-color); font-size: 0.68rem; font-weight: 900; }
+.fusion-equation { margin: 14px 0 0; color: var(--white); font-size: 0.9rem; font-weight: 700; }
+
+.fusion-income-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  margin: 12px 0 0;
+  color: var(--cyan);
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.role-worker { --role-color: #62d27a; }
+.role-battle { --role-color: #ff5964; }
+.role-astro { --role-color: #c875e1; }
+
+.fusion-income-section { margin-bottom: 24px; }
+.fusion-income-note { margin: 12px 0 22px; color: var(--muted); }
+.fusion-income-sources { margin: 14px 0 0; color: var(--muted); font-size: 0.78rem; line-height: 1.55; }
+.fusion-income-sources a { color: var(--cyan); }
+
+.fusion-income-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  scrollbar-color: var(--orange) #09182a;
+}
+
+.fusion-income-table {
+  width: 100%;
+  min-width: 1180px;
+  border-collapse: collapse;
+  background: #071423;
+}
+
+.fusion-income-table caption {
+  padding: 14px 16px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.fusion-income-table th,
+.fusion-income-table td {
+  padding: 13px 10px;
+  border-top: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  text-align: center;
+  white-space: nowrap;
+}
+
+.fusion-income-table th:last-child,
+.fusion-income-table td:last-child { border-right: 0; }
+.fusion-income-table thead th { color: var(--quality-color); font-size: 0.72rem; letter-spacing: 0.04em; }
+.fusion-income-table tbody th { color: var(--rarity-color); text-align: left; }
+.income-droid-name,
+.income-droid-role,
+.income-hourly,
+.income-secondly { display: block; }
+.income-droid-name { font-weight: 900; }
+.income-droid-role { margin-top: 3px; color: var(--muted); font-size: 0.68rem; }
+.income-secondly { color: var(--white); font-size: 0.82rem; }
+.income-hourly { margin-top: 3px; color: var(--muted); font-size: 0.68rem; }
+
+.fusion-impact-section { margin-bottom: 24px; }
+.fusion-impact-section,
+.fusion-income-section,
+.chip-cost-section { scroll-margin-top: 18px; }
+.fusion-impact-note,
+.fusion-impact-context { margin: 12px 0 20px; color: var(--muted); line-height: 1.55; }
+.fusion-impact-context { margin-bottom: 0; font-size: 0.82rem; }
+
+.fusion-impact-summary {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.fusion-impact-summary div {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  padding: 13px 15px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: #071423;
+}
+
+.fusion-impact-summary strong { font-size: 1.45rem; }
+.fusion-impact-summary span { color: var(--muted); font-size: 0.72rem; line-height: 1.35; }
+.impact-summary-gain strong { color: #62d27a; }
+.impact-summary-loss strong { color: #ff5964; }
+.impact-summary-mixed strong { color: #f5e58c; }
+.impact-summary-slots strong { color: var(--cyan); }
+
+.fusion-impact-chart-frame {
+  position: relative;
+  max-height: 72vh;
+  overflow: auto;
+  border: 1px solid rgba(52, 215, 255, 0.28);
+  border-radius: 18px;
+  background: #050d17;
+  scrollbar-color: var(--orange) #09182a;
+}
+
+.fusion-impact-chart-frame img { display: block; width: 1400px; max-width: none; margin: 0 auto; cursor: zoom-in; }
+.fusion-impact-chart-frame img:focus { outline: 3px solid var(--cyan); outline-offset: -4px; }
+
+.open-chart-viewer {
+  position: sticky;
+  right: 14px;
+  bottom: 14px;
+  float: right;
+  min-height: 42px;
+  margin: -58px 14px 14px 0;
+  padding: 0 16px;
+  border: 1px solid var(--cyan);
+  border-radius: 999px;
+  background: rgba(7, 20, 35, 0.94);
+  color: var(--white);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 900;
+}
+
+.open-chart-viewer:hover { background: #102c49; }
+
+.chart-lightbox {
+  width: min(96vw, 1800px);
+  height: 94vh;
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  border: 1px solid rgba(52, 215, 255, 0.5);
+  border-radius: 20px;
+  background: #050d17;
+  color: var(--white);
+  box-shadow: 0 34px 100px rgba(0, 0, 0, 0.72);
+}
+
+.chart-lightbox::backdrop { background: rgba(0, 5, 12, 0.88); backdrop-filter: blur(8px); }
+
+.chart-lightbox-shell {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  height: 100%;
+}
+
+.chart-lightbox-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+  background: #0b1a2e;
+}
+
+.chart-lightbox-toolbar .eyebrow { margin-bottom: 4px; font-size: 0.6rem; }
+.chart-lightbox-toolbar h2 { font-size: clamp(1.1rem, 2vw, 1.8rem); }
+
+.chart-lightbox-controls { display: flex; align-items: center; gap: 7px; }
+.chart-lightbox-controls button {
+  min-width: 42px;
+  min-height: 40px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: #071423;
+  color: var(--white);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 900;
+}
+
+.chart-lightbox-controls button:hover:not(:disabled) { border-color: var(--cyan); background: #102c49; }
+.chart-lightbox-controls button:disabled { cursor: not-allowed; opacity: 0.4; }
+.chart-lightbox-controls .chart-lightbox-close { border-color: var(--orange); background: var(--orange); color: #08101b; }
+
+.chart-lightbox-viewport {
+  overflow: auto;
+  min-height: 0;
+  background: #020811;
+  scrollbar-color: var(--orange) #09182a;
+}
+
+.chart-lightbox-viewport img {
+  display: block;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  margin: 0 auto;
+  transition: width 140ms ease;
+}
+
+.chart-lightbox-help { margin: 0; padding: 9px 18px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.72rem; }
+
+.fusion-impact-table-wrap {
+  overflow-x: auto;
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  scrollbar-color: var(--orange) #09182a;
+}
+
+.fusion-impact-table {
+  width: 100%;
+  min-width: 1440px;
+  border-collapse: collapse;
+  background: #071423;
+}
+
+.fusion-impact-table caption { padding: 14px 16px; color: var(--muted); font-size: 0.78rem; font-weight: 800; letter-spacing: 0.06em; text-align: left; text-transform: uppercase; }
+.fusion-impact-table th,
+.fusion-impact-table td { padding: 12px 9px; border-top: 1px solid var(--line); border-right: 1px solid var(--line); text-align: center; white-space: nowrap; }
+.fusion-impact-table th:last-child,
+.fusion-impact-table td:last-child { border-right: 0; }
+.fusion-impact-table thead th { color: var(--quality-color); font-size: 0.68rem; }
+.fusion-impact-table tbody th { color: var(--rarity-color); text-align: left; }
+.impact-ingredients,
+.impact-net,
+.impact-flow,
+.impact-retained { display: block; }
+.impact-ingredients { max-width: 210px; margin-top: 4px; overflow: hidden; color: var(--muted); font-size: 0.62rem; text-overflow: ellipsis; }
+.impact-net { font-size: 0.84rem; }
+.impact-flow { margin-top: 4px; color: var(--white); font-size: 0.62rem; }
+.impact-retained { margin-top: 3px; color: var(--muted); font-size: 0.6rem; }
+.impact-gain .impact-net { color: #62d27a; }
+.impact-loss .impact-net { color: #ff5964; }
+.impact-even .impact-net { color: #f5e58c; }
+.impact-undocumented { color: #50657c; font-weight: 900; }
+
+.shopping-note { margin: 12px 0 24px; color: var(--muted); }
+
+.copy-button {
+  min-height: 46px;
+  padding: 0 20px;
+  border: 1px solid var(--cyan);
+  border-radius: 999px;
+  background: #102c49;
+  color: var(--white);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 900;
+}
+
+.shopping-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.shopping-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 48px;
+  padding: 10px 13px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: #071423;
+}
+
+.shopping-name { color: var(--white); font-size: 0.82rem; font-weight: 800; }
+.shopping-name::before { content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 8px; border-radius: 50%; background: var(--rarity-color); }
+.shopping-count { color: var(--orange); font-size: 1.05rem; font-weight: 900; }
+
+.chip-cost-section { margin-top: 24px; }
+.chip-cost-note { margin: 12px 0 22px; color: var(--muted); }
+
+.chip-chart-frame {
+  overflow: hidden;
+  border: 1px solid rgba(52, 215, 255, 0.28);
+  border-radius: 18px;
+  background: #050d17;
+}
+
+.chip-chart-frame img { display: block; width: 100%; height: auto; }
+
+.chip-table-wrap {
+  overflow-x: auto;
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  scrollbar-color: var(--orange) #09182a;
+}
+
+.chip-cost-table {
+  width: 100%;
+  min-width: 850px;
+  border-collapse: collapse;
+  background: #071423;
+}
+
+.chip-cost-table caption {
+  padding: 14px 16px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-align: left;
+  text-transform: uppercase;
+}
+
+.chip-cost-table th,
+.chip-cost-table td {
+  padding: 16px 12px;
+  border-top: 1px solid var(--line);
+  border-right: 1px solid var(--line);
+  text-align: center;
+}
+
+.chip-cost-table th:last-child,
+.chip-cost-table td:last-child { border-right: 0; }
+.chip-cost-table thead th { color: var(--quality-color); font-size: 0.75rem; letter-spacing: 0.05em; }
+.chip-cost-table tbody th { color: var(--rarity-color); text-align: left; }
+.chip-cost-table td { color: var(--white); font-weight: 900; }
+.chip-cost-table td.unavailable { color: #50657c; }
+.chip-cost-legend { margin: 14px 0 0; color: var(--muted); font-size: 0.82rem; line-height: 1.5; }
+
+@media (max-width: 980px) {
+  .fusion-recipe-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .shopping-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .fusion-impact-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 680px) {
+  .fusion-chart-callout { align-items: flex-start; flex-direction: column; }
+  .fusion-recipe-grid { grid-template-columns: 1fr; }
+  .shopping-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .chip-chart-frame { overflow-x: auto; }
+  .chip-chart-frame img { width: 840px; max-width: none; }
+  .fusion-impact-chart-frame img { width: 1120px; }
+  .fusion-impact-summary { grid-template-columns: 1fr; }
+  .chart-lightbox { width: 100vw; height: 100vh; border: 0; border-radius: 0; }
+  .chart-lightbox-toolbar { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .chart-lightbox-controls { width: 100%; }
+  .chart-lightbox-controls .chart-lightbox-close { margin-left: auto; }
+  .chart-lightbox-help { display: none; }
+}

@@ -1,0 +1,9 @@
+{
+  "public_release": "https://github.com/jrlee2x/droid-advisor/releases/tag/v1.3.2",
+  "legacy_1_1_5_update": "passed",
+  "local_1_3_1_update": "passed",
+  "current_1_3_2_no_update": "passed",
+  "full_legacy_updater_download": "passed",
+  "sha256": "3df87166802785e6b76cce5161fe48e997a742ff881d64830357333965a84df2",
+  "downloaded_bytes": 87453488
+}
