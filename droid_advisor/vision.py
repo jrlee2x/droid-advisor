@@ -16,6 +16,7 @@ from .engine import ALL_DROIDS, canonical
 from .cycles import MAX_REBIRTH
 from .droid_catalog import CATALOG, droid_metadata
 from .qualities import RARITY_ORDER, SPAWN_VARIANT_ORDER
+from .advice_state import TextPatch, VisualEvidence
 
 
 @dataclass(frozen=True)
@@ -64,8 +65,12 @@ def scan_priorities(
 
 class OfflineOcr:
     def __init__(self, threads: int = 1) -> None:
+        import cv2
         from rapidocr_onnxruntime import RapidOCR
 
+        # OpenCV also owns a worker pool, independent of ONNX. Its default
+        # can fail inside cvtColor while a running game consumes the CPU.
+        cv2.setNumThreads(threads)
         # Unrestricted ONNX defaults can consume every logical CPU and make a
         # full-screen scan block focused UI checks for more than a minute.
         self._engine = RapidOCR(
@@ -512,6 +517,48 @@ def focused_identity(tokens: list[OcrToken]) -> tuple[str | None, float, str | N
     if longer and (not rarity or any(item.rarity == rarity for item in longer)):
         return None, 0.0, finish, rarity
     return name, confidence, finish, rarity
+
+
+def identity_visual_evidence(full_image, image, region_name, rect, identity_tokens, controls):
+    """Bind slow OCR to the title, badges and panel controls still on screen.
+
+    Check text pixels on every capture rather than expiring a correct result
+    just because OCR took longer than the capture interval. The title row has
+    extra horizontal coverage so a longer name cannot reuse a short prefix.
+    """
+    offset = 0 if region_name in ("full", "left") else (
+        full_image.width - image.width if region_name == "right" else (full_image.width - image.width) // 2
+    )
+    patches = []
+    name, _ = owned_droid(identity_tokens)
+    if not name:
+        return VisualEvidence(full_image.size, ())
+    name_key = canonical(name)
+    title_count = 0
+    for token in identity_tokens:
+        if token.confidence < 0.80:
+            continue
+        key = canonical(token.text)
+        is_title = bool(key) and key in name_key
+        if not is_title and key not in (*RARITY_ORDER, "ICONIC"):
+            continue
+        title_count += int(is_title)
+        xs, ys = zip(*token.box)
+        margin = max(3, int(token.height * 0.15))
+        box = (max(0, int(min(xs)) + rect[0] + offset - margin),
+               max(0, int(min(ys)) + rect[1] - margin),
+               min(full_image.width, int(max(xs)) + rect[0] + offset + int(token.height * 2)),
+               min(full_image.height, int(max(ys)) + rect[1] + margin))
+        patches.append(TextPatch.capture(full_image, box))
+    control_count = 0
+    for token in controls:
+        prompt_part = canonical(token.text)
+        if is_card_button_text(token.text) or (len(prompt_part) >= 4 and prompt_part in "TOSSBLUEPRINTONCRAFTINGSTATION"):
+            xs, ys = zip(*token.box)
+            box = (int(min(xs)) + offset, int(min(ys)), int(max(xs)) + offset, int(max(ys)))
+            patches.append(TextPatch.capture(full_image, box))
+            control_count += 1
+    return VisualEvidence(full_image.size, tuple(patches) if title_count and control_count else ())
 
 
 def blueprint_details(tokens: list[OcrToken]) -> tuple[str | None, str | None]:

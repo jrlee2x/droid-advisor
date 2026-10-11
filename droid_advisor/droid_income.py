@@ -20,6 +20,19 @@ def _droid(name: str, role: str, rarity: str, income: tuple[int | None, ...]) ->
 
 
 STANDARD_DROIDS = (
+    # v1.34 Power Droids; unknown variant rates remain blank.
+    _droid("EG-58", "WORKER", "RARE", (70, 140, 280, 560, 840, 1680, 2240)),
+    _droid("EGL", "WORKER", "EPIC", (300, None, None, None, None, None, None)),
+    _droid("KT", "WORKER", "EPIC", (450, 900, 1800, 3600, 15300, 23400, 36000)),
+    _droid("MPH", "ASTRO", "EPIC", (690, 1380, 2760, 5520, 23460, 35880, 55200)),
+    _droid("JO9-4MN", "WORKER", "LEGENDARY", (1300, None, None, None, None, None, None)),
+    _droid("PLNK", "WORKER", "LEGENDARY", (1400, None, None, None, None, None, None)),
+    _droid("ECG", "ASTRO", "MYTHIC", (6200, 12400, 24800, 49600, 99200, 272800, 775000)),
+    # Protocol droids introduced in v1.30.
+    _droid("SA-5", "PROTOCOL", "RARE", (14, 28, 56, 112, 168, 336, 448)),
+    _droid("LOM", "PROTOCOL", "EPIC", (105, 210, 420, 840, 3570, 5460, 8400)),
+    _droid("PZ", "PROTOCOL", "LEGENDARY", (900, 1800, 3600, 7200, 21600, 54000, 135000)),
+    _droid("TDA", "PROTOCOL", "MYTHIC", (4000, 8000, 16000, 32000, 64000, 176000, 500000)),
     # Common
     _droid("Gonk", "WORKER", "COMMON", (4, 8, 16, 32, 48, 96, 128)),
     _droid("Mouse", "WORKER", "COMMON", (2, 4, 8, 16, 24, 48, 64)),
@@ -54,7 +67,7 @@ STANDARD_DROIDS = (
     _droid("Opti-Pod", "WORKER", "EPIC", (390, 780, 1_600, 3_100, 13_300, 20_300, 31_200)),
     _droid("LO", "WORKER", "EPIC", (240, 480, 960, 1_900, 8_200, 12_500, 19_200)),
     _droid("Groundmech", "WORKER", "EPIC", (120, 240, 480, 960, 4_100, 6_200, 9_600)),
-    _droid("R2", "ASTRO", "EPIC", (360, 720, 1_400, 2_900, 12_200, 18_700, 28_800)),
+    _droid("R2", "ASTRO", "EPIC", (480, 960, 1920, 3840, 16320, 24960, 38400)),
     _droid("TRAK-R", "ASTRO", "EPIC", (330, 660, 1_300, 2_600, 11_200, 17_200, 26_400)),
     _droid("R6", "ASTRO", "EPIC", (300, 600, 1_200, 2_400, 10_200, 15_600, 24_000)),
     _droid("Util-Tec (Ulti-Tech)", "ASTRO", "EPIC", (210, 420, 840, 1_700, 7_100, 10_900, 16_800)),
@@ -62,7 +75,7 @@ STANDARD_DROIDS = (
     _droid("BB", "ASTRO", "EPIC", (150, 300, 600, 1_200, 5_100, 7_800, 12_000)),
     _droid("B1 Heavy", "BATTLE", "EPIC", (630, 1_300, 2_500, 4_800, 20_400, 31_200, 48_000)),
     _droid("Strike-Orb", "BATTLE", "EPIC", (540, 1_100, 2_200, 4_300, 18_400, 28_100, 43_200)),
-    _droid("B2 Heavy", "BATTLE", "EPIC", (480, 960, 1_900, 3_800, 16_300, 25_000, 38_400)),
+    _droid("B2 Heavy", "BATTLE", "EPIC", (360, 720, 1440, 2880, 12240, 18720, 28800)),
     _droid("LNG-Shot", "BATTLE", "EPIC", (450, 900, 1_800, 3_600, 15_300, 23_400, 36_000)),
     _droid("B2 Super", "BATTLE", "EPIC", (420, 840, 1_700, 3_400, 14_300, 21_800, 33_600)),
     _droid("Haul-R", "BATTLE", "EPIC", (270, 540, 1_100, 2_200, 9_200, 14_000, 21_600)),
@@ -91,6 +104,7 @@ STANDARD_DROIDS = (
 
 
 ICONIC_DROIDS = (
+    {"name": "WG-22", "role": "BATTLE", "rarity": "ICONIC", "kind": "ICONIC", "income": "+15%/s", "perk": "2x Flawless Chance"},
     {"name": "C-3PO", "role": "WORKER", "rarity": "ICONIC", "kind": "ICONIC", "income": "+15%/s", "perk": "2x Droid Sell Value"},
     {"name": "D-O", "role": "WORKER", "rarity": "ICONIC", "kind": "ICONIC", "income": "+15%/s", "perk": "Half Fusion Time"},
     {"name": "DJ R-3X", "role": "WORKER", "rarity": "ICONIC", "kind": "ICONIC", "income": "+15%/s", "perk": "×2 World Quest Rewards"},

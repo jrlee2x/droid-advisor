@@ -16,6 +16,7 @@ import traceback
 import webbrowser
 from ctypes import wintypes
 from datetime import datetime
+from dataclasses import replace
 from pathlib import Path
 from tkinter import filedialog, messagebox, ttk
 
@@ -24,7 +25,7 @@ from PIL import Image, ImageDraw, ImageTk
 from pynput import keyboard
 
 from . import __version__
-from .advice_state import AdviceTicket, FrameEvidence, MAX_ADVICE_AGE, evidence_is_current
+from .advice_state import AdviceTicket, FrameEvidence, MAX_ADVICE_AGE, MAX_VERIFIED_ADVICE_AGE, evidence_is_current
 from .chip_costs import CHIP_COSTS
 from .config import APP_DIR, CUSTOM_SOUND_PATH, load_config, save_config
 from .cycles import CYCLES, MAX_REBIRTH, active_rebirth, next_cycle
@@ -46,6 +47,7 @@ from .vision import (
     GameCapture,
     OfflineOcr,
     focused_identity,
+    identity_visual_evidence,
     card_header_rect,
     classify_interaction,
     game_ui_viewports,
@@ -981,9 +983,12 @@ class DroidAdvisorApp:
 
     def _evidence_is_current(self, evidence) -> bool:
         with self.frame_lock:
-            return self.capture_exclusions_ok and evidence_is_current(
+            return self.capture_exclusions_ok and time.monotonic() - self.frame_captured_at <= max(
+                MAX_ADVICE_AGE, float(self.config.get("interval_seconds", 1.25)) * 1.5
+            ) and evidence_is_current(
                 evidence, self.frame_number, time.monotonic(), int(self.config["cycle"]),
                 int(self.config["completed_rebirth"]), self.config["paused"], self.latest_frame is not None,
+                visually_current=bool(evidence.visual and evidence.visual.matches(self.latest_frame)),
             )
 
     def _publish_frame(self, image) -> None:
@@ -1001,6 +1006,7 @@ class DroidAdvisorApp:
         self.pending_signature = None
         self.pending_count = 0
         self.pending_frame_number = None
+        self.pending_evidence = None
 
     def _update_advice(self, droid, confidence=0.0, finish=None, rarity=None,
                            *, source="card", evidence=None) -> None:
@@ -1013,10 +1019,15 @@ class DroidAdvisorApp:
         signature = (source, droid, finish, rarity, evidence.cycle, evidence.completed)
         if evidence.number == self.pending_frame_number:
             return
-        if signature != self.pending_signature or self.pending_frame_number != evidence.number - 1:
+        prior = getattr(self, "pending_evidence", None)
+        continuous = self.pending_frame_number == evidence.number - 1 or bool(
+            prior and prior.visual and self._evidence_is_current(prior)
+        )
+        if signature != self.pending_signature or not continuous:
             self._clear_advice()
             self.pending_signature = signature
         self.pending_frame_number = evidence.number
+        self.pending_evidence = evidence
         self.pending_count += 1
         if self.pending_count < 2:
             return
@@ -1296,6 +1307,9 @@ class DroidAdvisorApp:
                             identity_tokens = ocr.read(image.crop(identity_rect), max_width=1200)
                             self.diagnostics.sample(f"{source}_header_ocr_sample", identity_tokens)
                             droid, confidence, finish, rarity = focused_identity(identity_tokens)
+                            if droid:
+                                evidence = replace(evidence, visual=identity_visual_evidence(
+                                    full_image, image, active_region, identity_rect, identity_tokens, tokens))
                             self.diagnostics.set(**{
                                 f"{source}_droid_read": droid or "not recognized",
                                 f"{source}_droid_confidence": round(confidence, 3),
@@ -1352,8 +1366,9 @@ class DroidAdvisorApp:
                 elif kind == "advice":
                     if self._evidence_is_current(payload.evidence):
                         age = time.monotonic() - payload.evidence.captured_at
+                        lifetime = MAX_VERIFIED_ADVICE_AGE if payload.evidence.visual else MAX_ADVICE_AGE
                         self.show_overlay(payload.message, payload.color,
-                                          max(1, int((MAX_ADVICE_AGE - age) * 1000)),
+                                          max(1, int((lifetime - age) * 1000)),
                                           0.50 if payload.source == "blueprint" else 0.365)
                         self.overlay_source = payload.source
                         self.displayed_advice = payload

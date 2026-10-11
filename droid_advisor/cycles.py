@@ -1,7 +1,7 @@
 """Verified rebirth-cycle data shared by the workbook and advisor."""
 
 MAX_REBIRTH = 40
-NUM_CYCLES = 5
+NUM_CYCLES = 6
 
 CYCLES = {
     1: [
@@ -155,8 +155,53 @@ for _cycle, _rows in KYBER_REBIRTHS.items():
     CYCLES[_cycle].extend(_rows)
 
 
+# v1.34 Power Droid path. Source and verification: docs/power-update-2026-10-10.md.
+CYCLES[6] = [
+    ('GONK', 'DRK-1 PROBE', 'ID10'),
+    ('R8', 'B1 BATTLE', 'IMPERIAL PROBE'),
+    ('CB', 'R5', 'GONK'),
+    ('R3', 'B1 BATTLE', '2BB'),
+    ('IMPERIAL PROBE', 'GONK', 'NAV-EX'),
+    ('ID10', 'VECT-ARM', 'A-LT'),
+    ('GONK', 'R4', 'R9'),
+    ('HOV-R', 'B1 SECURITY', 'EG-58'),
+    ('GONK', 'A-LT', 'R4'),
+    ('R9', 'HOV-R', 'B1 SECURITY'),
+    ('EG-58', 'BB', 'ORB-WALKER'),
+    ('UTIL-TEC', 'HAUL-R', 'R6'),
+    ('EGL', 'TRAK-R', 'EG-58'),
+    ('R2', 'B2 SUPER', 'KT'),
+    ('B2 HEAVY', 'STRIKE-ORB', 'B1 HEAVY'),
+    ('EG-58', 'MPH', 'UTIL-TEC'),
+    ('HAUL-R', 'R6', 'EGL'),
+    ('TRAK-R', 'R2', 'B2 SUPER'),
+    ('B2 HEAVY', 'STRIKE-ORB', 'B1 HEAVY'),
+    ('MPH', 'JO9-4MN', 'PLNK'),
+    ('BB9', 'EGL', 'KT'),
+    ('CYCLO-GRAV', 'B2-RP', 'R7'),
+    ('OPTI-STRK', 'LNG-SHOT', 'MPH'),
+    ('PLNK', 'CYCLENS', 'IG'),
+    ('ECG', 'TRI-TEK', 'KX'),
+    ('MO-TRAK', 'PLNK', 'JO9-4MN'),
+    ('B2-RP', 'EGL', 'ECG'),
+    ('MPH', 'DRFT-R', 'ORB-WALKER'),
+    ('BB', 'IG', 'KT'),
+    ('MO-TRAK', 'CYCLENS', 'DRFT-R'),
+    ('TRI-TEK', 'KX', 'ECG'),
+    ('BB', 'ORB-WALKER', 'EGL'),
+    ('JO9-4MN', 'PLNK', 'OPTI-STRK'),
+    ('R7', 'KT', 'STRIKE-ORB'),
+    ('B2 HEAVY', 'B1 HEAVY', 'MPH'),
+    ('CYCLO-GRAV', 'JO9-4MN', 'B2-RP'),
+    ('BB9', 'R7', 'ECG'),
+    ('IG', 'KX', 'DRFT-R'),
+    ('CYCLENS', 'MO-TRAK', 'TRI-TEK'),
+    ('JO9-4MN', 'PLNK', 'ECG'),
+]
+
+
 def next_cycle(cycle: int) -> int:
-    """Return the next rebirth cycle, wrapping cycle 5 back to cycle 1."""
+    """Return the next rebirth cycle, wrapping cycle 6 back to cycle 1."""
     return (cycle % NUM_CYCLES) + 1
 
 

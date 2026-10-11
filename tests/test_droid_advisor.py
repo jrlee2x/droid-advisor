@@ -199,12 +199,13 @@ def test_fusion_income_and_corrected_names_match_current_references():
     assert FUSION_INCOME_PER_SECOND["AXI-POD"][-1] == 1_000_000
 
 
-def test_update_132_extends_every_cycle_and_wraps_after_cycle_five():
+def test_update_132_extends_every_cycle_and_wraps_after_cycle_six():
     assert MAX_REBIRTH == 40
-    assert set(CYCLES) == {1, 2, 3, 4, 5}
+    assert set(CYCLES) == {1, 2, 3, 4, 5, 6}
     assert all(len(rows) == MAX_REBIRTH for rows in CYCLES.values())
     assert next_cycle(4) == 5
-    assert next_cycle(5) == 1
+    assert next_cycle(5) == 6
+    assert next_cycle(6) == 1
     assert QUALITY_ORDER["STELLAR"] > QUALITY_ORDER["GALACTIC"]
 
 
@@ -998,7 +999,8 @@ def test_active_rebirth_wraps_after_rank_40():
     assert active_rebirth(4, 34) == (4, 35)
     assert active_rebirth(4, 35) == (4, 36)
     assert active_rebirth(4, 40) == (5, 1)
-    assert active_rebirth(5, 40) == (1, 1)
+    assert active_rebirth(5, 40) == (6, 1)
+    assert active_rebirth(6, 40) == (1, 1)
 
 
 def test_saved_config_is_normalized_and_written_atomically(monkeypatch, tmp_path):

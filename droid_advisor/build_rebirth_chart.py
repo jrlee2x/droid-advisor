@@ -282,7 +282,7 @@ def og_preview(stacks: dict[int, Image.Image]) -> Image.Image:
     draw.text((289, 137), "COMPLETE REBIRTH CYCLE CHART", font=OG_SUBTITLE, fill=CYAN)
     draw.text((289, 178), "UPDATE 1.32  •  CYCLES 1–5  •  RB1–RB40", font=OG_SUBTITLE, fill=MUTED)
 
-    stats = (("5", "CYCLES"), ("40", "REBIRTHS EACH"), ("200", "TARGET CARDS"))
+    stats = ((str(len(CYCLES)), "CYCLES"), (str(MAX_REBIRTH), "REBIRTHS EACH"), (str(len(CYCLES) * MAX_REBIRTH), "TARGET CARDS"))
     for index, (value, label) in enumerate(stats):
         left = 285 + index * 270
         draw.rounded_rectangle((left, 236, left + 238, 326), radius=18, fill=PANEL, outline=ORANGE, width=3)

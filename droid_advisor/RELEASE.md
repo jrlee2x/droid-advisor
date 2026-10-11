@@ -1,5 +1,14 @@
 # Droid Advisor release and update guide
 
+## 1.3.3 live recognition and v1.34 catalog update
+
+- Fixed a live AMP Walker failure: correct OCR could take longer than the capture interval and was discarded. Title, rarity and panel text now validate the result against newer captures. Changed titles, closed panels, paused monitoring, missing captures and changed progress still invalidate advice.
+- Limited OpenCV workers as well as ONNX workers. Verified live at 2560x1440 with Fortnite running; the previous OpenCV conversion exceptions stopped, and AMP Walker advice was repeatedly displayed.
+- Added EG-58, EGL, KT, MPH, JO9-4MN, PLNK and ECG, plus Iconic WG-22 and the previously missing SA-5, LOM, PZ and TDA Protocol entries. Catalog total: 100.
+- Added Cycle 6 with all 40 ranks and per-slot finishes, including early Kyber requirements. Cycle 5 now advances to 6; Cycle 6 wraps to 1. Rebirth cards regenerate for all 240 targets.
+- Updated R2 and B2 Heavy income rates. Undocumented EGL, JO9-4MN and PLNK finish incomes remain blank rather than estimated.
+- Saved settings and inventory are preserved. Protocol, Iconic and fusion names remain excluded from automatic rebirth sell recommendations.
+
 ## 1.3.2 advice identity and freshness fixes
 
 - Owned cards and blueprints share complete-title recognition and two-frame confirmation. No broad-screen or fuzzy-name fallback is used for advice.
@@ -19,7 +28,7 @@ Card button matching now excludes the Worker role label while accepting OCR-join
 
 ## Current distribution
 
-- Installer: `DroidAdvisor-Setup-1.3.2.exe`
+- Installer: `DroidAdvisor-Setup-1.3.3.exe`
 - Platform: 64-bit Windows 10/11
 - Installation scope: current Windows user; no administrator rights requested
 - Runtime: bundled Python and offline OCR; recipients do not install Python

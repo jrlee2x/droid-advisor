@@ -17,6 +17,7 @@ from droid_advisor.engine import ALL_DROIDS, advise, canonical
 from droid_advisor.cycles import CYCLES
 from droid_advisor.droid_catalog import CATALOG, droid_metadata
 from droid_advisor.advice_state import AdviceTicket, FrameEvidence, MAX_ADVICE_AGE
+from droid_advisor.advice_state import TextPatch, VisualEvidence
 
 
 def token(text, x=100, y=100, confidence=0.99):
@@ -259,6 +260,38 @@ def test_new_current_ticket_is_displayed(app):
     app._drain_events()
     assert app.show_overlay.call_args.args[0] == ticket.message
     assert app.displayed_advice == ticket
+
+
+def test_slow_confirmations_survive_skipped_captures_only_with_matching_pixels(app):
+    from PIL import ImageDraw
+    frame = Image.new("RGB", (100, 40), "black")
+    ImageDraw.Draw(frame).text((8, 8), "AMP WALKER", fill="white")
+    visual = VisualEvidence(frame.size, (TextPatch.capture(frame, (0, 0, 100, 40)),))
+    for attempt in range(2):
+        app._publish_frame(frame)
+        evidence = replace(app._frame_evidence(), captured_at=time.monotonic() - 3.4, visual=visual)
+        app._publish_frame(frame.copy())
+        app._publish_frame(frame.copy())
+        app._update_advice("AMP WALKER", .99, evidence=evidence)
+    queued = events(app)
+    ticket = next(payload for kind, payload in queued if kind == "advice")
+    app.events.put(("advice", ticket))
+    app._drain_events()
+    app.show_overlay.assert_called_once()
+    app._publish_frame(Image.new("RGB", frame.size))
+    app._hide_expired_advice()
+    app.overlay.withdraw.assert_called_once()
+
+
+def test_matching_pixels_do_not_keep_advice_when_capture_stalls(app):
+    from PIL import ImageDraw
+    frame = Image.new("RGB", (100, 40), "black")
+    ImageDraw.Draw(frame).text((8, 8), "R2", fill="white")
+    app._publish_frame(frame)
+    guard = VisualEvidence(frame.size, (TextPatch.capture(frame, (0, 0, 100, 40)),))
+    evidence = replace(app._frame_evidence(), visual=guard)
+    app.frame_captured_at -= 4
+    assert not app._evidence_is_current(evidence)
 
 
 def test_repeated_or_skipped_frame_is_not_two_confirmations(app):

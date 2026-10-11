@@ -29,7 +29,7 @@ NAME = font("arialbd.ttf", 22)
 VALUE = font("arialbd.ttf", 21)
 SMALL = font("arialbd.ttf", 15)
 
-ROLE_COLORS = {"WORKER": "#62d27a", "BATTLE": "#ff5964", "ASTRO": "#c875e1"}
+ROLE_COLORS = {"WORKER": "#62d27a", "BATTLE": "#ff5964", "ASTRO": "#c875e1", "PROTOCOL": "#ffd166"}
 ICONIC_COLOR = "#f5e58c"
 
 
@@ -66,7 +66,7 @@ def all_droids_payload() -> dict[str, object]:
         rows.append(dict(droid))
 
     rarity_rank = {rarity: index for index, rarity in enumerate(INCOME_RARITY_ORDER)}
-    role_rank = {role: index for index, role in enumerate(("WORKER", "ASTRO", "BATTLE"))}
+    role_rank = {role: index for index, role in enumerate(("WORKER", "ASTRO", "BATTLE", "PROTOCOL"))}
     rows.sort(key=lambda row: (
         rarity_rank[str(row["rarity"])],
         role_rank[str(row["role"])],
@@ -104,7 +104,7 @@ def render_chart(payload: dict[str, object]) -> Image.Image:
     draw.text((190, 35), "DROID ADVISOR ALL-DROID INCOME CHART", font=TITLE, fill=INK)
     draw.text(
         (194, 116),
-        "87 DROIDS  •  62 STANDARD  •  17 FUSION  •  8 ICONIC  •  BASE CREDITS PER SECOND",
+        "100 DROIDS  •  73 STANDARD  •  17 FUSION  •  10 ICONIC  •  BASE CREDITS PER SECOND",
         font=SUBTITLE,
         fill=CYAN,
     )

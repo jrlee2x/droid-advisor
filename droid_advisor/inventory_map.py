@@ -55,6 +55,7 @@ ROLE_COLORS = {
     "WORKER": "#53f57b",
     "ASTRO": "#a85cff",
     "BATTLE": "#ff4c64",
+    "PROTOCOL": "#ffd166",
 }
 
 RARITY_COLORS = {
@@ -563,7 +564,7 @@ class InventoryMapWindow:
             image=medallion,
             tags=("dock-card", tag),
         )
-        role_mark = {"WORKER": "W", "ASTRO": "A", "BATTLE": "B"}.get(unit.role, "?")
+        role_mark = {"WORKER": "W", "ASTRO": "A", "BATTLE": "B", "PROTOCOL": "P"}.get(unit.role, "?")
         self.dock_canvas.create_text(
             medallion_x,
             medallion_y,
@@ -936,7 +937,7 @@ class InventoryMapWindow:
             ("Droid", name_var, known_droid_names(), False),
             ("Finish", finish_var, FINISHES, True),
             ("Rarity", rarity_var, ("",) + INVENTORY_RARITIES, True),
-            ("Type", role_var, ("", "WORKER", "ASTRO", "BATTLE"), True),
+            ("Type", role_var, ("", "WORKER", "ASTRO", "BATTLE", "PROTOCOL"), True),
         )
         boxes = []
         for row, (label, variable, values, readonly) in enumerate(fields):

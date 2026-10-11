@@ -7,10 +7,10 @@ def test_all_droid_roster_is_complete_and_unique():
     payload = all_droids_payload()
     names = [droid["name"] for droid in payload["droids"]]
 
-    assert len(STANDARD_DROIDS) == 62
+    assert len(STANDARD_DROIDS) == 73
     assert len(FUSION_RECIPES) == 17
-    assert len(ICONIC_DROIDS) == 9
-    assert payload["totals"]["all"] == 88
+    assert len(ICONIC_DROIDS) == 10
+    assert payload["totals"]["all"] == 100
     assert len(names) == len(set(names))
 
 
@@ -18,11 +18,11 @@ def test_fixed_income_rows_have_all_seven_variant_keys():
     payload = all_droids_payload()
     fixed_rows = [droid for droid in payload["droids"] if droid["kind"] != "ICONIC"]
 
-    assert len(fixed_rows) == 79
+    assert len(fixed_rows) == 90
     assert all(tuple(droid["income_per_second"]) == INCOME_VARIANTS for droid in fixed_rows)
 
 
-def test_only_r9_stellar_is_currently_undocumented():
+def test_unverified_variant_rates_are_explicitly_missing():
     payload = all_droids_payload()
     missing = [
         (droid["name"], variant)
@@ -31,5 +31,5 @@ def test_only_r9_stellar_is_currently_undocumented():
         if value is None
     ]
 
-    assert missing == [("R9", "STELLAR")]
-    assert payload["totals"]["documented_fixed_values"] == 552
+    assert set(missing) == {("R9", "STELLAR")} | {(name, variant) for name in ("EGL", "JO9-4MN", "PLNK") for variant in INCOME_VARIANTS[1:]}
+    assert payload["totals"]["documented_fixed_values"] == 611

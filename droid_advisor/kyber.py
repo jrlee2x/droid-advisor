@@ -83,3 +83,8 @@ KYBER_INCOME = {'2BB': {'KYBER': 598.4, 'KYBER_BLUE': 1944.8, 'KYBER_GREEN': 179
  'WHLEX': {'KYBER': 2534.4, 'KYBER_BLUE': 8236.8, 'KYBER_GREEN': 7603.2, 'KYBER_PURPLE': 9123.84},
  'XONK': {'KYBER': 1650000.0, 'KYBER_BLUE': 5362500.0, 'KYBER_GREEN': 4950000.0, 'KYBER_PURPLE': 5940000.0},
  'ZROTEC': {'KYBER': 2534.4, 'KYBER_BLUE': 8236.8, 'KYBER_GREEN': 7603.2, 'KYBER_PURPLE': 9123.84}}
+
+
+# Newly documented v1.34 / Protocol rates; see power-update-2026-10-10.md.
+for _name, _base in {"EG58": 2240, "KT": 36000, "MPH": 55200, "ECG": 775000, "SA5": 448, "LOM": 8400, "PZ": 135000, "TDA": 500000}.items():
+    KYBER_INCOME[_name] = {"KYBER": _base, "KYBER_GREEN": _base * 3, "KYBER_BLUE": _base * 3.25, "KYBER_PURPLE": _base * 3.6}

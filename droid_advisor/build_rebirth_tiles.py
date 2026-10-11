@@ -208,7 +208,7 @@ def main() -> None:
     parser.add_argument(
         "--replace-all",
         action="store_true",
-        help="Regenerate all 200 cards in the consistent Droid Advisor layout.",
+        help="Regenerate all 240 cards in the consistent Droid Advisor layout.",
     )
     args = parser.parse_args()
     written = 0
