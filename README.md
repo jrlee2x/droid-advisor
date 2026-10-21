@@ -4,12 +4,13 @@ Droid Advisor is a free, community-built Windows companion for Fortnite Droid Ty
 
 ## Current status
 
-This project is community software under active development. Version 1.3.5 includes:
+This project is community software under active development. Version 1.3.6 includes:
 
 - Automatic RBC and rebirth-rank detection from the View Rebirth menu.
 - Explicit PATH label recognition for shared requirements and visual validation of slow rebirth OCR.
 - A draggable current and next rebirth overlay using consistent screen-safe rank cards.
 - Keep or sell guidance for opened droid cards, with visual validation that tolerates slow OCR.
+- Periodic card scans when lounge controls miss the legacy color gates, with unchanged identity and button-layout checks.
 - A 100-droid catalog including Power Droids, WG-22 and Protocol droids.
 - Held-blueprint recognition.
 - Optional Sandcrawler spawn alerts with configurable minimum variant and rarity, bundled or user-selected WAV sounds, and volume control.

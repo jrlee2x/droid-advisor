@@ -83,6 +83,9 @@ def test_monitor_accepts_slow_unchanged_menu_and_rejects_stale_context(monkeypat
     app.capture_exclusions_ok = True
     app.preferred_ui_region = None
     app.ui_fallback_index = 0
+    app.interaction_probe_active = False
+    app.last_interaction_probe_at = 0.0
+    app.interaction_fallback_index = 0
     app.diagnostics = Mock()
     app._clear_advice = Mock()
     app.stop_event = Mock()

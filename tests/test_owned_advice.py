@@ -85,6 +85,11 @@ def app():
     app.show_overlay = Mock()
     app.overlay_source = None
     app.displayed_advice = None
+    app.interaction_probe_active = False
+    app.last_interaction_probe_at = 0.0
+    app.interaction_fallback_index = 0
+    app.ui_fallback_index = 0
+    app.preferred_ui_region = None
     return app
 
 
@@ -344,6 +349,55 @@ def test_progress_reader_does_not_invent_nested_names_or_accept_weak_reads():
         assert visible_droids([token(name, confidence=0.4)]) == set()
         assert visible_droids([token("UNKNOWN " + name)]) == set()
     assert visible_droids([token("R2-D2"), token("BB-8"), token("IG-11 Marshal")]) == set()
+
+
+@pytest.mark.parametrize("card_open", [True, False])
+@pytest.mark.parametrize("multiple_views", [True, False])
+def test_ungated_lounge_card_is_probed_and_confirmed_without_idle_scan_flooding(app, monkeypatch, card_open, multiple_views):
+    from PIL import ImageDraw, ImageFont
+    frame = Image.new("RGB", (1000, 1000), "black")
+    controls = [token(label, 680, y) for label, y in [
+        ("WORK", 350), ("SWAP", 500), ("LOUNGE", 650), ("SELL", 800)]]
+    identity = [token("R4", 100, 70), token("RAINBOW", 100, 120), token("RARE", 100, 170)]
+    draw = ImageDraw.Draw(frame)
+    font = ImageFont.truetype("C:/Windows/Fonts/arialbd.ttf", 22)
+    for item in controls:
+        draw.text(item.box[0], item.text, fill="white", font=font, anchor="lt")
+    for item in identity:
+        x, y = item.box[0]
+        draw.text((x + 120, y + 220), item.text, fill="white", font=font, anchor="lt")
+    app.config.update(cycle=3, completed_rebirth=9)
+    app._publish_frame(frame)
+    app.stop_event = Mock()
+    app.stop_event.is_set.side_effect = [False, False, True]
+    app.stop_event.wait.side_effect = lambda seconds: app._publish_frame(frame.copy())
+    ocr = Mock()
+    ocr.read.return_value = identity
+    monkeypatch.setattr(app_module, "OfflineOcr", lambda: ocr)
+    monkeypatch.setattr(app_module, "visual_gates", lambda image: (False, False, False))
+    empty_view = Image.new("RGB", frame.size)
+    if multiple_views:
+        monkeypatch.setattr(app_module, "game_ui_viewports", lambda image: [("full", image), ("alternate", empty_view)])
+    interactions = []
+
+    def read(ocr, image, box, **kwargs):
+        if box[1] < 200:
+            return []  # No rebirth menu.
+        interactions.append(box)
+        return controls if card_open and image is not empty_view else []
+
+    monkeypatch.setattr(app_module, "read_region", read)
+    app._monitor()
+    queued = events(app)
+    if card_open:
+        assert len(interactions) == 2  # Confirm the open card despite the idle cooldown.
+        assert ocr.read.call_count == 2
+        ticket = next(payload for kind, payload in queued if kind == "advice")
+        assert ticket.message == "R4: SAFE TO SELL: LAST NEEDED AT RB9"
+    else:
+        assert len(interactions) == 1  # Empty world probes remain rate-limited.
+        ocr.read.assert_not_called()
+        assert all(kind != "advice" for kind, payload in queued)
 
 
 @pytest.mark.parametrize("mode", ["valid", "header_mismatch", "ambiguous", "stale", "weak"])

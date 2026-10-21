@@ -438,6 +438,8 @@ def classify_interaction(
     height: int,
     card_gate: bool,
     blueprint_gate: bool,
+    *,
+    allow_ungated: bool = False,
 ) -> tuple[bool, bool]:
     """Return blueprint/card state after a visual gate requests focused OCR.
 
@@ -445,10 +447,10 @@ def classify_interaction(
     while its orange action buttons can miss the legacy yellow-card gate. OCR
     button geometry is the definitive card check once either visual gate fires.
     """
-    blueprint_open = blueprint_gate and blueprint_is_visible(tokens, width, height)
+    blueprint_open = (blueprint_gate or allow_ungated) and blueprint_is_visible(tokens, width, height)
     card_open = (
         not blueprint_open
-        and (card_gate or blueprint_gate)
+        and (card_gate or blueprint_gate or allow_ungated)
         and panel_is_open(tokens, width, height)
     )
     return blueprint_open, card_open

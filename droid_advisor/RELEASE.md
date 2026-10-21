@@ -1,5 +1,12 @@
 # Droid Advisor release and update guide
 
+## 1.3.6 lounge card recognition fallback
+
+- Josh confirmed automatic rebirth detection works, but a Rainbow R4 card showed no advice. His 1.3.5 diagnostic report showed active capture/OCR with both interaction color gates false and no attempted interaction scan.
+- Added a periodic OCR probe when both color gates miss. It still requires aligned card buttons or a complete held-blueprint prompt, confident focused identity, matching visual evidence, and two independently captured confirmations. Open panels receive consecutive probes; empty world scans remain rate-limited. On wide displays the probe stays with the recognized panel region.
+- Recognized fallback panels take priority over background spawn OCR. Diagnostics now expose fallback probes, scan phase and advice acceptance status.
+- Saved progress, overlay placement and inventory are preserved.
+
 ## 1.3.5 rebirth detection and v1.35 Path 6 repair
 
 - Read the explicit PATH label in View Rebirth. Shared triples such as Paths 3 and 4 at Rank 10 can now be distinguished; path, rank and all three droid names must agree.
@@ -42,7 +49,7 @@ Card button matching now excludes the Worker role label while accepting OCR-join
 
 ## Current distribution
 
-- Local repair installer: `DroidAdvisor-Setup-1.3.5.exe` (not published)
+- Local repair installer: `DroidAdvisor-Setup-1.3.6.exe` (not published)
 - Platform: 64-bit Windows 10/11
 - Installation scope: current Windows user; no administrator rights requested
 - Runtime: bundled Python and offline OCR; recipients do not install Python

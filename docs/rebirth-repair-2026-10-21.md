@@ -39,3 +39,15 @@ Josh requested permission before computer skill use or screen capture. After he 
 - Inventory remained byte-for-byte unchanged. Cycle 3, completed rank 9, pause preference, notification settings and update settings were retained. Rebirth targets were enabled and their position reset to the primary display's default position.
 - Installer, checksum, installation log, pre-repair profile copies, regenerated cards and synthetic OCR evidence: `../artifacts/repair-2026-10-21/`.
 - Local installation only. No public release or hosted-site deployment. Josh still needs to confirm automatic progress and droid-card guidance in the live game.
+
+## Follow-up: Rainbow R4 lounge card, 1.3.6
+
+Josh confirmed 1.3.5 automatic rebirth detection works. He then reported no advice while viewing a Rainbow R4 in the lounge and supplied a diagnostic report himself, without granting desktop/screen access.
+
+At 18:24:55 America/Chicago, the report showed active 2560x1440 capture, initialized OCR, successful capture exclusion, Path 3 / completed rank 9, both interaction color gates false, `interaction_regions_attempted=none`, and zero interaction tokens. The color gates could prevent the card's OCR scan altogether. Some recognition fields in that report were retained from another scan phase, so the report does not establish that R4's title had been successfully recognized.
+
+Version 1.3.6 adds a periodic interaction OCR probe when both color gates miss. The existing aligned-button layout or held-blueprint prompt, focused name/badge checks, visual continuity, fresh capture and two-confirmation rules still apply. A recognized open panel receives consecutive scans in the same viewport; otherwise speculative probes run no more than once per 1.5 seconds. Recognized panels also suppress background spawn OCR for that scan. Additional diagnostics distinguish scan phase, fallback use, identity failure, stale evidence, pending confirmation and queued advice.
+
+Regression checks reproduce the all-gates-false Rainbow R4 case and produce `R4: SAFE TO SELL: LAST NEEDED AT RB9` for Path 3 / completed rank 9. Empty world probes remain rate-limited and cannot authorize advice; scattered action words and a droid name without a real panel are rejected. These are synthetic checks, not a capture of Josh's live lounge card.
+
+The final relevant suite passes 589 tests. Packaged and installed runtime health checks return 0; the per-user installer returns 0; the installed executable matches the build. Configuration and inventory remained byte-for-byte unchanged during installation. Installer SHA-256: `93bfc617e73df8677753a201b635b2a595a8dc803ab4776b207eab3ac223fe22`. Local installer, installation log and `verification-1.3.6.json` are in the same repair artifact directory. Live R4 confirmation was requested from Josh after installation; desktop/screen access remains declined.

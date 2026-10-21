@@ -530,6 +530,15 @@ def test_panel_requires_aligned_vertical_card_controls():
     assert panel_is_open(card, 1000, 1000) is True
 
 
+def test_ungated_probe_requires_real_card_layout_or_blueprint_prompt():
+    controls = [_token("WORK", 700, 350), _token("SWAP", 700, 500), _token("SELL", 700, 750)]
+    assert classify_interaction(controls, 1000, 1000, False, False) == (False, False)
+    assert classify_interaction(controls, 1000, 1000, False, False, allow_ungated=True) == (False, True)
+    scattered = [_token("WORK", 200, 400), _token("SELL", 800, 450), _token("LOUNGE", 500, 480)]
+    assert classify_interaction(scattered, 1000, 1000, False, False, allow_ungated=True) == (False, False)
+    assert classify_interaction([_token("R4 RAINBOW", 400, 500)], 1000, 1000, False, False, allow_ungated=True) == (False, False)
+
+
 def test_card_button_labels_accept_counters_but_reject_worker_role():
     for label in ("WORK", "WORK 16/16", "WORK16/16", "SWAP 2/2", "LOUNGE 8 / 9", "CUSTOMIZE", "SELL"):
         assert is_card_button_text(label)
