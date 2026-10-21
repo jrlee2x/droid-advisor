@@ -1021,189 +1021,189 @@
       "BASE"
     ],
     "3": [
-      "GOLD",
-      "GOLD",
-      "GOLD"
+      "BASE",
+      "BASE",
+      "BASE"
     ],
     "4": [
       "GOLD",
       "GOLD",
-      "BASE"
+      "GOLD"
     ],
     "5": [
       "GOLD",
-      "DIAMOND",
-      "BASE"
+      "GOLD",
+      "GOLD"
     ],
     "6": [
-      "GOLD",
       "BASE",
-      "BASE"
+      "DIAMOND",
+      "DIAMOND"
     ],
     "7": [
-      "BESKAR",
       "BASE",
-      "BASE"
+      "DIAMOND",
+      "DIAMOND"
     ],
     "8": [
       "BASE",
-      "BASE",
-      "BASE"
+      "DIAMOND",
+      "DIAMOND"
     ],
     "9": [
-      "KYBER",
+      "DIAMOND",
       "GOLD",
       "GOLD"
     ],
     "10": [
-      "GOLD",
-      "GOLD",
-      "GOLD"
+      "BASE",
+      "BASE",
+      "BASE"
     ],
     "11": [
-      "GOLD",
+      "BASE",
       "BASE",
       "BASE"
     ],
     "12": [
-      "BASE",
-      "BASE",
-      "BASE"
+      "RAINBOW",
+      "GOLD",
+      "GOLD"
     ],
     "13": [
-      "BASE",
-      "BASE",
-      "GALACTIC"
+      "GOLD",
+      "GOLD",
+      "BASE"
     ],
     "14": [
-      "BASE",
-      "BASE",
+      "DIAMOND",
+      "GOLD",
       "BASE"
     ],
     "15": [
       "BASE",
-      "BASE",
-      "BASE"
+      "DIAMOND",
+      "DIAMOND"
     ],
     "16": [
-      "KYBER",
+      "BASE",
       "BASE",
       "GOLD"
     ],
     "17": [
+      "RAINBOW",
       "GOLD",
-      "GOLD",
-      "GOLD"
+      "BASE"
     ],
     "18": [
-      "GOLD",
-      "GOLD",
+      "RAINBOW",
+      "RAINBOW",
       "GOLD"
     ],
     "19": [
+      "DIAMOND",
       "GOLD",
-      "GOLD",
-      "GOLD"
+      "DIAMOND"
     ],
     "20": [
-      "GOLD",
-      "BASE",
-      "BASE"
+      "RAINBOW",
+      "RAINBOW",
+      "RAINBOW"
     ],
     "21": [
-      "BASE",
-      "RAINBOW",
-      "DIAMOND"
+      "BESKAR",
+      "BESKAR",
+      "BESKAR"
     ],
     "22": [
-      "BASE",
-      "BASE",
-      "BASE"
+      "BESKAR",
+      "BESKAR",
+      "BESKAR"
     ],
     "23": [
-      "BASE",
-      "RAINBOW",
-      "DIAMOND"
+      "BESKAR",
+      "BESKAR",
+      "BESKAR"
     ],
     "24": [
-      "GOLD",
-      "BASE",
+      "BESKAR",
+      "BESKAR",
       "BASE"
     ],
     "25": [
-      "BASE",
+      "BESKAR",
       "BASE",
       "BASE"
     ],
     "26": [
-      "BASE",
-      "DIAMOND",
-      "RAINBOW"
+      "GOLD",
+      "GOLD",
+      "DIAMOND"
     ],
     "27": [
       "RAINBOW",
-      "BESKAR",
-      "GOLD"
+      "RAINBOW",
+      "BESKAR"
     ],
     "28": [
-      "BESKAR",
-      "GOLD",
-      "STELLAR"
+      "GALACTIC",
+      "GALACTIC",
+      "GALACTIC"
     ],
     "29": [
-      "STELLAR",
-      "GOLD",
-      "GALACTIC"
+      "GALACTIC",
+      "GALACTIC",
+      "BESKAR"
     ],
     "30": [
-      "GOLD",
-      "DIAMOND",
-      "DIAMOND"
+      "GALACTIC",
+      "GALACTIC",
+      "GALACTIC"
     ],
     "31": [
-      "DIAMOND",
-      "DIAMOND",
-      "RAINBOW"
+      "STELLAR",
+      "BESKAR",
+      "BESKAR"
     ],
     "32": [
-      "KYBER",
-      "KYBER",
-      "KYBER"
+      "GALACTIC",
+      "GALACTIC",
+      "BESKAR"
     ],
     "33": [
-      "BESKAR",
-      "BESKAR",
-      "BESKAR"
+      "STELLAR",
+      "GALACTIC",
+      "GALACTIC"
     ],
     "34": [
-      "BESKAR",
-      "KYBER",
-      "KYBER"
+      "STELLAR",
+      "STELLAR",
+      "GALACTIC"
     ],
     "35": [
+      "STELLAR",
+      "STELLAR",
+      "STELLAR"
+    ],
+    "36": [
       "KYBER",
       "KYBER",
       "KYBER"
     ],
-    "36": [
-      "GALACTIC",
-      "GALACTIC",
-      "GALACTIC"
-    ],
     "37": [
-      "GALACTIC",
-      "GALACTIC",
-      "BESKAR"
+      "KYBER",
+      "KYBER",
+      "KYBER"
     ],
     "38": [
-      "BESKAR",
-      "BESKAR",
-      "BESKAR"
+      "KYBER",
+      "KYBER",
+      "KYBER"
     ],
     "39": [
-      "GALACTIC",
-      "GALACTIC",
-      "GALACTIC"
+      "KYBER",
+      "KYBER",
+      "KYBER"
     ],
     "40": [
       "KYBER",

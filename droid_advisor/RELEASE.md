@@ -1,5 +1,12 @@
 # Droid Advisor release and update guide
 
+## 1.3.5 rebirth detection and v1.35 Path 6 repair
+
+- Read the explicit PATH label in View Rebirth. Shared triples such as Paths 3 and 4 at Rank 10 can now be distinguished; path, rank and all three droid names must agree.
+- Validate slow rebirth OCR against the rank, path and requirement-name text in newer captures. Animation and changing ping text do not invalidate an unchanged menu. Closed or changed menus, expired evidence, stalled capture, pause and changed progress still reject the update.
+- Replace all 40 Path 6 triples and 120 finishes with the October 17 v1.35 revision, cross-checked against the Reddit/Discord chart and Droidex. Regenerate the desktop target cards.
+- Preserve saved inventory and progress during installation.
+
 ## 1.3.4 short-title and animated-card recognition fix
 
 - Fixed missing R6 advice reproduced on a live Stellar Epic card. Tall short titles could be grouped with an unrelated small event label above them; text grouping now requires vertical overlap.
@@ -35,7 +42,7 @@ Card button matching now excludes the Worker role label while accepting OCR-join
 
 ## Current distribution
 
-- Installer: `DroidAdvisor-Setup-1.3.3.exe`
+- Local repair installer: `DroidAdvisor-Setup-1.3.5.exe` (not published)
 - Platform: 64-bit Windows 10/11
 - Installation scope: current Windows user; no administrator rights requested
 - Runtime: bundled Python and offline OCR; recipients do not install Python

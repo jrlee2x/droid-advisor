@@ -31,7 +31,7 @@ from .config import APP_DIR, CUSTOM_SOUND_PATH, load_config, save_config
 from .cycles import CYCLES, MAX_REBIRTH, active_rebirth, next_cycle
 from .diagnostics import DiagnosticBuffer, copy_text_to_clipboard
 from .droid_catalog import droid_metadata, income_per_second
-from .engine import ALL_DROIDS, canonical, advise, detect_cycle, safe_to_sell_droids
+from .engine import ALL_DROIDS, canonical, advise, detect_rebirth_progress, safe_to_sell_droids
 from .inventory import InventoryLedger
 from .inventory_map import InventoryMapWindow
 from .notifications import (
@@ -56,6 +56,8 @@ from .vision import (
     read_region,
     rebirth_header_is_open,
     rebirth_rank,
+    rebirth_path,
+    rebirth_visual_evidence,
     scan_priorities,
     visible_droids,
     visual_gates,
@@ -1170,11 +1172,22 @@ class DroidAdvisorApp:
                                 requirement_tokens = read_region(ocr, image, requirements_box, max_width=736)
                                 self.diagnostics.set(rebirth_requirement_token_count=len(requirement_tokens))
                                 self.diagnostics.sample("rebirth_requirements_ocr_sample", requirement_tokens)
-                                cycle_match = detect_cycle(visible_droids(requirement_tokens))
+                                path_box = (int(image.width * 0.80), 0,
+                                            int(image.width * 0.99), int(image.height * 0.14))
+                                path_tokens = read_region(ocr, image, path_box, max_width=736)
+                                path = rebirth_path(path_tokens)
+                                self.diagnostics.set(rebirth_path_read=path or "not recognized")
+                                self.diagnostics.sample("rebirth_path_ocr_sample", path_tokens)
+                                cycle_match = detect_rebirth_progress(visible_droids(requirement_tokens), rank, path)
                                 self.diagnostics.set(rebirth_cycle_match=cycle_match or "not uniquely matched")
                                 cycle = cycle_match[0] if cycle_match else int(self.config["cycle"])
+                                evidence = replace(evidence, visual=rebirth_visual_evidence(
+                                    full_image, image, active_region, header_tokens, requirement_tokens,
+                                    path_tokens if path is not None else (),
+                                ))
                                 verified_progress = (cycle_match is not None and cycle_match[1] == rank
                                                      and self._evidence_is_current(evidence))
+                                self.diagnostics.set(rebirth_progress_verified=verified_progress)
                                 if verified_progress and (completed != self.config["completed_rebirth"] or cycle != self.config["cycle"]):
                                     self.config.update(cycle=cycle, completed_rebirth=completed)
                                     save_config(self.config)

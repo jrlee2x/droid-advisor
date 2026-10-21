@@ -119,3 +119,15 @@ def detect_cycle(visible_droids: set[str]) -> tuple[int, int] | None:
             if {canonical(name) for name in required}.issubset(wanted):
                 matches.append((cycle, rb))
     return matches[0] if len(matches) == 1 else None
+
+
+def detect_rebirth_progress(visible_droids: set[str], rank: int, path: int | None = None) -> tuple[int, int] | None:
+    """Resolve shared triples only with an explicit, matching menu path."""
+    if path is None:
+        match = detect_cycle(visible_droids)
+        return match if match and match[1] == rank else None
+    if path not in CYCLES or not 1 <= rank <= len(CYCLES[path]):
+        return None
+    wanted = {canonical(name) for name in visible_droids}
+    required = {canonical(name) for name in CYCLES[path][rank - 1]}
+    return (path, rank) if len(wanted) >= 3 and required.issubset(wanted) else None

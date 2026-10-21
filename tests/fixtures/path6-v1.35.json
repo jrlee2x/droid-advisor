@@ -1,0 +1,571 @@
+{
+  "version": "1.35.0",
+  "reviewed": "2026-10-21",
+  "sources": [
+    "https://www.reddit.com/r/StarWarsDroidTycoon/comments/1x82aev/patch_notes_v1350/",
+    "https://www.reddit.com/r/StarWarsDroidTycoon/comments/1x8att8/new_rebirth_path_6/",
+    "https://droidex.dubtrackr.win/updates/droid-tycoon-v1-35/"
+  ],
+  "requirements": {
+    "1": [
+      {
+        "droid": "GONK",
+        "quality": "BASE"
+      },
+      {
+        "droid": "MOUSE",
+        "quality": "BASE"
+      },
+      {
+        "droid": "ID10",
+        "quality": "BASE"
+      }
+    ],
+    "2": [
+      {
+        "droid": "PIT",
+        "quality": "BASE"
+      },
+      {
+        "droid": "EG-58",
+        "quality": "BASE"
+      },
+      {
+        "droid": "2BB",
+        "quality": "BASE"
+      }
+    ],
+    "3": [
+      {
+        "droid": "R3",
+        "quality": "BASE"
+      },
+      {
+        "droid": "R4",
+        "quality": "BASE"
+      },
+      {
+        "droid": "ROLL-R",
+        "quality": "BASE"
+      }
+    ],
+    "4": [
+      {
+        "droid": "EG-58",
+        "quality": "GOLD"
+      },
+      {
+        "droid": "R9",
+        "quality": "GOLD"
+      },
+      {
+        "droid": "B1 SECURITY",
+        "quality": "GOLD"
+      }
+    ],
+    "5": [
+      {
+        "droid": "GONK",
+        "quality": "GOLD"
+      },
+      {
+        "droid": "R5",
+        "quality": "GOLD"
+      },
+      {
+        "droid": "VECT-ARM",
+        "quality": "GOLD"
+      }
+    ],
+    "6": [
+      {
+        "droid": "EGL",
+        "quality": "BASE"
+      },
+      {
+        "droid": "EG-58",
+        "quality": "DIAMOND"
+      },
+      {
+        "droid": "2BB",
+        "quality": "DIAMOND"
+      }
+    ],
+    "7": [
+      {
+        "droid": "KT",
+        "quality": "BASE"
+      },
+      {
+        "droid": "R4",
+        "quality": "DIAMOND"
+      },
+      {
+        "droid": "R9",
+        "quality": "DIAMOND"
+      }
+    ],
+    "8": [
+      {
+        "droid": "MPH",
+        "quality": "BASE"
+      },
+      {
+        "droid": "B1 SECURITY",
+        "quality": "DIAMOND"
+      },
+      {
+        "droid": "NAV-EX",
+        "quality": "DIAMOND"
+      }
+    ],
+    "9": [
+      {
+        "droid": "GONK",
+        "quality": "DIAMOND"
+      },
+      {
+        "droid": "EGL",
+        "quality": "GOLD"
+      },
+      {
+        "droid": "STRIKE-ORB",
+        "quality": "GOLD"
+      }
+    ],
+    "10": [
+      {
+        "droid": "GROUNDMECH",
+        "quality": "BASE"
+      },
+      {
+        "droid": "TRAK-R",
+        "quality": "BASE"
+      },
+      {
+        "droid": "AMP WALKER",
+        "quality": "BASE"
+      }
+    ],
+    "11": [
+      {
+        "droid": "B2 SUPER",
+        "quality": "BASE"
+      },
+      {
+        "droid": "HAUL-R",
+        "quality": "BASE"
+      },
+      {
+        "droid": "R2",
+        "quality": "BASE"
+      }
+    ],
+    "12": [
+      {
+        "droid": "GONK",
+        "quality": "RAINBOW"
+      },
+      {
+        "droid": "GROUNDMECH",
+        "quality": "GOLD"
+      },
+      {
+        "droid": "TRAK-R",
+        "quality": "GOLD"
+      }
+    ],
+    "13": [
+      {
+        "droid": "KT",
+        "quality": "GOLD"
+      },
+      {
+        "droid": "MPH",
+        "quality": "GOLD"
+      },
+      {
+        "droid": "PROTO-ROLLER",
+        "quality": "BASE"
+      }
+    ],
+    "14": [
+      {
+        "droid": "EGL",
+        "quality": "DIAMOND"
+      },
+      {
+        "droid": "B2 SUPER",
+        "quality": "GOLD"
+      },
+      {
+        "droid": "B2-RP",
+        "quality": "BASE"
+      }
+    ],
+    "15": [
+      {
+        "droid": "JO9-4MN",
+        "quality": "BASE"
+      },
+      {
+        "droid": "KT",
+        "quality": "DIAMOND"
+      },
+      {
+        "droid": "MPH",
+        "quality": "DIAMOND"
+      }
+    ],
+    "16": [
+      {
+        "droid": "PLNK",
+        "quality": "BASE"
+      },
+      {
+        "droid": "BB9",
+        "quality": "BASE"
+      },
+      {
+        "droid": "R7",
+        "quality": "GOLD"
+      }
+    ],
+    "17": [
+      {
+        "droid": "EGL",
+        "quality": "RAINBOW"
+      },
+      {
+        "droid": "JO9-4MN",
+        "quality": "GOLD"
+      },
+      {
+        "droid": "MECHA-DROID",
+        "quality": "BASE"
+      }
+    ],
+    "18": [
+      {
+        "droid": "KT",
+        "quality": "RAINBOW"
+      },
+      {
+        "droid": "MPH",
+        "quality": "RAINBOW"
+      },
+      {
+        "droid": "PLNK",
+        "quality": "GOLD"
+      }
+    ],
+    "19": [
+      {
+        "droid": "JO9-4MN",
+        "quality": "DIAMOND"
+      },
+      {
+        "droid": "PROTO-ROLLER",
+        "quality": "GOLD"
+      },
+      {
+        "droid": "R7",
+        "quality": "DIAMOND"
+      }
+    ],
+    "20": [
+      {
+        "droid": "PLNK",
+        "quality": "RAINBOW"
+      },
+      {
+        "droid": "MECHA-DROID",
+        "quality": "RAINBOW"
+      },
+      {
+        "droid": "B2-RP",
+        "quality": "RAINBOW"
+      }
+    ],
+    "21": [
+      {
+        "droid": "GONK",
+        "quality": "BESKAR"
+      },
+      {
+        "droid": "EGL",
+        "quality": "BESKAR"
+      },
+      {
+        "droid": "HAUL-R",
+        "quality": "BESKAR"
+      }
+    ],
+    "22": [
+      {
+        "droid": "KT",
+        "quality": "BESKAR"
+      },
+      {
+        "droid": "GROUNDMECH",
+        "quality": "BESKAR"
+      },
+      {
+        "droid": "R2",
+        "quality": "BESKAR"
+      }
+    ],
+    "23": [
+      {
+        "droid": "MPH",
+        "quality": "BESKAR"
+      },
+      {
+        "droid": "JO9-4MN",
+        "quality": "BESKAR"
+      },
+      {
+        "droid": "BB9",
+        "quality": "BESKAR"
+      }
+    ],
+    "24": [
+      {
+        "droid": "PLNK",
+        "quality": "BESKAR"
+      },
+      {
+        "droid": "PROTO-ROLLER",
+        "quality": "BESKAR"
+      },
+      {
+        "droid": "ECG",
+        "quality": "BASE"
+      }
+    ],
+    "25": [
+      {
+        "droid": "R7",
+        "quality": "BESKAR"
+      },
+      {
+        "droid": "IG",
+        "quality": "BASE"
+      },
+      {
+        "droid": "LOADLIFTER",
+        "quality": "BASE"
+      }
+    ],
+    "26": [
+      {
+        "droid": "MO-TRAK",
+        "quality": "GOLD"
+      },
+      {
+        "droid": "ECG",
+        "quality": "GOLD"
+      },
+      {
+        "droid": "DRFT-R",
+        "quality": "DIAMOND"
+      }
+    ],
+    "27": [
+      {
+        "droid": "CYCLENS",
+        "quality": "RAINBOW"
+      },
+      {
+        "droid": "SNOW MOUSE",
+        "quality": "RAINBOW"
+      },
+      {
+        "droid": "TRI-TEK",
+        "quality": "BESKAR"
+      }
+    ],
+    "28": [
+      {
+        "droid": "EGL",
+        "quality": "GALACTIC"
+      },
+      {
+        "droid": "JO9-4MN",
+        "quality": "GALACTIC"
+      },
+      {
+        "droid": "BB9",
+        "quality": "GALACTIC"
+      }
+    ],
+    "29": [
+      {
+        "droid": "KT",
+        "quality": "GALACTIC"
+      },
+      {
+        "droid": "PLNK",
+        "quality": "GALACTIC"
+      },
+      {
+        "droid": "IG",
+        "quality": "BESKAR"
+      }
+    ],
+    "30": [
+      {
+        "droid": "MPH",
+        "quality": "GALACTIC"
+      },
+      {
+        "droid": "B2-RP",
+        "quality": "GALACTIC"
+      },
+      {
+        "droid": "DRFT-R",
+        "quality": "GALACTIC"
+      }
+    ],
+    "31": [
+      {
+        "droid": "EGL",
+        "quality": "STELLAR"
+      },
+      {
+        "droid": "EG-58",
+        "quality": "BESKAR"
+      },
+      {
+        "droid": "SNOW MOUSE",
+        "quality": "BESKAR"
+      }
+    ],
+    "32": [
+      {
+        "droid": "ECG",
+        "quality": "GALACTIC"
+      },
+      {
+        "droid": "TRAK-R",
+        "quality": "GALACTIC"
+      },
+      {
+        "droid": "CYCLENS",
+        "quality": "BESKAR"
+      }
+    ],
+    "33": [
+      {
+        "droid": "KT",
+        "quality": "STELLAR"
+      },
+      {
+        "droid": "CYCLO-GRAV",
+        "quality": "GALACTIC"
+      },
+      {
+        "droid": "TRI-TEK",
+        "quality": "GALACTIC"
+      }
+    ],
+    "34": [
+      {
+        "droid": "MPH",
+        "quality": "STELLAR"
+      },
+      {
+        "droid": "HAUL-R",
+        "quality": "STELLAR"
+      },
+      {
+        "droid": "IG",
+        "quality": "GALACTIC"
+      }
+    ],
+    "35": [
+      {
+        "droid": "JO9-4MN",
+        "quality": "STELLAR"
+      },
+      {
+        "droid": "PLNK",
+        "quality": "STELLAR"
+      },
+      {
+        "droid": "ECG",
+        "quality": "STELLAR"
+      }
+    ],
+    "36": [
+      {
+        "droid": "GONK",
+        "quality": "KYBER"
+      },
+      {
+        "droid": "EG-58",
+        "quality": "KYBER"
+      },
+      {
+        "droid": "ROLL-R",
+        "quality": "KYBER"
+      }
+    ],
+    "37": [
+      {
+        "droid": "EGL",
+        "quality": "KYBER"
+      },
+      {
+        "droid": "R2",
+        "quality": "KYBER"
+      },
+      {
+        "droid": "B2 SUPER",
+        "quality": "KYBER"
+      }
+    ],
+    "38": [
+      {
+        "droid": "KT",
+        "quality": "KYBER"
+      },
+      {
+        "droid": "MPH",
+        "quality": "KYBER"
+      },
+      {
+        "droid": "SNOW MOUSE",
+        "quality": "KYBER"
+      }
+    ],
+    "39": [
+      {
+        "droid": "JO9-4MN",
+        "quality": "KYBER"
+      },
+      {
+        "droid": "CYCLO-GRAV",
+        "quality": "KYBER"
+      },
+      {
+        "droid": "TRI-TEK",
+        "quality": "KYBER"
+      }
+    ],
+    "40": [
+      {
+        "droid": "PLNK",
+        "quality": "KYBER"
+      },
+      {
+        "droid": "ECG",
+        "quality": "KYBER"
+      },
+      {
+        "droid": "DRFT-R",
+        "quality": "KYBER"
+      }
+    ]
+  }
+}

@@ -68,13 +68,13 @@ def test_visual_guard_includes_a_title_split_into_single_characters():
     assert not identity_visual_evidence(frame, frame, "full", (0, 0, 700, 90), tokens, []).patches
 
 
-def test_path_six_uses_its_own_finishes_and_keeps_kt_through_rank_34():
+def test_revised_path_six_uses_its_own_finishes_and_keeps_kt_through_rank_38():
     assert next_cycle(5) == 6 and next_cycle(6) == 1
     assert len(CYCLES[6]) == 40
-    assert [i for i, row in enumerate(CYCLES[6], 1) if "KT" in row] == [14, 21, 29, 34]
+    assert [i for i, row in enumerate(CYCLES[6], 1) if "KT" in row] == [7, 13, 15, 18, 22, 29, 33, 38]
     assert advise(6, 28, "KT", "GOLD").next_required_quality == "GALACTIC"
-    assert not advise(6, 33, "KT").safe_to_sell
-    assert advise(6, 34, "KT").safe_to_sell
-    assert CYCLES[6][-1] == ("JO9-4MN", "PLNK", "ECG")
+    assert not advise(6, 37, "KT").safe_to_sell
+    assert advise(6, 38, "KT").safe_to_sell
+    assert CYCLES[6][-1] == ("PLNK", "ECG", "DRFT-R")
     assert quality_table()["6"]["40"] == ["KYBER"] * 3
-    assert quality_table()["6"]["9"][0] == "KYBER"
+    assert quality_table()["6"]["9"] == ["DIAMOND", "GOLD", "GOLD"]

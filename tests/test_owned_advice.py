@@ -360,6 +360,8 @@ def test_monitor_changes_progress_only_from_current_matching_header_and_unique_t
         calls.append(1)
         if len(calls) == 1:
             return [token("Rank 26" if mode == "header_mismatch" else "Rank 27")]
+        if len(calls) == 3:
+            return []  # Legacy menus can omit the explicit path label.
         if mode == "stale":
             app._publish_frame(None)
         names = ["R4", "R5", "R8"] if mode == "ambiguous" else ["KX", "TRI-TEK", "SNOW MOUSE"]
@@ -371,7 +373,7 @@ def test_monitor_changes_progress_only_from_current_matching_header_and_unique_t
     save = Mock()
     monkeypatch.setattr(app_module, "save_config", save)
     app._monitor()
-    assert len(calls) == 2
+    assert len(calls) == 3
     assert app.last_signature is None
     if mode == "valid":
         assert (app.config["cycle"], app.config["completed_rebirth"]) == (1, 26)

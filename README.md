@@ -4,16 +4,17 @@ Droid Advisor is a free, community-built Windows companion for Fortnite Droid Ty
 
 ## Current status
 
-This project is community software under active development. Version 1.3.4 includes:
+This project is community software under active development. Version 1.3.5 includes:
 
 - Automatic RBC and rebirth-rank detection from the View Rebirth menu.
+- Explicit PATH label recognition for shared requirements and visual validation of slow rebirth OCR.
 - A draggable current and next rebirth overlay using consistent screen-safe rank cards.
 - Keep or sell guidance for opened droid cards, with visual validation that tolerates slow OCR.
 - A 100-droid catalog including Power Droids, WG-22 and Protocol droids.
 - Held-blueprint recognition.
 - Optional Sandcrawler spawn alerts with configurable minimum variant and rarity, bundled or user-selected WAV sounds, and volume control.
 - A `Ctrl+Shift+Z` overlay listing previously required droids with no remaining use in the current cycle.
-- Six rebirth cycles through RB40, including the Power Droid path from Droid Tycoon update 1.34.
+- Six rebirth cycles through RB40, including the revised Path 6 from Droid Tycoon update 1.35.
 - A `Ctrl+Shift+C` reference for the Update 1.32 upgrade-chip costs.
 - A redesigned Swag Studios interface with direct links to the Droid Tycoon community and the DepSwag profile.
 - An interactive v1.28.0 base inventory map with per-droid records, physical drag-and-drop slots, manual reconciliation, undo, legacy-data migration, and safe owned-card confirmation.

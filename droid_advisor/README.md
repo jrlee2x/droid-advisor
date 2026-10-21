@@ -20,7 +20,7 @@ Double-click `droid_advisor\run.cmd`, or run:
 .\droid_advisor\run.cmd
 ```
 
-Choose RBC1–RBC5 and enter the number of rebirths already completed. For example, completed `22` means you are working on RB23. The settings persist in `%APPDATA%\DroidAdvisor\config.json`. Ordinary droid screens never overwrite that level from a guessed on-screen number; only a unique View Rebirth match can update it automatically.
+Choose RBC1–RBC6 and enter the number of rebirths already completed. For example, completed `22` means you are working on RB23. The settings persist in `%APPDATA%\DroidAdvisor\config.json`. Ordinary droid screens never overwrite that level from a guessed on-screen number; only a verified View Rebirth match can update it automatically.
 
 The app continuously watches a visible Fortnite/Droid Tycoon window. When a droid panel is open, it reads the droid name and completed rebirth indicator and shows one of:
 
@@ -58,7 +58,7 @@ The optional **Sandcrawler alerts + sound** setting watches the left-side spawn 
 
 ## Automatic RBC detection
 
-When the View Rebirth menu is visible, the watcher compares any three recognized required droids with all RBC1–RBC5 rows. It updates the cycle and completed level only when the match is unique. Shared or ambiguous triples are ignored, leaving the current manual setting unchanged.
+When the View Rebirth menu is visible, the watcher reads its target rank, PATH label and three required droid names. All must agree with one of the six paths before progress changes. A readable PATH label resolves shared triples. When that label is unavailable, the three-droid match must be globally unique and agree with the target rank. Slow OCR remains valid only while the exact menu lettering is still visible in fresh captures. Path 6 uses the revised v1.35 requirements from October 17, 2026.
 
 OCR accuracy depends on resolution, UI scale, motion blur, and contrast. Keep the target menu unobstructed for a moment. The first iteration uses general screen regions based on the supplied 1920×1277 screenshot; calibration controls can be added after testing against live captures.
 

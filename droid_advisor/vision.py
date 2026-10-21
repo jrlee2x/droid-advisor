@@ -13,7 +13,7 @@ import numpy as np
 from PIL import Image, ImageEnhance, ImageOps
 
 from .engine import ALL_DROIDS, canonical
-from .cycles import MAX_REBIRTH
+from .cycles import CYCLES, MAX_REBIRTH
 from .droid_catalog import CATALOG, droid_metadata
 from .qualities import RARITY_ORDER, SPAWN_VARIANT_ORDER
 from .advice_state import TextPatch, VisualEvidence
@@ -646,6 +646,47 @@ def rebirth_rank(tokens: list[OcrToken]) -> int | None:
     text = " ".join(token.text for token in tokens)
     match = re.search(r"RANK\s*(\d{1,2})\b", text, re.IGNORECASE)
     return int(match.group(1)) if match and 1 <= int(match.group(1)) <= MAX_REBIRTH else None
+
+
+def rebirth_path(tokens: list[OcrToken]) -> int | None:
+    """Read only a confident PATH N label, never a nearby HUD number."""
+    text = " ".join(token.text for token in tokens if token.confidence >= 0.80)
+    matches = {int(value) for value in re.findall(r"\bPATH\s*(\d+)\b", text, re.IGNORECASE)}
+    return next(iter(matches)) if len(matches) == 1 and matches.issubset(CYCLES) else None
+
+
+def rebirth_visual_evidence(full_image, image, region_name, header_tokens, requirement_tokens, path_tokens=()):
+    """Keep slow progress reads valid only while their exact menu text remains."""
+    offset = 0 if region_name in ("full", "left") else (
+        full_image.width - image.width if region_name == "right" else (full_image.width - image.width) // 2
+    )
+    names = {canonical(name) for name in visible_droids(requirement_tokens)}
+    if rebirth_rank(header_tokens) is None or len(names) < 3:
+        return VisualEvidence(full_image.size, ())
+    def label_tokens(tokens, label):
+        text = " ".join(token.text for token in tokens)
+        match = re.search(rf"\b{label}\s*\d+\b", text, re.IGNORECASE)
+        if not match:
+            return []
+        selected, start = [], 0
+        for token in tokens:
+            end = start + len(token.text)
+            if start < match.end() and end > match.start():
+                selected.append(token)
+            start = end + 1
+        return selected
+
+    # Track split Rank/10 and PATH/3 labels, excluding changing ping/FPS text.
+    tokens = [*label_tokens(header_tokens, "RANK"), *label_tokens(path_tokens, "PATH"), *[
+        token for token in requirement_tokens if canonical(token.text) in names and token.confidence >= 0.80
+    ]]
+    patches = []
+    for token in tokens:
+        xs, ys = zip(*token.box)
+        box = (max(0, int(min(xs)) + offset - 1), max(0, int(min(ys)) - 1),
+               min(full_image.width, int(max(xs)) + offset + 2), min(full_image.height, int(max(ys)) + 2))
+        patches.append(TextPatch.capture(full_image, box, white_text=True))
+    return VisualEvidence(full_image.size, tuple(patches))
 
 
 def visible_droids(tokens: list[OcrToken]) -> set[str]:
