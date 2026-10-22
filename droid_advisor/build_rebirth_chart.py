@@ -27,6 +27,7 @@ MUTED = "#9cb0c8"
 CYAN = "#34d7ff"
 ORANGE = "#ff9d00"
 PINK = "#ff2870"
+GAME_UPDATE = "1.35"
 
 
 def font(name: str, size: int) -> ImageFont.FreeTypeFont:
@@ -241,7 +242,7 @@ def master_chart(stacks: dict[int, Image.Image]) -> Image.Image:
     image.alpha_composite(logo, (padding + 2, 26)) if image.mode == "RGBA" else image.paste(logo, (padding + 2, 26), logo)
     draw.text((206, 36), "DROID ADVISOR", font=TITLE, fill=INK)
     draw.text((209, 116), "COMPLETE REBIRTH CYCLE CHART", font=SUBTITLE, fill=CYAN)
-    draw.text((209, 153), "UPDATE 1.32  •  CYCLES 1–5  •  RB1–RB40", font=SUBTITLE, fill=MUTED)
+    draw.text((209, 153), f"UPDATE {GAME_UPDATE}  •  CYCLES 1–{NUM_CYCLES}  •  RB1–RB{MAX_REBIRTH}", font=SUBTITLE, fill=MUTED)
     draw.line((padding, masthead - 10, width - padding, masthead - 10), fill=ORANGE, width=4)
 
     for index, cycle in enumerate(range(1, NUM_CYCLES + 1)):
@@ -280,7 +281,7 @@ def og_preview(stacks: dict[int, Image.Image]) -> Image.Image:
     image.paste(logo, (55, 52), logo)
     draw.text((285, 63), "DROID ADVISOR", font=OG_TITLE, fill=INK)
     draw.text((289, 137), "COMPLETE REBIRTH CYCLE CHART", font=OG_SUBTITLE, fill=CYAN)
-    draw.text((289, 178), "UPDATE 1.32  •  CYCLES 1–5  •  RB1–RB40", font=OG_SUBTITLE, fill=MUTED)
+    draw.text((289, 178), f"UPDATE {GAME_UPDATE}  •  CYCLES 1–{NUM_CYCLES}  •  RB1–RB{MAX_REBIRTH}", font=OG_SUBTITLE, fill=MUTED)
 
     stats = ((str(len(CYCLES)), "CYCLES"), (str(MAX_REBIRTH), "REBIRTHS EACH"), (str(len(CYCLES) * MAX_REBIRTH), "TARGET CARDS"))
     for index, (value, label) in enumerate(stats):
@@ -294,12 +295,13 @@ def og_preview(stacks: dict[int, Image.Image]) -> Image.Image:
 
     crop_y = 0
     crop_height = 224
-    thumb_width = 202
+    gap = 16
+    thumb_width = (width - 110 - (NUM_CYCLES - 1) * gap) // NUM_CYCLES
     for index, cycle in enumerate(range(1, NUM_CYCLES + 1)):
         stack = stacks[cycle]
         sample = stack.crop((0, crop_y, CARD_WIDTH, min(stack.height, crop_y + 478)))
         sample.thumbnail((thumb_width, crop_height), Image.Resampling.LANCZOS)
-        x = 55 + index * 220
+        x = 55 + index * (thumb_width + gap)
         draw.rounded_rectangle((x - 4, 390, x + thumb_width + 4, 626), radius=14, fill=PANEL, outline=ORANGE, width=2)
         image.paste(sample, (x, 399))
         draw_centered_in_box(draw, (x, 372, x + thumb_width, 399), f"CYCLE {cycle}", OG_LABEL, CYAN)
@@ -328,12 +330,15 @@ def build() -> None:
     for cycle, stack in stacks.items():
         chart = cycle_chart(cycle, stack)
         chart.save(ASSETS / f"rebirth-cycle-{cycle}.png", optimize=True)
+        web_chart = chart.copy()
+        web_chart.thumbnail((320, 6000), Image.Resampling.LANCZOS)
+        web_chart.save(ASSETS / f"rebirth-cycle-{cycle}-web.webp", "WEBP", quality=48, method=6)
 
     master = master_chart(stacks)
     master.save(ASSETS / "droid-advisor-all-rebirth-cycles.png", optimize=True)
     web_master = master.copy()
     web_master.thumbnail((650, 1900), Image.Resampling.LANCZOS)
-    web_master.save(ASSETS / "droid-advisor-all-rebirth-cycles-web.webp", "WEBP", quality=42, method=6)
+    web_master.save(ASSETS / "droid-advisor-all-rebirth-cycles-web.webp", "WEBP", quality=40, method=6)
 
     preview = og_preview(stacks)
     preview.save(ASSETS / "droid-advisor-rebirth-chart-preview.jpg", quality=88, optimize=True, progressive=True)

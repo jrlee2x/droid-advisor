@@ -1,0 +1,632 @@
+{
+  "recipes": [
+    {
+      "output": "RIV-3T",
+      "rarity": "MYTHIC",
+      "role": "WORKER",
+      "ingredients": [
+        "KX",
+        "IG",
+        "RIC"
+      ],
+      "income_per_second": {
+        "DEFAULT": 8400,
+        "GOLD": 16800,
+        "DIAMOND": 33600,
+        "RAINBOW": 67200,
+        "BESKAR": 134400,
+        "GALACTIC": 369600,
+        "STELLAR": 1050000
+      },
+      "income_per_hour": {
+        "DEFAULT": 30240000,
+        "GOLD": 60480000,
+        "DIAMOND": 120960000,
+        "RAINBOW": 241920000,
+        "BESKAR": 483840000,
+        "GALACTIC": 1330560000,
+        "STELLAR": 3780000000
+      }
+    },
+    {
+      "output": "LUG-G",
+      "rarity": "MYTHIC",
+      "role": "WORKER",
+      "ingredients": [
+        "LOADLIFTER",
+        "ID10",
+        "R5"
+      ],
+      "income_per_second": {
+        "DEFAULT": 7600,
+        "GOLD": 15200,
+        "DIAMOND": 30400,
+        "RAINBOW": 60800,
+        "BESKAR": 121600,
+        "GALACTIC": 334400,
+        "STELLAR": 950000
+      },
+      "income_per_hour": {
+        "DEFAULT": 27360000,
+        "GOLD": 54720000,
+        "DIAMOND": 109440000,
+        "RAINBOW": 218880000,
+        "BESKAR": 437760000,
+        "GALACTIC": 1203840000,
+        "STELLAR": 3420000000
+      }
+    },
+    {
+      "output": "X-ONK",
+      "rarity": "MYTHIC",
+      "role": "BATTLE",
+      "ingredients": [
+        "KX",
+        "KX",
+        "GONK"
+      ],
+      "income_per_second": {
+        "DEFAULT": 8000,
+        "GOLD": 16000,
+        "DIAMOND": 32000,
+        "RAINBOW": 64000,
+        "BESKAR": 128000,
+        "GALACTIC": 352000,
+        "STELLAR": 1000000
+      },
+      "income_per_hour": {
+        "DEFAULT": 28800000,
+        "GOLD": 57600000,
+        "DIAMOND": 115200000,
+        "RAINBOW": 230400000,
+        "BESKAR": 460800000,
+        "GALACTIC": 1267200000,
+        "STELLAR": 3600000000
+      }
+    },
+    {
+      "output": "SRV-O",
+      "rarity": "MYTHIC",
+      "role": "BATTLE",
+      "ingredients": [
+        "RIC-1200",
+        "B1 HEAVY",
+        "B1 HEAVY"
+      ],
+      "income_per_second": {
+        "DEFAULT": 7600,
+        "GOLD": 15200,
+        "DIAMOND": 30400,
+        "RAINBOW": 60800,
+        "BESKAR": 121600,
+        "GALACTIC": 334400,
+        "STELLAR": 950000
+      },
+      "income_per_hour": {
+        "DEFAULT": 27360000,
+        "GOLD": 54720000,
+        "DIAMOND": 109440000,
+        "RAINBOW": 218880000,
+        "BESKAR": 437760000,
+        "GALACTIC": 1203840000,
+        "STELLAR": 3420000000
+      }
+    },
+    {
+      "output": "AXI-POD",
+      "rarity": "MYTHIC",
+      "role": "ASTRO",
+      "ingredients": [
+        "RIC",
+        "BDX EXPLORER",
+        "R7"
+      ],
+      "income_per_second": {
+        "DEFAULT": 8000,
+        "GOLD": 16000,
+        "DIAMOND": 32000,
+        "RAINBOW": 64000,
+        "BESKAR": 128000,
+        "GALACTIC": 352000,
+        "STELLAR": 1000000
+      },
+      "income_per_hour": {
+        "DEFAULT": 28800000,
+        "GOLD": 57600000,
+        "DIAMOND": 115200000,
+        "RAINBOW": 230400000,
+        "BESKAR": 460800000,
+        "GALACTIC": 1267200000,
+        "STELLAR": 3600000000
+      }
+    },
+    {
+      "output": "LOW-MO",
+      "rarity": "MYTHIC",
+      "role": "WORKER",
+      "ingredients": [
+        "A-LT",
+        "A-LT",
+        "LOADLIFTER"
+      ],
+      "income_per_second": {
+        "DEFAULT": 7800,
+        "GOLD": 15600,
+        "DIAMOND": 31200,
+        "RAINBOW": 62400,
+        "BESKAR": 124800,
+        "GALACTIC": 343200,
+        "STELLAR": 975000
+      },
+      "income_per_hour": {
+        "DEFAULT": 28080000,
+        "GOLD": 56160000,
+        "DIAMOND": 112320000,
+        "RAINBOW": 224640000,
+        "BESKAR": 449280000,
+        "GALACTIC": 1235520000,
+        "STELLAR": 3510000000
+      }
+    },
+    {
+      "output": "RO-TOR",
+      "rarity": "LEGENDARY",
+      "role": "WORKER",
+      "ingredients": [
+        "BB9",
+        "PIT",
+        "B1 BATTLE"
+      ],
+      "income_per_second": {
+        "DEFAULT": 1500,
+        "GOLD": 3000,
+        "DIAMOND": 6000,
+        "RAINBOW": 12000,
+        "BESKAR": 36000,
+        "GALACTIC": 90000,
+        "STELLAR": 225000
+      },
+      "income_per_hour": {
+        "DEFAULT": 5400000,
+        "GOLD": 10800000,
+        "DIAMOND": 21600000,
+        "RAINBOW": 43200000,
+        "BESKAR": 129600000,
+        "GALACTIC": 324000000,
+        "STELLAR": 810000000
+      }
+    },
+    {
+      "output": "FUS-3",
+      "rarity": "LEGENDARY",
+      "role": "WORKER",
+      "ingredients": [
+        "R7",
+        "B-U4D",
+        "B-U4D"
+      ],
+      "income_per_second": {
+        "DEFAULT": 1600,
+        "GOLD": 3200,
+        "DIAMOND": 6400,
+        "RAINBOW": 12800,
+        "BESKAR": 38400,
+        "GALACTIC": 96000,
+        "STELLAR": 240000
+      },
+      "income_per_hour": {
+        "DEFAULT": 5760000,
+        "GOLD": 11520000,
+        "DIAMOND": 23040000,
+        "RAINBOW": 46080000,
+        "BESKAR": 138240000,
+        "GALACTIC": 345600000,
+        "STELLAR": 864000000
+      }
+    },
+    {
+      "output": "ORB-XL",
+      "rarity": "LEGENDARY",
+      "role": "BATTLE",
+      "ingredients": [
+        "CB",
+        "GUNRUNNER",
+        "B2-RP"
+      ],
+      "income_per_second": {
+        "DEFAULT": 1600,
+        "GOLD": 3200,
+        "DIAMOND": 6400,
+        "RAINBOW": 12800,
+        "BESKAR": 38400,
+        "GALACTIC": 96000,
+        "STELLAR": 240000
+      },
+      "income_per_hour": {
+        "DEFAULT": 5760000,
+        "GOLD": 11520000,
+        "DIAMOND": 23040000,
+        "RAINBOW": 46080000,
+        "BESKAR": 138240000,
+        "GALACTIC": 345600000,
+        "STELLAR": 864000000
+      }
+    },
+    {
+      "output": "QIK-BIT",
+      "rarity": "LEGENDARY",
+      "role": "ASTRO",
+      "ingredients": [
+        "GROUNDMECH",
+        "GROUNDMECH",
+        "BB9"
+      ],
+      "income_per_second": {
+        "DEFAULT": 1600,
+        "GOLD": 3200,
+        "DIAMOND": 6400,
+        "RAINBOW": 12800,
+        "BESKAR": 38400,
+        "GALACTIC": 96000,
+        "STELLAR": 240000
+      },
+      "income_per_hour": {
+        "DEFAULT": 5760000,
+        "GOLD": 11520000,
+        "DIAMOND": 23040000,
+        "RAINBOW": 46080000,
+        "BESKAR": 138240000,
+        "GALACTIC": 345600000,
+        "STELLAR": 864000000
+      }
+    },
+    {
+      "output": "N-UL",
+      "rarity": "EPIC",
+      "role": "WORKER",
+      "ingredients": [
+        "B1 HEAVY",
+        "GUNRUNNER",
+        "BB"
+      ],
+      "income_per_second": {
+        "DEFAULT": 720,
+        "GOLD": 1440,
+        "DIAMOND": 2880,
+        "RAINBOW": 5760,
+        "BESKAR": 24480,
+        "GALACTIC": 37440,
+        "STELLAR": 57600
+      },
+      "income_per_hour": {
+        "DEFAULT": 2592000,
+        "GOLD": 5184000,
+        "DIAMOND": 10368000,
+        "RAINBOW": 20736000,
+        "BESKAR": 88128000,
+        "GALACTIC": 134784000,
+        "STELLAR": 207360000
+      }
+    },
+    {
+      "output": "SCRP-R",
+      "rarity": "EPIC",
+      "role": "ASTRO",
+      "ingredients": [
+        "GONK",
+        "GROUNDMECH",
+        "R6"
+      ],
+      "income_per_second": {
+        "DEFAULT": 720,
+        "GOLD": 1440,
+        "DIAMOND": 2880,
+        "RAINBOW": 5760,
+        "BESKAR": 24480,
+        "GALACTIC": 37440,
+        "STELLAR": 57600
+      },
+      "income_per_hour": {
+        "DEFAULT": 2592000,
+        "GOLD": 5184000,
+        "DIAMOND": 10368000,
+        "RAINBOW": 20736000,
+        "BESKAR": 88128000,
+        "GALACTIC": 134784000,
+        "STELLAR": 207360000
+      }
+    },
+    {
+      "output": "ARM-CORE",
+      "rarity": "EPIC",
+      "role": "BATTLE",
+      "ingredients": [
+        "ARG",
+        "ARG",
+        "B2 HEAVY"
+      ],
+      "income_per_second": {
+        "DEFAULT": 690,
+        "GOLD": 1380,
+        "DIAMOND": 2760,
+        "RAINBOW": 5520,
+        "BESKAR": 23460,
+        "GALACTIC": 35880,
+        "STELLAR": 55200
+      },
+      "income_per_hour": {
+        "DEFAULT": 2484000,
+        "GOLD": 4968000,
+        "DIAMOND": 9936000,
+        "RAINBOW": 19872000,
+        "BESKAR": 84456000,
+        "GALACTIC": 129168000,
+        "STELLAR": 198720000
+      }
+    },
+    {
+      "output": "OPT-AR",
+      "rarity": "EPIC",
+      "role": "BATTLE",
+      "ingredients": [
+        "R2",
+        "R2",
+        "B2 SUPER"
+      ],
+      "income_per_second": {
+        "DEFAULT": 720,
+        "GOLD": 1440,
+        "DIAMOND": 2880,
+        "RAINBOW": 5760,
+        "BESKAR": 24480,
+        "GALACTIC": 37440,
+        "STELLAR": 57600
+      },
+      "income_per_hour": {
+        "DEFAULT": 2592000,
+        "GOLD": 5184000,
+        "DIAMOND": 10368000,
+        "RAINBOW": 20736000,
+        "BESKAR": 88128000,
+        "GALACTIC": 134784000,
+        "STELLAR": 207360000
+      }
+    },
+    {
+      "output": "WHL-EX",
+      "rarity": "RARE",
+      "role": "WORKER",
+      "ingredients": [
+        "ARG",
+        "MOUSE",
+        "MOUSE"
+      ],
+      "income_per_second": {
+        "DEFAULT": 72,
+        "GOLD": 144,
+        "DIAMOND": 288,
+        "RAINBOW": 576,
+        "BESKAR": 864,
+        "GALACTIC": 1728,
+        "STELLAR": 2304
+      },
+      "income_per_hour": {
+        "DEFAULT": 259200,
+        "GOLD": 518400,
+        "DIAMOND": 1036800,
+        "RAINBOW": 2073600,
+        "BESKAR": 3110400,
+        "GALACTIC": 6220800,
+        "STELLAR": 8294400
+      }
+    },
+    {
+      "output": "BTL-R",
+      "rarity": "RARE",
+      "role": "BATTLE",
+      "ingredients": [
+        "R9",
+        "BDX EXPLORER",
+        "B1 BATTLE"
+      ],
+      "income_per_second": {
+        "DEFAULT": 72,
+        "GOLD": 144,
+        "DIAMOND": 288,
+        "RAINBOW": 576,
+        "BESKAR": 864,
+        "GALACTIC": 1728,
+        "STELLAR": 2304
+      },
+      "income_per_hour": {
+        "DEFAULT": 259200,
+        "GOLD": 518400,
+        "DIAMOND": 1036800,
+        "RAINBOW": 2073600,
+        "BESKAR": 3110400,
+        "GALACTIC": 6220800,
+        "STELLAR": 8294400
+      }
+    },
+    {
+      "output": "ZRO-TEC",
+      "rarity": "RARE",
+      "role": "ASTRO",
+      "ingredients": [
+        "ID10",
+        "ID10",
+        "2BB"
+      ],
+      "income_per_second": {
+        "DEFAULT": 72,
+        "GOLD": 144,
+        "DIAMOND": 288,
+        "RAINBOW": 576,
+        "BESKAR": 864,
+        "GALACTIC": 1728,
+        "STELLAR": 2304
+      },
+      "income_per_hour": {
+        "DEFAULT": 259200,
+        "GOLD": 518400,
+        "DIAMOND": 1036800,
+        "RAINBOW": 2073600,
+        "BESKAR": 3110400,
+        "GALACTIC": 6220800,
+        "STELLAR": 8294400
+      }
+    }
+  ],
+  "shopping": [
+    {
+      "name": "ARG",
+      "quantity": 3,
+      "rarity": "RARE"
+    },
+    {
+      "name": "B1 HEAVY",
+      "quantity": 3,
+      "rarity": "EPIC"
+    },
+    {
+      "name": "GROUNDMECH",
+      "quantity": 3,
+      "rarity": "EPIC"
+    },
+    {
+      "name": "ID10",
+      "quantity": 3,
+      "rarity": "COMMON"
+    },
+    {
+      "name": "KX",
+      "quantity": 3,
+      "rarity": "MYTHIC"
+    },
+    {
+      "name": "A-LT",
+      "quantity": 2,
+      "rarity": "RARE"
+    },
+    {
+      "name": "B-U4D",
+      "quantity": 2,
+      "rarity": "RARE"
+    },
+    {
+      "name": "B1 BATTLE",
+      "quantity": 2,
+      "rarity": "COMMON"
+    },
+    {
+      "name": "BB9",
+      "quantity": 2,
+      "rarity": "LEGENDARY"
+    },
+    {
+      "name": "BDX EXPLORER",
+      "quantity": 2,
+      "rarity": "RARE"
+    },
+    {
+      "name": "GONK",
+      "quantity": 2,
+      "rarity": "COMMON"
+    },
+    {
+      "name": "GUNRUNNER",
+      "quantity": 2,
+      "rarity": "EPIC"
+    },
+    {
+      "name": "LOADLIFTER",
+      "quantity": 2,
+      "rarity": "MYTHIC"
+    },
+    {
+      "name": "MOUSE",
+      "quantity": 2,
+      "rarity": "COMMON"
+    },
+    {
+      "name": "R2",
+      "quantity": 2,
+      "rarity": "EPIC"
+    },
+    {
+      "name": "R7",
+      "quantity": 2,
+      "rarity": "LEGENDARY"
+    },
+    {
+      "name": "RIC",
+      "quantity": 2,
+      "rarity": "MYTHIC"
+    },
+    {
+      "name": "2BB",
+      "quantity": 1,
+      "rarity": "RARE"
+    },
+    {
+      "name": "B2 HEAVY",
+      "quantity": 1,
+      "rarity": "EPIC"
+    },
+    {
+      "name": "B2 SUPER",
+      "quantity": 1,
+      "rarity": "EPIC"
+    },
+    {
+      "name": "B2-RP",
+      "quantity": 1,
+      "rarity": "LEGENDARY"
+    },
+    {
+      "name": "BB",
+      "quantity": 1,
+      "rarity": "EPIC"
+    },
+    {
+      "name": "CB",
+      "quantity": 1,
+      "rarity": "COMMON"
+    },
+    {
+      "name": "IG",
+      "quantity": 1,
+      "rarity": "MYTHIC"
+    },
+    {
+      "name": "PIT",
+      "quantity": 1,
+      "rarity": "COMMON"
+    },
+    {
+      "name": "R5",
+      "quantity": 1,
+      "rarity": "COMMON"
+    },
+    {
+      "name": "R6",
+      "quantity": 1,
+      "rarity": "EPIC"
+    },
+    {
+      "name": "R9",
+      "quantity": 1,
+      "rarity": "RARE"
+    },
+    {
+      "name": "RIC-1200",
+      "quantity": 1,
+      "rarity": "MYTHIC"
+    }
+  ],
+  "totals": {
+    "recipes": 17,
+    "unique_droids": 29,
+    "droid_units": 51
+  }
+}
