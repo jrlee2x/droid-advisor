@@ -1,6 +1,6 @@
 # Rebirth detection repair and v1.35 Path 6
 
-Checked October 21, 2026. Latest local repair: 1.3.10; versioned findings follow.
+Checked October 21, 2026. Latest stable release: 1.3.10; versioned findings follow.
 
 ## Findings
 
@@ -113,3 +113,11 @@ All 708 relevant regressions pass. Packaged and installed runtime health checks 
 ### Live confirmation
 
 On October 21, Josh answered "Stays visible" to the 1.3.10 twenty-second R4 card check. The reported R4 banner flicker is resolved in his live check. He had already confirmed automatic rebirth detection works after 1.3.5. This confirmation covers the reported R4 card; it is not a claim that every droid/card/blueprint has been exercised live.
+
+## Public distribution
+
+Josh explicitly requested publication so other installations receive the update. Source was pushed to `origin/main`, tag `v1.3.10` points to release commit `f3f9a51`, and [Droid Advisor 1.3.10](https://github.com/jrlee2x/droid-advisor/releases/tag/v1.3.10) is published as the latest stable GitHub Release. Only the tested installer and its matching checksum file were uploaded. No profile backups, saved frames or private repair artifacts were published as release assets.
+
+The public installer digest matches the tested build: `5c895c0701c1dddc77eb4faec9a853ecb26db6a03ca29205ac45a897397452cc`. The actual updater successfully queried the public latest-release endpoint as version 1.3.4, selected 1.3.10, downloaded the public installer and verified its hash. An already-current 1.3.10 check correctly returned no update. This download-only check did not launch another installer. Results are saved locally in `public-update-verification-1.3.10.json` in the repair artifact directory.
+
+Existing installations with automatic checking enabled discover the release at the next application start and ask the user to accept installation. Settings also provide Check Now. Publication does not force an installation or contact users directly.
