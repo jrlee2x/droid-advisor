@@ -4,7 +4,7 @@ Droid Advisor is a free, community-built Windows companion for Fortnite Droid Ty
 
 ## Current status
 
-This project is community software under active development. Version 1.3.8 includes:
+This project is community software under active development. Version 1.3.9 includes:
 
 - Automatic RBC and rebirth-rank detection from the View Rebirth menu.
 - Explicit PATH label recognition for shared requirements and visual validation of slow rebirth OCR.

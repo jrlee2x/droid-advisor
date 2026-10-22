@@ -572,14 +572,14 @@ def identity_visual_evidence(full_image, image, region_name, rect, identity_toke
                # sized extension included animated artwork beside RARE.
                min(full_image.width, int(max(xs)) + rect[0] + offset + (int(token.height * 2) if is_title else margin)),
                min(full_image.height, int(max(ys)) + rect[1] + margin))
-        patches.append(TextPatch.capture(full_image, box, white_text=is_title))
+        patches.append(TextPatch.capture(full_image, box, white_text=is_title, adaptive_threshold=not is_title))
     control_count = 0
     for token in controls:
         prompt_part = canonical(token.text)
         if is_card_button_text(token.text) or (len(prompt_part) >= 4 and prompt_part in "TOSSBLUEPRINTONCRAFTINGSTATION"):
             xs, ys = zip(*token.box)
             box = (int(min(xs)) + offset, int(min(ys)), int(max(xs)) + offset, int(max(ys)))
-            patches.append(TextPatch.capture(full_image, box))
+            patches.append(TextPatch.capture(full_image, box, adaptive_threshold=True))
             control_count += 1
     return VisualEvidence(full_image.size, tuple(patches) if title_count and control_count else ())
 
@@ -595,7 +595,7 @@ def card_controls_visual_evidence(full_image, image, region_name, controls):
             continue
         xs, ys = zip(*token.box)
         box = (int(min(xs)) + offset, int(min(ys)), int(max(xs)) + offset, int(max(ys)))
-        patches.append(TextPatch.capture(full_image, box))
+        patches.append(TextPatch.capture(full_image, box, adaptive_threshold=True))
     return VisualEvidence(full_image.size, tuple(patches) if len(patches) >= 3 else ())
 
 

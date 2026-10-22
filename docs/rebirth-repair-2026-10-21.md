@@ -1,6 +1,6 @@
 # Rebirth detection repair and v1.35 Path 6
 
-Checked October 21, 2026. Latest local repair: 1.3.8; versioned findings follow.
+Checked October 21, 2026. Latest local repair: 1.3.9; versioned findings follow.
 
 ## Findings
 
@@ -72,7 +72,7 @@ Diagnostics additionally expose focused OCR time, geometry-cache use, rejected e
 
 Local 1.3.7 installer and installed runtime both return exit 0, and the installed executable matches the build hash. Settings and inventory were byte-for-byte unchanged during installation. Installer SHA-256: `70c788b11c90464e66c99bd213e710cd9591f28e33b36f5290d1acfac17cb052`. The installer, checksum, installation log and `verification-1.3.7.json` are saved in the repair artifact directory. Josh was asked to check the R4 banner after installation; live confirmation remains pending.
 
-## Follow-up: badge validation and banner persistence, 1.3.8
+## Follow-up: badge validation and banner persistence, 1.3.9
 
 Josh confirmed that the 1.3.7 R4 banner appears but disappears quickly. His new 19:05:24 report confirms Fortnite remains foreground with capture active, focused R4 OCR at 0.997 confidence in 250 ms, cached control geometry, and `advice_display_status=cleared by fresh-frame validation`. A rejected R4 observation reports five visual patches with only patch 1 failing. Given the separate R4 / Rainbow / Rare tokens and three recognized action controls, patch 1 is the rarity badge; the title and controls pass.
 
@@ -85,3 +85,15 @@ Advice placement also avoids the evidence's title, badge and control rectangles,
 All 604 relevant regressions pass. No title, identity confidence, two-capture confirmation, expiry, focus, pause, capture or changed-progress requirement was relaxed. No live screen capture or desktop control was used.
 
 The final 1.3.8 installer and installed runtime health check both return exit 0. The installed executable matches the final build, and configuration and inventory remained byte-for-byte unchanged during installation. Installer SHA-256: `68d1e8d154c1faa5b14d85b90f7b29fd08762d6aa74b2709dde35662e7f6474a`. The installer, checksum, log and `verification-1.3.8.json` are saved in the repair artifact directory. Version 1.3.8 was launched at 19:11:28 America/Chicago. Josh was asked to leave the R4 card open for 15 seconds to confirm that the banner persists; live confirmation remains pending.
+
+## Follow-up: recurring badge/control failures, 1.3.9
+
+Josh reports that 1.3.8 disappears and comes right back. His 19:16:55 report shows the banner visible at copy time with confident R4 recognition (0.997, 312 ms), active foreground capture and cached controls. Retained rejection data shows a 3750 ms old observation rejected on patches 1, 3 and 4: the rarity and two controls. This report does not prove the underlying pixel changes were brightness, animation, hover or capture artifacts, and its rejection data is distinct from the currently visible banner.
+
+An offline regression reproduces a separate defect in those patches: a brightness change in unchanged dark control lettering crosses the old fixed threshold and fails validation. Badge and control patches now choose a current luminance threshold at the midpoint of their light/dark classes, then enforce the same strict pixel shape comparison (at most 1.5% of the patch and 6% of its ink). There is no grace period or extra mismatch allowance. Full white title context, rebirth validation, confidence, two-capture confirmation, expiry, capture and progress requirements are unchanged.
+
+New checks cover both text polarities, changing fills, whole-control brightness, changed title/badge/button wording and disappearance. The actual banner lifetime check retains advice on changed fill and removes it on changed badge text. The adaptive matcher also rejects each catalog title against every other catalog title. Existing October 10 saved R6/AMP frames still match. These are saved-file and synthetic checks, not live screen inspection.
+
+The report now records the time and exact numerical mismatch details for the actual displayed-advice clear, as well as separately timestamping rejected recognition. This distinguishes old rejected observations from the reason a currently displayed banner clears. Only patch coordinates, thresholds and counts are retained, with at most eight failed patch details; no screenshot or new OCR sample retention is added. Recognition-reset clears are now labeled separately from fresh-frame validation.
+
+All 706 relevant regressions pass on the final 1.3.9 source. Packaged and installed runtime health checks and the installer return exit 0. The installed executable matches the build hash, and settings and inventory remained byte-for-byte unchanged during installation. Installer SHA-256: `c49c76349a52d337c04965cf23f6a292a712612df142b3144da31905ae2be904`. The installer, checksum, log, profile backups and `verification-1.3.9.json` are in the repair artifact directory. Josh was asked to leave the R4 card open for 20 seconds and report persistence or supply the new diagnostic. Live persistence confirmation remains pending. No desktop control or live screen access was used.

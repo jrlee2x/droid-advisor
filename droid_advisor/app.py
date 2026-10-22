@@ -1021,6 +1021,28 @@ class DroidAdvisorApp:
         self.pending_frame_number = None
         self.pending_evidence = None
 
+    def _record_advice_validation(self, evidence, prefix):
+        """Describe the actual failed frame without saving pixels or OCR text."""
+        with self.frame_lock:
+            frame = self.latest_frame
+            same_size = bool(frame is not None and evidence.visual
+                             and frame.size == evidence.visual.frame_size)
+            details = []
+            if same_size:
+                for index, patch in enumerate(evidence.visual.patches):
+                    comparison = patch.comparison(frame)
+                    if not comparison["matches"]:
+                        details.append({"index": index, **comparison})
+            self.diagnostics.set(**{
+                f"{prefix}_at": datetime.now().astimezone().isoformat(timespec="seconds"),
+                f"{prefix}_evidence_age_ms": round((time.monotonic() - evidence.captured_at) * 1000),
+                f"{prefix}_capture_age_ms": round((time.monotonic() - self.frame_captured_at) * 1000),
+                f"{prefix}_frame_gap": self.frame_number - evidence.number,
+                f"{prefix}_visual_patches": len(evidence.visual.patches) if evidence.visual else 0,
+                f"{prefix}_visual_failures": tuple(item["index"] for item in details) if same_size else "frame unavailable or size changed",
+                f"{prefix}_visual_details": tuple(details[:8]),
+            })
+
     def _update_advice(self, droid, confidence=0.0, finish=None, rarity=None,
                            *, source="card", evidence=None) -> None:
         """Publish advice only after two distinct, consecutive, current captures."""
@@ -1031,16 +1053,8 @@ class DroidAdvisorApp:
             self.diagnostics.set(advice_status="identity missing or unsupported" if not droid or confidence < 0.80 or canonical(droid) not in supported
                                  else "visual or capture evidence no longer current")
             if droid and confidence >= 0.80:
-                with self.frame_lock:
-                    self.diagnostics.set(
-                        rejected_identity=droid,
-                        rejected_evidence_age_ms=round((time.monotonic() - evidence.captured_at) * 1000),
-                        rejected_capture_age_ms=round((time.monotonic() - self.frame_captured_at) * 1000),
-                        rejected_frame_gap=self.frame_number - evidence.number,
-                        rejected_visual_patches=(len(evidence.visual.patches) if evidence.visual else 0),
-                        rejected_visual_failures=(tuple(i for i, patch in enumerate(evidence.visual.patches)
-                            if self.latest_frame is None or not patch.matches(self.latest_frame)) if evidence.visual else ()),
-                    )
+                self.diagnostics.set(rejected_identity=droid)
+                self._record_advice_validation(evidence, "rejected")
             return
         signature = (source, droid, finish, rarity, evidence.cycle, evidence.completed)
         if evidence.number == self.pending_frame_number:
@@ -1079,6 +1093,7 @@ class DroidAdvisorApp:
 
     def _hide_expired_advice(self) -> None:
         if self.displayed_advice and not self._evidence_is_current(self.displayed_advice.evidence):
+            self._record_advice_validation(self.displayed_advice.evidence, "last_advice_clear")
             self.overlay.withdraw()
             self.overlay_source = None
             self.displayed_advice = None
@@ -1490,9 +1505,12 @@ class DroidAdvisorApp:
                         self.diagnostics.set(advice_display_status="queued advice no longer current")
                 elif kind == "advice_clear":
                     if self.overlay_source in ("card", "blueprint"):
+                        if self.displayed_advice:
+                            self._record_advice_validation(self.displayed_advice.evidence, "last_advice_clear")
                         self.overlay.withdraw()
                         self.overlay_source = None
                         self.displayed_advice = None
+                        self.diagnostics.set(advice_display_status="cleared by recognition reset")
                 elif kind == "status":
                     self.status_var.set(str(payload))
                 elif kind == "cycle":

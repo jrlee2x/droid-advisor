@@ -3,7 +3,7 @@
 import pytest
 import threading
 from unittest.mock import Mock
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageEnhance
 
 from droid_advisor.advice_state import AdviceTicket, FrameEvidence, TextPatch, VisualEvidence, evidence_is_current
 from droid_advisor.app import DroidAdvisorApp
@@ -23,10 +23,10 @@ def title_image(name):
 
 
 @pytest.mark.parametrize("name", [metadata.name for metadata in CATALOG.values()])
-@pytest.mark.parametrize("white_text", [False, True])
-def test_changed_title_and_closed_card_fail_pixel_validation(name, white_text):
+@pytest.mark.parametrize("mode", ["fixed", "white", "adaptive"])
+def test_changed_title_and_closed_card_fail_pixel_validation(name, mode):
     frame = title_image(name)
-    guard = VisualEvidence(frame.size, (TextPatch.capture(frame, (0, 0, 700, 70), white_text=white_text),))
+    guard = VisualEvidence(frame.size, (TextPatch.capture(frame, (0, 0, 700, 70), white_text=mode == "white", adaptive_threshold=mode == "adaptive"),))
     assert guard.matches(frame.copy())
     assert not guard.matches(None)
     assert not guard.matches(Image.new("RGB", frame.size))
@@ -58,6 +58,61 @@ def test_white_title_survives_moving_artwork_but_not_a_different_name():
     assert not guard.matches(frame("R2", 190))
     assert not guard.matches(frame("R9", 190))
     assert not guard.matches(frame("", 190))
+
+
+@pytest.mark.parametrize("dark_text", [False, True])
+def test_badge_and_control_lettering_survives_fill_brightness_changes(dark_text):
+    from droid_advisor.vision import card_controls_visual_evidence
+    font = ImageFont.truetype("C:/Windows/Fonts/arialbd.ttf", 28)
+
+    def frame(background, *, name="R4", badge="RARE", button="CUSTOMIZE"):
+        image = Image.new("RGB", (700, 300), (background,) * 3)
+        draw = ImageDraw.Draw(image)
+        draw.rectangle((0, 0, 420, 60), fill="#101820")
+        tokens = []
+        for text, xy, fill in [(name, (20, 15), "white"), (badge, (20, 80), (20 if dark_text else 230,) * 3),
+                               (button, (450, 80), (20 if dark_text else 230,) * 3),
+                               ("SWAP", (450, 150), (20 if dark_text else 230,) * 3),
+                               ("SELL", (450, 220), (20 if dark_text else 230,) * 3)]:
+            draw.text(xy, text, font=font, fill=fill, anchor="lt")
+            left, top, right, bottom = draw.textbbox(xy, text, font=font, anchor="lt")
+            tokens.append(OcrToken(text, .99, ((left, top), (right, top), (right, bottom), (left, bottom))))
+        return image, tokens
+
+    first, tokens = frame(160 if dark_text else 30)
+    controls = tokens[2:]
+    control_proof = card_controls_visual_evidence(first, first, "full", controls)
+    proof = identity_visual_evidence(first, first, "full", (0, 0, 400, 120), tokens[:2], controls)
+    assert len(proof.patches) == 5
+    for background in ([180, 210] if dark_text else [45, 75]):
+        changed_fill, _ = frame(background)
+        assert control_proof.matches(changed_fill)
+        assert proof.matches(changed_fill)
+    assert control_proof.matches(ImageEnhance.Brightness(first).enhance(.8))
+    for changes in [{"name": "R2"}, {"badge": "EPIC"}, {"button": "LOUNGE"}, {"badge": ""}]:
+        changed, _ = frame(180 if dark_text else 45, **changes)
+        assert not proof.matches(changed)
+
+    app = DroidAdvisorApp.__new__(DroidAdvisorApp)
+    app.config = {"cycle": 3, "completed_rebirth": 10, "paused": False, "interval_seconds": 1.25}
+    app.frame_lock = threading.Lock()
+    app.frame_number = 0
+    app.capture_exclusions_ok = True
+    app.diagnostics = Mock()
+    app.overlay = Mock()
+    app.overlay_source = "card"
+    app._publish_frame(first)
+    evidence = FrameEvidence(app.frame_number, app.frame_captured_at, 3, 10, proof)
+    app.displayed_advice = AdviceTicket(evidence, "card", "R4: SAFE TO SELL: LAST NEEDED AT RB9", "green")
+    app._publish_frame(frame(180 if dark_text else 45)[0])
+    app._hide_expired_advice()
+    app.overlay.withdraw.assert_not_called()
+    app._publish_frame(frame(180 if dark_text else 45, badge="EPIC")[0])
+    app._hide_expired_advice()
+    app.overlay.withdraw.assert_called_once()
+    details = app.diagnostics.set.call_args_list[-2].kwargs["last_advice_clear_visual_details"]
+    assert details and details[0]["index"] == 1
+    assert details[0]["changed"] > details[0]["tolerance"]
 
 
 def test_visual_guard_includes_a_title_split_into_single_characters():

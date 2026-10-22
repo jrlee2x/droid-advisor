@@ -1,5 +1,12 @@
 # Droid Advisor release and update guide
 
+## 1.3.9 badge and control brightness normalization
+
+- Josh reports 1.3.8 advice still disappears and immediately returns. His 19:16:55 foreground/capture-active report records failures on the rarity and two control patches, while focused R4 recognition remains confident.
+- Compare badge/control lettering with a threshold derived from each current patch, using the midpoint between its light/dark classes. The old stored brightness cutoff can mistake a changed button fill or lighting for changed lettering. The allowed number of changed pixels is unchanged. White title and rebirth evidence keep their existing validation.
+- Regressions exercise light/dark controls, changing fills and brightness, changed badge/title/control text and banner expiry. Every catalog title is also checked against every other title with the adaptive matcher.
+- Reports now timestamp the actual banner clear and describe failed patches using only coordinates, thresholds and numerical mismatch counts. Reports distinguish recognition reset from fresh-frame validation; no screenshots or automatic text samples are added.
+
 ## 1.3.8 rarity-badge banner persistence
 
 - Josh confirmed the 1.3.7 R4 banner appears quickly but disappears while the card stays open. His fresh report shows focused identity OCR at 250 ms, R4 confidence 0.997, cached controls, active capture/foreground, and a single failed visual patch: the rarity badge.
@@ -64,7 +71,7 @@ Card button matching now excludes the Worker role label while accepting OCR-join
 
 ## Current distribution
 
-- Local repair installer: `DroidAdvisor-Setup-1.3.8.exe` (not published)
+- Local repair installer: `DroidAdvisor-Setup-1.3.9.exe` (not published)
 - Platform: 64-bit Windows 10/11
 - Installation scope: current Windows user; no administrator rights requested
 - Runtime: bundled Python and offline OCR; recipients do not install Python
