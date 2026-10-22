@@ -1,9 +1,12 @@
 """Slow OCR must remain usable without carrying a previous title forward."""
 
 import pytest
+import threading
+from unittest.mock import Mock
 from PIL import Image, ImageDraw, ImageFont
 
-from droid_advisor.advice_state import FrameEvidence, TextPatch, VisualEvidence, evidence_is_current
+from droid_advisor.advice_state import AdviceTicket, FrameEvidence, TextPatch, VisualEvidence, evidence_is_current
+from droid_advisor.app import DroidAdvisorApp
 from droid_advisor.droid_catalog import CATALOG
 from droid_advisor.engine import advise, canonical
 from droid_advisor.cycles import CYCLES, next_cycle
@@ -66,6 +69,61 @@ def test_visual_guard_includes_a_title_split_into_single_characters():
     assert len(guard.patches) == 3
     assert not guard.patches[0].matches(title_image("KT"))
     assert not identity_visual_evidence(frame, frame, "full", (0, 0, 700, 90), tokens, []).patches
+
+
+def test_rarity_guard_tracks_badge_without_neighboring_animated_artwork():
+    font = ImageFont.truetype("C:/Windows/Fonts/arialbd.ttf", 28)
+    title_font = ImageFont.truetype("C:/Windows/Fonts/arialbd.ttf", 42)
+
+    def draw_token(draw, text, xy, font, fill="white"):
+        draw.text(xy, text, font=font, fill=fill, anchor="lt")
+        left, top, right, bottom = draw.textbbox(xy, text, font=font, anchor="lt")
+        return OcrToken(text, .99, ((left, top), (right, top), (right, bottom), (left, bottom)))
+
+    frame = Image.new("RGB", (700, 240), "#101820")
+    draw = ImageDraw.Draw(frame)
+    title = draw_token(draw, "R4", (20, 10), title_font)
+    rarity = draw_token(draw, "RARE", (120, 75), font, fill="#60a0ff")
+    controls = [draw_token(draw, word, (550, y), font) for word, y in [("WORK", 100), ("LOUNGE", 145), ("SELL", 190)]]
+    proof = identity_visual_evidence(frame, frame, "full", (0, 0, 400, 110), [title, rarity], controls)
+    assert len(proof.patches) == 5 and proof.matches(frame)
+    animated = frame.copy()
+    right = round(max(x for x, _ in rarity.box))
+    top = round(min(y for _, y in rarity.box))
+    bottom = round(max(y for _, y in rarity.box))
+    ImageDraw.Draw(animated).rectangle((right + 8, top, right + 36, bottom), fill="#f0e030")
+    assert proof.matches(animated)
+
+    changed_badge = frame.copy()
+    ImageDraw.Draw(changed_badge).rectangle((110, 65, right + 45, 110), fill="#101820")
+    ImageDraw.Draw(changed_badge).text((120, 75), "EPIC", font=font, fill="#b060f0", anchor="lt")
+    assert not proof.matches(changed_badge)
+    changed_title = frame.copy()
+    ImageDraw.Draw(changed_title).rectangle((10, 0, 130, 65), fill="#101820")
+    ImageDraw.Draw(changed_title).text((20, 10), "R2", font=title_font, fill="white", anchor="lt")
+    assert not proof.matches(changed_title)
+
+    # Exercise the real banner lifetime check: a new animated frame must
+    # keep the verified banner, but a changed badge must still remove it.
+    app = DroidAdvisorApp.__new__(DroidAdvisorApp)
+    app.config = {"cycle": 3, "completed_rebirth": 10, "paused": False, "interval_seconds": 1.25}
+    app.frame_lock = threading.Lock()
+    app.frame_number = 0
+    app.capture_exclusions_ok = True
+    app.diagnostics = Mock()
+    app.overlay = Mock()
+    app.overlay_source = "card"
+    app._publish_frame(frame)
+    evidence = FrameEvidence(app.frame_number, app.frame_captured_at, 3, 10, proof)
+    app.displayed_advice = AdviceTicket(evidence, "card", "R4: SAFE TO SELL: LAST NEEDED AT RB9", "green")
+    app._publish_frame(animated)
+    app._hide_expired_advice()
+    app.overlay.withdraw.assert_not_called()
+    assert app.displayed_advice is not None
+    app._publish_frame(changed_badge)
+    app._hide_expired_advice()
+    app.overlay.withdraw.assert_called_once()
+    assert app.displayed_advice is None
 
 
 def test_revised_path_six_uses_its_own_finishes_and_keeps_kt_through_rank_38():

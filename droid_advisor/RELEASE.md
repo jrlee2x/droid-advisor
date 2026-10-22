@@ -1,5 +1,12 @@
 # Droid Advisor release and update guide
 
+## 1.3.8 rarity-badge banner persistence
+
+- Josh confirmed the 1.3.7 R4 banner appears quickly but disappears while the card stays open. His fresh report shows focused identity OCR at 250 ms, R4 confidence 0.997, cached controls, active capture/foreground, and a single failed visual patch: the rarity badge.
+- Restrict rarity validation to the badge lettering with a small margin. The previous title-sized right extension included neighboring animated artwork. Complete-title context remains unchanged, and changed rarity lettering still clears advice.
+- Place the advice banner clear of its title, badge and control validation rectangles, including on displays with nonzero origins.
+- A regression failed on the old badge bounds and passes with the fix. It also exercises the actual banner lifetime check: keep the banner on a fresh frame with adjacent animation, clear it on a changed badge. Existing changed-name and closed-card protections remain.
+
 ## 1.3.7 focused repeat card scans
 
 - Josh's detailed report confirmed Rainbow R4 / Rare OCR at 0.995 confidence, but advice was rejected by freshness/visual validation. The broad panel read alone took 1407 ms against a 1250 ms capture interval.
@@ -57,7 +64,7 @@ Card button matching now excludes the Worker role label while accepting OCR-join
 
 ## Current distribution
 
-- Local repair installer: `DroidAdvisor-Setup-1.3.7.exe` (not published)
+- Local repair installer: `DroidAdvisor-Setup-1.3.8.exe` (not published)
 - Platform: 64-bit Windows 10/11
 - Installation scope: current Windows user; no administrator rights requested
 - Runtime: bundled Python and offline OCR; recipients do not install Python

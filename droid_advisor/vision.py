@@ -567,7 +567,10 @@ def identity_visual_evidence(full_image, image, region_name, rect, identity_toke
         margin = max(3, int(token.height * 0.15))
         box = (max(0, int(min(xs)) + rect[0] + offset - margin),
                max(0, int(min(ys)) + rect[1] - margin),
-               min(full_image.width, int(max(xs)) + rect[0] + offset + int(token.height * 2)),
+               # Title context catches a longer name reusing a short prefix.
+               # Rarity words need only their own lettering: the old title-
+               # sized extension included animated artwork beside RARE.
+               min(full_image.width, int(max(xs)) + rect[0] + offset + (int(token.height * 2) if is_title else margin)),
                min(full_image.height, int(max(ys)) + rect[1] + margin))
         patches.append(TextPatch.capture(full_image, box, white_text=is_title))
     control_count = 0

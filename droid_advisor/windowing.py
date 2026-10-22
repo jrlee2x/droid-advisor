@@ -152,3 +152,18 @@ def top_right_position(
     x = max(area.left + 8, area.right - int(width) - horizontal_margin)
     y = max(area.top + 8, min(area.top + vertical_margin, area.bottom - int(height) - 8))
     return x, y
+
+
+def unobscured_overlay_y(x, y, width, height, regions, top, bottom, *, margin=8):
+    """Keep a centered advice banner away from its recognition rectangles."""
+    blocked = [box for box in regions if x < box[2] and x + width > box[0]]
+    low, high = top + margin, max(top + margin, bottom - height - margin)
+    candidates = {max(low, min(y, high))}
+    for left, region_top, right, region_bottom in blocked:
+        candidates.update((region_bottom + margin, region_top - height - margin))
+    for candidate in sorted(candidates, key=lambda value: (abs(value - y), value)):
+        if low <= candidate <= high and all(
+            candidate + height + margin <= box[1] or candidate >= box[3] + margin for box in blocked
+        ):
+            return candidate
+    return max(low, min(y, high))

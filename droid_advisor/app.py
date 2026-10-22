@@ -73,6 +73,7 @@ from .windowing import (
     monitor_work_areas,
     primary_work_area,
     top_right_position,
+    unobscured_overlay_y,
 )
 
 COMMUNITY_URL = "https://www.reddit.com/r/StarWarsDroidTycoon/"
@@ -957,7 +958,7 @@ class DroidAdvisorApp:
     def hide_settings(self) -> None:
         self.root.withdraw()
 
-    def show_overlay(self, message: str, color: str, duration_ms: int = 3500, y_ratio: float = 0.365) -> None:
+    def show_overlay(self, message: str, color: str, duration_ms: int = 3500, y_ratio: float = 0.365, *, avoid_rects=()) -> None:
         self.overlay_source = None
         self.displayed_advice = None
         self.overlay_label.configure(text=message, bg=color)
@@ -973,6 +974,9 @@ class DroidAdvisorApp:
             x = (self.overlay.winfo_screenwidth() - width) // 2
             y = int(self.overlay.winfo_screenheight() * y_ratio)
         x, y = clamp_window_position(x, y, width, height, monitor_work_areas())
+        if game_rect and avoid_rects:
+            regions = [(left + a, top + b, left + c, top + d) for a, b, c, d in avoid_rects]
+            y = unobscured_overlay_y(x, y, width, height, regions, top, top + game_height)
         self.overlay.geometry(geometry_position(x, y))
         self.overlay.deiconify()
         if self.overlay_after:
@@ -1476,7 +1480,9 @@ class DroidAdvisorApp:
                         lifetime = MAX_VERIFIED_ADVICE_AGE if payload.evidence.visual else MAX_ADVICE_AGE
                         self.show_overlay(payload.message, payload.color,
                                           max(1, int((lifetime - age) * 1000)),
-                                          0.50 if payload.source == "blueprint" else 0.365)
+                                          0.50 if payload.source == "blueprint" else 0.365,
+                                          avoid_rects=tuple(patch.box for patch in payload.evidence.visual.patches)
+                                              if payload.evidence.visual else ())
                         self.overlay_source = payload.source
                         self.displayed_advice = payload
                         self.diagnostics.set(advice_display_status="visible", advice_message=payload.message)

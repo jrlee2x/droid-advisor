@@ -1,6 +1,6 @@
 # Rebirth detection repair and v1.35 Path 6
 
-Checked October 21, 2026. Local release: 1.3.5.
+Checked October 21, 2026. Latest local repair: 1.3.8; versioned findings follow.
 
 ## Findings
 
@@ -71,3 +71,17 @@ Real offline OCR on the existing October 10 reference files measured 1781 ms (R6
 Diagnostics additionally expose focused OCR time, geometry-cache use, rejected evidence/capture age, frame gap, failed visual-patch indexes and actual overlay display state. These are bounded in-memory metadata; detailed OCR text remains opt-in. No new screenshot saving or automatic uploads were added.
 
 Local 1.3.7 installer and installed runtime both return exit 0, and the installed executable matches the build hash. Settings and inventory were byte-for-byte unchanged during installation. Installer SHA-256: `70c788b11c90464e66c99bd213e710cd9591f28e33b36f5290d1acfac17cb052`. The installer, checksum, installation log and `verification-1.3.7.json` are saved in the repair artifact directory. Josh was asked to check the R4 banner after installation; live confirmation remains pending.
+
+## Follow-up: badge validation and banner persistence, 1.3.8
+
+Josh confirmed that the 1.3.7 R4 banner appears but disappears quickly. His new 19:05:24 report confirms Fortnite remains foreground with capture active, focused R4 OCR at 0.997 confidence in 250 ms, cached control geometry, and `advice_display_status=cleared by fresh-frame validation`. A rejected R4 observation reports five visual patches with only patch 1 failing. Given the separate R4 / Rainbow / Rare tokens and three recognized action controls, patch 1 is the rarity badge; the title and controls pass.
+
+The badge used the same right-side context extension as the title: two token heights beyond its OCR bounds. That extension is necessary to guard against a longer droid name reusing a short prefix; it is unnecessary for the rarity word and includes adjacent artwork. Version 1.3.8 keeps full title context and narrows rarity validation to its own lettering plus the existing small margin.
+
+A synthetic regression reproduces the old failure by animating a bright region next to RARE. The narrowed badge passes that animation while rejecting changed EPIC lettering and changed R2 title lettering. The same test invokes the actual banner-expiry check: the banner stays visible on a newly captured animated frame and clears on changed badge text.
+
+Advice placement also avoids the evidence's title, badge and control rectangles, so it leaves the recognized text readable and reduces dependence on capture-exclusion behavior. The placement check covers ordinary and negative/offset monitor coordinates. This is additional protection, not proof that the banner itself caused the reported badge mismatch. Windows display affinity applies to supported capture paths; see https://learn.microsoft.com/en-us/windows/win32/api/winuser/nf-winuser-setwindowdisplayaffinity.
+
+All 604 relevant regressions pass. No title, identity confidence, two-capture confirmation, expiry, focus, pause, capture or changed-progress requirement was relaxed. No live screen capture or desktop control was used.
+
+The final 1.3.8 installer and installed runtime health check both return exit 0. The installed executable matches the final build, and configuration and inventory remained byte-for-byte unchanged during installation. Installer SHA-256: `68d1e8d154c1faa5b14d85b90f7b29fd08762d6aa74b2709dde35662e7f6474a`. The installer, checksum, log and `verification-1.3.8.json` are saved in the repair artifact directory. Version 1.3.8 was launched at 19:11:28 America/Chicago. Josh was asked to leave the R4 card open for 15 seconds to confirm that the banner persists; live confirmation remains pending.

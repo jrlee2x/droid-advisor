@@ -65,6 +65,7 @@ from droid_advisor.windowing import (
     geometry_position,
     monitor_topology_signature,
     top_right_position,
+    unobscured_overlay_y,
 )
 
 
@@ -89,6 +90,18 @@ def test_overlay_positions_support_monitors_left_of_primary():
 def test_reset_position_uses_primary_monitor_top_right():
     primary = WorkArea(1920, 0, 4480, 1400, True)
     assert top_right_position(430, 500, primary) == (4025, 55)
+
+
+def test_advice_banner_avoids_badge_and_control_text_at_game_offsets():
+    for offset_x, offset_y in ((0, 0), (-2560, 0), (1920, 200)):
+        regions = [(offset_x + 800, offset_y + 510, offset_x + 1000, offset_y + 565),
+                   (offset_x + 1400, offset_y + 620, offset_x + 1600, offset_y + 660)]
+        x, y = offset_x + 900, offset_y + 525
+        actual = unobscured_overlay_y(x, y, 800, 60, regions, offset_y, offset_y + 1440)
+        assert actual != y
+        assert offset_y + 8 <= actual <= offset_y + 1440 - 68
+        assert all(actual + 68 <= box[1] or actual >= box[3] + 8 for box in regions)
+    assert unobscured_overlay_y(900, 800, 800, 60, regions=[], top=0, bottom=1440) == 800
 
 
 def test_monitor_signature_changes_when_display_is_removed():
