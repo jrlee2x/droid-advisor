@@ -79,7 +79,10 @@ Card button matching now excludes the Worker role label while accepting OCR-join
 
 ## Current distribution
 
-- Local repair installer: `DroidAdvisor-Setup-1.3.10.exe` (not published)
+- Stable release: [Droid Advisor 1.3.10](https://github.com/jrlee2x/droid-advisor/releases/tag/v1.3.10)
+- Installer: `DroidAdvisor-Setup-1.3.10.exe`, with its matching `.sha256` file
+- Installer SHA-256: `5c895c0701c1dddc77eb4faec9a853ecb26db6a03ca29205ac45a897397452cc`
+- Validation: 708 regression tests, packaged/installed health checks, and live R4 banner persistence confirmed
 - Platform: 64-bit Windows 10/11
 - Installation scope: current Windows user; no administrator rights requested
 - Runtime: bundled Python and offline OCR; recipients do not install Python
@@ -89,7 +92,7 @@ Card button matching now excludes the Worker role label while accepting OCR-join
 Share the installer and its `.sha256` file together. Recipients can validate it in PowerShell:
 
 ```powershell
-Get-FileHash .\DroidAdvisor-Setup-1.3.2.exe -Algorithm SHA256
+Get-FileHash .\DroidAdvisor-Setup-1.3.10.exe -Algorithm SHA256
 ```
 
 The output must exactly match the checksum distributed through a separate trusted channel.

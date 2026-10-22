@@ -12,6 +12,7 @@ This project is community software under active development. Version 1.3.10 incl
 - Keep or sell guidance for opened droid cards, with visual validation that tolerates slow OCR.
 - Periodic card scans when lounge controls miss the legacy color gates, with unchanged identity and button-layout checks.
 - Faster repeat card reads using validated panel geometry; the droid name and badge are read anew on every capture.
+- Stable advice when optional finish labels are missed, with separate confirmation before inventory updates.
 - A 100-droid catalog including Power Droids, WG-22 and Protocol droids.
 - Held-blueprint recognition.
 - Optional Sandcrawler spawn alerts with configurable minimum variant and rarity, bundled or user-selected WAV sounds, and volume control.
