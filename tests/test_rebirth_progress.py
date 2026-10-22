@@ -86,6 +86,7 @@ def test_monitor_accepts_slow_unchanged_menu_and_rejects_stale_context(monkeypat
     app.interaction_probe_active = False
     app.last_interaction_probe_at = 0.0
     app.interaction_fallback_index = 0
+    app.card_scan_region = None
     app.diagnostics = Mock()
     app._clear_advice = Mock()
     app.stop_event = Mock()

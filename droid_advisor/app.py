@@ -44,11 +44,14 @@ from .notifications import (
 from .qualities import RARITIES, SPAWN_VARIANTS, quality_table
 from .updater import check_for_update, download_update, launch_installer
 from .vision import (
+    CardScanRegion,
     GameCapture,
     OfflineOcr,
     focused_identity,
     identity_visual_evidence,
+    is_card_button_text,
     card_header_rect,
+    card_controls_visual_evidence,
     classify_interaction,
     game_ui_viewports,
     game_window_rect,
@@ -179,6 +182,7 @@ class DroidAdvisorApp:
         self.interaction_fallback_index = 0
         self.last_interaction_probe_at = 0.0
         self.interaction_probe_active = False
+        self.card_scan_region = None
 
     def _branding_photo(self, size: int) -> ImageTk.PhotoImage | None:
         try:
@@ -1022,6 +1026,17 @@ class DroidAdvisorApp:
             self._clear_advice()
             self.diagnostics.set(advice_status="identity missing or unsupported" if not droid or confidence < 0.80 or canonical(droid) not in supported
                                  else "visual or capture evidence no longer current")
+            if droid and confidence >= 0.80:
+                with self.frame_lock:
+                    self.diagnostics.set(
+                        rejected_identity=droid,
+                        rejected_evidence_age_ms=round((time.monotonic() - evidence.captured_at) * 1000),
+                        rejected_capture_age_ms=round((time.monotonic() - self.frame_captured_at) * 1000),
+                        rejected_frame_gap=self.frame_number - evidence.number,
+                        rejected_visual_patches=(len(evidence.visual.patches) if evidence.visual else 0),
+                        rejected_visual_failures=(tuple(i for i, patch in enumerate(evidence.visual.patches)
+                            if self.latest_frame is None or not patch.matches(self.latest_frame)) if evidence.visual else ()),
+                    )
             return
         signature = (source, droid, finish, rarity, evidence.cycle, evidence.completed)
         if evidence.number == self.pending_frame_number:
@@ -1063,6 +1078,27 @@ class DroidAdvisorApp:
             self.overlay.withdraw()
             self.overlay_source = None
             self.displayed_advice = None
+            self.diagnostics.set(advice_display_status="cleared by fresh-frame validation")
+
+    def _scan_identity(self, ocr, full_image, image, active_region, identity_rect, controls, evidence, source):
+        """Always read identity anew, including when reusing verified geometry."""
+        self.diagnostics.set(monitor_phase="reading droid identity")
+        started = time.monotonic()
+        identity_tokens = ocr.read(image.crop(identity_rect), max_width=1200)
+        self.diagnostics.sample(f"{source}_header_ocr_sample", identity_tokens)
+        droid, confidence, finish, rarity = focused_identity(identity_tokens)
+        if droid:
+            evidence = replace(evidence, visual=identity_visual_evidence(
+                full_image, image, active_region, identity_rect, identity_tokens, controls))
+        self.diagnostics.set(**{
+            f"{source}_droid_read": droid or "not recognized",
+            f"{source}_droid_confidence": round(confidence, 3),
+            f"{source}_header_token_count": len(identity_tokens),
+            "identity_ocr_ms": round((time.monotonic() - started) * 1000),
+        })
+        self._update_advice(droid, confidence, finish, rarity, source=source, evidence=evidence)
+        self.diagnostics.set(monitor_phase="scan complete")
+        return evidence if droid and confidence >= 0.80 and self._evidence_is_current(evidence) else None
 
     def _monitor(self) -> None:
         try:
@@ -1088,6 +1124,30 @@ class DroidAdvisorApp:
                         last_frame_number = frame_number
                         full_image = image
                         candidate_views = game_ui_viewports(full_image)
+                        cached = self.card_scan_region
+                        if cached is not None and (
+                            self.capture_exclusions_ok
+                            and 0 <= time.monotonic() - cached.captured_at <= MAX_VERIFIED_ADVICE_AGE
+                            and cached.visual.matches(full_image)
+                        ):
+                            candidate = next((view for name, view in candidate_views if name == cached.region_name), None)
+                            if candidate is not None:
+                                self.diagnostics.set(
+                                    monitor_frame_number=frame_number,
+                                    card_panel_recognized=True, blueprint_recognized=False,
+                                    card_cached_geometry=True, interaction_regions_attempted="cached controls",
+                                    interaction_ocr_ms=0, ui_active_region=cached.region_name,
+                                )
+                                verified = self._scan_identity(ocr, full_image, candidate, cached.region_name,
+                                                               cached.identity_rect, cached.controls, evidence, "card")
+                                if verified is not None:
+                                    # Refresh only after a current OCR identity and
+                                    # unchanged controls; never cache the identity.
+                                    self.card_scan_region = replace(cached, captured_at=verified.captured_at)
+                                self.stop_event.wait(0.05)
+                                continue
+                        self.card_scan_region = None
+                        self.diagnostics.set(card_cached_geometry=False)
                         if self.preferred_ui_region:
                             candidate_views.sort(
                                 key=lambda item: item[0] != self.preferred_ui_region
@@ -1348,30 +1408,30 @@ class DroidAdvisorApp:
                                              int(image.width * 0.70), int(image.height * 0.60))
                         elif card_panel_open:
                             identity_rect = card_header_rect(tokens, image.width, image.height)
+                            if identity_rect:
+                                self.card_scan_region = CardScanRegion(
+                                    active_region, identity_rect,
+                                    tuple(token for token in tokens if is_card_button_text(token.text)),
+                                    card_controls_visual_evidence(full_image, image, active_region, tokens),
+                                    evidence.captured_at,
+                                )
                         if identity_rect:
-                            self.diagnostics.set(monitor_phase="reading droid identity")
-                            identity_tokens = ocr.read(image.crop(identity_rect), max_width=1200)
-                            self.diagnostics.sample(f"{source}_header_ocr_sample", identity_tokens)
-                            droid, confidence, finish, rarity = focused_identity(identity_tokens)
-                            if droid:
-                                evidence = replace(evidence, visual=identity_visual_evidence(
-                                    full_image, image, active_region, identity_rect, identity_tokens, tokens))
-                            self.diagnostics.set(**{
-                                f"{source}_droid_read": droid or "not recognized",
-                                f"{source}_droid_confidence": round(confidence, 3),
-                                f"{source}_header_token_count": len(identity_tokens),
-                            })
-                        self._update_advice(droid, confidence, finish, rarity, source=source, evidence=evidence)
-                        self.diagnostics.set(monitor_phase="scan complete")
+                            self._scan_identity(ocr, full_image, image, active_region, identity_rect, tokens, evidence, source)
+                        else:
+                            self._update_advice(None, source=source, evidence=evidence)
+                            self.diagnostics.set(monitor_phase="scan complete")
                     elif image is None:
+                        self.card_scan_region = None
                         self._clear_advice()
                 except Exception as exc:
                     detail = f"{type(exc).__name__}: {exc}"
                     self.diagnostics.set(last_error=detail, last_traceback=traceback.format_exc(limit=8).strip())
+                    self.card_scan_region = None
                     self._clear_advice()
                     self.diagnostics.record(f"Monitor exception: {detail}")
                     self.events.put(("status", f"Monitor warning: {type(exc).__name__}"))
             else:
+                self.card_scan_region = None
                 self._clear_advice()
             self.stop_event.wait(0.25)
 
@@ -1419,6 +1479,9 @@ class DroidAdvisorApp:
                                           0.50 if payload.source == "blueprint" else 0.365)
                         self.overlay_source = payload.source
                         self.displayed_advice = payload
+                        self.diagnostics.set(advice_display_status="visible", advice_message=payload.message)
+                    else:
+                        self.diagnostics.set(advice_display_status="queued advice no longer current")
                 elif kind == "advice_clear":
                     if self.overlay_source in ("card", "blueprint"):
                         self.overlay.withdraw()

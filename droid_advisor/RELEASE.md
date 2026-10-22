@@ -1,5 +1,13 @@
 # Droid Advisor release and update guide
 
+## 1.3.7 focused repeat card scans
+
+- Josh's detailed report confirmed Rainbow R4 / Rare OCR at 0.995 confidence, but advice was rejected by freshness/visual validation. The broad panel read alone took 1407 ms against a 1250 ms capture interval.
+- Once a card's layout is recognized, verify its action-button lettering on every fresh capture and re-read the focused name/badge region. The cache contains geometry and control text proof, never an identity, confidence, or sell decision.
+- Invalidate the geometry on changed controls, frame dimensions, lost capture, pause, exceptions or expiry. Only a fresh validated identity read extends the geometry's 12-second validity. Changed/weak/unreadable identities and conflicting badges retain their existing suppression and two-capture confirmation rules.
+- Diagnostics now report focused OCR timing, cached geometry use, rejection age/frame-gap/failed-patch indexes, and actual overlay display state. No screenshots or OCR samples are saved automatically.
+- Saved October 10 reference files benchmark at 1391-1781 ms for broad reads and 328-359 ms for warm focused reads (first focused reads 656-688 ms). These are offline reference checks, not a live R4 confirmation.
+
 ## 1.3.6 lounge card recognition fallback
 
 - Josh confirmed automatic rebirth detection works, but a Rainbow R4 card showed no advice. His 1.3.5 diagnostic report showed active capture/OCR with both interaction color gates false and no attempted interaction scan.
@@ -49,7 +57,7 @@ Card button matching now excludes the Worker role label while accepting OCR-join
 
 ## Current distribution
 
-- Local repair installer: `DroidAdvisor-Setup-1.3.6.exe` (not published)
+- Local repair installer: `DroidAdvisor-Setup-1.3.7.exe` (not published)
 - Platform: 64-bit Windows 10/11
 - Installation scope: current Windows user; no administrator rights requested
 - Runtime: bundled Python and offline OCR; recipients do not install Python

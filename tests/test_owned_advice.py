@@ -18,6 +18,7 @@ from droid_advisor.cycles import CYCLES
 from droid_advisor.droid_catalog import CATALOG, droid_metadata
 from droid_advisor.advice_state import AdviceTicket, FrameEvidence, MAX_ADVICE_AGE
 from droid_advisor.advice_state import TextPatch, VisualEvidence
+from droid_advisor.vision import CardScanRegion, card_controls_visual_evidence
 
 
 def token(text, x=100, y=100, confidence=0.99):
@@ -90,6 +91,7 @@ def app():
     app.interaction_fallback_index = 0
     app.ui_fallback_index = 0
     app.preferred_ui_region = None
+    app.card_scan_region = None
     return app
 
 
@@ -351,9 +353,56 @@ def test_progress_reader_does_not_invent_nested_names_or_accept_weak_reads():
     assert visible_droids([token("R2-D2"), token("BB-8"), token("IG-11 Marshal")]) == set()
 
 
+@pytest.mark.parametrize("mode", ["changed_droid", "unreadable", "weak", "wrong_badge", "closed", "missing_capture",
+                                  "paused", "expired_geometry", "exclusion_failed"])
+def test_cached_card_geometry_never_reuses_old_r4_identity_or_bypasses_context(app, monkeypatch, mode):
+    from PIL import ImageDraw, ImageFont
+    old_ticket = confirm(app, "R4")
+    frame = Image.new("RGB", (700, 240), "black")
+    draw = ImageDraw.Draw(frame)
+    font = ImageFont.truetype("C:/Windows/Fonts/arialbd.ttf", 22)
+    name = "GROUNDMECH" if mode == "changed_droid" else "R4"
+    rarity = "EPIC" if mode in ("changed_droid", "wrong_badge") else "RARE"
+    identity = [token(name, 10, 10, .4 if mode == "weak" else .99), token("RAINBOW", 10, 55), token(rarity, 200, 55)]
+    controls = [token(label, 590, y) for label, y in [("SWAP", 110), ("LOUNGE", 150), ("SELL", 190)]]
+    for item in identity + controls:
+        draw.text(item.box[0], item.text, font=font, fill="white", anchor="lt")
+    app.card_scan_region = CardScanRegion("full", (0, 0, 580, 90), tuple(controls),
+        card_controls_visual_evidence(frame, frame, "full", controls), time.monotonic() - (13 if mode == "expired_geometry" else 0))
+    current = Image.new("RGB", frame.size) if mode == "closed" else frame
+    app._publish_frame(None if mode == "missing_capture" else current)
+    app.config["paused"] = mode == "paused"
+    app.capture_exclusions_ok = mode != "exclusion_failed"
+    app.stop_event = Mock()
+    app.stop_event.is_set.side_effect = [False, False, True]
+    app.stop_event.wait.side_effect = lambda seconds: app._publish_frame(None if mode == "missing_capture" else current.copy())
+    ocr = Mock()
+    ocr.read.return_value = [] if mode == "unreadable" else identity
+    monkeypatch.setattr(app_module, "OfflineOcr", lambda: ocr)
+    monkeypatch.setattr(app_module, "game_ui_viewports", lambda image: [("full", image)])
+    monkeypatch.setattr(app_module, "visual_gates", lambda image: (False, False, False))
+    broad = Mock(return_value=[])
+    monkeypatch.setattr(app_module, "read_region", broad)
+    app._monitor()
+    queued = events(app)
+    tickets = [ticket for kind, ticket in queued if kind == "advice"]
+    assert all(not ticket.message.startswith("R4:") for ticket in tickets)
+    if mode == "changed_droid":
+        assert len(tickets) == 1 and tickets[0].message.startswith("GROUNDMECH:")
+        assert ocr.read.call_count == 2
+        broad.assert_not_called()
+    else:
+        assert not tickets
+    if mode in ("closed", "expired_geometry", "exclusion_failed"):
+        assert broad.called
+    if mode in ("paused", "missing_capture"):
+        assert app.card_scan_region is None
+
+
 @pytest.mark.parametrize("card_open", [True, False])
 @pytest.mark.parametrize("multiple_views", [True, False])
-def test_ungated_lounge_card_is_probed_and_confirmed_without_idle_scan_flooding(app, monkeypatch, card_open, multiple_views):
+@pytest.mark.parametrize("slow_scan", [True, False])
+def test_ungated_lounge_card_is_probed_and_confirmed_without_idle_scan_flooding(app, monkeypatch, card_open, multiple_views, slow_scan):
     from PIL import ImageDraw, ImageFont
     frame = Image.new("RGB", (1000, 1000), "black")
     controls = [token(label, 680, y) for label, y in [
@@ -368,9 +417,11 @@ def test_ungated_lounge_card_is_probed_and_confirmed_without_idle_scan_flooding(
         draw.text((x + 120, y + 220), item.text, fill="white", font=font, anchor="lt")
     app.config.update(cycle=3, completed_rebirth=9)
     app._publish_frame(frame)
+    current_frame = [frame]
+    attempts = 3 if slow_scan and card_open else 2
     app.stop_event = Mock()
-    app.stop_event.is_set.side_effect = [False, False, True]
-    app.stop_event.wait.side_effect = lambda seconds: app._publish_frame(frame.copy())
+    app.stop_event.is_set.side_effect = [False] * attempts + [True]
+    app.stop_event.wait.side_effect = lambda seconds: app._publish_frame(current_frame[0].copy())
     ocr = Mock()
     ocr.read.return_value = identity
     monkeypatch.setattr(app_module, "OfflineOcr", lambda: ocr)
@@ -384,14 +435,22 @@ def test_ungated_lounge_card_is_probed_and_confirmed_without_idle_scan_flooding(
         if box[1] < 200:
             return []  # No rebirth menu.
         interactions.append(box)
+        if slow_scan and card_open:
+            # A slow full-panel scan overlaps a fresh capture whose nearby
+            # model highlights invalidate the old title patch. Every broad
+            # scan would repeat the race; current focused reads avoid it.
+            current_frame[0] = frame.copy()
+            x = 290 + (len(interactions) % 2) * 12
+            ImageDraw.Draw(current_frame[0]).rectangle((x, 290, x + 8, 307), fill="white")
+            app._publish_frame(current_frame[0].copy())
         return controls if card_open and image is not empty_view else []
 
     monkeypatch.setattr(app_module, "read_region", read)
     app._monitor()
     queued = events(app)
     if card_open:
-        assert len(interactions) == 2  # Confirm the open card despite the idle cooldown.
-        assert ocr.read.call_count == 2
+        assert len(interactions) == 1  # Later captures verify controls without broad OCR.
+        assert ocr.read.call_count == attempts
         ticket = next(payload for kind, payload in queued if kind == "advice")
         assert ticket.message == "R4: SAFE TO SELL: LAST NEEDED AT RB9"
     else:

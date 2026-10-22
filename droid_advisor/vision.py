@@ -38,6 +38,17 @@ class OcrToken:
 
 
 @dataclass(frozen=True)
+class CardScanRegion:
+    """Short-lived panel geometry; never caches a droid identity or decision."""
+
+    region_name: str
+    identity_rect: tuple[int, int, int, int]
+    controls: tuple[OcrToken, ...]
+    visual: VisualEvidence
+    captured_at: float
+
+
+@dataclass(frozen=True)
 class ScanPriorities:
     """Bounded OCR work selected from the inexpensive visual gates."""
 
@@ -568,6 +579,21 @@ def identity_visual_evidence(full_image, image, region_name, rect, identity_toke
             patches.append(TextPatch.capture(full_image, box))
             control_count += 1
     return VisualEvidence(full_image.size, tuple(patches) if title_count and control_count else ())
+
+
+def card_controls_visual_evidence(full_image, image, region_name, controls):
+    """Verify a located card's controls independently of animated title art."""
+    offset = 0 if region_name in ("full", "left") else (
+        full_image.width - image.width if region_name == "right" else (full_image.width - image.width) // 2
+    )
+    patches = []
+    for token in controls:
+        if not is_card_button_text(token.text):
+            continue
+        xs, ys = zip(*token.box)
+        box = (int(min(xs)) + offset, int(min(ys)), int(max(xs)) + offset, int(max(ys)))
+        patches.append(TextPatch.capture(full_image, box))
+    return VisualEvidence(full_image.size, tuple(patches) if len(patches) >= 3 else ())
 
 
 def blueprint_details(tokens: list[OcrToken]) -> tuple[str | None, str | None]:
