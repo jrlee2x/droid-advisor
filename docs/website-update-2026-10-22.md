@@ -20,3 +20,9 @@ The Nova section retains its explicit September 30 verification date and existin
 Background headless browser checks at 1440x1000 and 390x844 cover all six cycle switches, 12 chart/list download targets, all 40 Path 6 quick-list records, 100 income rows, Protocol filtering, KT search, missing EGL income, the fusion lightbox/zoom controls and page overflow. No page errors or failed resource responses remain. These are isolated website tests, not a capture or control of Josh's live desktop.
 
 Before-update files, generated charts, optimized variants, preview screenshots and machine-readable checks are saved locally under `artifacts/site-update-2026-10-22/`.
+
+## Production
+
+Published to the existing Vercel project with source commit `b0d374e`. Production deployment `dpl_5xHdUt8hdShYTwVA2P4i6DnkvwED` returned READY and serves https://droid-advisor-rebirth-chart.vercel.app/ . All 46 public HTML/JS/CSS/image/data files returned HTTP 200 with hashes matching the verified local files.
+
+The same desktop/mobile browser checks passed again against the public URL, including all six paths, current download links, 100 income rows and the preserved fusion viewer, with no page errors, failed resource responses or page overflow. Local reports: `production-asset-verification.json` and `production-browser-verification.json` in the artifact directory. Website-only update; the already published desktop 1.3.10 release is unchanged.
