@@ -1,0 +1,10 @@
+﻿{
+    "version":  "1.3.7",
+    "config_unchanged":  true,
+    "installer_sha256":  "70C788B11C90464E66C99BD213E710CD9591F28E33B36F5290D1ACFAC17CB052",
+    "installer_exit":  0,
+    "inventory_unchanged":  true,
+    "health_exit":  0,
+    "installed_exe_sha256":  "064954DBEA5F352C8DC728A4DBF85B15343793A39865E46092CD3F4BD906F694",
+    "tests_passed":  602
+}

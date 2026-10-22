@@ -1,0 +1,15 @@
+{
+  "cycle": 2,
+  "completed_rebirth": 35,
+  "paused": false,
+  "interval_seconds": 1.25,
+  "requirements_overlay_visible": false,
+  "requirements_overlay_x": 2874,
+  "requirements_overlay_y": 751,
+  "spawn_alerts_enabled": true,
+  "spawn_alert_min_variant": "BESKAR",
+  "spawn_alert_min_rarity": "LEGENDARY",
+  "spawn_alert_sound": "droid_chime",
+  "spawn_alert_volume": 15,
+  "automatic_updates": true
+}

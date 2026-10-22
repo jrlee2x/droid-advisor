@@ -1,0 +1,10 @@
+﻿{
+    "version":  "1.3.8",
+    "config_unchanged":  true,
+    "installer_sha256":  "68D1E8D154C1FAA5B14D85B90F7B29FD08762D6AA74B2709DDE35662E7F6474A",
+    "installer_exit":  0,
+    "inventory_unchanged":  true,
+    "health_exit":  0,
+    "installed_exe_sha256":  "09BB1EF4586FA8171DA93F86605C6C252D9B5B779DFBB176DAC976153C366363",
+    "tests_passed":  604
+}

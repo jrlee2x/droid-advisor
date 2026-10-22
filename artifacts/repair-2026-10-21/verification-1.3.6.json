@@ -1,0 +1,10 @@
+﻿{
+    "version":  "1.3.6",
+    "config_unchanged":  true,
+    "installer_sha256":  "93BFC617E73DF8677753A201B635B2A595A8DC803AB4776B207EAB3AC223FE22",
+    "installer_exit":  0,
+    "inventory_unchanged":  true,
+    "health_exit":  0,
+    "installed_exe_sha256":  "D881F340C9CBEFF2A66D4EA81996503DD9B4EFE7BAF0460E3882B69834776A64",
+    "tests_passed":  589
+}

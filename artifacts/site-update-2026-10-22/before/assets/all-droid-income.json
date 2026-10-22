@@ -1,0 +1,1270 @@
+{
+  "variants": [
+    "BASIC",
+    "GOLD",
+    "DIAMOND",
+    "RAINBOW",
+    "BESKAR",
+    "GALACTIC",
+    "STELLAR"
+  ],
+  "droids": [
+    {
+      "name": "RIV-3T",
+      "role": "WORKER",
+      "rarity": "MYTHIC",
+      "kind": "FUSION",
+      "income_per_second": {
+        "BASIC": 8400,
+        "GOLD": 16800,
+        "DIAMOND": 33600,
+        "RAINBOW": 67200,
+        "BESKAR": 134400,
+        "GALACTIC": 369600,
+        "STELLAR": 1050000
+      }
+    },
+    {
+      "name": "LOW-MO",
+      "role": "WORKER",
+      "rarity": "MYTHIC",
+      "kind": "FUSION",
+      "income_per_second": {
+        "BASIC": 7800,
+        "GOLD": 15600,
+        "DIAMOND": 31200,
+        "RAINBOW": 62400,
+        "BESKAR": 124800,
+        "GALACTIC": 343200,
+        "STELLAR": 975000
+      }
+    },
+    {
+      "name": "LUG-G",
+      "role": "WORKER",
+      "rarity": "MYTHIC",
+      "kind": "FUSION",
+      "income_per_second": {
+        "BASIC": 7600,
+        "GOLD": 15200,
+        "DIAMOND": 30400,
+        "RAINBOW": 60800,
+        "BESKAR": 121600,
+        "GALACTIC": 334400,
+        "STELLAR": 950000
+      }
+    },
+    {
+      "name": "Loadlifter",
+      "role": "WORKER",
+      "rarity": "MYTHIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 7200,
+        "GOLD": 14400,
+        "DIAMOND": 28800,
+        "RAINBOW": 57600,
+        "BESKAR": 115200,
+        "GALACTIC": 316800,
+        "STELLAR": 900000
+      }
+    },
+    {
+      "name": "LEP",
+      "role": "WORKER",
+      "rarity": "MYTHIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 6500,
+        "GOLD": 13000,
+        "DIAMOND": 26000,
+        "RAINBOW": 52000,
+        "BESKAR": 104000,
+        "GALACTIC": 286000,
+        "STELLAR": 812500
+      }
+    },
+    {
+      "name": "RIC-1200",
+      "role": "WORKER",
+      "rarity": "MYTHIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 5800,
+        "GOLD": 11600,
+        "DIAMOND": 23200,
+        "RAINBOW": 46400,
+        "BESKAR": 92800,
+        "GALACTIC": 255200,
+        "STELLAR": 725000
+      }
+    },
+    {
+      "name": "RIC",
+      "role": "WORKER",
+      "rarity": "MYTHIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 5100,
+        "GOLD": 10200,
+        "DIAMOND": 20400,
+        "RAINBOW": 40800,
+        "BESKAR": 81600,
+        "GALACTIC": 224400,
+        "STELLAR": 637500
+      }
+    },
+    {
+      "name": "Snow Mouse",
+      "role": "WORKER",
+      "rarity": "MYTHIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 4400,
+        "GOLD": 8800,
+        "DIAMOND": 17600,
+        "RAINBOW": 35200,
+        "BESKAR": 70400,
+        "GALACTIC": 193600,
+        "STELLAR": 550000
+      }
+    },
+    {
+      "name": "AXI-POD",
+      "role": "ASTRO",
+      "rarity": "MYTHIC",
+      "kind": "FUSION",
+      "income_per_second": {
+        "BASIC": 8000,
+        "GOLD": 16000,
+        "DIAMOND": 32000,
+        "RAINBOW": 64000,
+        "BESKAR": 128000,
+        "GALACTIC": 352000,
+        "STELLAR": 1000000
+      }
+    },
+    {
+      "name": "MO-TRAK",
+      "role": "ASTRO",
+      "rarity": "MYTHIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 7200,
+        "GOLD": 14400,
+        "DIAMOND": 28800,
+        "RAINBOW": 57600,
+        "BESKAR": 115200,
+        "GALACTIC": 316800,
+        "STELLAR": 900000
+      }
+    },
+    {
+      "name": "TRI-TEK",
+      "role": "ASTRO",
+      "rarity": "MYTHIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 6500,
+        "GOLD": 13000,
+        "DIAMOND": 26000,
+        "RAINBOW": 52000,
+        "BESKAR": 104000,
+        "GALACTIC": 286000,
+        "STELLAR": 812500
+      }
+    },
+    {
+      "name": "DRFT-R",
+      "role": "ASTRO",
+      "rarity": "MYTHIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 5800,
+        "GOLD": 11600,
+        "DIAMOND": 23200,
+        "RAINBOW": 46400,
+        "BESKAR": 92800,
+        "GALACTIC": 255200,
+        "STELLAR": 725000
+      }
+    },
+    {
+      "name": "CYCLENS",
+      "role": "ASTRO",
+      "rarity": "MYTHIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 4400,
+        "GOLD": 8800,
+        "DIAMOND": 17600,
+        "RAINBOW": 35200,
+        "BESKAR": 70400,
+        "GALACTIC": 193600,
+        "STELLAR": 550000
+      }
+    },
+    {
+      "name": "X-ONK",
+      "role": "BATTLE",
+      "rarity": "MYTHIC",
+      "kind": "FUSION",
+      "income_per_second": {
+        "BASIC": 8000,
+        "GOLD": 16000,
+        "DIAMOND": 32000,
+        "RAINBOW": 64000,
+        "BESKAR": 128000,
+        "GALACTIC": 352000,
+        "STELLAR": 1000000
+      }
+    },
+    {
+      "name": "SRV-O",
+      "role": "BATTLE",
+      "rarity": "MYTHIC",
+      "kind": "FUSION",
+      "income_per_second": {
+        "BASIC": 7600,
+        "GOLD": 15200,
+        "DIAMOND": 30400,
+        "RAINBOW": 60800,
+        "BESKAR": 121600,
+        "GALACTIC": 334400,
+        "STELLAR": 950000
+      }
+    },
+    {
+      "name": "KX",
+      "role": "BATTLE",
+      "rarity": "MYTHIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 7200,
+        "GOLD": 14400,
+        "DIAMOND": 28800,
+        "RAINBOW": 57600,
+        "BESKAR": 115200,
+        "GALACTIC": 316800,
+        "STELLAR": 900000
+      }
+    },
+    {
+      "name": "IG",
+      "role": "BATTLE",
+      "rarity": "MYTHIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 5800,
+        "GOLD": 11600,
+        "DIAMOND": 23200,
+        "RAINBOW": 46400,
+        "BESKAR": 92800,
+        "GALACTIC": 255200,
+        "STELLAR": 725000
+      }
+    },
+    {
+      "name": "FUS-3",
+      "role": "WORKER",
+      "rarity": "LEGENDARY",
+      "kind": "FUSION",
+      "income_per_second": {
+        "BASIC": 1600,
+        "GOLD": 3200,
+        "DIAMOND": 6400,
+        "RAINBOW": 12800,
+        "BESKAR": 38400,
+        "GALACTIC": 96000,
+        "STELLAR": 240000
+      }
+    },
+    {
+      "name": "Mono-WLKR",
+      "role": "WORKER",
+      "rarity": "LEGENDARY",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 1500,
+        "GOLD": 3000,
+        "DIAMOND": 6000,
+        "RAINBOW": 12000,
+        "BESKAR": 36000,
+        "GALACTIC": 90000,
+        "STELLAR": 225000
+      }
+    },
+    {
+      "name": "RO-TOR",
+      "role": "WORKER",
+      "rarity": "LEGENDARY",
+      "kind": "FUSION",
+      "income_per_second": {
+        "BASIC": 1500,
+        "GOLD": 3000,
+        "DIAMOND": 6000,
+        "RAINBOW": 12000,
+        "BESKAR": 36000,
+        "GALACTIC": 90000,
+        "STELLAR": 225000
+      }
+    },
+    {
+      "name": "Mecha-Droid",
+      "role": "WORKER",
+      "rarity": "LEGENDARY",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 1200,
+        "GOLD": 2500,
+        "DIAMOND": 5000,
+        "RAINBOW": 9900,
+        "BESKAR": 29900,
+        "GALACTIC": 74600,
+        "STELLAR": 186600
+      }
+    },
+    {
+      "name": "Proto-Roller",
+      "role": "WORKER",
+      "rarity": "LEGENDARY",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 972,
+        "GOLD": 1900,
+        "DIAMOND": 3900,
+        "RAINBOW": 7800,
+        "BESKAR": 23300,
+        "GALACTIC": 58300,
+        "STELLAR": 145800
+      }
+    },
+    {
+      "name": "QIK-BIT",
+      "role": "ASTRO",
+      "rarity": "LEGENDARY",
+      "kind": "FUSION",
+      "income_per_second": {
+        "BASIC": 1600,
+        "GOLD": 3200,
+        "DIAMOND": 6400,
+        "RAINBOW": 12800,
+        "BESKAR": 38400,
+        "GALACTIC": 96000,
+        "STELLAR": 240000
+      }
+    },
+    {
+      "name": "R7",
+      "role": "ASTRO",
+      "rarity": "LEGENDARY",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 1500,
+        "GOLD": 3000,
+        "DIAMOND": 6000,
+        "RAINBOW": 12000,
+        "BESKAR": 36000,
+        "GALACTIC": 90000,
+        "STELLAR": 225000
+      }
+    },
+    {
+      "name": "BB9",
+      "role": "ASTRO",
+      "rarity": "LEGENDARY",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 1300,
+        "GOLD": 2600,
+        "DIAMOND": 5200,
+        "RAINBOW": 10400,
+        "BESKAR": 31200,
+        "GALACTIC": 78000,
+        "STELLAR": 195000
+      }
+    },
+    {
+      "name": "ORB-XL",
+      "role": "BATTLE",
+      "rarity": "LEGENDARY",
+      "kind": "FUSION",
+      "income_per_second": {
+        "BASIC": 1600,
+        "GOLD": 3200,
+        "DIAMOND": 6400,
+        "RAINBOW": 12800,
+        "BESKAR": 38400,
+        "GALACTIC": 96000,
+        "STELLAR": 240000
+      }
+    },
+    {
+      "name": "Opti-STRK",
+      "role": "BATTLE",
+      "rarity": "LEGENDARY",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 1500,
+        "GOLD": 3000,
+        "DIAMOND": 6000,
+        "RAINBOW": 12000,
+        "BESKAR": 36000,
+        "GALACTIC": 90000,
+        "STELLAR": 225000
+      }
+    },
+    {
+      "name": "B2-RP",
+      "role": "BATTLE",
+      "rarity": "LEGENDARY",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 1300,
+        "GOLD": 2600,
+        "DIAMOND": 5200,
+        "RAINBOW": 10400,
+        "BESKAR": 31300,
+        "GALACTIC": 78200,
+        "STELLAR": 195600
+      }
+    },
+    {
+      "name": "Cyclo-Grav",
+      "role": "BATTLE",
+      "rarity": "LEGENDARY",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 1300,
+        "GOLD": 2500,
+        "DIAMOND": 5000,
+        "RAINBOW": 10100,
+        "BESKAR": 30200,
+        "GALACTIC": 75600,
+        "STELLAR": 189000
+      }
+    },
+    {
+      "name": "N-UL",
+      "role": "WORKER",
+      "rarity": "EPIC",
+      "kind": "FUSION",
+      "income_per_second": {
+        "BASIC": 720,
+        "GOLD": 1440,
+        "DIAMOND": 2880,
+        "RAINBOW": 5760,
+        "BESKAR": 24480,
+        "GALACTIC": 37440,
+        "STELLAR": 57600
+      }
+    },
+    {
+      "name": "Gunrunner",
+      "role": "WORKER",
+      "rarity": "EPIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 660,
+        "GOLD": 1300,
+        "DIAMOND": 2600,
+        "RAINBOW": 5300,
+        "BESKAR": 22400,
+        "GALACTIC": 34300,
+        "STELLAR": 52800
+      }
+    },
+    {
+      "name": "AMP Walker",
+      "role": "WORKER",
+      "rarity": "EPIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 570,
+        "GOLD": 1100,
+        "DIAMOND": 2300,
+        "RAINBOW": 4600,
+        "BESKAR": 19400,
+        "GALACTIC": 29600,
+        "STELLAR": 45600
+      }
+    },
+    {
+      "name": "SEN-TRI",
+      "role": "WORKER",
+      "rarity": "EPIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 510,
+        "GOLD": 1000,
+        "DIAMOND": 2000,
+        "RAINBOW": 4100,
+        "BESKAR": 17300,
+        "GALACTIC": 26500,
+        "STELLAR": 40800
+      }
+    },
+    {
+      "name": "Opti-Pod",
+      "role": "WORKER",
+      "rarity": "EPIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 390,
+        "GOLD": 780,
+        "DIAMOND": 1600,
+        "RAINBOW": 3100,
+        "BESKAR": 13300,
+        "GALACTIC": 20300,
+        "STELLAR": 31200
+      }
+    },
+    {
+      "name": "LO",
+      "role": "WORKER",
+      "rarity": "EPIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 240,
+        "GOLD": 480,
+        "DIAMOND": 960,
+        "RAINBOW": 1900,
+        "BESKAR": 8200,
+        "GALACTIC": 12500,
+        "STELLAR": 19200
+      }
+    },
+    {
+      "name": "Groundmech",
+      "role": "WORKER",
+      "rarity": "EPIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 120,
+        "GOLD": 240,
+        "DIAMOND": 480,
+        "RAINBOW": 960,
+        "BESKAR": 4100,
+        "GALACTIC": 6200,
+        "STELLAR": 9600
+      }
+    },
+    {
+      "name": "SCRP-R",
+      "role": "ASTRO",
+      "rarity": "EPIC",
+      "kind": "FUSION",
+      "income_per_second": {
+        "BASIC": 720,
+        "GOLD": 1440,
+        "DIAMOND": 2880,
+        "RAINBOW": 5760,
+        "BESKAR": 24480,
+        "GALACTIC": 37440,
+        "STELLAR": 57600
+      }
+    },
+    {
+      "name": "R2",
+      "role": "ASTRO",
+      "rarity": "EPIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 360,
+        "GOLD": 720,
+        "DIAMOND": 1400,
+        "RAINBOW": 2900,
+        "BESKAR": 12200,
+        "GALACTIC": 18700,
+        "STELLAR": 28800
+      }
+    },
+    {
+      "name": "TRAK-R",
+      "role": "ASTRO",
+      "rarity": "EPIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 330,
+        "GOLD": 660,
+        "DIAMOND": 1300,
+        "RAINBOW": 2600,
+        "BESKAR": 11200,
+        "GALACTIC": 17200,
+        "STELLAR": 26400
+      }
+    },
+    {
+      "name": "R6",
+      "role": "ASTRO",
+      "rarity": "EPIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 300,
+        "GOLD": 600,
+        "DIAMOND": 1200,
+        "RAINBOW": 2400,
+        "BESKAR": 10200,
+        "GALACTIC": 15600,
+        "STELLAR": 24000
+      }
+    },
+    {
+      "name": "Util-Tec (Ulti-Tech)",
+      "role": "ASTRO",
+      "rarity": "EPIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 210,
+        "GOLD": 420,
+        "DIAMOND": 840,
+        "RAINBOW": 1700,
+        "BESKAR": 7100,
+        "GALACTIC": 10900,
+        "STELLAR": 16800
+      }
+    },
+    {
+      "name": "ORB-Walker",
+      "role": "ASTRO",
+      "rarity": "EPIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 180,
+        "GOLD": 360,
+        "DIAMOND": 720,
+        "RAINBOW": 1400,
+        "BESKAR": 6100,
+        "GALACTIC": 9400,
+        "STELLAR": 14400
+      }
+    },
+    {
+      "name": "BB",
+      "role": "ASTRO",
+      "rarity": "EPIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 150,
+        "GOLD": 300,
+        "DIAMOND": 600,
+        "RAINBOW": 1200,
+        "BESKAR": 5100,
+        "GALACTIC": 7800,
+        "STELLAR": 12000
+      }
+    },
+    {
+      "name": "OPT-AR",
+      "role": "BATTLE",
+      "rarity": "EPIC",
+      "kind": "FUSION",
+      "income_per_second": {
+        "BASIC": 720,
+        "GOLD": 1440,
+        "DIAMOND": 2880,
+        "RAINBOW": 5760,
+        "BESKAR": 24480,
+        "GALACTIC": 37440,
+        "STELLAR": 57600
+      }
+    },
+    {
+      "name": "ARM-CORE",
+      "role": "BATTLE",
+      "rarity": "EPIC",
+      "kind": "FUSION",
+      "income_per_second": {
+        "BASIC": 690,
+        "GOLD": 1380,
+        "DIAMOND": 2760,
+        "RAINBOW": 5520,
+        "BESKAR": 23460,
+        "GALACTIC": 35880,
+        "STELLAR": 55200
+      }
+    },
+    {
+      "name": "B1 Heavy",
+      "role": "BATTLE",
+      "rarity": "EPIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 630,
+        "GOLD": 1300,
+        "DIAMOND": 2500,
+        "RAINBOW": 4800,
+        "BESKAR": 20400,
+        "GALACTIC": 31200,
+        "STELLAR": 48000
+      }
+    },
+    {
+      "name": "Strike-Orb",
+      "role": "BATTLE",
+      "rarity": "EPIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 540,
+        "GOLD": 1100,
+        "DIAMOND": 2200,
+        "RAINBOW": 4300,
+        "BESKAR": 18400,
+        "GALACTIC": 28100,
+        "STELLAR": 43200
+      }
+    },
+    {
+      "name": "B2 Heavy",
+      "role": "BATTLE",
+      "rarity": "EPIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 480,
+        "GOLD": 960,
+        "DIAMOND": 1900,
+        "RAINBOW": 3800,
+        "BESKAR": 16300,
+        "GALACTIC": 25000,
+        "STELLAR": 38400
+      }
+    },
+    {
+      "name": "LNG-Shot",
+      "role": "BATTLE",
+      "rarity": "EPIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 450,
+        "GOLD": 900,
+        "DIAMOND": 1800,
+        "RAINBOW": 3600,
+        "BESKAR": 15300,
+        "GALACTIC": 23400,
+        "STELLAR": 36000
+      }
+    },
+    {
+      "name": "B2 Super",
+      "role": "BATTLE",
+      "rarity": "EPIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 420,
+        "GOLD": 840,
+        "DIAMOND": 1700,
+        "RAINBOW": 3400,
+        "BESKAR": 14300,
+        "GALACTIC": 21800,
+        "STELLAR": 33600
+      }
+    },
+    {
+      "name": "Haul-R",
+      "role": "BATTLE",
+      "rarity": "EPIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 270,
+        "GOLD": 540,
+        "DIAMOND": 1100,
+        "RAINBOW": 2200,
+        "BESKAR": 9200,
+        "GALACTIC": 14000,
+        "STELLAR": 21600
+      }
+    },
+    {
+      "name": "WHL-EX",
+      "role": "WORKER",
+      "rarity": "RARE",
+      "kind": "FUSION",
+      "income_per_second": {
+        "BASIC": 72,
+        "GOLD": 144,
+        "DIAMOND": 288,
+        "RAINBOW": 576,
+        "BESKAR": 864,
+        "GALACTIC": 1728,
+        "STELLAR": 2304
+      }
+    },
+    {
+      "name": "BU-4D",
+      "role": "WORKER",
+      "rarity": "RARE",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 58,
+        "GOLD": 116,
+        "DIAMOND": 232,
+        "RAINBOW": 464,
+        "BESKAR": 696,
+        "GALACTIC": 1400,
+        "STELLAR": 1900
+      }
+    },
+    {
+      "name": "Senate Hovercam",
+      "role": "WORKER",
+      "rarity": "RARE",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 46,
+        "GOLD": 92,
+        "DIAMOND": 184,
+        "RAINBOW": 368,
+        "BESKAR": 552,
+        "GALACTIC": 1100,
+        "STELLAR": 1500
+      }
+    },
+    {
+      "name": "ARG",
+      "role": "WORKER",
+      "rarity": "RARE",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 42,
+        "GOLD": 84,
+        "DIAMOND": 168,
+        "RAINBOW": 336,
+        "BESKAR": 504,
+        "GALACTIC": 1000,
+        "STELLAR": 1300
+      }
+    },
+    {
+      "name": "ROLL-R",
+      "role": "WORKER",
+      "rarity": "RARE",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 31,
+        "GOLD": 62,
+        "DIAMOND": 124,
+        "RAINBOW": 248,
+        "BESKAR": 372,
+        "GALACTIC": 744,
+        "STELLAR": 992
+      }
+    },
+    {
+      "name": "Bal-Core",
+      "role": "WORKER",
+      "rarity": "RARE",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 23,
+        "GOLD": 46,
+        "DIAMOND": 92,
+        "RAINBOW": 184,
+        "BESKAR": 276,
+        "GALACTIC": 552,
+        "STELLAR": 736
+      }
+    },
+    {
+      "name": "BDX Explorer",
+      "role": "WORKER",
+      "rarity": "RARE",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 15,
+        "GOLD": 30,
+        "DIAMOND": 60,
+        "RAINBOW": 120,
+        "BESKAR": 180,
+        "GALACTIC": 360,
+        "STELLAR": 480
+      }
+    },
+    {
+      "name": "ZRO-TEC",
+      "role": "ASTRO",
+      "rarity": "RARE",
+      "kind": "FUSION",
+      "income_per_second": {
+        "BASIC": 72,
+        "GOLD": 144,
+        "DIAMOND": 288,
+        "RAINBOW": 576,
+        "BESKAR": 864,
+        "GALACTIC": 1728,
+        "STELLAR": 2304
+      }
+    },
+    {
+      "name": "R4",
+      "role": "ASTRO",
+      "rarity": "RARE",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 50,
+        "GOLD": 100,
+        "DIAMOND": 200,
+        "RAINBOW": 400,
+        "BESKAR": 600,
+        "GALACTIC": 1200,
+        "STELLAR": 1600
+      }
+    },
+    {
+      "name": "A-LT",
+      "role": "ASTRO",
+      "rarity": "RARE",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 36,
+        "GOLD": 72,
+        "DIAMOND": 144,
+        "RAINBOW": 288,
+        "BESKAR": 432,
+        "GALACTIC": 864,
+        "STELLAR": 1100
+      }
+    },
+    {
+      "name": "2BB",
+      "role": "ASTRO",
+      "rarity": "RARE",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 17,
+        "GOLD": 34,
+        "DIAMOND": 68,
+        "RAINBOW": 136,
+        "BESKAR": 204,
+        "GALACTIC": 408,
+        "STELLAR": 544
+      }
+    },
+    {
+      "name": "R9",
+      "role": "ASTRO",
+      "rarity": "RARE",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 54,
+        "GOLD": 108,
+        "DIAMOND": 216,
+        "RAINBOW": 432,
+        "BESKAR": 648,
+        "GALACTIC": 1300,
+        "STELLAR": null
+      }
+    },
+    {
+      "name": "BTL-R",
+      "role": "BATTLE",
+      "rarity": "RARE",
+      "kind": "FUSION",
+      "income_per_second": {
+        "BASIC": 72,
+        "GOLD": 144,
+        "DIAMOND": 288,
+        "RAINBOW": 576,
+        "BESKAR": 864,
+        "GALACTIC": 1728,
+        "STELLAR": 2304
+      }
+    },
+    {
+      "name": "B1 Security",
+      "role": "BATTLE",
+      "rarity": "RARE",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 66,
+        "GOLD": 132,
+        "DIAMOND": 264,
+        "RAINBOW": 528,
+        "BESKAR": 792,
+        "GALACTIC": 1600,
+        "STELLAR": 2100
+      }
+    },
+    {
+      "name": "HOV-R",
+      "role": "BATTLE",
+      "rarity": "RARE",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 62,
+        "GOLD": 124,
+        "DIAMOND": 248,
+        "RAINBOW": 496,
+        "BESKAR": 744,
+        "GALACTIC": 1500,
+        "STELLAR": 2000
+      }
+    },
+    {
+      "name": "VECT-Arm",
+      "role": "BATTLE",
+      "rarity": "RARE",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 27,
+        "GOLD": 54,
+        "DIAMOND": 108,
+        "RAINBOW": 216,
+        "BESKAR": 324,
+        "GALACTIC": 648,
+        "STELLAR": 864
+      }
+    },
+    {
+      "name": "NAV-EX",
+      "role": "BATTLE",
+      "rarity": "RARE",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 18,
+        "GOLD": 36,
+        "DIAMOND": 72,
+        "RAINBOW": 144,
+        "BESKAR": 216,
+        "GALACTIC": 432,
+        "STELLAR": 576
+      }
+    },
+    {
+      "name": "Gonk",
+      "role": "WORKER",
+      "rarity": "COMMON",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 4,
+        "GOLD": 8,
+        "DIAMOND": 16,
+        "RAINBOW": 32,
+        "BESKAR": 48,
+        "GALACTIC": 96,
+        "STELLAR": 128
+      }
+    },
+    {
+      "name": "Mouse",
+      "role": "WORKER",
+      "rarity": "COMMON",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 2,
+        "GOLD": 4,
+        "DIAMOND": 8,
+        "RAINBOW": 16,
+        "BESKAR": 24,
+        "GALACTIC": 48,
+        "STELLAR": 64
+      }
+    },
+    {
+      "name": "Pit",
+      "role": "WORKER",
+      "rarity": "COMMON",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 2,
+        "GOLD": 4,
+        "DIAMOND": 8,
+        "RAINBOW": 16,
+        "BESKAR": 24,
+        "GALACTIC": 48,
+        "STELLAR": 64
+      }
+    },
+    {
+      "name": "R8",
+      "role": "ASTRO",
+      "rarity": "COMMON",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 4,
+        "GOLD": 8,
+        "DIAMOND": 16,
+        "RAINBOW": 32,
+        "BESKAR": 48,
+        "GALACTIC": 96,
+        "STELLAR": 128
+      }
+    },
+    {
+      "name": "CB",
+      "role": "ASTRO",
+      "rarity": "COMMON",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 3,
+        "GOLD": 6,
+        "DIAMOND": 12,
+        "RAINBOW": 24,
+        "BESKAR": 36,
+        "GALACTIC": 72,
+        "STELLAR": 96
+      }
+    },
+    {
+      "name": "R3",
+      "role": "ASTRO",
+      "rarity": "COMMON",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 3,
+        "GOLD": 6,
+        "DIAMOND": 12,
+        "RAINBOW": 24,
+        "BESKAR": 36,
+        "GALACTIC": 72,
+        "STELLAR": 96
+      }
+    },
+    {
+      "name": "R5",
+      "role": "ASTRO",
+      "rarity": "COMMON",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 3,
+        "GOLD": 6,
+        "DIAMOND": 12,
+        "RAINBOW": 24,
+        "BESKAR": 36,
+        "GALACTIC": 72,
+        "STELLAR": 96
+      }
+    },
+    {
+      "name": "Imperial Probe",
+      "role": "BATTLE",
+      "rarity": "COMMON",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 6,
+        "GOLD": 12,
+        "DIAMOND": 24,
+        "RAINBOW": 48,
+        "BESKAR": 72,
+        "GALACTIC": 144,
+        "STELLAR": 192
+      }
+    },
+    {
+      "name": "B1 Battle",
+      "role": "BATTLE",
+      "rarity": "COMMON",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 5,
+        "GOLD": 10,
+        "DIAMOND": 20,
+        "RAINBOW": 40,
+        "BESKAR": 60,
+        "GALACTIC": 120,
+        "STELLAR": 160
+      }
+    },
+    {
+      "name": "ID10",
+      "role": "BATTLE",
+      "rarity": "COMMON",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 4,
+        "GOLD": 8,
+        "DIAMOND": 16,
+        "RAINBOW": 32,
+        "BESKAR": 48,
+        "GALACTIC": 96,
+        "STELLAR": 128
+      }
+    },
+    {
+      "name": "DRK-1 Probe",
+      "role": "BATTLE",
+      "rarity": "COMMON",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 3,
+        "GOLD": 6,
+        "DIAMOND": 12,
+        "RAINBOW": 24,
+        "BESKAR": 36,
+        "GALACTIC": 72,
+        "STELLAR": 96
+      }
+    },
+    {
+      "name": "C-3PO",
+      "role": "WORKER",
+      "rarity": "ICONIC",
+      "kind": "ICONIC",
+      "income": "+15%/s",
+      "perk": "100% Droid Sell Value"
+    },
+    {
+      "name": "DJ R-3X",
+      "role": "WORKER",
+      "rarity": "ICONIC",
+      "kind": "ICONIC",
+      "income": "+15%/s",
+      "perk": "\u00d72 World Quest Rewards"
+    },
+    {
+      "name": "BB-8",
+      "role": "ASTRO",
+      "rarity": "ICONIC",
+      "kind": "ICONIC",
+      "income": "+15%/s",
+      "perk": "100% Upgrade Chips"
+    },
+    {
+      "name": "CB-23",
+      "role": "ASTRO",
+      "rarity": "ICONIC",
+      "kind": "ICONIC",
+      "income": "+15%/s",
+      "perk": "Secret Astromech Mission"
+    },
+    {
+      "name": "Chopper",
+      "role": "ASTRO",
+      "rarity": "ICONIC",
+      "kind": "ICONIC",
+      "income": "+15%/s",
+      "perk": "+50% Crit Chance & Damage"
+    },
+    {
+      "name": "R2-D2",
+      "role": "ASTRO",
+      "rarity": "ICONIC",
+      "kind": "ICONIC",
+      "income": "+15%/s",
+      "perk": "2x Assigned Astromech Mission Reward"
+    },
+    {
+      "name": "IG-11 Marshal",
+      "role": "BATTLE",
+      "rarity": "ICONIC",
+      "kind": "ICONIC",
+      "income": "+15%/s",
+      "perk": "Blueprint Shield"
+    },
+    {
+      "name": "Mister Bones",
+      "role": "BATTLE",
+      "rarity": "ICONIC",
+      "kind": "ICONIC",
+      "income": "+15%/s",
+      "perk": "\u00d72 Damage"
+    }
+  ],
+  "totals": {
+    "all": 87,
+    "standard": 62,
+    "fusion": 17,
+    "iconic": 8,
+    "documented_fixed_values": 552,
+    "missing_fixed_values": 1
+  }
+}

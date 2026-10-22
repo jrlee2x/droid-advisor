@@ -1,0 +1,56 @@
+DROID ADVISOR DIAGNOSTIC REPORT
+Generated: 2026-10-10T20:10:17-05:00
+Version: 1.3.4-dev
+Windows: Windows-11-10.0.26200-SP0
+Uptime seconds: 101
+Fortnite foreground window: yes
+Game rectangle: (0, 0, 2560, 1440)
+Detailed diagnostics active: yes
+Screenshots saved: no
+Data uploaded: no
+
+CONFIGURATION
+cycle: 2
+completed_rebirth: 35
+paused: False
+interval_seconds: 1.25
+spawn_alerts_enabled: True
+
+LATEST RUNTIME STATE
+advice_capture_excluded: True
+advisor_capture_excluded: True
+blueprint_droid_confidence: 0.0
+blueprint_droid_read: not recognized
+blueprint_recognized: False
+blueprint_visual_gate: True
+capture_active: True
+capture_reason: active
+captured_frame_size: 2560x1440
+card_droid_confidence: 0.995
+card_droid_read: R6
+card_header_ocr_sample: FVENT | INACTIVE | 2x | R6 | STELLAR | EPIC | DROIDPERK | +9 Pickaxe Level | X | 2400K/s
+card_header_token_count: 10
+card_panel_recognized: True
+card_visual_gate: True
+interaction_ocr_ms: 1000
+interaction_ocr_sample: 2X | 2X | R6 | 大ASWAP | 2/2 | STELLAR | EPIC | V | FUSION | 3/3 | DROID PERK | +9PickaxeLevel | X | LOUNGE | 9/13 | BeskarDroid(Common)spawnedat | 24.00K/S | Astromech | CUSTOMIZE | 六COMPANIONS | SELL | 107.15T | ESC CLOSE | 326.3X | AXE | Q | Slot1 | Slot2 | THEDEPSWAG | KX | BB-8
+interaction_regions_attempted: full
+interaction_token_count: 31
+last_capture_at: 2026-10-10T20:10:17-05:00
+monitor_frame_number: 74
+ocr_initialized: True
+rebirth_header_recognized: False
+rebirth_rank_read: not recognized
+rebirth_requirement_token_count: 0
+rebirth_visual_gate: False
+ui_active_region: full
+ui_candidate_regions: full
+ui_frame_size: 2560x1440
+
+RECENT EVENTS
+20:08:36  Droid Advisor v1.3.3 started
+20:08:38  Detailed diagnostics enabled for 600 seconds
+20:08:40  Offline OCR initialized
+20:09:04  Inventory confirmed from owned card: R6 STELLAR EPIC
+Pending: 12
+Displayed: R6: SAFE TO SELL: LAST NEEDED AT RB34

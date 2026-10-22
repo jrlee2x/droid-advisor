@@ -1,0 +1,68 @@
+[
+  {
+    "file": "artifacts/live-debug-1.3.4/r6-1.png",
+    "broad_ms": 1781,
+    "focused_reads": [
+      {
+        "ms": 688,
+        "identity": [
+          "R6",
+          0.9956814050674438,
+          "STELLAR",
+          "EPIC"
+        ]
+      },
+      {
+        "ms": 328,
+        "identity": [
+          "R6",
+          0.9956814050674438,
+          "STELLAR",
+          "EPIC"
+        ]
+      },
+      {
+        "ms": 344,
+        "identity": [
+          "R6",
+          0.9956814050674438,
+          "STELLAR",
+          "EPIC"
+        ]
+      }
+    ]
+  },
+  {
+    "file": "artifacts/live-debug-1.3.3/amp-walker.png",
+    "broad_ms": 1391,
+    "focused_reads": [
+      {
+        "ms": 656,
+        "identity": [
+          "AMP WALKER",
+          0.9870979653464423,
+          "GALACTIC",
+          "EPIC"
+        ]
+      },
+      {
+        "ms": 344,
+        "identity": [
+          "AMP WALKER",
+          0.9870979653464423,
+          "GALACTIC",
+          "EPIC"
+        ]
+      },
+      {
+        "ms": 359,
+        "identity": [
+          "AMP WALKER",
+          0.9870979653464423,
+          "GALACTIC",
+          "EPIC"
+        ]
+      }
+    ]
+  }
+]
