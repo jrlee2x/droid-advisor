@@ -1,5 +1,13 @@
 # Droid Advisor release and update guide
 
+## 1.3.10 independent identity and inventory confirmation
+
+- Josh's 19:23:00 report shows a banner clear with all six visual patches still matching. Pixel validation was not the reason for that clear.
+- Reproduced a confirmation reset when optional finish/rarity OCR varies: a missed Rainbow label cleared the already confirmed R4 banner even though its title and panel were current.
+- Confirm identity using source, complete droid name and rebirth progress independently of optional labels. Keep the same two fresh identity reads, current visual proof, confidence and context guards.
+- Inventory separately requires two matching complete name/finish/rarity observations; missing or changed labels reset that inventory confirmation. No inventory entry comes from one optional label reading.
+- Reports expose observed finish/rarity, both confirmation counts and reset/clear reasons.
+
 ## 1.3.9 badge and control brightness normalization
 
 - Josh reports 1.3.8 advice still disappears and immediately returns. His 19:16:55 foreground/capture-active report records failures on the rarity and two control patches, while focused R4 recognition remains confident.
@@ -71,7 +79,7 @@ Card button matching now excludes the Worker role label while accepting OCR-join
 
 ## Current distribution
 
-- Local repair installer: `DroidAdvisor-Setup-1.3.9.exe` (not published)
+- Local repair installer: `DroidAdvisor-Setup-1.3.10.exe` (not published)
 - Platform: 64-bit Windows 10/11
 - Installation scope: current Windows user; no administrator rights requested
 - Runtime: bundled Python and offline OCR; recipients do not install Python

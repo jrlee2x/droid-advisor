@@ -156,6 +156,41 @@ def test_confirmed_open_card_refreshes_from_each_verified_frame(app):
 
 
 @pytest.mark.parametrize("source", ["card", "blueprint"])
+def test_optional_badge_reads_do_not_clear_a_visually_current_confirmed_identity(app, source):
+    from PIL import ImageDraw
+    app.inventory_map = Mock()
+    frame = Image.new("RGB", (160, 50), "black")
+    ImageDraw.Draw(frame).text((8, 8), "R4 RARE", fill="white")
+    proof = VisualEvidence(frame.size, (TextPatch.capture(frame, (0, 0, 160, 50)),))
+    app.config.update(cycle=3, completed_rebirth=10)
+
+    def read(finish, rarity):
+        app._publish_frame(frame.copy())
+        evidence = replace(app._frame_evidence(), visual=proof)
+        app._update_advice("R4", .99, finish, rarity, source=source, evidence=evidence)
+        app._drain_events()
+
+    read("RAINBOW", "RARE")
+    read("RAINBOW", "RARE")
+    assert app.displayed_advice is not None
+    app.overlay.reset_mock()
+    app.inventory.reset_mock()
+    for finish, rarity in [(None, "RARE"), ("RAINBOW", "RARE"), ("GOLD", "RARE"),
+                           (None, None), ("RAINBOW", "RARE")]:
+        read(finish, rarity)
+        assert app.displayed_advice is not None
+        assert "SAFE TO SELL" in app.displayed_advice.message
+        app.overlay.withdraw.assert_not_called()
+        app.inventory.ensure_seen.assert_not_called()
+    read("RAINBOW", "RARE")
+    assert app.inventory.ensure_seen.called is (source == "card")
+    # Stable optional labels never authorize advice after the title vanishes.
+    app._publish_frame(Image.new("RGB", frame.size))
+    app._hide_expired_advice()
+    app.overlay.withdraw.assert_called_once()
+
+
+@pytest.mark.parametrize("source", ["card", "blueprint"])
 def test_monitor_does_not_fall_back_to_r2_when_focused_title_is_unreadable(app, monkeypatch, source):
     confirm(app, source=source)
     broad_tokens = [token("R2", x=200, y=350)] + (

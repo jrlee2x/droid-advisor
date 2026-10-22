@@ -174,6 +174,8 @@ class DroidAdvisorApp:
         self.last_signature = None
         self.pending_signature = None
         self.pending_count = 0
+        self.pending_inventory_signature = None
+        self.pending_inventory_count = 0
         self.last_spawn_signature = None
         self.spawn_absent_scans = 0
         self.last_spawn_scan_at = 0.0
@@ -1012,7 +1014,7 @@ class DroidAdvisorApp:
             self.frame_captured_at = time.monotonic()
             self.latest_frame = image
 
-    def _clear_advice(self) -> None:
+    def _clear_advice(self, reason="capture or context reset") -> None:
         # Shared by cards and blueprints, including capture/recognition failures.
         self.events.put(("advice_clear", None))
         self.last_signature = None
@@ -1020,6 +1022,9 @@ class DroidAdvisorApp:
         self.pending_count = 0
         self.pending_frame_number = None
         self.pending_evidence = None
+        self.pending_inventory_signature = None
+        self.pending_inventory_count = 0
+        self.diagnostics.set(confirmation_reset_reason=reason, identity_confirmation_count=0, inventory_confirmation_count=0)
 
     def _record_advice_validation(self, evidence, prefix):
         """Describe the actual failed frame without saving pixels or OCR text."""
@@ -1047,16 +1052,20 @@ class DroidAdvisorApp:
                            *, source="card", evidence=None) -> None:
         """Publish advice only after two distinct, consecutive, current captures."""
         evidence = evidence or self._frame_evidence()
+        self.diagnostics.set(observed_finish=finish or "not recognized", observed_rarity=rarity or "not recognized")
         supported = {canonical(name) for name in ALL_DROIDS}
         if not droid or confidence < 0.80 or canonical(droid) not in supported or not self._evidence_is_current(evidence):
-            self._clear_advice()
+            self._clear_advice("identity missing, weak or unsupported" if not droid or confidence < 0.80 or canonical(droid) not in supported
+                               else "visual or capture evidence no longer current")
             self.diagnostics.set(advice_status="identity missing or unsupported" if not droid or confidence < 0.80 or canonical(droid) not in supported
                                  else "visual or capture evidence no longer current")
             if droid and confidence >= 0.80:
                 self.diagnostics.set(rejected_identity=droid)
                 self._record_advice_validation(evidence, "rejected")
             return
-        signature = (source, droid, finish, rarity, evidence.cycle, evidence.completed)
+        # Optional OCR labels can disappear between otherwise identical reads.
+        # Confirm the droid independently; inventory still confirms every label.
+        signature = (source, droid, evidence.cycle, evidence.completed)
         if evidence.number == self.pending_frame_number:
             return
         prior = getattr(self, "pending_evidence", None)
@@ -1064,11 +1073,21 @@ class DroidAdvisorApp:
             prior and prior.visual and self._evidence_is_current(prior)
         )
         if signature != self.pending_signature or not continuous:
-            self._clear_advice()
+            self._clear_advice("droid, source or progress changed" if signature != self.pending_signature
+                               else "capture sequence interrupted")
             self.pending_signature = signature
         self.pending_frame_number = evidence.number
         self.pending_evidence = evidence
         self.pending_count += 1
+        inventory_signature = (signature, finish, rarity) if source == "card" and finish and rarity else None
+        self.pending_inventory_count = (
+            getattr(self, "pending_inventory_count", 0) + 1
+            if inventory_signature and inventory_signature == getattr(self, "pending_inventory_signature", None)
+            else int(inventory_signature is not None)
+        )
+        self.pending_inventory_signature = inventory_signature
+        self.diagnostics.set(identity_confirmation_count=self.pending_count,
+                             inventory_confirmation_count=self.pending_inventory_count)
         if self.pending_count < 2:
             self.diagnostics.set(advice_status="waiting for second confirmed capture")
             return
@@ -1081,7 +1100,7 @@ class DroidAdvisorApp:
                               "#137a43" if decision.safe_to_sell else "#a8232e")
         self.events.put(("advice", ticket))
         self.diagnostics.set(advice_status="verified advice queued", advice_message=ticket.message)
-        if source == "card" and finish and rarity and self._evidence_is_current(evidence):
+        if self.pending_inventory_count >= 2 and self._evidence_is_current(evidence):
             metadata = droid_metadata(droid)
             _, created = self.inventory.ensure_seen(
                 droid, finish, rarity=rarity, role=metadata.role if metadata else "",
@@ -1097,7 +1116,8 @@ class DroidAdvisorApp:
             self.overlay.withdraw()
             self.overlay_source = None
             self.displayed_advice = None
-            self.diagnostics.set(advice_display_status="cleared by fresh-frame validation")
+            self.diagnostics.set(advice_display_status="cleared by fresh-frame validation",
+                                 last_advice_clear_reason="fresh-frame validation")
 
     def _scan_identity(self, ocr, full_image, image, active_region, identity_rect, controls, evidence, source):
         """Always read identity anew, including when reusing verified geometry."""
@@ -1510,7 +1530,8 @@ class DroidAdvisorApp:
                         self.overlay.withdraw()
                         self.overlay_source = None
                         self.displayed_advice = None
-                        self.diagnostics.set(advice_display_status="cleared by recognition reset")
+                        self.diagnostics.set(advice_display_status="cleared by recognition reset",
+                                             last_advice_clear_reason="recognition reset")
                 elif kind == "status":
                     self.status_var.set(str(payload))
                 elif kind == "cycle":

@@ -1,6 +1,6 @@
 # Rebirth detection repair and v1.35 Path 6
 
-Checked October 21, 2026. Latest local repair: 1.3.9; versioned findings follow.
+Checked October 21, 2026. Latest local repair: 1.3.10; versioned findings follow.
 
 ## Findings
 
@@ -97,3 +97,15 @@ New checks cover both text polarities, changing fills, whole-control brightness,
 The report now records the time and exact numerical mismatch details for the actual displayed-advice clear, as well as separately timestamping rejected recognition. This distinguishes old rejected observations from the reason a currently displayed banner clears. Only patch coordinates, thresholds and counts are retained, with at most eight failed patch details; no screenshot or new OCR sample retention is added. Recognition-reset clears are now labeled separately from fresh-frame validation.
 
 All 706 relevant regressions pass on the final 1.3.9 source. Packaged and installed runtime health checks and the installer return exit 0. The installed executable matches the build hash, and settings and inventory remained byte-for-byte unchanged during installation. Installer SHA-256: `c49c76349a52d337c04965cf23f6a292a712612df142b3144da31905ae2be904`. The installer, checksum, log, profile backups and `verification-1.3.9.json` are in the repair artifact directory. Josh was asked to leave the R4 card open for 20 seconds and report persistence or supply the new diagnostic. Live persistence confirmation remains pending. No desktop control or live screen access was used.
+
+## Follow-up: confirmation reset with unchanged pixels, 1.3.10
+
+Josh's 19:23:00 version 1.3.9 report records a displayed-advice clear at 19:22:56 with all six visual patches matching, evidence age 1907 ms and capture age 610 ms. The current R4 observation is confident (0.998, 328 ms), and the banner is visible again. This narrows the recorded event to the recognition-reset path; no pixel mismatch or age expiry explains that clear. The report does not capture the optional labels at the moment of the reset.
+
+A new regression reproduces a reset on that path: the pending confirmation signature included optional finish/rarity. After two Rainbow R4 confirmations, a single confident R4 read missing Rainbow clears the banner even while the old title/badge/control proof still matches. This happens for owned cards and blueprints. The regression fails on 1.3.9 before the fix.
+
+Version 1.3.10 confirms source, complete droid name and cycle/progress separately from optional finish/rarity. Every advice update still needs two distinct, consecutive or visually continuous identity captures, current confidence/visual evidence, active capture and unchanged progress. Conflicting/unreadable/weak identities, closed cards, capture loss, pause and expiry still clear advice immediately. Optional quality affects the explanatory upgrade message, while the keep/sell decision remains conservative for every finish by the existing engine rule.
+
+Inventory has a separate confirmation counter for the complete name/finish/rarity tuple. Missing or changed optional labels reset that counter, and two matching fresh full observations remain required before inventory is written. Tests alternate missing/changed labels while exercising the real UI event handler: the current R4 banner stays visible; inventory receives no unconfirmed tuple; two matching owned observations update inventory; blueprints never do. A changed frame still clears the banner. Diagnostics also include observed finish/rarity, both confirmation counts and reset/clear reason labels.
+
+All 708 relevant regressions pass. Packaged and installed runtime health checks and installer return exit 0. The installed executable matches the build; settings and inventory remained byte-for-byte unchanged during installation. Installer SHA-256: `5c895c0701c1dddc77eb4faec9a853ecb26db6a03ca29205ac45a897397452cc`. Installer, checksum, installation log, profile backups and `verification-1.3.10.json` are in the repair artifact directory. Josh was asked for another 20-second card check after installation; persistence confirmation remains pending. All work remained in the background, with no live screen access or desktop control.
