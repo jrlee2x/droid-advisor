@@ -104,13 +104,13 @@ def render_chart(payload: dict[str, object]) -> Image.Image:
     draw.text((190, 35), "DROID ADVISOR ALL-DROID INCOME CHART", font=TITLE, fill=INK)
     draw.text(
         (194, 116),
-        "100 DROIDS  •  73 STANDARD  •  17 FUSION  •  10 ICONIC  •  BASE CREDITS PER SECOND",
+        "101 DROIDS  •  73 STANDARD  •  17 FUSION  •  11 ICONIC  •  BASE CREDITS PER SECOND",
         font=SUBTITLE,
         fill=CYAN,
     )
     draw.text(
         (194, 151),
-        "Basic applies to standard droids; Default applies to fusion droids. Iconic income is percentage-based.",
+        "Scourge excludes Hive Mind. Kyber is inactive. Iconics use separate percentage or Protocol effects.",
         font=SMALL,
         fill=MUTED,
     )
@@ -119,7 +119,7 @@ def render_chart(payload: dict[str, object]) -> Image.Image:
     name_x = MARGIN + 18
     role_x = 570
     values_x = 825
-    value_width = 258
+    value_width = (WIDTH - MARGIN - values_x) / len(INCOME_VARIANTS)
     y = TITLE_HEIGHT
 
     for rarity in INCOME_RARITY_ORDER:

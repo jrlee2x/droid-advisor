@@ -14,18 +14,19 @@ from .fusion_recipes import (
     FUSION_RARITY_ORDER,
     FUSION_RECIPES,
     FUSION_VARIANTS,
+    SCOURGE_FUSION_RULE,
     shopping_list,
 )
 from .rebirth_metadata import rarity_for
 
 ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "rebirth-chart-site" / "assets"
-WIDTH, HEIGHT = 2200, 1370
+WIDTH, HEIGHT = 2200, 1450
 
 TITLE = font("ariblk.ttf", 62)
 SUBTITLE = font("arialbd.ttf", 23)
 GROUP = font("ariblk.ttf", 25)
-OUTPUT = font("ariblk.ttf", 25)
+OUTPUT = font("ariblk.ttf", 22)
 BODY = font("arialbd.ttf", 18)
 SMALL = font("arialbd.ttf", 14)
 COUNT = font("ariblk.ttf", 22)
@@ -43,6 +44,8 @@ def compact_credits(value: int) -> str:
 def recipe_payload() -> dict[str, object]:
     purchases = shopping_list()
     return {
+        "scourge_rule": SCOURGE_FUSION_RULE,
+        "income_note": "Raw base income; Scourge excludes Hive Mind; Kyber is inactive.",
         "recipes": [
             {
                 "output": recipe["output"],
@@ -109,13 +112,16 @@ def render_chart(payload: dict[str, object]) -> Image.Image:
             per_second = recipe["income_per_second"]
             income_summary = (
                 f"DEFAULT {compact_credits(per_second['DEFAULT'])}/S  •  "
-                f"STELLAR {compact_credits(per_second['STELLAR'])}/S"
+                f"SCOURGE {compact_credits(per_second['SCOURGE'])}/S (RAW)"
             )
-            draw.text((x + 16, card_y + 37), income_summary, font=SMALL, fill=CYAN)
+            draw.text((x + 16, card_y + 43), income_summary, font=SMALL, fill=CYAN)
             ingredients = " + ".join(recipe["ingredients"])
-            draw.text((x + 16, card_y + 59), ingredients, font=BODY, fill=INK)
+            draw.text((x + 16, card_y + 64), ingredients, font=BODY, fill=INK)
         y += ((len(group) + 1) // 2) * 100 + 16
 
+    draw.text((34, 1332), "SCOURGE: LEFT-MOST INGREDIENT + TWO STELLAR / KYBER / SCOURGE INPUTS", font=BODY, fill="#dc78ff")
+    draw.text((34, 1365), "Named recipes only. Lower inputs reduce the output. Check the machine preview; no chip upgrade into Scourge.", font=SMALL, fill=MUTED)
+    draw.text((34, 1394), "Base income excludes Hive Mind. Keep rebirth and Scourgedex stock before consuming ingredients.", font=SMALL, fill=MUTED)
     shopping_left = 1490
     draw.rounded_rectangle((shopping_left, 172, WIDTH - 34, HEIGHT - 34), radius=24, fill="#050b14", outline=CYAN, width=3)
     draw.text((shopping_left + 24, 198), "DROIDS TO BUY", font=GROUP, fill=CYAN)

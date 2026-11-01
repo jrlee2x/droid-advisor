@@ -118,7 +118,7 @@ def confirm(app, name="R2", source="card"):
 @pytest.mark.parametrize("source", ["card", "blueprint"])
 def test_switching_from_r2_removes_sell_message_before_new_title_is_confirmed(app, source):
     ticket = confirm(app, source=source)
-    assert "R2" in ticket.message and "SAFE TO SELL" in ticket.message
+    assert "R2" in ticket.message and "NO MORE REBIRTH USE" in ticket.message
     assert scan(app, "GROUNDMECH", source=source) == [("advice_clear", None)]
     result = scan(app, "GROUNDMECH", source=source)
     assert "GROUNDMECH" in result[0][1].message and "KEEP: NEEDED AT RB38" in result[0][1].message
@@ -179,7 +179,7 @@ def test_optional_badge_reads_do_not_clear_a_visually_current_confirmed_identity
                            (None, None), ("RAINBOW", "RARE")]:
         read(finish, rarity)
         assert app.displayed_advice is not None
-        assert "SAFE TO SELL" in app.displayed_advice.message
+        assert ("SAFE TO SELL" if finish else "CHECK VARIANT / SCOURGEDEX") in app.displayed_advice.message
         app.overlay.withdraw.assert_not_called()
         app.inventory.ensure_seen.assert_not_called()
     read("RAINBOW", "RARE")

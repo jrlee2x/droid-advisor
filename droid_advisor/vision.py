@@ -530,6 +530,9 @@ def focused_identity(tokens: list[OcrToken]) -> tuple[str | None, float, str | N
     metadata = droid_metadata(name)
     if rarity and metadata and metadata.rarity != rarity:
         return None, 0.0, finish, rarity
+    if metadata and metadata.kind == "ICONIC":
+        # SCOURGE PRIME is a complete title, not a Scourge finish label.
+        finish = "DEFAULT"
     key = canonical(name)
     longer = [item for other, item in CATALOG.items() if key != other and key in other]
     # A truncated title such as MOUSE needs a badge to rule out SNOW MOUSE.
@@ -651,7 +654,7 @@ def high_value_spawn(
     ]
     compact = canonical(" ".join(token.text for token in relevant_tokens)).replace("BESKER", "BESKAR")
     notification_pattern = re.compile(
-        r"(DEFAULT|GOLD|DIAMOND|RAINBOW|BESKAR|GALACTIC|STELLAR|KYBER)"
+        r"(DEFAULT|GOLD|DIAMOND|RAINBOW|BESKAR|GALACTIC|STELLAR|KYBER|SCOURGE)"
         r"DROID(COMMON|RARE|EPIC|LEGENDARY|MYTHIC)SPAWN(?:ED)?"
     )
     match = next(

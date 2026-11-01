@@ -49,6 +49,7 @@ FINISH_COLORS = {
     "KYBER_GREEN": "#63df84",
     "KYBER_BLUE": "#56bfff",
     "KYBER_PURPLE": "#b482ff",
+    "SCOURGE": "#dc78ff",
 }
 
 ROLE_COLORS = {
@@ -67,7 +68,7 @@ RARITY_COLORS = {
     "ICONIC": "#ffd36a",
 }
 
-FINISHES = ("BASE", "GOLD", "DIAMOND", "RAINBOW", "BESKAR", "GALACTIC", "STELLAR", "KYBER", "KYBER_GREEN", "KYBER_BLUE", "KYBER_PURPLE")
+FINISHES = ("BASE", "GOLD", "DIAMOND", "RAINBOW", "BESKAR", "GALACTIC", "STELLAR", "KYBER", "KYBER_GREEN", "KYBER_BLUE", "KYBER_PURPLE", "SCOURGE")
 DISPLAY_FINISH = {"BASE": "Default", "KYBER": "Kyber (inactive)", "KYBER_GREEN": "Kyber Green", "KYBER_BLUE": "Kyber Blue", "KYBER_PURPLE": "Kyber Purple"}
 
 
@@ -396,7 +397,7 @@ class InventoryMapWindow:
         pending = len(units) - assigned
         income = sum(unit.income_per_second or 0 for unit in units)
         income_text = f"{income:,.0f}/s" if income else "income pending"
-        self.summary_var.set(f"{len(units)} droids  |  {assigned} placed  |  {pending} unassigned  |  {income_text}")
+        self.summary_var.set(f"{len(units)} droids  |  {assigned} placed  |  {pending} unassigned  |  raw {income_text} (no Hive Mind)")
         self._show_selected_detail()
         selected_exists = bool(self.selected_unit_id and self.ledger.unit(self.selected_unit_id))
         for key in ("edit", "unassign", "remove"):
@@ -1008,6 +1009,9 @@ class InventoryMapWindow:
             role = role_var.get()
             income = income_per_second(name, finish)
             metadata = droid_metadata(name)
+            if metadata and metadata.kind == "ICONIC":
+                finish = "BASE"
+                income = None
             perk = metadata.perk if metadata and metadata.kind == "ICONIC" else (unit.perk if unit else "")
             try:
                 if unit:

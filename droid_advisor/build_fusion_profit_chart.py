@@ -82,7 +82,7 @@ def fusion_profitability_payload() -> dict[str, object]:
                 variants[variant] = None
                 outcomes["undocumented"] += 1
                 continue
-            input_income = sum(int(value) for value in ingredient_values)
+            input_income = sum(float(value) for value in ingredient_values)
             output_income = output_values[index]
             net_income = output_income - input_income
             outcome = "gain" if net_income > 0 else "loss" if net_income < 0 else "even"
@@ -122,7 +122,7 @@ def fusion_profitability_payload() -> dict[str, object]:
         "comparisons": comparisons,
         "totals": {"recipes": len(comparisons), "variant_comparisons": len(comparisons) * len(INCOME_VARIANTS), **outcomes},
         "recipe_results": recipe_results,
-        "method": "Output income minus the combined income of the three recipe ingredients at the same variant.",
+        "method": "Output income minus all three ingredients at the same variant. Scourge is raw income without Hive Mind; consuming three placed Scourge also changes the base-wide bonus. Mixed Scourge recipes need a separate comparison. Kyber is inactive.",
     }
 
 
@@ -196,7 +196,7 @@ def render_chart(payload: dict[str, object]) -> Image.Image:
     draw.line((MARGIN, y + 15, WIDTH - MARGIN, y + 15), fill=ORANGE, width=2)
     draw.text(
         (MARGIN, y + 34),
-        "Direct comparison only. Fusion also frees two droid slots; income from replacements can offset a loss. The output variant follows the lowest input variant.",
+        "Same-variant base income only. Scourge excludes Hive Mind; consuming placed Scourge changes the bonus across your base. Mixed Scourge recipes differ.",
         font=HEADER,
         fill=MUTED,
     )

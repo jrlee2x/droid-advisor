@@ -112,30 +112,54 @@ FUSION_RECIPES = (
 
 FUSION_RARITY_ORDER = ("MYTHIC", "LEGENDARY", "EPIC", "RARE")
 FUSION_ROLE_ORDER = ("WORKER", "BATTLE", "ASTRO")
-FUSION_VARIANTS = ("DEFAULT", "GOLD", "DIAMOND", "RAINBOW", "BESKAR", "GALACTIC", "STELLAR")
+FUSION_VARIANTS = ('DEFAULT', 'GOLD', 'DIAMOND', 'RAINBOW', 'BESKAR', 'GALACTIC', 'STELLAR', 'KYBER', 'SCOURGE')
+
+SCOURGE_FUSION_RULE = (
+    "For a named recipe, place one Scourge ingredient in the LEFT-MOST slot. "
+    "The other two must be Stellar, Kyber or Scourge. Check the machine preview. "
+    "Lower inputs reduce the output; three Kybers do not create Scourge."
+)
+
+
+def recipe_fusion_variant(finishes: tuple[str, str, str]) -> str | None:
+    """Variant for an already matched named recipe, in machine slot order.
+
+    This does not predict random fusions or Kyber activation colours.
+    """
+    if len(finishes) != 3:
+        return None
+    normalized = tuple(
+        "DEFAULT" if value.upper() in {"BASE", "BASIC"} else
+        "KYBER" if value.upper() in {"KYBER_GREEN", "KYBER_BLUE", "KYBER_PURPLE"} else value.upper()
+        for value in finishes
+    )
+    if any(value not in FUSION_VARIANTS for value in normalized):
+        return None
+    if normalized[0] == "SCOURGE" and all(value in {"STELLAR", "KYBER", "SCOURGE"} for value in normalized):
+        return "SCOURGE"
+    return min(normalized, key=FUSION_VARIANTS.index)
 
 # Base credits per second before slot, Droidex, rebirth, event, or other multipliers.
 # Cross-checked against the public community reference sheet and Droid Tycoon Tracker
-# after the v1.27 fusion update.
-FUSION_INCOME_PER_SECOND = {
-    "WHL-EX": (72, 144, 288, 576, 864, 1_728, 2_304),
-    "BTL-R": (72, 144, 288, 576, 864, 1_728, 2_304),
-    "ZRO-TEC": (72, 144, 288, 576, 864, 1_728, 2_304),
-    "N-UL": (720, 1_440, 2_880, 5_760, 24_480, 37_440, 57_600),
-    "SCRP-R": (720, 1_440, 2_880, 5_760, 24_480, 37_440, 57_600),
-    "ARM-CORE": (690, 1_380, 2_760, 5_520, 23_460, 35_880, 55_200),
-    "OPT-AR": (720, 1_440, 2_880, 5_760, 24_480, 37_440, 57_600),
-    "RO-TOR": (1_500, 3_000, 6_000, 12_000, 36_000, 90_000, 225_000),
-    "FUS-3": (1_600, 3_200, 6_400, 12_800, 38_400, 96_000, 240_000),
-    "ORB-XL": (1_600, 3_200, 6_400, 12_800, 38_400, 96_000, 240_000),
-    "QIK-BIT": (1_600, 3_200, 6_400, 12_800, 38_400, 96_000, 240_000),
-    "RIV-3T": (8_400, 16_800, 33_600, 67_200, 134_400, 369_600, 1_050_000),
-    "LUG-G": (7_600, 15_200, 30_400, 60_800, 121_600, 334_400, 950_000),
-    "X-ONK": (8_000, 16_000, 32_000, 64_000, 128_000, 352_000, 1_000_000),
-    "SRV-O": (7_600, 15_200, 30_400, 60_800, 121_600, 334_400, 950_000),
-    "AXI-POD": (8_000, 16_000, 32_000, 64_000, 128_000, 352_000, 1_000_000),
-    "LOW-MO": (7_800, 15_600, 31_200, 62_400, 124_800, 343_200, 975_000),
-}
+# after the v1.27 fusion update. Rates refreshed from Droid Archives 2026-11-01;
+# Scourge is raw income before Hive Mind.
+FUSION_INCOME_PER_SECOND = {'WHL-EX': (72, 144, 288, 576, 864, 1728, 2304, 2534.4, 2073.6),
+ 'BTL-R': (72, 144, 288, 576, 864, 1728, 2304, 2534.4, 2073.6),
+ 'ZRO-TEC': (72, 144, 288, 576, 864, 1728, 2304, 2534.4, 2073.6),
+ 'N-UL': (1080, 2160, 4320, 8640, 36720, 56160, 86400, 95040, 77760),
+ 'SCRP-R': (1080, 2160, 4320, 8640, 36720, 56160, 86400, 95040, 77760),
+ 'ARM-CORE': (1035, 2070, 4140, 8280, 35190, 53820, 82800, 91080, 74520),
+ 'OPT-AR': (1080, 2160, 4320, 8640, 36720, 56160, 86400, 95040, 77760),
+ 'RO-TOR': (2250, 4500, 9000, 18000, 54000, 135000, 337500, 371250, 303750),
+ 'FUS-3': (2400, 4800, 9600, 19200, 57600, 144000, 360000, 396000, 324000),
+ 'ORB-XL': (2400, 4800, 9600, 19200, 57600, 144000, 360000, 396000, 324000),
+ 'QIK-BIT': (2400, 4800, 9600, 19200, 57600, 144000, 360000, 396000, 324000),
+ 'RIV-3T': (12600, 25200, 50400, 100800, 201600, 554400, 1575000, 1732500, 1411200),
+ 'LUG-G': (11400, 22800, 45600, 91200, 182400, 501600, 1425000, 1567500, 1276800),
+ 'X-ONK': (12000, 24000, 48000, 96000, 192000, 528000, 1500000, 1650000, 1344000),
+ 'SRV-O': (11400, 22800, 45600, 91200, 182400, 501600, 1425000, 1567500, 1276800),
+ 'AXI-POD': (12000, 24000, 48000, 96000, 192000, 528000, 1500000, 1650000, 1344000),
+ 'LOW-MO': (11700, 23400, 46800, 93600, 187200, 514800, 1462500, 1608750, 1310400)}
 
 
 def shopping_list(outputs: set[str] | None = None) -> Counter[str]:

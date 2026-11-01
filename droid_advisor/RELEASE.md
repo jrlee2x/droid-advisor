@@ -1,5 +1,17 @@
 # Droid Advisor release and update guide
 
+## 1.4.0 Scourge support
+
+- Adds Scourge card/blueprint OCR, spawn alerts, inventory and coverage for any rebirth variant of the same droid.
+- Keeps Scourgedex/fusion reminders after the last rebirth use; unreadable finishes get cautious collection-aware guidance.
+- Adds Scourge Prime as a separate Default-only Iconic Protocol droid, bringing the catalog to 101 names.
+- Refreshes all standard/fusion income, including Scourge and inactive/activated Kyber. Raw Scourge rates and comparisons exclude Hive Mind.
+- Updates all six rebirth charts, keep/sell lists, 17 named recipes, income charts and current chip costs through Kyber. Scourge named recipes use a Scourge ingredient in the left-most slot and two Stellar/Kyber/Scourge ingredients. Always check the machine preview. Chips cannot produce Scourge.
+- Corrects two RB14 B2-RP finishes in Paths 2 and 3 to Default after cross-checking current references.
+- Preserves saved settings and inventory. Existing visual validation and two-capture inventory confirmation remain in place.
+
+See [sources and verification](../docs/scourge-update-2026-11-01.md). Live Scourge cards have not been inspected in Josh's game.
+
 ## 1.3.10 independent identity and inventory confirmation
 
 - Josh's 19:23:00 report shows a banner clear with all six visual patches still matching. Pixel validation was not the reason for that clear.
@@ -79,10 +91,10 @@ Card button matching now excludes the Worker role label while accepting OCR-join
 
 ## Current distribution
 
-- Stable release: [Droid Advisor 1.3.10](https://github.com/jrlee2x/droid-advisor/releases/tag/v1.3.10)
-- Installer: `DroidAdvisor-Setup-1.3.10.exe`, with its matching `.sha256` file
-- Installer SHA-256: `5c895c0701c1dddc77eb4faec9a853ecb26db6a03ca29205ac45a897397452cc`
-- Validation: 708 regression tests, packaged/installed health checks, and live R4 banner persistence confirmed
+- Stable release: [Droid Advisor 1.4.0](https://github.com/jrlee2x/droid-advisor/releases/tag/v1.4.0)
+- Installer: `DroidAdvisor-Setup-1.4.0.exe`, with its matching `.sha256` file
+- Installer SHA-256: `e393de9c7eff28e5cd3346c7d4aa611a384f8743dbf0a8b780a4dffce3144ad4`
+- Validation: 874 regression tests, headless website checks and actual offline OCR; live Scourge recognition is unconfirmed
 - Platform: 64-bit Windows 10/11
 - Installation scope: current Windows user; no administrator rights requested
 - Runtime: bundled Python and offline OCR; recipients do not install Python
@@ -92,7 +104,7 @@ Card button matching now excludes the Worker role label while accepting OCR-join
 Share the installer and its `.sha256` file together. Recipients can validate it in PowerShell:
 
 ```powershell
-Get-FileHash .\DroidAdvisor-Setup-1.3.10.exe -Algorithm SHA256
+Get-FileHash .\DroidAdvisor-Setup-1.4.0.exe -Algorithm SHA256
 ```
 
 The output must exactly match the checksum distributed through a separate trusted channel.

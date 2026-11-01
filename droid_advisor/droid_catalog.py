@@ -9,6 +9,7 @@ from .engine import canonical
 from .fusion_recipes import FUSION_INCOME_PER_SECOND, FUSION_RECIPES
 from .inventory import normalize_finish
 from .kyber import KYBER_INCOME
+from .scourge import SCOURGE_INCOME
 
 
 @dataclass(frozen=True)
@@ -83,6 +84,8 @@ def resolve_droid_by_rarity(name: str, rarity: str | None) -> str:
 
 def income_per_second(name: str, finish: str) -> float | None:
     normalized = normalize_finish(finish)
+    if normalized == "SCOURGE":
+        return SCOURGE_INCOME.get(canonical(name))
     if normalized.startswith("KYBER"):
         return KYBER_INCOME.get(canonical(name), {}).get(normalized)
     variants = ("BASE",) + INCOME_VARIANTS[1:]

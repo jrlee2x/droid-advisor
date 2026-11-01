@@ -27,7 +27,7 @@ MUTED = "#9cb0c8"
 CYAN = "#34d7ff"
 ORANGE = "#ff9d00"
 PINK = "#ff2870"
-GAME_UPDATE = "1.35"
+GAME_UPDATE = "1.37"
 
 
 def font(name: str, size: int) -> ImageFont.FreeTypeFont:
@@ -62,6 +62,7 @@ QUALITY_SHORT = {
     "GALACTIC": "GALACTIC",
     "STELLAR": "STELLAR",
     "KYBER": "KYBER",
+    "SCOURGE": "SCOURGE",
 }
 LIST_WIDTH = 2200
 LIST_HEIGHT = 700
@@ -180,7 +181,7 @@ def prep_list_landscape(cycle: int) -> Image.Image:
             draw.text((right - 14 - last_width, row_y + 1), last_text, font=LIST_ROW, fill=INK)
             row_y += 30
 
-    footer = "CHECK THE NEXT CYCLE BEFORE CLEARING RB40 STOCK. A DROID MAY BE NEEDED AGAIN AFTER THE CYCLE CHANGES."
+    footer = "SCOURGE COVERS ANY VARIANT OF THE SAME DROID. CHECK SCOURGEDEX / FUSION AND THE NEXT CYCLE BEFORE SELLING."
     draw_centered(draw, 669, footer, LIST_SMALL, ORANGE, LIST_WIDTH)
     return image
 
@@ -222,7 +223,7 @@ def cycle_chart(cycle: int, stack: Image.Image) -> Image.Image:
     draw = ImageDraw.Draw(image)
     draw.rounded_rectangle((padding, 18, width - padding, 84), radius=18, fill=PANEL, outline=ORANGE, width=3)
     draw_centered(draw, 25, f"REBIRTH CYCLE {cycle}", CYCLE_TITLE, INK, width)
-    draw_centered(draw, 59, "RB1  •  RB40", CYCLE_META, CYAN, width)
+    draw_centered(draw, 59, "RB1-40 | SCOURGE COVERS ANY VARIANT", CYCLE_META, CYAN, width)
     image.paste(stack, (padding, header))
     return image
 
@@ -242,7 +243,7 @@ def master_chart(stacks: dict[int, Image.Image]) -> Image.Image:
     image.alpha_composite(logo, (padding + 2, 26)) if image.mode == "RGBA" else image.paste(logo, (padding + 2, 26), logo)
     draw.text((206, 36), "DROID ADVISOR", font=TITLE, fill=INK)
     draw.text((209, 116), "COMPLETE REBIRTH CYCLE CHART", font=SUBTITLE, fill=CYAN)
-    draw.text((209, 153), f"UPDATE {GAME_UPDATE}  •  CYCLES 1–{NUM_CYCLES}  •  RB1–RB{MAX_REBIRTH}", font=SUBTITLE, fill=MUTED)
+    draw.text((209, 153), f"UPDATE {GAME_UPDATE}  •  CYCLES 1-{NUM_CYCLES}  •  RB1-RB{MAX_REBIRTH}  •  SCOURGE COVERS ANY VARIANT OF THE SAME DROID", font=SUBTITLE, fill=MUTED)
     draw.line((padding, masthead - 10, width - padding, masthead - 10), fill=ORANGE, width=4)
 
     for index, cycle in enumerate(range(1, NUM_CYCLES + 1)):

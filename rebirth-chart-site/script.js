@@ -13,14 +13,14 @@ let activeQuickCycle = "1";
 function showView(view) {
   const isAll = view === "all";
   image.src = isAll
-    ? "/assets/droid-advisor-all-rebirth-cycles.png?v=v135-20261022"
-    : `/assets/rebirth-cycle-${view}.png?v=v135-20261022`;
+    ? "/assets/droid-advisor-all-rebirth-cycles.png?v=v137-20261101"
+    : `/assets/rebirth-cycle-${view}.png?v=v137-20261101`;
   image.alt = isAll
     ? "All six Droid Advisor rebirth cycles from RB1 through RB40"
     : `Droid Advisor rebirth Cycle ${view} from RB1 through RB40`;
   download.href = isAll
-    ? "/assets/droid-advisor-all-rebirth-cycles.png?v=v135-20261022"
-    : `/assets/rebirth-cycle-${view}.png?v=v135-20261022`;
+    ? "/assets/droid-advisor-all-rebirth-cycles.png?v=v137-20261101"
+    : `/assets/rebirth-cycle-${view}.png?v=v137-20261101`;
   download.textContent = isAll ? "Download full chart" : `Download Cycle ${view}`;
   frame.classList.toggle("all", isAll);
   frame.scrollTo({ top: 0, left: 0, behavior: "smooth" });
@@ -82,7 +82,7 @@ function setQuickCycle(cycle) {
     button.classList.toggle("active", active);
     button.setAttribute("aria-pressed", String(active));
   });
-  quickDownload.href = `/assets/rebirth-quick-list-cycle-${cycle}.png?v=v135-20261022`;
+  quickDownload.href = `/assets/rebirth-quick-list-cycle-${cycle}.png?v=v137-20261101`;
   quickDownload.textContent = `Download Cycle ${cycle} quick list`;
   renderQuickCards(cycle);
 }
@@ -90,7 +90,7 @@ function setQuickCycle(cycle) {
 async function loadQuickLists() {
   quickGrid.textContent = "Loading quick list…";
   try {
-    const response = await fetch("/assets/rebirth-quick-lists.json?v=v135-20261022");
+    const response = await fetch("/assets/rebirth-quick-lists.json?v=v137-20261101");
     if (!response.ok) throw new Error(`Quick-list request failed: ${response.status}`);
     quickData = await response.json();
     setQuickCycle(activeQuickCycle);

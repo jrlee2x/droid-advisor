@@ -31,7 +31,7 @@ When a held blueprint pickup screen displays `TOSS BLUEPRINT ON CRAFTING STATION
 
 Press **Ctrl+Shift+D** to pause or resume. Tray controls also expose pause, settings, and exit.
 
-Press **Ctrl+Shift+C** to show or hide the Update 1.32 upgrade-chip cost reference.
+Press **Ctrl+Shift+C** to show or hide the Update 1.37 upgrade-chip cost reference.
 
 Press **Ctrl+Shift+I**, choose **Open base inventory** from the tray, or use the
 button in Settings to open the interactive Base Inventory map. Add droids to the
@@ -54,7 +54,7 @@ Press **Ctrl+Shift+Home** or choose **Reset overlay positions** from the tray me
 
 The draggable top-right **Rebirth Targets** overlay shows the complete guide card for the rebirth currently being worked and the following rebirth, including required droids, finish, rarity, credit cost, crystals, credit multiplier, and XP multiplier when provided by the guide. Press **Ctrl+Shift+R** or use the tray menu to show or hide it. Its screen position and visibility persist. At RB40, the second row previews RB1 of the next cycle. Kyber is the highest variant. Inventory records inactive, green, blue, and purple Kyber separately for income. Community sources disagree on inactive Kyber eligibility for rebirth; check the in-game requirement checkmarks.
 
-The optional **Sandcrawler alerts + sound** setting watches the left-side spawn notification only. Choose a minimum variant from Default through Stellar and a minimum rarity from Common through Mythic. A notification must meet or exceed both selected minimums before the large visual alert and non-blocking sound appear. Choose Droid Chime, Scanner Ping, Urgent Pulse, the Windows tone, or a custom WAV in Settings and use Preview to hear it. Custom WAV files must be 16-bit mono or stereo PCM, no larger than 10 MB, and no longer than 30 seconds. Droid Advisor copies the chosen file into its AppData folder so it remains available if the original moves and through application updates. The saved 0-100% slider controls bundled and custom sounds; Windows Tone follows the Windows system volume. Identical text is deduplicated until the original notification disappears.
+The optional **Sandcrawler alerts + sound** setting watches the left-side spawn notification only. Choose a minimum variant from Default through Scourge and a minimum rarity from Common through Mythic. A notification must meet or exceed both selected minimums before the large visual alert and non-blocking sound appear. Choose Droid Chime, Scanner Ping, Urgent Pulse, the Windows tone, or a custom WAV in Settings and use Preview to hear it. Custom WAV files must be 16-bit mono or stereo PCM, no larger than 10 MB, and no longer than 30 seconds. Droid Advisor copies the chosen file into its AppData folder so it remains available if the original moves and through application updates. The saved 0-100% slider controls bundled and custom sounds; Windows Tone follows the Windows system volume. Identical text is deduplicated until the original notification disappears.
 
 ## Automatic RBC detection
 
@@ -84,3 +84,5 @@ The build intentionally uses PyInstaller's inspectable `onedir` layout internall
 For updates, distribute a newer installer and run it normally over the existing version. Do not ask users to replace individual files inside the installation directory. The built-in updater consumes only a matching versioned installer from the repository's published GitHub Releases, requires GitHub's SHA-256 asset digest, verifies it after download and immediately before launch, and asks the user before installation. Authenticode signing remains necessary to give the installer a publisher identity outside the GitHub trust boundary.
 
 Copyright © 2026 Swag Studios.
+
+Scourge is supported in recognition, alerts and inventory. It covers any rebirth variant of the same droid. Check Scourgedex/fusion plans before selling it, even after its last rebirth use. Raw income excludes Hive Mind. Scourge Prime is a separate Default-only Iconic Protocol droid. See `../docs/scourge-update-2026-11-01.md`.

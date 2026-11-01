@@ -53,7 +53,7 @@ function renderTable() {
     const groupRow = document.createElement("tr");
     groupRow.className = `rarity-heading rarity-${rarity.toLowerCase()}`;
     const groupCell = textElement("th", "", `${rarity} • ${group.length}`);
-    groupCell.colSpan = 9;
+    groupCell.colSpan = 2 + allDroidData.variants.length;
     groupCell.scope = "rowgroup";
     groupRow.append(groupCell);
     body.append(groupRow);
@@ -68,7 +68,7 @@ function renderTable() {
 
       if (droid.kind === "ICONIC") {
         const cell = document.createElement("td");
-        cell.colSpan = 7;
+        cell.colSpan = allDroidData.variants.length;
         cell.className = "iconic-income";
         cell.append(textElement("strong", "", droid.income), textElement("span", "", droid.perk));
         row.append(cell);
@@ -90,7 +90,7 @@ function renderTable() {
 
 async function loadDroids() {
   try {
-    const response = await fetch("/assets/all-droid-income.json?v=v135-20261022");
+    const response = await fetch("/assets/all-droid-income.json?v=v137-20261101");
     if (!response.ok) throw new Error(`Droid income request failed: ${response.status}`);
     allDroidData = await response.json();
     [searchInput, rarityFilter, roleFilter, kindFilter].forEach((control) => control.addEventListener("input", renderTable));

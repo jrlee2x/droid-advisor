@@ -402,3 +402,11 @@ footer p { margin: 0; }
   .app-release { align-items: flex-start; flex-direction: column; }
   .app-release .chart-actions { max-width: none; justify-content: flex-start; }
 }
+
+.scourge-guide { margin: 24px 0; padding: clamp(18px, 3vw, 30px); border: 1px solid #8758a9; border-radius: 22px; background: var(--panel); }
+.scourge-guide h2 { font-size: clamp(1.5rem, 3vw, 2rem); margin: 8px 0 18px; }
+.scourge-guide p { color: var(--muted); line-height: 1.65; }
+.scourge-guide strong, .scourge-guide .eyebrow { color: #dc78ff; }
+.scourge-guide a { color: var(--cyan); }
+.quality-scourge { color: #dc78ff; }
+.quality-kyber { color: #63df84; }

@@ -6,7 +6,9 @@
     "RAINBOW",
     "BESKAR",
     "GALACTIC",
-    "STELLAR"
+    "STELLAR",
+    "KYBER",
+    "SCOURGE"
   ],
   "droids": [
     {
@@ -15,13 +17,15 @@
       "rarity": "MYTHIC",
       "kind": "FUSION",
       "income_per_second": {
-        "BASIC": 8400,
-        "GOLD": 16800,
-        "DIAMOND": 33600,
-        "RAINBOW": 67200,
-        "BESKAR": 134400,
-        "GALACTIC": 369600,
-        "STELLAR": 1050000
+        "BASIC": 12600,
+        "GOLD": 25200,
+        "DIAMOND": 50400,
+        "RAINBOW": 100800,
+        "BESKAR": 201600,
+        "GALACTIC": 554400,
+        "STELLAR": 1575000,
+        "KYBER": 1732500,
+        "SCOURGE": 1411200
       }
     },
     {
@@ -30,13 +34,15 @@
       "rarity": "MYTHIC",
       "kind": "FUSION",
       "income_per_second": {
-        "BASIC": 7800,
-        "GOLD": 15600,
-        "DIAMOND": 31200,
-        "RAINBOW": 62400,
-        "BESKAR": 124800,
-        "GALACTIC": 343200,
-        "STELLAR": 975000
+        "BASIC": 11700,
+        "GOLD": 23400,
+        "DIAMOND": 46800,
+        "RAINBOW": 93600,
+        "BESKAR": 187200,
+        "GALACTIC": 514800,
+        "STELLAR": 1462500,
+        "KYBER": 1608750,
+        "SCOURGE": 1310400
       }
     },
     {
@@ -45,13 +51,15 @@
       "rarity": "MYTHIC",
       "kind": "FUSION",
       "income_per_second": {
-        "BASIC": 7600,
-        "GOLD": 15200,
-        "DIAMOND": 30400,
-        "RAINBOW": 60800,
-        "BESKAR": 121600,
-        "GALACTIC": 334400,
-        "STELLAR": 950000
+        "BASIC": 11400,
+        "GOLD": 22800,
+        "DIAMOND": 45600,
+        "RAINBOW": 91200,
+        "BESKAR": 182400,
+        "GALACTIC": 501600,
+        "STELLAR": 1425000,
+        "KYBER": 1567500,
+        "SCOURGE": 1276800
       }
     },
     {
@@ -66,7 +74,9 @@
         "RAINBOW": 57600,
         "BESKAR": 115200,
         "GALACTIC": 316800,
-        "STELLAR": 900000
+        "STELLAR": 900000,
+        "KYBER": 990000,
+        "SCOURGE": 806400
       }
     },
     {
@@ -81,7 +91,9 @@
         "RAINBOW": 52000,
         "BESKAR": 104000,
         "GALACTIC": 286000,
-        "STELLAR": 812500
+        "STELLAR": 812500,
+        "KYBER": 893750,
+        "SCOURGE": 728000
       }
     },
     {
@@ -96,7 +108,9 @@
         "RAINBOW": 46400,
         "BESKAR": 92800,
         "GALACTIC": 255200,
-        "STELLAR": 725000
+        "STELLAR": 725000,
+        "KYBER": 797500,
+        "SCOURGE": 649600
       }
     },
     {
@@ -111,7 +125,9 @@
         "RAINBOW": 40800,
         "BESKAR": 81600,
         "GALACTIC": 224400,
-        "STELLAR": 637500
+        "STELLAR": 637500,
+        "KYBER": 701250,
+        "SCOURGE": 571200
       }
     },
     {
@@ -126,7 +142,9 @@
         "RAINBOW": 35200,
         "BESKAR": 70400,
         "GALACTIC": 193600,
-        "STELLAR": 550000
+        "STELLAR": 550000,
+        "KYBER": 605000,
+        "SCOURGE": 492800
       }
     },
     {
@@ -135,13 +153,15 @@
       "rarity": "MYTHIC",
       "kind": "FUSION",
       "income_per_second": {
-        "BASIC": 8000,
-        "GOLD": 16000,
-        "DIAMOND": 32000,
-        "RAINBOW": 64000,
-        "BESKAR": 128000,
-        "GALACTIC": 352000,
-        "STELLAR": 1000000
+        "BASIC": 12000,
+        "GOLD": 24000,
+        "DIAMOND": 48000,
+        "RAINBOW": 96000,
+        "BESKAR": 192000,
+        "GALACTIC": 528000,
+        "STELLAR": 1500000,
+        "KYBER": 1650000,
+        "SCOURGE": 1344000
       }
     },
     {
@@ -156,7 +176,9 @@
         "RAINBOW": 57600,
         "BESKAR": 115200,
         "GALACTIC": 316800,
-        "STELLAR": 900000
+        "STELLAR": 900000,
+        "KYBER": 990000,
+        "SCOURGE": 806400
       }
     },
     {
@@ -171,7 +193,9 @@
         "RAINBOW": 52000,
         "BESKAR": 104000,
         "GALACTIC": 286000,
-        "STELLAR": 812500
+        "STELLAR": 812500,
+        "KYBER": 893750,
+        "SCOURGE": 728000
       }
     },
     {
@@ -186,7 +210,9 @@
         "RAINBOW": 49600,
         "BESKAR": 99200,
         "GALACTIC": 272800,
-        "STELLAR": 775000
+        "STELLAR": 775000,
+        "KYBER": 852500,
+        "SCOURGE": 694400
       }
     },
     {
@@ -201,7 +227,9 @@
         "RAINBOW": 46400,
         "BESKAR": 92800,
         "GALACTIC": 255200,
-        "STELLAR": 725000
+        "STELLAR": 725000,
+        "KYBER": 797500,
+        "SCOURGE": 649600
       }
     },
     {
@@ -216,7 +244,9 @@
         "RAINBOW": 35200,
         "BESKAR": 70400,
         "GALACTIC": 193600,
-        "STELLAR": 550000
+        "STELLAR": 550000,
+        "KYBER": 605000,
+        "SCOURGE": 492800
       }
     },
     {
@@ -225,13 +255,15 @@
       "rarity": "MYTHIC",
       "kind": "FUSION",
       "income_per_second": {
-        "BASIC": 8000,
-        "GOLD": 16000,
-        "DIAMOND": 32000,
-        "RAINBOW": 64000,
-        "BESKAR": 128000,
-        "GALACTIC": 352000,
-        "STELLAR": 1000000
+        "BASIC": 12000,
+        "GOLD": 24000,
+        "DIAMOND": 48000,
+        "RAINBOW": 96000,
+        "BESKAR": 192000,
+        "GALACTIC": 528000,
+        "STELLAR": 1500000,
+        "KYBER": 1650000,
+        "SCOURGE": 1344000
       }
     },
     {
@@ -240,13 +272,15 @@
       "rarity": "MYTHIC",
       "kind": "FUSION",
       "income_per_second": {
-        "BASIC": 7600,
-        "GOLD": 15200,
-        "DIAMOND": 30400,
-        "RAINBOW": 60800,
-        "BESKAR": 121600,
-        "GALACTIC": 334400,
-        "STELLAR": 950000
+        "BASIC": 11400,
+        "GOLD": 22800,
+        "DIAMOND": 45600,
+        "RAINBOW": 91200,
+        "BESKAR": 182400,
+        "GALACTIC": 501600,
+        "STELLAR": 1425000,
+        "KYBER": 1567500,
+        "SCOURGE": 1276800
       }
     },
     {
@@ -261,7 +295,9 @@
         "RAINBOW": 57600,
         "BESKAR": 115200,
         "GALACTIC": 316800,
-        "STELLAR": 900000
+        "STELLAR": 900000,
+        "KYBER": 990000,
+        "SCOURGE": 806400
       }
     },
     {
@@ -276,7 +312,9 @@
         "RAINBOW": 46400,
         "BESKAR": 92800,
         "GALACTIC": 255200,
-        "STELLAR": 725000
+        "STELLAR": 725000,
+        "KYBER": 797500,
+        "SCOURGE": 649600
       }
     },
     {
@@ -291,7 +329,9 @@
         "RAINBOW": 32000,
         "BESKAR": 64000,
         "GALACTIC": 176000,
-        "STELLAR": 500000
+        "STELLAR": 500000,
+        "KYBER": 550000,
+        "SCOURGE": 448000
       }
     },
     {
@@ -300,13 +340,32 @@
       "rarity": "LEGENDARY",
       "kind": "FUSION",
       "income_per_second": {
-        "BASIC": 1600,
-        "GOLD": 3200,
-        "DIAMOND": 6400,
-        "RAINBOW": 12800,
-        "BESKAR": 38400,
-        "GALACTIC": 96000,
-        "STELLAR": 240000
+        "BASIC": 2400,
+        "GOLD": 4800,
+        "DIAMOND": 9600,
+        "RAINBOW": 19200,
+        "BESKAR": 57600,
+        "GALACTIC": 144000,
+        "STELLAR": 360000,
+        "KYBER": 396000,
+        "SCOURGE": 324000
+      }
+    },
+    {
+      "name": "RO-TOR",
+      "role": "WORKER",
+      "rarity": "LEGENDARY",
+      "kind": "FUSION",
+      "income_per_second": {
+        "BASIC": 2250,
+        "GOLD": 4500,
+        "DIAMOND": 9000,
+        "RAINBOW": 18000,
+        "BESKAR": 54000,
+        "GALACTIC": 135000,
+        "STELLAR": 337500,
+        "KYBER": 371250,
+        "SCOURGE": 303750
       }
     },
     {
@@ -321,67 +380,9 @@
         "RAINBOW": 12000,
         "BESKAR": 36000,
         "GALACTIC": 90000,
-        "STELLAR": 225000
-      }
-    },
-    {
-      "name": "RO-TOR",
-      "role": "WORKER",
-      "rarity": "LEGENDARY",
-      "kind": "FUSION",
-      "income_per_second": {
-        "BASIC": 1500,
-        "GOLD": 3000,
-        "DIAMOND": 6000,
-        "RAINBOW": 12000,
-        "BESKAR": 36000,
-        "GALACTIC": 90000,
-        "STELLAR": 225000
-      }
-    },
-    {
-      "name": "Mecha-Droid",
-      "role": "WORKER",
-      "rarity": "LEGENDARY",
-      "kind": "STANDARD",
-      "income_per_second": {
-        "BASIC": 1200,
-        "GOLD": 2500,
-        "DIAMOND": 5000,
-        "RAINBOW": 9900,
-        "BESKAR": 29900,
-        "GALACTIC": 74600,
-        "STELLAR": 186600
-      }
-    },
-    {
-      "name": "Proto-Roller",
-      "role": "WORKER",
-      "rarity": "LEGENDARY",
-      "kind": "STANDARD",
-      "income_per_second": {
-        "BASIC": 972,
-        "GOLD": 1900,
-        "DIAMOND": 3900,
-        "RAINBOW": 7800,
-        "BESKAR": 23300,
-        "GALACTIC": 58300,
-        "STELLAR": 145800
-      }
-    },
-    {
-      "name": "JO9-4MN",
-      "role": "WORKER",
-      "rarity": "LEGENDARY",
-      "kind": "STANDARD",
-      "income_per_second": {
-        "BASIC": 1300,
-        "GOLD": null,
-        "DIAMOND": null,
-        "RAINBOW": null,
-        "BESKAR": null,
-        "GALACTIC": null,
-        "STELLAR": null
+        "STELLAR": 225000,
+        "KYBER": 247500,
+        "SCOURGE": 202500
       }
     },
     {
@@ -391,12 +392,65 @@
       "kind": "STANDARD",
       "income_per_second": {
         "BASIC": 1400,
-        "GOLD": null,
-        "DIAMOND": null,
-        "RAINBOW": null,
-        "BESKAR": null,
-        "GALACTIC": null,
-        "STELLAR": null
+        "GOLD": 2800,
+        "DIAMOND": 5600,
+        "RAINBOW": 11200,
+        "BESKAR": 33600,
+        "GALACTIC": 84000,
+        "STELLAR": 210000,
+        "KYBER": 231000,
+        "SCOURGE": 189000
+      }
+    },
+    {
+      "name": "JO9-4MN",
+      "role": "WORKER",
+      "rarity": "LEGENDARY",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 1300,
+        "GOLD": 2600,
+        "DIAMOND": 5200,
+        "RAINBOW": 10400,
+        "BESKAR": 31200,
+        "GALACTIC": 78000,
+        "STELLAR": 195000,
+        "KYBER": 214500,
+        "SCOURGE": 175500
+      }
+    },
+    {
+      "name": "Mecha-Droid",
+      "role": "WORKER",
+      "rarity": "LEGENDARY",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 1244,
+        "GOLD": 2488,
+        "DIAMOND": 4976,
+        "RAINBOW": 9952,
+        "BESKAR": 29856,
+        "GALACTIC": 74640,
+        "STELLAR": 186600,
+        "KYBER": 205260,
+        "SCOURGE": 167940
+      }
+    },
+    {
+      "name": "Proto-Roller",
+      "role": "WORKER",
+      "rarity": "LEGENDARY",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 972,
+        "GOLD": 1944,
+        "DIAMOND": 3888,
+        "RAINBOW": 7776,
+        "BESKAR": 23328,
+        "GALACTIC": 58320,
+        "STELLAR": 145800,
+        "KYBER": 160380,
+        "SCOURGE": 131220
       }
     },
     {
@@ -405,13 +459,15 @@
       "rarity": "LEGENDARY",
       "kind": "FUSION",
       "income_per_second": {
-        "BASIC": 1600,
-        "GOLD": 3200,
-        "DIAMOND": 6400,
-        "RAINBOW": 12800,
-        "BESKAR": 38400,
-        "GALACTIC": 96000,
-        "STELLAR": 240000
+        "BASIC": 2400,
+        "GOLD": 4800,
+        "DIAMOND": 9600,
+        "RAINBOW": 19200,
+        "BESKAR": 57600,
+        "GALACTIC": 144000,
+        "STELLAR": 360000,
+        "KYBER": 396000,
+        "SCOURGE": 324000
       }
     },
     {
@@ -426,7 +482,9 @@
         "RAINBOW": 12000,
         "BESKAR": 36000,
         "GALACTIC": 90000,
-        "STELLAR": 225000
+        "STELLAR": 225000,
+        "KYBER": 247500,
+        "SCOURGE": 202500
       }
     },
     {
@@ -441,7 +499,9 @@
         "RAINBOW": 10400,
         "BESKAR": 31200,
         "GALACTIC": 78000,
-        "STELLAR": 195000
+        "STELLAR": 195000,
+        "KYBER": 214500,
+        "SCOURGE": 175500
       }
     },
     {
@@ -450,13 +510,15 @@
       "rarity": "LEGENDARY",
       "kind": "FUSION",
       "income_per_second": {
-        "BASIC": 1600,
-        "GOLD": 3200,
-        "DIAMOND": 6400,
-        "RAINBOW": 12800,
-        "BESKAR": 38400,
-        "GALACTIC": 96000,
-        "STELLAR": 240000
+        "BASIC": 2400,
+        "GOLD": 4800,
+        "DIAMOND": 9600,
+        "RAINBOW": 19200,
+        "BESKAR": 57600,
+        "GALACTIC": 144000,
+        "STELLAR": 360000,
+        "KYBER": 396000,
+        "SCOURGE": 324000
       }
     },
     {
@@ -471,7 +533,9 @@
         "RAINBOW": 12000,
         "BESKAR": 36000,
         "GALACTIC": 90000,
-        "STELLAR": 225000
+        "STELLAR": 225000,
+        "KYBER": 247500,
+        "SCOURGE": 202500
       }
     },
     {
@@ -480,13 +544,15 @@
       "rarity": "LEGENDARY",
       "kind": "STANDARD",
       "income_per_second": {
-        "BASIC": 1300,
-        "GOLD": 2600,
-        "DIAMOND": 5200,
-        "RAINBOW": 10400,
-        "BESKAR": 31300,
-        "GALACTIC": 78200,
-        "STELLAR": 195600
+        "BASIC": 1304,
+        "GOLD": 2608,
+        "DIAMOND": 5216,
+        "RAINBOW": 10432,
+        "BESKAR": 31296,
+        "GALACTIC": 78240,
+        "STELLAR": 195600,
+        "KYBER": 215160,
+        "SCOURGE": 176040
       }
     },
     {
@@ -495,13 +561,15 @@
       "rarity": "LEGENDARY",
       "kind": "STANDARD",
       "income_per_second": {
-        "BASIC": 1300,
-        "GOLD": 2500,
-        "DIAMOND": 5000,
-        "RAINBOW": 10100,
-        "BESKAR": 30200,
+        "BASIC": 1260,
+        "GOLD": 2520,
+        "DIAMOND": 5040,
+        "RAINBOW": 10080,
+        "BESKAR": 30240,
         "GALACTIC": 75600,
-        "STELLAR": 189000
+        "STELLAR": 189000,
+        "KYBER": 207900,
+        "SCOURGE": 170100
       }
     },
     {
@@ -516,7 +584,9 @@
         "RAINBOW": 7200,
         "BESKAR": 21600,
         "GALACTIC": 54000,
-        "STELLAR": 135000
+        "STELLAR": 135000,
+        "KYBER": 148500,
+        "SCOURGE": 121500
       }
     },
     {
@@ -525,13 +595,15 @@
       "rarity": "EPIC",
       "kind": "FUSION",
       "income_per_second": {
-        "BASIC": 720,
-        "GOLD": 1440,
-        "DIAMOND": 2880,
-        "RAINBOW": 5760,
-        "BESKAR": 24480,
-        "GALACTIC": 37440,
-        "STELLAR": 57600
+        "BASIC": 1080,
+        "GOLD": 2160,
+        "DIAMOND": 4320,
+        "RAINBOW": 8640,
+        "BESKAR": 36720,
+        "GALACTIC": 56160,
+        "STELLAR": 86400,
+        "KYBER": 95040,
+        "SCOURGE": 77760
       }
     },
     {
@@ -541,12 +613,14 @@
       "kind": "STANDARD",
       "income_per_second": {
         "BASIC": 660,
-        "GOLD": 1300,
-        "DIAMOND": 2600,
-        "RAINBOW": 5300,
-        "BESKAR": 22400,
-        "GALACTIC": 34300,
-        "STELLAR": 52800
+        "GOLD": 1320,
+        "DIAMOND": 2640,
+        "RAINBOW": 5280,
+        "BESKAR": 22440,
+        "GALACTIC": 34320,
+        "STELLAR": 52800,
+        "KYBER": 58080,
+        "SCOURGE": 47520
       }
     },
     {
@@ -556,12 +630,14 @@
       "kind": "STANDARD",
       "income_per_second": {
         "BASIC": 570,
-        "GOLD": 1100,
-        "DIAMOND": 2300,
-        "RAINBOW": 4600,
-        "BESKAR": 19400,
-        "GALACTIC": 29600,
-        "STELLAR": 45600
+        "GOLD": 1140,
+        "DIAMOND": 2280,
+        "RAINBOW": 4560,
+        "BESKAR": 19380,
+        "GALACTIC": 29640,
+        "STELLAR": 45600,
+        "KYBER": 50160,
+        "SCOURGE": 41040
       }
     },
     {
@@ -571,12 +647,14 @@
       "kind": "STANDARD",
       "income_per_second": {
         "BASIC": 510,
-        "GOLD": 1000,
-        "DIAMOND": 2000,
-        "RAINBOW": 4100,
-        "BESKAR": 17300,
-        "GALACTIC": 26500,
-        "STELLAR": 40800
+        "GOLD": 1020,
+        "DIAMOND": 2040,
+        "RAINBOW": 4080,
+        "BESKAR": 17340,
+        "GALACTIC": 26520,
+        "STELLAR": 40800,
+        "KYBER": 44880,
+        "SCOURGE": 36720
       }
     },
     {
@@ -591,7 +669,9 @@
         "RAINBOW": 3600,
         "BESKAR": 15300,
         "GALACTIC": 23400,
-        "STELLAR": 36000
+        "STELLAR": 36000,
+        "KYBER": 39600,
+        "SCOURGE": 32400
       }
     },
     {
@@ -602,11 +682,30 @@
       "income_per_second": {
         "BASIC": 390,
         "GOLD": 780,
-        "DIAMOND": 1600,
-        "RAINBOW": 3100,
-        "BESKAR": 13300,
-        "GALACTIC": 20300,
-        "STELLAR": 31200
+        "DIAMOND": 1560,
+        "RAINBOW": 3120,
+        "BESKAR": 13260,
+        "GALACTIC": 20280,
+        "STELLAR": 31200,
+        "KYBER": 34320,
+        "SCOURGE": 28080
+      }
+    },
+    {
+      "name": "EGL",
+      "role": "WORKER",
+      "rarity": "EPIC",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 300,
+        "GOLD": 600,
+        "DIAMOND": 1200,
+        "RAINBOW": 2400,
+        "BESKAR": 10200,
+        "GALACTIC": 15600,
+        "STELLAR": 24000,
+        "KYBER": 26400,
+        "SCOURGE": 21600
       }
     },
     {
@@ -618,10 +717,12 @@
         "BASIC": 240,
         "GOLD": 480,
         "DIAMOND": 960,
-        "RAINBOW": 1900,
-        "BESKAR": 8200,
-        "GALACTIC": 12500,
-        "STELLAR": 19200
+        "RAINBOW": 1920,
+        "BESKAR": 8160,
+        "GALACTIC": 12480,
+        "STELLAR": 19200,
+        "KYBER": 21120,
+        "SCOURGE": 17280
       }
     },
     {
@@ -634,24 +735,11 @@
         "GOLD": 240,
         "DIAMOND": 480,
         "RAINBOW": 960,
-        "BESKAR": 4100,
-        "GALACTIC": 6200,
-        "STELLAR": 9600
-      }
-    },
-    {
-      "name": "EGL",
-      "role": "WORKER",
-      "rarity": "EPIC",
-      "kind": "STANDARD",
-      "income_per_second": {
-        "BASIC": 300,
-        "GOLD": null,
-        "DIAMOND": null,
-        "RAINBOW": null,
-        "BESKAR": null,
-        "GALACTIC": null,
-        "STELLAR": null
+        "BESKAR": 4080,
+        "GALACTIC": 6240,
+        "STELLAR": 9600,
+        "KYBER": 10560,
+        "SCOURGE": 8640
       }
     },
     {
@@ -660,13 +748,15 @@
       "rarity": "EPIC",
       "kind": "FUSION",
       "income_per_second": {
-        "BASIC": 720,
-        "GOLD": 1440,
-        "DIAMOND": 2880,
-        "RAINBOW": 5760,
-        "BESKAR": 24480,
-        "GALACTIC": 37440,
-        "STELLAR": 57600
+        "BASIC": 1080,
+        "GOLD": 2160,
+        "DIAMOND": 4320,
+        "RAINBOW": 8640,
+        "BESKAR": 36720,
+        "GALACTIC": 56160,
+        "STELLAR": 86400,
+        "KYBER": 95040,
+        "SCOURGE": 77760
       }
     },
     {
@@ -681,7 +771,9 @@
         "RAINBOW": 5520,
         "BESKAR": 23460,
         "GALACTIC": 35880,
-        "STELLAR": 55200
+        "STELLAR": 55200,
+        "KYBER": 60720,
+        "SCOURGE": 49680
       }
     },
     {
@@ -696,7 +788,9 @@
         "RAINBOW": 3840,
         "BESKAR": 16320,
         "GALACTIC": 24960,
-        "STELLAR": 38400
+        "STELLAR": 38400,
+        "KYBER": 42240,
+        "SCOURGE": 34560
       }
     },
     {
@@ -707,11 +801,13 @@
       "income_per_second": {
         "BASIC": 330,
         "GOLD": 660,
-        "DIAMOND": 1300,
-        "RAINBOW": 2600,
-        "BESKAR": 11200,
-        "GALACTIC": 17200,
-        "STELLAR": 26400
+        "DIAMOND": 1320,
+        "RAINBOW": 2640,
+        "BESKAR": 11220,
+        "GALACTIC": 17160,
+        "STELLAR": 26400,
+        "KYBER": 29040,
+        "SCOURGE": 23760
       }
     },
     {
@@ -726,7 +822,9 @@
         "RAINBOW": 2400,
         "BESKAR": 10200,
         "GALACTIC": 15600,
-        "STELLAR": 24000
+        "STELLAR": 24000,
+        "KYBER": 26400,
+        "SCOURGE": 21600
       }
     },
     {
@@ -738,10 +836,12 @@
         "BASIC": 210,
         "GOLD": 420,
         "DIAMOND": 840,
-        "RAINBOW": 1700,
-        "BESKAR": 7100,
-        "GALACTIC": 10900,
-        "STELLAR": 16800
+        "RAINBOW": 1680,
+        "BESKAR": 7140,
+        "GALACTIC": 10920,
+        "STELLAR": 16800,
+        "KYBER": 18480,
+        "SCOURGE": 15120
       }
     },
     {
@@ -753,10 +853,12 @@
         "BASIC": 180,
         "GOLD": 360,
         "DIAMOND": 720,
-        "RAINBOW": 1400,
-        "BESKAR": 6100,
-        "GALACTIC": 9400,
-        "STELLAR": 14400
+        "RAINBOW": 1440,
+        "BESKAR": 6120,
+        "GALACTIC": 9360,
+        "STELLAR": 14400,
+        "KYBER": 15840,
+        "SCOURGE": 12960
       }
     },
     {
@@ -771,7 +873,9 @@
         "RAINBOW": 1200,
         "BESKAR": 5100,
         "GALACTIC": 7800,
-        "STELLAR": 12000
+        "STELLAR": 12000,
+        "KYBER": 13200,
+        "SCOURGE": 10800
       }
     },
     {
@@ -780,13 +884,15 @@
       "rarity": "EPIC",
       "kind": "FUSION",
       "income_per_second": {
-        "BASIC": 720,
-        "GOLD": 1440,
-        "DIAMOND": 2880,
-        "RAINBOW": 5760,
-        "BESKAR": 24480,
-        "GALACTIC": 37440,
-        "STELLAR": 57600
+        "BASIC": 1080,
+        "GOLD": 2160,
+        "DIAMOND": 4320,
+        "RAINBOW": 8640,
+        "BESKAR": 36720,
+        "GALACTIC": 56160,
+        "STELLAR": 86400,
+        "KYBER": 95040,
+        "SCOURGE": 77760
       }
     },
     {
@@ -795,13 +901,15 @@
       "rarity": "EPIC",
       "kind": "FUSION",
       "income_per_second": {
-        "BASIC": 690,
-        "GOLD": 1380,
-        "DIAMOND": 2760,
-        "RAINBOW": 5520,
-        "BESKAR": 23460,
-        "GALACTIC": 35880,
-        "STELLAR": 55200
+        "BASIC": 1035,
+        "GOLD": 2070,
+        "DIAMOND": 4140,
+        "RAINBOW": 8280,
+        "BESKAR": 35190,
+        "GALACTIC": 53820,
+        "STELLAR": 82800,
+        "KYBER": 91080,
+        "SCOURGE": 74520
       }
     },
     {
@@ -810,13 +918,15 @@
       "rarity": "EPIC",
       "kind": "STANDARD",
       "income_per_second": {
-        "BASIC": 630,
-        "GOLD": 1300,
-        "DIAMOND": 2500,
+        "BASIC": 600,
+        "GOLD": 1200,
+        "DIAMOND": 2400,
         "RAINBOW": 4800,
         "BESKAR": 20400,
         "GALACTIC": 31200,
-        "STELLAR": 48000
+        "STELLAR": 48000,
+        "KYBER": 52800,
+        "SCOURGE": 43200
       }
     },
     {
@@ -826,12 +936,14 @@
       "kind": "STANDARD",
       "income_per_second": {
         "BASIC": 540,
-        "GOLD": 1100,
-        "DIAMOND": 2200,
-        "RAINBOW": 4300,
-        "BESKAR": 18400,
-        "GALACTIC": 28100,
-        "STELLAR": 43200
+        "GOLD": 1080,
+        "DIAMOND": 2160,
+        "RAINBOW": 4320,
+        "BESKAR": 18360,
+        "GALACTIC": 28080,
+        "STELLAR": 43200,
+        "KYBER": 47520,
+        "SCOURGE": 38880
       }
     },
     {
@@ -846,7 +958,9 @@
         "RAINBOW": 3600,
         "BESKAR": 15300,
         "GALACTIC": 23400,
-        "STELLAR": 36000
+        "STELLAR": 36000,
+        "KYBER": 39600,
+        "SCOURGE": 32400
       }
     },
     {
@@ -857,11 +971,13 @@
       "income_per_second": {
         "BASIC": 420,
         "GOLD": 840,
-        "DIAMOND": 1700,
-        "RAINBOW": 3400,
-        "BESKAR": 14300,
-        "GALACTIC": 21800,
-        "STELLAR": 33600
+        "DIAMOND": 1680,
+        "RAINBOW": 3360,
+        "BESKAR": 14280,
+        "GALACTIC": 21840,
+        "STELLAR": 33600,
+        "KYBER": 36960,
+        "SCOURGE": 30240
       }
     },
     {
@@ -876,7 +992,9 @@
         "RAINBOW": 2880,
         "BESKAR": 12240,
         "GALACTIC": 18720,
-        "STELLAR": 28800
+        "STELLAR": 28800,
+        "KYBER": 31680,
+        "SCOURGE": 25920
       }
     },
     {
@@ -887,11 +1005,13 @@
       "income_per_second": {
         "BASIC": 270,
         "GOLD": 540,
-        "DIAMOND": 1100,
-        "RAINBOW": 2200,
-        "BESKAR": 9200,
-        "GALACTIC": 14000,
-        "STELLAR": 21600
+        "DIAMOND": 1080,
+        "RAINBOW": 2160,
+        "BESKAR": 9180,
+        "GALACTIC": 14040,
+        "STELLAR": 21600,
+        "KYBER": 23760,
+        "SCOURGE": 19440
       }
     },
     {
@@ -906,7 +1026,9 @@
         "RAINBOW": 840,
         "BESKAR": 3570,
         "GALACTIC": 5460,
-        "STELLAR": 8400
+        "STELLAR": 8400,
+        "KYBER": 9240,
+        "SCOURGE": 7560
       }
     },
     {
@@ -921,7 +1043,9 @@
         "RAINBOW": 576,
         "BESKAR": 864,
         "GALACTIC": 1728,
-        "STELLAR": 2304
+        "STELLAR": 2304,
+        "KYBER": 2534.4,
+        "SCOURGE": 2073.6
       }
     },
     {
@@ -936,7 +1060,9 @@
         "RAINBOW": 560,
         "BESKAR": 840,
         "GALACTIC": 1680,
-        "STELLAR": 2240
+        "STELLAR": 2240,
+        "KYBER": 2464,
+        "SCOURGE": 2016
       }
     },
     {
@@ -950,8 +1076,10 @@
         "DIAMOND": 232,
         "RAINBOW": 464,
         "BESKAR": 696,
-        "GALACTIC": 1400,
-        "STELLAR": 1900
+        "GALACTIC": 1392,
+        "STELLAR": 1856,
+        "KYBER": 2041.6,
+        "SCOURGE": 1670.4
       }
     },
     {
@@ -965,8 +1093,10 @@
         "DIAMOND": 184,
         "RAINBOW": 368,
         "BESKAR": 552,
-        "GALACTIC": 1100,
-        "STELLAR": 1500
+        "GALACTIC": 1104,
+        "STELLAR": 1472,
+        "KYBER": 1619.2,
+        "SCOURGE": 1324.8
       }
     },
     {
@@ -980,8 +1110,10 @@
         "DIAMOND": 168,
         "RAINBOW": 336,
         "BESKAR": 504,
-        "GALACTIC": 1000,
-        "STELLAR": 1300
+        "GALACTIC": 1008,
+        "STELLAR": 1344,
+        "KYBER": 1478.4,
+        "SCOURGE": 1209.6
       }
     },
     {
@@ -996,7 +1128,9 @@
         "RAINBOW": 248,
         "BESKAR": 372,
         "GALACTIC": 744,
-        "STELLAR": 992
+        "STELLAR": 992,
+        "KYBER": 1091.2,
+        "SCOURGE": 892.8
       }
     },
     {
@@ -1011,7 +1145,9 @@
         "RAINBOW": 184,
         "BESKAR": 276,
         "GALACTIC": 552,
-        "STELLAR": 736
+        "STELLAR": 736,
+        "KYBER": 809.6,
+        "SCOURGE": 662.4
       }
     },
     {
@@ -1026,7 +1162,9 @@
         "RAINBOW": 120,
         "BESKAR": 180,
         "GALACTIC": 360,
-        "STELLAR": 480
+        "STELLAR": 480,
+        "KYBER": 528,
+        "SCOURGE": 432
       }
     },
     {
@@ -1041,7 +1179,26 @@
         "RAINBOW": 576,
         "BESKAR": 864,
         "GALACTIC": 1728,
-        "STELLAR": 2304
+        "STELLAR": 2304,
+        "KYBER": 2534.4,
+        "SCOURGE": 2073.6
+      }
+    },
+    {
+      "name": "R9",
+      "role": "ASTRO",
+      "rarity": "RARE",
+      "kind": "STANDARD",
+      "income_per_second": {
+        "BASIC": 54,
+        "GOLD": 108,
+        "DIAMOND": 216,
+        "RAINBOW": 432,
+        "BESKAR": 648,
+        "GALACTIC": 1296,
+        "STELLAR": 1728,
+        "KYBER": 1900.8,
+        "SCOURGE": 1555.2
       }
     },
     {
@@ -1056,7 +1213,9 @@
         "RAINBOW": 400,
         "BESKAR": 600,
         "GALACTIC": 1200,
-        "STELLAR": 1600
+        "STELLAR": 1600,
+        "KYBER": 1760,
+        "SCOURGE": 1440
       }
     },
     {
@@ -1071,7 +1230,9 @@
         "RAINBOW": 288,
         "BESKAR": 432,
         "GALACTIC": 864,
-        "STELLAR": 1100
+        "STELLAR": 1152,
+        "KYBER": 1267.2,
+        "SCOURGE": 1036.8
       }
     },
     {
@@ -1086,22 +1247,9 @@
         "RAINBOW": 136,
         "BESKAR": 204,
         "GALACTIC": 408,
-        "STELLAR": 544
-      }
-    },
-    {
-      "name": "R9",
-      "role": "ASTRO",
-      "rarity": "RARE",
-      "kind": "STANDARD",
-      "income_per_second": {
-        "BASIC": 54,
-        "GOLD": 108,
-        "DIAMOND": 216,
-        "RAINBOW": 432,
-        "BESKAR": 648,
-        "GALACTIC": 1300,
-        "STELLAR": null
+        "STELLAR": 544,
+        "KYBER": 598.4,
+        "SCOURGE": 489.6
       }
     },
     {
@@ -1116,7 +1264,9 @@
         "RAINBOW": 576,
         "BESKAR": 864,
         "GALACTIC": 1728,
-        "STELLAR": 2304
+        "STELLAR": 2304,
+        "KYBER": 2534.4,
+        "SCOURGE": 2073.6
       }
     },
     {
@@ -1130,8 +1280,10 @@
         "DIAMOND": 264,
         "RAINBOW": 528,
         "BESKAR": 792,
-        "GALACTIC": 1600,
-        "STELLAR": 2100
+        "GALACTIC": 1584,
+        "STELLAR": 2112,
+        "KYBER": 2323.2,
+        "SCOURGE": 1900.8
       }
     },
     {
@@ -1145,8 +1297,10 @@
         "DIAMOND": 248,
         "RAINBOW": 496,
         "BESKAR": 744,
-        "GALACTIC": 1500,
-        "STELLAR": 2000
+        "GALACTIC": 1488,
+        "STELLAR": 1984,
+        "KYBER": 2182.4,
+        "SCOURGE": 1785.6
       }
     },
     {
@@ -1161,7 +1315,9 @@
         "RAINBOW": 216,
         "BESKAR": 324,
         "GALACTIC": 648,
-        "STELLAR": 864
+        "STELLAR": 864,
+        "KYBER": 950.4,
+        "SCOURGE": 777.6
       }
     },
     {
@@ -1176,7 +1332,9 @@
         "RAINBOW": 144,
         "BESKAR": 216,
         "GALACTIC": 432,
-        "STELLAR": 576
+        "STELLAR": 576,
+        "KYBER": 633.6,
+        "SCOURGE": 518.4
       }
     },
     {
@@ -1191,7 +1349,9 @@
         "RAINBOW": 112,
         "BESKAR": 168,
         "GALACTIC": 336,
-        "STELLAR": 448
+        "STELLAR": 448,
+        "KYBER": 492.8,
+        "SCOURGE": 403.2
       }
     },
     {
@@ -1206,7 +1366,9 @@
         "RAINBOW": 32,
         "BESKAR": 48,
         "GALACTIC": 96,
-        "STELLAR": 128
+        "STELLAR": 128,
+        "KYBER": 140.8,
+        "SCOURGE": 115.2
       }
     },
     {
@@ -1221,7 +1383,9 @@
         "RAINBOW": 16,
         "BESKAR": 24,
         "GALACTIC": 48,
-        "STELLAR": 64
+        "STELLAR": 64,
+        "KYBER": 70.4,
+        "SCOURGE": 57.6
       }
     },
     {
@@ -1236,7 +1400,9 @@
         "RAINBOW": 16,
         "BESKAR": 24,
         "GALACTIC": 48,
-        "STELLAR": 64
+        "STELLAR": 64,
+        "KYBER": 70.4,
+        "SCOURGE": 57.6
       }
     },
     {
@@ -1251,7 +1417,9 @@
         "RAINBOW": 32,
         "BESKAR": 48,
         "GALACTIC": 96,
-        "STELLAR": 128
+        "STELLAR": 128,
+        "KYBER": 140.8,
+        "SCOURGE": 115.2
       }
     },
     {
@@ -1266,7 +1434,9 @@
         "RAINBOW": 24,
         "BESKAR": 36,
         "GALACTIC": 72,
-        "STELLAR": 96
+        "STELLAR": 96,
+        "KYBER": 105.6,
+        "SCOURGE": 86.4
       }
     },
     {
@@ -1281,7 +1451,9 @@
         "RAINBOW": 24,
         "BESKAR": 36,
         "GALACTIC": 72,
-        "STELLAR": 96
+        "STELLAR": 96,
+        "KYBER": 105.6,
+        "SCOURGE": 86.4
       }
     },
     {
@@ -1296,7 +1468,9 @@
         "RAINBOW": 24,
         "BESKAR": 36,
         "GALACTIC": 72,
-        "STELLAR": 96
+        "STELLAR": 96,
+        "KYBER": 105.6,
+        "SCOURGE": 86.4
       }
     },
     {
@@ -1311,7 +1485,9 @@
         "RAINBOW": 48,
         "BESKAR": 72,
         "GALACTIC": 144,
-        "STELLAR": 192
+        "STELLAR": 192,
+        "KYBER": 211.2,
+        "SCOURGE": 172.8
       }
     },
     {
@@ -1326,7 +1502,9 @@
         "RAINBOW": 40,
         "BESKAR": 60,
         "GALACTIC": 120,
-        "STELLAR": 160
+        "STELLAR": 160,
+        "KYBER": 176,
+        "SCOURGE": 144
       }
     },
     {
@@ -1341,7 +1519,9 @@
         "RAINBOW": 32,
         "BESKAR": 48,
         "GALACTIC": 96,
-        "STELLAR": 128
+        "STELLAR": 128,
+        "KYBER": 140.8,
+        "SCOURGE": 115.2
       }
     },
     {
@@ -1356,7 +1536,9 @@
         "RAINBOW": 24,
         "BESKAR": 36,
         "GALACTIC": 72,
-        "STELLAR": 96
+        "STELLAR": 96,
+        "KYBER": 105.6,
+        "SCOURGE": 86.4
       }
     },
     {
@@ -1438,14 +1620,22 @@
       "kind": "ICONIC",
       "income": "+15%/s",
       "perk": "2x Flawless Chance"
+    },
+    {
+      "name": "Scourge Prime",
+      "role": "PROTOCOL",
+      "rarity": "ICONIC",
+      "kind": "ICONIC",
+      "income": "Protocol / Hive Mind",
+      "perk": "Hive Mind Master; +5 Hive Mind count while working; Default only"
     }
   ],
   "totals": {
-    "all": 100,
+    "all": 101,
     "standard": 73,
     "fusion": 17,
-    "iconic": 10,
-    "documented_fixed_values": 611,
-    "missing_fixed_values": 19
+    "iconic": 11,
+    "documented_fixed_values": 810,
+    "missing_fixed_values": 0
   }
 }

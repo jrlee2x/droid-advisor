@@ -7,18 +7,18 @@
     <title>Droid Advisor Fusion Recipes</title>
     <meta
       name="description"
-      content="All 17 Droid Tycoon fusion recipes, base earnings per second for every variant, a complete shopping list, and upgrade-chip costs through Stellar."
+      content="All 17 Droid Tycoon fusion recipes, base earnings per second for every variant, a complete shopping list, and upgrade-chip costs through Kyber."
     />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Droid Advisor Fusion Recipe Chart" />
     <meta property="og:description" content="17 fusion recipes with earnings per second for every variant, plus the complete shopping list." />
-    <meta property="og:image" content="/assets/droid-advisor-fusion-preview.jpg?v=v135-20261022" />
+    <meta property="og:image" content="/assets/droid-advisor-fusion-preview.jpg?v=v137-20261101" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/assets/droid-advisor-logo.png" />
-    <link rel="stylesheet" href="/styles.css?v=v135-20261022" />
-    <link rel="stylesheet" href="/fusion.css?v=v135-20261022" />
+    <link rel="stylesheet" href="/styles.css?v=v137-20261101" />
+    <link rel="stylesheet" href="/fusion.css?v=v137-20261101" />
   </head>
   <body>
     <main>
@@ -42,13 +42,22 @@
         <div><strong>4</strong><span>output rarities</span></div>
       </section>
 
+      <section class="scourge-guide" id="scourge-fusion" aria-labelledby="scourge-fusion-heading">
+        <p class="eyebrow">SCOURGE FUSION | CHECKED NOVEMBER 1, 2026</p>
+        <h2 id="scourge-fusion-heading">Use one Scourge in the left-most slot</h2>
+        <p>Use one of the 17 named recipes below. Put a Scourge copy of any required ingredient in the <strong>left-most machine slot</strong>, then the other two ingredients at Stellar, Kyber or Scourge. The ingredient names still have to match the recipe; this does not make arbitrary Mythic combinations valid.</p>
+        <p>Example: <strong>Scourge IG (left) + Stellar KX + Kyber RIC = Scourge RIV-3T</strong>. Three Scourge ingredients also work for a named recipe. Lower-variant ingredients reduce the output. Three Kybers cannot create Scourge, and Upgrade Chips cannot reach Scourge. Check the machine preview before paying.</p>
+        <p>The ingredient quantities below are unchanged. Fusion consumes them, so preserve upcoming rebirth and Scourgedex stock. Scourge income excludes Hive Mind; mixed-variant fusions and changes to the base-wide bonus need their own income comparison.</p>
+        <p>Sources: <a href="https://www.reddit.com/r/StarWarsDroidTycoon/comments/1xfd0kr/psa_if_you_are_fusing_3_scourge_droids_youre/">community tests</a>, <a href="https://www.reddit.com/r/StarWarsDroidTycoon/comments/1xgtp8d/scourge_mythic_what_to_do_with_it_fusion/">RIV-3T example</a>, and <a href="https://droidarchives.co.uk/data/droids.json">Droid Archives income data</a>.</p>
+      </section>
+
       <section class="fusion-chart-callout">
         <div>
           <p class="eyebrow">DOWNLOADABLE CHART</p>
           <h2>Recipes and buy list together</h2>
           <p>The landscape chart places every recipe beside the totaled ingredient list.</p>
         </div>
-        <a class="download" href="/assets/droid-advisor-fusion-chart.png?v=v135-20261022" download>Download fusion chart</a>
+        <a class="download" href="/assets/droid-advisor-fusion-chart.png?v=v137-20261101" download>Download fusion chart</a>
       </section>
 
       <section class="fusion-recipes-section">
@@ -66,7 +75,7 @@
         </div>
         <p class="fusion-income-note">
           Base credits before slot, Droidex, rebirth, event, and other multipliers. The smaller secondary value
-          is the calculated income per hour.
+          is the calculated income per hour. Scourge is raw income without Hive Mind; Kyber is inactive.
         </p>
         <div class="fusion-income-table-wrap">
           <table class="fusion-income-table" id="fusion-income-table">
@@ -74,7 +83,7 @@
           </table>
         </div>
         <p class="fusion-income-sources">
-          Community-maintained values cross-checked with the
+          Rates refreshed November 1, 2026 from <a href="https://droidarchives.co.uk/data/droids.json">Droid Archives</a>. Earlier references include the
           <a href="https://docs.google.com/spreadsheets/d/1otLCKSCMKICMlnefirQ8KZhh_rdZTd5Mp8h0UYFUiqg/edit?usp=sharing">public income sheet</a>,
           <a href="https://droid-tycoon.pages.dev/">Droid Tycoon Tracker</a>, and a
           <a href="https://www.reddit.com/r/StarWarsDroidTycoon/comments/1vwiknw/droid_fusion_recipes/">Reddit fusion-income thread</a>.
@@ -88,20 +97,20 @@
             <p class="eyebrow">FUSE OR KEEP?</p>
             <h2>Fusion income gain or loss</h2>
           </div>
-          <a class="download" href="/assets/droid-advisor-fusion-income-impact.png?v=v135-20261022" download>
+          <a class="download" href="/assets/droid-advisor-fusion-income-impact.png?v=v137-20261101" download>
             Download income-impact chart
           </a>
         </div>
         <p class="fusion-impact-note">
           Each result compares one fusion output against the combined income of all three consumed ingredients at
-          the same variant. Green is an immediate gain; red is an immediate loss.
+          the same variant. Green is a raw income gain; red is a raw loss. Scourge excludes Hive Mind: consuming placed Scourge reduces the bonus for the remaining base. Mixed Scourge recipes are not modeled here.
         </p>
         <div class="fusion-impact-summary" id="fusion-impact-summary" aria-live="polite">Loading comparison summary...</div>
         <div class="fusion-impact-chart-frame">
           <img
             id="fusion-impact-image"
-            src="/assets/droid-advisor-fusion-income-impact-web.webp?v=v135-20261022"
-            data-full-src="/assets/droid-advisor-fusion-income-impact.png?v=v135-20261022"
+            src="/assets/droid-advisor-fusion-income-impact-web.webp?v=v137-20261101"
+            data-full-src="/assets/droid-advisor-fusion-income-impact.png?v=v137-20261101"
             alt="Droid Advisor chart showing the direct income gain or loss for every Droid Tycoon fusion recipe and variant"
             tabindex="0"
             role="button"
@@ -139,17 +148,17 @@
             <p class="eyebrow">UPDATE 1.26 REFERENCE</p>
             <h2>Upgrade chip costs</h2>
           </div>
-          <a class="download" href="/assets/droid-advisor-upgrade-chip-costs.png?v=v135-20261022" download>
+          <a class="download" href="/assets/droid-advisor-upgrade-chip-costs.png?v=v137-20261101" download>
             Download chip-cost chart
           </a>
         </div>
         <p class="chip-cost-note">
-          Cost to upgrade one Epic, Legendary, or Mythic droid to each available variant, through Stellar.
+          Cost to upgrade one Epic, Legendary, or Mythic droid to each available variant, through Kyber.
         </p>
         <div class="chip-chart-frame">
           <img
-            src="/assets/droid-advisor-upgrade-chip-costs-web.webp?v=v135-20261022"
-            alt="Droid Tycoon upgrade-chip costs for Epic, Legendary, and Mythic droids through Stellar"
+            src="/assets/droid-advisor-upgrade-chip-costs-web.webp?v=v137-20261101"
+            alt="Droid Tycoon upgrade-chip costs for Epic, Legendary, and Mythic droids through Kyber"
           />
         </div>
         <div class="chip-table-wrap">
@@ -158,14 +167,13 @@
           </table>
         </div>
         <p class="chip-cost-legend">
-          Each value is the cost to reach the listed variant. Not used means that rarity has no upgrade at that
-          tier in the published Update 1.26 table.
+          Each value is the cost to reach the listed variant. Scourge cannot be reached with Upgrade Chips.
         </p>
       </section>
 
       <footer>
         <img src="/assets/droid-advisor-logo.png" alt="" />
-        <p>Recipes and base income values were cross-checked against current public community references after Update 1.27.</p>
+        <p>Updated November 1, 2026 for Scourge, the current income catalog and chip costs through Kyber.</p>
       </footer>
     </main>
 
@@ -189,6 +197,6 @@
         <p class="chart-lightbox-help">Use the controls, the + and − keys, or Ctrl plus the mouse wheel to zoom.</p>
       </div>
     </dialog>
-    <script src="/fusion.js?v=v135-20261022"></script>
+    <script src="/fusion.js?v=v137-20261101"></script>
   </body>
 </html>

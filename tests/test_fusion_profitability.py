@@ -9,7 +9,7 @@ def test_fusion_profitability_covers_every_recipe_and_variant():
     payload = fusion_profitability_payload()
 
     assert payload["totals"]["recipes"] == 17
-    assert payload["totals"]["variant_comparisons"] == 119
+    assert payload["totals"]["variant_comparisons"] == 153
     assert len(payload["comparisons"]) == 17
     assert all(tuple(comparison["variants"]) == tuple(payload["variants"]) for comparison in payload["comparisons"])
 
@@ -19,8 +19,8 @@ def test_riv_3t_stellar_is_a_direct_income_loss():
     stellar = comparison_for(payload, "RIV-3T")["variants"]["STELLAR"]
 
     assert stellar["input_income_per_second"] == 2_262_500
-    assert stellar["output_income_per_second"] == 1_050_000
-    assert stellar["net_income_per_second"] == -1_212_500
+    assert stellar["output_income_per_second"] == 1_575_000
+    assert stellar["net_income_per_second"] == -687_500
     assert stellar["outcome"] == "loss"
 
 
@@ -28,13 +28,13 @@ def test_low_mo_stellar_is_a_direct_income_gain():
     payload = fusion_profitability_payload()
     stellar = comparison_for(payload, "LOW-MO")["variants"]["STELLAR"]
 
-    assert stellar["input_income_per_second"] == 902_200
-    assert stellar["output_income_per_second"] == 975_000
-    assert stellar["net_income_per_second"] == 72_800
+    assert stellar["input_income_per_second"] == 902_304
+    assert stellar["output_income_per_second"] == 1_462_500
+    assert stellar["net_income_per_second"] == 560_196
     assert stellar["outcome"] == "gain"
 
 
-def test_only_btl_r_stellar_comparison_is_undocumented():
+def test_current_source_documents_all_comparisons():
     payload = fusion_profitability_payload()
     missing = [
         (comparison["output"], variant)
@@ -43,4 +43,4 @@ def test_only_btl_r_stellar_comparison_is_undocumented():
         if result is None
     ]
 
-    assert missing == [("BTL-R", "STELLAR")]
+    assert missing == []

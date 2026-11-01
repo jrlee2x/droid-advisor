@@ -181,9 +181,9 @@ def test_update_126_chip_costs_match_published_reference():
 
 def test_hosted_chip_cost_matrix_matches_desktop_reference():
     payload = chip_cost_payload()
-    assert payload["qualities"][-1] == "STELLAR"
+    assert payload["qualities"][-1] == "KYBER"
     assert payload["rarities"] == ["EPIC", "LEGENDARY", "MYTHIC"]
-    assert payload["costs"]["EPIC"] == {"BESKAR": 3000, "GALACTIC": 5000, "STELLAR": 8000}
+    assert payload["costs"]["EPIC"] == {"GOLD": 120, "DIAMOND": 180, "RAINBOW": 240, "BESKAR": 2000, "GALACTIC": 5000, "STELLAR": 8000, "KYBER": 12000}
     assert payload["costs"]["LEGENDARY"]["STELLAR"] == 24000
     assert payload["costs"]["MYTHIC"]["STELLAR"] == 90000
 
@@ -197,10 +197,12 @@ def test_fusion_output_uses_axi_pod_spelling():
 def test_every_fusion_has_complete_base_income_data():
     outputs = {recipe["output"] for recipe in FUSION_RECIPES}
     assert outputs == set(FUSION_INCOME_PER_SECOND)
-    assert len(FUSION_VARIANTS) == 7
+    assert len(FUSION_VARIANTS) == 9
     for incomes in FUSION_INCOME_PER_SECOND.values():
         assert len(incomes) == len(FUSION_VARIANTS)
-        assert all(current < following for current, following in zip(incomes, incomes[1:]))
+        # Rebirth tier and raw income order differ for Scourge.
+        assert all(current < following for current, following in zip(incomes[:8], incomes[1:8]))
+        assert incomes[-1] < incomes[-2]
 
 
 def test_fusion_income_and_corrected_names_match_current_references():
@@ -208,8 +210,8 @@ def test_fusion_income_and_corrected_names_match_current_references():
     assert "SRV-O" in recipes
     assert "SRV-0" not in recipes
     assert recipes["LOW-MO"]["role"] == "WORKER"
-    assert FUSION_INCOME_PER_SECOND["RIV-3T"][-1] == 1_050_000
-    assert FUSION_INCOME_PER_SECOND["AXI-POD"][-1] == 1_000_000
+    assert FUSION_INCOME_PER_SECOND["RIV-3T"][FUSION_VARIANTS.index("SCOURGE")] == 1_411_200
+    assert FUSION_INCOME_PER_SECOND["AXI-POD"][FUSION_VARIANTS.index("STELLAR")] == 1_500_000
 
 
 def test_update_132_extends_every_cycle_and_wraps_after_cycle_six():

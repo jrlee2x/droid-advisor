@@ -9,13 +9,13 @@ from PIL import Image, ImageDraw
 
 from .build_rebirth_chart import CYAN, INK, MUTED, ORANGE, fitted_logo, font, starfield
 from .build_rebirth_tiles import QUALITY_COLORS, RARITY_COLORS
-from .chip_costs import CHIP_COSTS_126
+from .chip_costs import CHIP_COSTS
 
 ROOT = Path(__file__).resolve().parent.parent
 ASSETS = ROOT / "rebirth-chart-site" / "assets"
 WIDTH, HEIGHT = 1800, 1030
 
-QUALITIES = ("GOLD", "DIAMOND", "RAINBOW", "BESKAR", "GALACTIC", "STELLAR")
+QUALITIES = ("GOLD", "DIAMOND", "RAINBOW", "BESKAR", "GALACTIC", "STELLAR", "KYBER")
 RARITIES = ("EPIC", "LEGENDARY", "MYTHIC")
 
 TITLE = font("ariblk.ttf", 58)
@@ -28,13 +28,14 @@ NOTE = font("arialbd.ttf", 19)
 
 
 def chip_cost_payload() -> dict[str, object]:
-    """Return the canonical Update 1.26 chip-cost matrix for the site."""
+    """Use the same current cost matrix as the desktop reference."""
     costs = {
-        rarity: {quality: cost for row_rarity, quality, cost in CHIP_COSTS_126 if row_rarity == rarity}
+        rarity: {quality: cost for row_rarity, quality, cost in CHIP_COSTS if row_rarity == rarity}
         for rarity in RARITIES
     }
     return {
-        "update": "1.26",
+        "update": "1.37",
+        "note": "Scourge cannot be reached with Upgrade Chips.",
         "rarities": list(RARITIES),
         "qualities": list(QUALITIES),
         "costs": costs,
@@ -65,7 +66,7 @@ def render_chart(payload: dict[str, object]) -> Image.Image:
     draw.text((176, 35), "DROID ADVISOR UPGRADE CHIP COSTS", font=TITLE, fill=INK)
     draw.text(
         (180, 105),
-        "UPDATE 1.26  •  EPIC, LEGENDARY, AND MYTHIC  •  THROUGH STELLAR",
+        "UPDATE 1.37  •  EPIC, LEGENDARY, AND MYTHIC  •  THROUGH KYBER",
         font=SUBTITLE,
         fill=CYAN,
     )
@@ -123,7 +124,7 @@ def render_chart(payload: dict[str, object]) -> Image.Image:
     )
     draw.text(
         (50, grid_bottom + 124),
-        "Not used means that rarity has no upgrade at that variant tier in the published Update 1.26 table.",
+        "Scourge is not an Upgrade Chip target. No amount of chips upgrades Kyber into Scourge.",
         font=SMALL,
         fill=MUTED,
     )

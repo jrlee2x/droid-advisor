@@ -112,7 +112,7 @@ function renderRecipes() {
       summary.className = "fusion-income-summary";
       summary.append(
         textElement("span", "", `Default ${formatCredits(recipe.income_per_second.DEFAULT)}/s`),
-        textElement("span", "", `Stellar ${formatCredits(recipe.income_per_second.STELLAR)}/s`),
+        textElement("span", "", `Scourge ${formatCredits(recipe.income_per_second.SCOURGE)}/s (before Hive Mind)`),
       );
       card.append(header, summary, textElement("p", "fusion-equation", recipe.ingredients.join(" + ")));
       grid.append(card);
@@ -312,9 +312,9 @@ async function copyShoppingList() {
 async function loadFusionData() {
   try {
     const [fusionResponse, chipResponse, impactResponse] = await Promise.all([
-      fetch("/assets/fusion-recipes.json?v=v135-20261022"),
-      fetch("/assets/upgrade-chip-costs.json?v=v135-20261022"),
-      fetch("/assets/fusion-profitability.json?v=v135-20261022"),
+      fetch("/assets/fusion-recipes.json?v=v137-20261101"),
+      fetch("/assets/upgrade-chip-costs.json?v=v137-20261101"),
+      fetch("/assets/fusion-profitability.json?v=v137-20261101"),
     ]);
     if (!fusionResponse.ok) throw new Error(`Fusion request failed: ${fusionResponse.status}`);
     if (!chipResponse.ok) throw new Error(`Chip-cost request failed: ${chipResponse.status}`);

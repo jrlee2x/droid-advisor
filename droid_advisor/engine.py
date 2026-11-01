@@ -40,6 +40,8 @@ class Advice:
 
     @property
     def message(self) -> str:
+        if self.quality == "SCOURGE" and self.next_needed is None:
+            return "CHECK SCOURGEDEX / FUSION BEFORE SELLING: NO MORE REBIRTH USE THIS CYCLE"
         if self.safe_to_sell:
             suffix = f"LAST NEEDED AT RB{self.last_needed}" if self.last_needed else "NOT USED IN THIS CYCLE"
             return f"SAFE TO SELL: {suffix}"
@@ -69,7 +71,7 @@ def advise(cycle: int, completed_rebirth: int, droid: str, quality: str | None =
     next_future = min(future, default=None, key=lambda item: item[0])
     return Advice(
         droid=droid,
-        safe_to_sell=not future,
+        safe_to_sell=not future and normalized_quality != "SCOURGE",
         completed_rebirth=completed_rebirth,
         next_needed=next_future[0] if next_future else None,
         last_needed=max((rb for rb, _ in appearances), default=None),

@@ -29,6 +29,7 @@ QUALITY_COLORS = {
     # and white star points.
     "STELLAR": "#fbbf24",
     "KYBER": "#63df84",
+    "SCOURGE": "#dc78ff",
 }
 RARITY_COLORS = {
     "COMMON": "#b7bec7",

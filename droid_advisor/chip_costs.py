@@ -28,3 +28,11 @@ CHIP_COSTS = tuple(
     }.get((rarity, quality), cost))
     for rarity, quality, cost in CHIP_COSTS_126
 ) + (("EPIC", "KYBER", 12000), ("LEGENDARY", "KYBER", 30000), ("MYTHIC", "KYBER", 110000))
+
+# Lower upgrade tiers now explicitly documented in the current Archives matrix.
+CHIP_COSTS = tuple(sorted(
+    CHIP_COSTS + (("EPIC", "GOLD", 120), ("EPIC", "DIAMOND", 180), ("EPIC", "RAINBOW", 240),
+                  ("LEGENDARY", "GOLD", 400), ("LEGENDARY", "DIAMOND", 1200)),
+    key=lambda row: (("EPIC", "LEGENDARY", "MYTHIC").index(row[0]),
+                     ("GOLD", "DIAMOND", "RAINBOW", "BESKAR", "GALACTIC", "STELLAR", "KYBER").index(row[1])),
+))

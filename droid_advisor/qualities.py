@@ -18,6 +18,7 @@ QUALITY_ORDER = {
     "KYBER_GREEN": 7,
     "KYBER_BLUE": 7,
     "KYBER_PURPLE": 7,
+    "SCOURGE": 8,
 }
 
 SPAWN_VARIANT_ORDER = {
@@ -29,6 +30,7 @@ SPAWN_VARIANT_ORDER = {
     "GALACTIC": 5,
     "STELLAR": 6,
     "KYBER": 7,
+    "SCOURGE": 8,
 }
 RARITY_ORDER = {
     "COMMON": 0,

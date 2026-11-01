@@ -7,18 +7,18 @@
     <title>Droid Advisor All-Droid Income Chart</title>
     <meta
       name="description"
-      content="Income per second for all 100 Droid Tycoon droids: 73 standard droids, 17 fusion droids, and 10 Iconics."
+      content="Income per second for all 101 Droid Tycoon droids: 73 standard droids, 17 fusion droids, and 10 Iconics."
     />
     <meta property="og:type" content="website" />
     <meta property="og:title" content="Droid Advisor All-Droid Income Chart" />
     <meta property="og:description" content="Every Droid Tycoon droid with base income per second for all documented variants." />
-    <meta property="og:image" content="/assets/droid-advisor-all-droid-income-preview.jpg?v=v135-20261022" />
+    <meta property="og:image" content="/assets/droid-advisor-all-droid-income-preview.jpg?v=v137-20261101" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/assets/droid-advisor-logo.png" />
-    <link rel="stylesheet" href="/styles.css?v=v135-20261022" />
-    <link rel="stylesheet" href="/droids.css?v=v135-20261022" />
+    <link rel="stylesheet" href="/styles.css?v=v137-20261101" />
+    <link rel="stylesheet" href="/droids.css?v=v137-20261101" />
   </head>
   <body>
     <main>
@@ -27,7 +27,7 @@
         <div>
           <p class="eyebrow">DROID ADVISOR • COMPLETE INCOME REFERENCE</p>
           <h1>Every droid, every variant</h1>
-          <p class="lede">Base credits per second for all standard and fusion droids, plus the percentage income used by Iconics.</p>
+          <p class="lede">Base credits per second for all standard and fusion droids, including Scourge and inactive Kyber, plus separate Iconic effects.</p>
           <p class="hero-link-row chart-actions">
             <a class="download" href="/">Open rebirth charts</a>
             <a class="download" href="/fusion">Open fusion recipes</a>
@@ -36,10 +36,17 @@
       </header>
 
       <section class="stats" aria-label="Droid chart coverage">
-        <div><strong>100</strong><span>unique droids</span></div>
+        <div><strong>101</strong><span>unique droids</span></div>
         <div><strong>73</strong><span>standard</span></div>
         <div><strong>17</strong><span>fusion</span></div>
-        <div><strong>10</strong><span>Iconic</span></div>
+        <div><strong>11</strong><span>Iconic</span></div>
+      </section>
+
+      <section class="scourge-guide" aria-labelledby="scourge-income-heading">
+        <h2 id="scourge-income-heading">Scourge income and Hive Mind</h2>
+        <p>The Scourge column shows raw base income before Hive Mind. Placed Scourge droids boost one another; lounge and companion slots do not count. This table does not include that base-wide bonus. Kyber here is inactive; activated Green, Blue and Purple rates are available in Droid Advisor inventory.</p>
+        <p>Scourge Prime is a separate Iconic Protocol droid, Default only. It has Hive Mind Master and is never a rebirth ingredient. Its Protocol effects are listed separately from ordinary income.</p>
+        <p>Rates refreshed November 1, 2026 from <a href="https://droidarchives.co.uk/data/droids.json">Droid Archives catalog data</a>. <a href="/fusion#scourge-fusion">Scourge fusion instructions</a>.</p>
       </section>
 
       <section class="all-droids-chart-section">
@@ -48,12 +55,12 @@
             <p class="eyebrow">DOWNLOADABLE CHART</p>
             <h2>All-droid income chart</h2>
           </div>
-          <a class="download" href="/assets/droid-advisor-all-droid-income.png?v=v135-20261022" download>Download full-resolution chart</a>
+          <a class="download" href="/assets/droid-advisor-all-droid-income.png?v=v137-20261101" download>Download full-resolution chart</a>
         </div>
         <div class="all-droids-chart-frame">
           <img
-            src="/assets/droid-advisor-all-droid-income-web.webp?v=v135-20261022"
-            alt="Droid Advisor income-per-second chart for all 100 Droid Tycoon droids"
+            src="/assets/droid-advisor-all-droid-income-web.webp?v=v137-20261101"
+            alt="Droid Advisor income-per-second chart for all 101 Droid Tycoon droids"
           />
         </div>
         <p class="chart-note">Basic applies to standard droids. Default applies to fusion droids. Open or download the full-resolution PNG for the clearest text.</p>
@@ -113,7 +120,7 @@
         </div>
         <p class="income-method-note">
           Values are base credits per second before workstation, Droidex, rebirth, event, and other multipliers.
-          N/A means the current public sources do not document that value. Iconics use percentage-based income and have no variants.
+          Scourge excludes Hive Mind. Iconics use separate percentage or Protocol effects and have no variants.
         </p>
         <p class="income-sources">
           Cross-checked against the
@@ -127,9 +134,9 @@
 
       <footer>
         <img src="/assets/droid-advisor-logo.png" alt="" />
-        <p>Updated October 22, 2026 with the 100-droid catalog from Droid Advisor 1.3.10. Undocumented income remains marked N/A.</p>
+        <p>Updated November 1, 2026 with the 101-droid catalog, Scourge and Scourge Prime for Droid Advisor 1.4.0.</p>
       </footer>
     </main>
-    <script src="/droids.js?v=v135-20261022"></script>
+    <script src="/droids.js?v=v137-20261101"></script>
   </body>
 </html>

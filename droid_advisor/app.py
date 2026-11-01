@@ -534,7 +534,7 @@ class DroidAdvisorApp:
         header = tk.Frame(frame, bg=COLORS["panel"])
         header.grid(row=0, column=0, columnspan=3, sticky="ew")
         tk.Label(
-            header, text="UPGRADE CHIP COSTS  •  UPDATE 1.32",
+            header, text="UPGRADE CHIP COSTS  •  UPDATE 1.37",
             bg=COLORS["panel"], fg="#ffad24", font=("Segoe UI Semibold", 14),
             padx=16, pady=11,
         ).pack(side="left")
@@ -548,7 +548,7 @@ class DroidAdvisorApp:
         rarity_colors = {"EPIC": "#8f63ff", "LEGENDARY": "#ffad24", "MYTHIC": "#ff2870"}
         quality_colors = {
             "GOLD": "#f2b21b", "DIAMOND": "#35d9ff", "RAINBOW": "#c353ff",
-            "BESKAR": "#c4ccd3", "GALACTIC": "#a92cff", "STELLAR": "#62efff", "KYBER": "#63df84",
+            "BESKAR": "#c4ccd3", "GALACTIC": "#a92cff", "STELLAR": "#62efff", "KYBER": "#63df84", "SCOURGE": "#dc78ff",
         }
         for row, (rarity, quality, cost) in enumerate(CHIP_COSTS, start=1):
             background = COLORS["panel_alt"] if row % 2 else COLORS["panel"]
@@ -603,7 +603,7 @@ class DroidAdvisorApp:
         header = tk.Frame(self.sell_list_frame, bg="#111820")
         header.grid(row=0, column=0, columnspan=3, sticky="ew")
         tk.Label(
-            header, text=f"SAFE TO SELL  |  RBC{cycle}  |  {completed} COMPLETE",
+            header, text=f"REBIRTH USE COMPLETE  |  RBC{cycle}  |  {completed} COMPLETE",
             bg="#111820", fg="#72f2a0", font=("Segoe UI", 13, "bold"), padx=14, pady=10,
         ).pack(side="left")
         tk.Button(
@@ -623,7 +623,7 @@ class DroidAdvisorApp:
             ).grid(row=row, column=column, sticky="ew", padx=2, pady=1)
         tk.Label(
             self.sell_list_frame,
-            text="Previously required in this RBC, with no remaining rebirth use.  |  Ctrl+Shift+Z or X to close",
+            text="Rebirth reference only. Check Scourgedex / fusion before selling Scourge.  |  Ctrl+Shift+Z or X to close",
             bg="#111820", fg="#aebdca", font=("Segoe UI", 8), padx=12, pady=8,
         ).grid(row=per_column + 1, column=0, columnspan=3, sticky="ew")
 
@@ -1096,8 +1096,11 @@ class DroidAdvisorApp:
         labels = " ".join(value for value in (finish, rarity) if value)
         descriptor = f" ({labels})" if labels else ""
         title = f"BLUEPRINT {droid}{descriptor}" if source == "blueprint" else droid
-        ticket = AdviceTicket(evidence, source, f"{title}: {decision.message}",
-                              "#137a43" if decision.safe_to_sell else "#a8232e")
+        message = decision.message
+        if decision.safe_to_sell and finish is None:
+            message = "NO MORE REBIRTH USE: CHECK VARIANT / SCOURGEDEX BEFORE SELLING"
+        ticket = AdviceTicket(evidence, source, f"{title}: {message}",
+                              "#137a43" if decision.safe_to_sell and finish else "#a8232e")
         self.events.put(("advice", ticket))
         self.diagnostics.set(advice_status="verified advice queued", advice_message=ticket.message)
         if self.pending_inventory_count >= 2 and self._evidence_is_current(evidence):

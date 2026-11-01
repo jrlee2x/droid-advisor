@@ -3,7 +3,7 @@
 import json
 from pathlib import Path
 
-from droid_advisor.droid_catalog import CATALOG
+from droid_advisor.droid_catalog import CATALOG, income_per_second
 from droid_advisor.engine import canonical
 from droid_advisor.qualities import QUALITY_ORDER
 
@@ -29,12 +29,13 @@ def test_hosted_path_six_last_use_and_finishes_match_reviewed_reference():
         assert records[name]["quality"] == values["quality"], name
 
 
-def test_hosted_income_roster_is_complete_and_missing_values_stay_unknown():
+def test_hosted_income_roster_is_complete_and_matches_desktop_rates():
     payload = json.loads((ASSETS / "all-droid-income.json").read_text())
     assert {canonical(row["name"]) for row in payload["droids"]} == set(CATALOG)
-    assert payload["totals"]["all"] == len(CATALOG) == 100
+    assert payload["totals"]["all"] == len(CATALOG) == 101
     assert sum(row["kind"] == "STANDARD" for row in payload["droids"]) == payload["totals"]["standard"] == 73
-    assert sum(row["kind"] == "ICONIC" for row in payload["droids"]) == payload["totals"]["iconic"] == 10
-    for name in ("EGL", "JO9-4MN", "PLNK"):
-        row = next(row for row in payload["droids"] if row["name"] == name)
-        assert any(value is None for value in row["income_per_second"].values())
+    assert sum(row["kind"] == "ICONIC" for row in payload["droids"]) == payload["totals"]["iconic"] == 11
+    for row in payload["droids"]:
+        if row["kind"] != "ICONIC":
+            for finish, value in row["income_per_second"].items():
+                assert value == income_per_second(row["name"], finish), (row["name"], finish)

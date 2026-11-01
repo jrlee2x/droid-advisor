@@ -1,0 +1,1717 @@
+{
+  "checked": "2026-11-01",
+  "source": "https://droidarchives.co.uk/data/droids.json",
+  "source_sha256": "c2fb13fd22b3a146206a94cd9b19dd34cc8fd91f520d85f928f83b5eff95959a",
+  "droids": {
+    "MOUSE": {
+      "name": "MOUSE",
+      "rarity": "COMMON",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 2.0,
+        "GOLD": 4.0,
+        "DIAMOND": 8.0,
+        "RAINBOW": 16.0,
+        "BESKAR": 24.0,
+        "GALACTIC": 48.0,
+        "STELLAR": 64.0,
+        "KYBER": 70.4,
+        "KYBER_GREEN": 211.2,
+        "KYBER_BLUE": 228.8,
+        "KYBER_PURPLE": 253.44,
+        "SCOURGE": 57.6
+      }
+    },
+    "PIT": {
+      "name": "PIT",
+      "rarity": "COMMON",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 2.0,
+        "GOLD": 4.0,
+        "DIAMOND": 8.0,
+        "RAINBOW": 16.0,
+        "BESKAR": 24.0,
+        "GALACTIC": 48.0,
+        "STELLAR": 64.0,
+        "KYBER": 70.4,
+        "KYBER_GREEN": 211.2,
+        "KYBER_BLUE": 228.8,
+        "KYBER_PURPLE": 253.44,
+        "SCOURGE": 57.6
+      }
+    },
+    "GONK": {
+      "name": "GONK",
+      "rarity": "COMMON",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 4.0,
+        "GOLD": 8.0,
+        "DIAMOND": 16.0,
+        "RAINBOW": 32.0,
+        "BESKAR": 48.0,
+        "GALACTIC": 96.0,
+        "STELLAR": 128.0,
+        "KYBER": 140.8,
+        "KYBER_GREEN": 422.4,
+        "KYBER_BLUE": 457.6,
+        "KYBER_PURPLE": 506.88,
+        "SCOURGE": 115.2
+      }
+    },
+    "CB": {
+      "name": "CB",
+      "rarity": "COMMON",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 3.0,
+        "GOLD": 6.0,
+        "DIAMOND": 12.0,
+        "RAINBOW": 24.0,
+        "BESKAR": 36.0,
+        "GALACTIC": 72.0,
+        "STELLAR": 96.0,
+        "KYBER": 105.6,
+        "KYBER_GREEN": 316.8,
+        "KYBER_BLUE": 343.2,
+        "KYBER_PURPLE": 380.16,
+        "SCOURGE": 86.4
+      }
+    },
+    "R3": {
+      "name": "R3",
+      "rarity": "COMMON",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 3.0,
+        "GOLD": 6.0,
+        "DIAMOND": 12.0,
+        "RAINBOW": 24.0,
+        "BESKAR": 36.0,
+        "GALACTIC": 72.0,
+        "STELLAR": 96.0,
+        "KYBER": 105.6,
+        "KYBER_GREEN": 316.8,
+        "KYBER_BLUE": 343.2,
+        "KYBER_PURPLE": 380.16,
+        "SCOURGE": 86.4
+      }
+    },
+    "R5": {
+      "name": "R5",
+      "rarity": "COMMON",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 3.0,
+        "GOLD": 6.0,
+        "DIAMOND": 12.0,
+        "RAINBOW": 24.0,
+        "BESKAR": 36.0,
+        "GALACTIC": 72.0,
+        "STELLAR": 96.0,
+        "KYBER": 105.6,
+        "KYBER_GREEN": 316.8,
+        "KYBER_BLUE": 343.2,
+        "KYBER_PURPLE": 380.16,
+        "SCOURGE": 86.4
+      }
+    },
+    "R8": {
+      "name": "R8",
+      "rarity": "COMMON",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 4.0,
+        "GOLD": 8.0,
+        "DIAMOND": 16.0,
+        "RAINBOW": 32.0,
+        "BESKAR": 48.0,
+        "GALACTIC": 96.0,
+        "STELLAR": 128.0,
+        "KYBER": 140.8,
+        "KYBER_GREEN": 422.4,
+        "KYBER_BLUE": 457.6,
+        "KYBER_PURPLE": 506.88,
+        "SCOURGE": 115.2
+      }
+    },
+    "IMPERIALPROBE": {
+      "name": "IMPERIAL PROBE",
+      "rarity": "COMMON",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 6.0,
+        "GOLD": 12.0,
+        "DIAMOND": 24.0,
+        "RAINBOW": 48.0,
+        "BESKAR": 72.0,
+        "GALACTIC": 144.0,
+        "STELLAR": 192.0,
+        "KYBER": 211.2,
+        "KYBER_GREEN": 633.6,
+        "KYBER_BLUE": 686.4,
+        "KYBER_PURPLE": 760.32,
+        "SCOURGE": 172.8
+      }
+    },
+    "B1BATTLE": {
+      "name": "B1 BATTLE",
+      "rarity": "COMMON",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 5.0,
+        "GOLD": 10.0,
+        "DIAMOND": 20.0,
+        "RAINBOW": 40.0,
+        "BESKAR": 60.0,
+        "GALACTIC": 120.0,
+        "STELLAR": 160.0,
+        "KYBER": 176.0,
+        "KYBER_GREEN": 528.0,
+        "KYBER_BLUE": 572.0,
+        "KYBER_PURPLE": 633.6,
+        "SCOURGE": 144
+      }
+    },
+    "DRK1PROBE": {
+      "name": "DRK-1 PROBE",
+      "rarity": "COMMON",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 3.0,
+        "GOLD": 6.0,
+        "DIAMOND": 12.0,
+        "RAINBOW": 24.0,
+        "BESKAR": 36.0,
+        "GALACTIC": 72.0,
+        "STELLAR": 96.0,
+        "KYBER": 105.6,
+        "KYBER_GREEN": 316.8,
+        "KYBER_BLUE": 343.2,
+        "KYBER_PURPLE": 380.16,
+        "SCOURGE": 86.4
+      }
+    },
+    "ID10": {
+      "name": "ID10",
+      "rarity": "COMMON",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 4.0,
+        "GOLD": 8.0,
+        "DIAMOND": 16.0,
+        "RAINBOW": 32.0,
+        "BESKAR": 48.0,
+        "GALACTIC": 96.0,
+        "STELLAR": 128.0,
+        "KYBER": 140.8,
+        "KYBER_GREEN": 422.4,
+        "KYBER_BLUE": 457.6,
+        "KYBER_PURPLE": 506.88,
+        "SCOURGE": 115.2
+      }
+    },
+    "BDXEXPLORER": {
+      "name": "BDX EXPLORER",
+      "rarity": "RARE",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 15.0,
+        "GOLD": 30.0,
+        "DIAMOND": 60.0,
+        "RAINBOW": 120.0,
+        "BESKAR": 180.0,
+        "GALACTIC": 360.0,
+        "STELLAR": 480.0,
+        "KYBER": 528.0,
+        "KYBER_GREEN": 1584.0,
+        "KYBER_BLUE": 1716.0,
+        "KYBER_PURPLE": 1900.8,
+        "SCOURGE": 432
+      }
+    },
+    "ARG": {
+      "name": "ARG",
+      "rarity": "RARE",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 42.0,
+        "GOLD": 84.0,
+        "DIAMOND": 168.0,
+        "RAINBOW": 336.0,
+        "BESKAR": 504.0,
+        "GALACTIC": 1008.0,
+        "STELLAR": 1344.0,
+        "KYBER": 1478.4,
+        "KYBER_GREEN": 4435.2,
+        "KYBER_BLUE": 4804.8,
+        "KYBER_PURPLE": 5322.24,
+        "SCOURGE": 1209.6
+      }
+    },
+    "SENATEHOVERCAM": {
+      "name": "SENATE HOVERCAM",
+      "rarity": "RARE",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 46.0,
+        "GOLD": 92.0,
+        "DIAMOND": 184.0,
+        "RAINBOW": 368.0,
+        "BESKAR": 552.0,
+        "GALACTIC": 1104.0,
+        "STELLAR": 1472.0,
+        "KYBER": 1619.2,
+        "KYBER_GREEN": 4857.6,
+        "KYBER_BLUE": 5262.4,
+        "KYBER_PURPLE": 5829.12,
+        "SCOURGE": 1324.8
+      }
+    },
+    "BU4D": {
+      "name": "B-U4D",
+      "rarity": "RARE",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 58.0,
+        "GOLD": 116.0,
+        "DIAMOND": 232.0,
+        "RAINBOW": 464.0,
+        "BESKAR": 696.0,
+        "GALACTIC": 1392.0,
+        "STELLAR": 1856.0,
+        "KYBER": 2041.6,
+        "KYBER_GREEN": 6124.8,
+        "KYBER_BLUE": 6635.2,
+        "KYBER_PURPLE": 7349.76,
+        "SCOURGE": 1670.4
+      }
+    },
+    "BALCORE": {
+      "name": "BAL-CORE",
+      "rarity": "RARE",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 23.0,
+        "GOLD": 46.0,
+        "DIAMOND": 92.0,
+        "RAINBOW": 184.0,
+        "BESKAR": 276.0,
+        "GALACTIC": 552.0,
+        "STELLAR": 736.0,
+        "KYBER": 809.6,
+        "KYBER_GREEN": 2428.8,
+        "KYBER_BLUE": 2631.2,
+        "KYBER_PURPLE": 2914.56,
+        "SCOURGE": 662.4
+      }
+    },
+    "ROLLR": {
+      "name": "ROLL-R",
+      "rarity": "RARE",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 31.0,
+        "GOLD": 62.0,
+        "DIAMOND": 124.0,
+        "RAINBOW": 248.0,
+        "BESKAR": 372.0,
+        "GALACTIC": 744.0,
+        "STELLAR": 992.0,
+        "KYBER": 1091.2,
+        "KYBER_GREEN": 3273.6,
+        "KYBER_BLUE": 3546.4,
+        "KYBER_PURPLE": 3928.32,
+        "SCOURGE": 892.8
+      }
+    },
+    "2BB": {
+      "name": "2BB",
+      "rarity": "RARE",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 17.0,
+        "GOLD": 34.0,
+        "DIAMOND": 68.0,
+        "RAINBOW": 136.0,
+        "BESKAR": 204.0,
+        "GALACTIC": 408.0,
+        "STELLAR": 544.0,
+        "KYBER": 598.4,
+        "KYBER_GREEN": 1795.2,
+        "KYBER_BLUE": 1944.8,
+        "KYBER_PURPLE": 2154.24,
+        "SCOURGE": 489.6
+      }
+    },
+    "ALT": {
+      "name": "A-LT",
+      "rarity": "RARE",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 36.0,
+        "GOLD": 72.0,
+        "DIAMOND": 144.0,
+        "RAINBOW": 288.0,
+        "BESKAR": 432.0,
+        "GALACTIC": 864.0,
+        "STELLAR": 1152.0,
+        "KYBER": 1267.2,
+        "KYBER_GREEN": 3801.6,
+        "KYBER_BLUE": 4118.4,
+        "KYBER_PURPLE": 4561.92,
+        "SCOURGE": 1036.8
+      }
+    },
+    "R4": {
+      "name": "R4",
+      "rarity": "RARE",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 50.0,
+        "GOLD": 100.0,
+        "DIAMOND": 200.0,
+        "RAINBOW": 400.0,
+        "BESKAR": 600.0,
+        "GALACTIC": 1200.0,
+        "STELLAR": 1600.0,
+        "KYBER": 1760.0,
+        "KYBER_GREEN": 5280.0,
+        "KYBER_BLUE": 5720.0,
+        "KYBER_PURPLE": 6336.0,
+        "SCOURGE": 1440
+      }
+    },
+    "R9": {
+      "name": "R9",
+      "rarity": "RARE",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 54.0,
+        "GOLD": 108.0,
+        "DIAMOND": 216.0,
+        "RAINBOW": 432.0,
+        "BESKAR": 648.0,
+        "GALACTIC": 1296.0,
+        "STELLAR": 1728.0,
+        "KYBER": 1900.8,
+        "KYBER_GREEN": 5702.4,
+        "KYBER_BLUE": 6177.6,
+        "KYBER_PURPLE": 6842.88,
+        "SCOURGE": 1555.2
+      }
+    },
+    "B1SECURITY": {
+      "name": "B1 SECURITY",
+      "rarity": "RARE",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 66.0,
+        "GOLD": 132.0,
+        "DIAMOND": 264.0,
+        "RAINBOW": 528.0,
+        "BESKAR": 792.0,
+        "GALACTIC": 1584.0,
+        "STELLAR": 2112.0,
+        "KYBER": 2323.2,
+        "KYBER_GREEN": 6969.6,
+        "KYBER_BLUE": 7550.4,
+        "KYBER_PURPLE": 8363.52,
+        "SCOURGE": 1900.8
+      }
+    },
+    "NAVEX": {
+      "name": "NAV-EX",
+      "rarity": "RARE",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 18.0,
+        "GOLD": 36.0,
+        "DIAMOND": 72.0,
+        "RAINBOW": 144.0,
+        "BESKAR": 216.0,
+        "GALACTIC": 432.0,
+        "STELLAR": 576.0,
+        "KYBER": 633.6,
+        "KYBER_GREEN": 1900.8,
+        "KYBER_BLUE": 2059.2,
+        "KYBER_PURPLE": 2280.96,
+        "SCOURGE": 518.4
+      }
+    },
+    "VECTARM": {
+      "name": "VECT-ARM",
+      "rarity": "RARE",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 27.0,
+        "GOLD": 54.0,
+        "DIAMOND": 108.0,
+        "RAINBOW": 216.0,
+        "BESKAR": 324.0,
+        "GALACTIC": 648.0,
+        "STELLAR": 864.0,
+        "KYBER": 950.4,
+        "KYBER_GREEN": 2851.2,
+        "KYBER_BLUE": 3088.8,
+        "KYBER_PURPLE": 3421.44,
+        "SCOURGE": 777.6
+      }
+    },
+    "HOVR": {
+      "name": "HOV-R",
+      "rarity": "RARE",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 62.0,
+        "GOLD": 124.0,
+        "DIAMOND": 248.0,
+        "RAINBOW": 496.0,
+        "BESKAR": 744.0,
+        "GALACTIC": 1488.0,
+        "STELLAR": 1984.0,
+        "KYBER": 2182.4,
+        "KYBER_GREEN": 6547.2,
+        "KYBER_BLUE": 7092.8,
+        "KYBER_PURPLE": 7856.64,
+        "SCOURGE": 1785.6
+      }
+    },
+    "GROUNDMECH": {
+      "name": "GROUNDMECH",
+      "rarity": "EPIC",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 120.0,
+        "GOLD": 240.0,
+        "DIAMOND": 480.0,
+        "RAINBOW": 960.0,
+        "BESKAR": 4080.0,
+        "GALACTIC": 6240.0,
+        "STELLAR": 9600.0,
+        "KYBER": 10560.0,
+        "KYBER_GREEN": 31680.0,
+        "KYBER_BLUE": 34320.0,
+        "KYBER_PURPLE": 38016.0,
+        "SCOURGE": 8640
+      }
+    },
+    "LO": {
+      "name": "LO",
+      "rarity": "EPIC",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 240.0,
+        "GOLD": 480.0,
+        "DIAMOND": 960.0,
+        "RAINBOW": 1920.0,
+        "BESKAR": 8160.0,
+        "GALACTIC": 12480.0,
+        "STELLAR": 19200.0,
+        "KYBER": 21120.0,
+        "KYBER_GREEN": 63360.0,
+        "KYBER_BLUE": 68640.0,
+        "KYBER_PURPLE": 76032.0,
+        "SCOURGE": 17280
+      }
+    },
+    "AMPWALKER": {
+      "name": "AMP WALKER",
+      "rarity": "EPIC",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 570.0,
+        "GOLD": 1140.0,
+        "DIAMOND": 2280.0,
+        "RAINBOW": 4560.0,
+        "BESKAR": 19380.0,
+        "GALACTIC": 29640.0,
+        "STELLAR": 45600.0,
+        "KYBER": 50160.0,
+        "KYBER_GREEN": 150480.0,
+        "KYBER_BLUE": 163020.0,
+        "KYBER_PURPLE": 180576.0,
+        "SCOURGE": 41040
+      }
+    },
+    "SENTRI": {
+      "name": "SEN-TRI",
+      "rarity": "EPIC",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 510.0,
+        "GOLD": 1020.0,
+        "DIAMOND": 2040.0,
+        "RAINBOW": 4080.0,
+        "BESKAR": 17340.0,
+        "GALACTIC": 26520.0,
+        "STELLAR": 40800.0,
+        "KYBER": 44880.0,
+        "KYBER_GREEN": 134640.0,
+        "KYBER_BLUE": 145860.0,
+        "KYBER_PURPLE": 161568.0,
+        "SCOURGE": 36720
+      }
+    },
+    "OPTIPOD": {
+      "name": "OPTI-POD",
+      "rarity": "EPIC",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 390.0,
+        "GOLD": 780.0,
+        "DIAMOND": 1560.0,
+        "RAINBOW": 3120.0,
+        "BESKAR": 13260.0,
+        "GALACTIC": 20280.0,
+        "STELLAR": 31200.0,
+        "KYBER": 34320.0,
+        "KYBER_GREEN": 102960.0,
+        "KYBER_BLUE": 111540.0,
+        "KYBER_PURPLE": 123552.0,
+        "SCOURGE": 28080
+      }
+    },
+    "GUNRUNNER": {
+      "name": "GUNRUNNER",
+      "rarity": "EPIC",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 660.0,
+        "GOLD": 1320.0,
+        "DIAMOND": 2640.0,
+        "RAINBOW": 5280.0,
+        "BESKAR": 22440.0,
+        "GALACTIC": 34320.0,
+        "STELLAR": 52800.0,
+        "KYBER": 58080.0,
+        "KYBER_GREEN": 174240.0,
+        "KYBER_BLUE": 188760.0,
+        "KYBER_PURPLE": 209088.0,
+        "SCOURGE": 47520
+      }
+    },
+    "BB": {
+      "name": "BB",
+      "rarity": "EPIC",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 150.0,
+        "GOLD": 300.0,
+        "DIAMOND": 600.0,
+        "RAINBOW": 1200.0,
+        "BESKAR": 5100.0,
+        "GALACTIC": 7800.0,
+        "STELLAR": 12000.0,
+        "KYBER": 13200.0,
+        "KYBER_GREEN": 39600.0,
+        "KYBER_BLUE": 42900.0,
+        "KYBER_PURPLE": 47520.0,
+        "SCOURGE": 10800
+      }
+    },
+    "R2": {
+      "name": "R2",
+      "rarity": "EPIC",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 480.0,
+        "GOLD": 960.0,
+        "DIAMOND": 1920.0,
+        "RAINBOW": 3840.0,
+        "BESKAR": 16320.0,
+        "GALACTIC": 24960.0,
+        "STELLAR": 38400.0,
+        "KYBER": 42240.0,
+        "KYBER_GREEN": 126720.0,
+        "KYBER_BLUE": 137280.0,
+        "KYBER_PURPLE": 152064.0,
+        "SCOURGE": 34560
+      }
+    },
+    "R6": {
+      "name": "R6",
+      "rarity": "EPIC",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 300.0,
+        "GOLD": 600.0,
+        "DIAMOND": 1200.0,
+        "RAINBOW": 2400.0,
+        "BESKAR": 10200.0,
+        "GALACTIC": 15600.0,
+        "STELLAR": 24000.0,
+        "KYBER": 26400.0,
+        "KYBER_GREEN": 79200.0,
+        "KYBER_BLUE": 85800.0,
+        "KYBER_PURPLE": 95040.0,
+        "SCOURGE": 21600
+      }
+    },
+    "TRAKR": {
+      "name": "TRAK-R",
+      "rarity": "EPIC",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 330.0,
+        "GOLD": 660.0,
+        "DIAMOND": 1320.0,
+        "RAINBOW": 2640.0,
+        "BESKAR": 11220.0,
+        "GALACTIC": 17160.0,
+        "STELLAR": 26400.0,
+        "KYBER": 29040.0,
+        "KYBER_GREEN": 87120.0,
+        "KYBER_BLUE": 94380.0,
+        "KYBER_PURPLE": 104544.0,
+        "SCOURGE": 23760
+      }
+    },
+    "ORBWALKER": {
+      "name": "ORB-WALKER",
+      "rarity": "EPIC",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 180.0,
+        "GOLD": 360.0,
+        "DIAMOND": 720.0,
+        "RAINBOW": 1440.0,
+        "BESKAR": 6120.0,
+        "GALACTIC": 9360.0,
+        "STELLAR": 14400.0,
+        "KYBER": 15840.0,
+        "KYBER_GREEN": 47520.0,
+        "KYBER_BLUE": 51480.0,
+        "KYBER_PURPLE": 57024.0,
+        "SCOURGE": 12960
+      }
+    },
+    "UTILTEC": {
+      "name": "UTIL-TEC",
+      "rarity": "EPIC",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 210.0,
+        "GOLD": 420.0,
+        "DIAMOND": 840.0,
+        "RAINBOW": 1680.0,
+        "BESKAR": 7140.0,
+        "GALACTIC": 10920.0,
+        "STELLAR": 16800.0,
+        "KYBER": 18480.0,
+        "KYBER_GREEN": 55440.0,
+        "KYBER_BLUE": 60060.0,
+        "KYBER_PURPLE": 66528.0,
+        "SCOURGE": 15120
+      }
+    },
+    "B1HEAVY": {
+      "name": "B1 HEAVY",
+      "rarity": "EPIC",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 600.0,
+        "GOLD": 1200.0,
+        "DIAMOND": 2400.0,
+        "RAINBOW": 4800.0,
+        "BESKAR": 20400.0,
+        "GALACTIC": 31200.0,
+        "STELLAR": 48000.0,
+        "KYBER": 52800.0,
+        "KYBER_GREEN": 158400.0,
+        "KYBER_BLUE": 171600.0,
+        "KYBER_PURPLE": 190080.0,
+        "SCOURGE": 43200
+      }
+    },
+    "B2SUPER": {
+      "name": "B2 SUPER",
+      "rarity": "EPIC",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 420.0,
+        "GOLD": 840.0,
+        "DIAMOND": 1680.0,
+        "RAINBOW": 3360.0,
+        "BESKAR": 14280.0,
+        "GALACTIC": 21840.0,
+        "STELLAR": 33600.0,
+        "KYBER": 36960.0,
+        "KYBER_GREEN": 110880.0,
+        "KYBER_BLUE": 120120.0,
+        "KYBER_PURPLE": 133056.0,
+        "SCOURGE": 30240
+      }
+    },
+    "B2HEAVY": {
+      "name": "B2 HEAVY",
+      "rarity": "EPIC",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 360.0,
+        "GOLD": 720.0,
+        "DIAMOND": 1440.0,
+        "RAINBOW": 2880.0,
+        "BESKAR": 12240.0,
+        "GALACTIC": 18720.0,
+        "STELLAR": 28800.0,
+        "KYBER": 31680.0,
+        "KYBER_GREEN": 95040.0,
+        "KYBER_BLUE": 102960.0,
+        "KYBER_PURPLE": 114048.0,
+        "SCOURGE": 25920
+      }
+    },
+    "STRIKEORB": {
+      "name": "STRIKE-ORB",
+      "rarity": "EPIC",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 540.0,
+        "GOLD": 1080.0,
+        "DIAMOND": 2160.0,
+        "RAINBOW": 4320.0,
+        "BESKAR": 18360.0,
+        "GALACTIC": 28080.0,
+        "STELLAR": 43200.0,
+        "KYBER": 47520.0,
+        "KYBER_GREEN": 142560.0,
+        "KYBER_BLUE": 154440.0,
+        "KYBER_PURPLE": 171072.0,
+        "SCOURGE": 38880
+      }
+    },
+    "HAULR": {
+      "name": "HAUL-R",
+      "rarity": "EPIC",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 270.0,
+        "GOLD": 540.0,
+        "DIAMOND": 1080.0,
+        "RAINBOW": 2160.0,
+        "BESKAR": 9180.0,
+        "GALACTIC": 14040.0,
+        "STELLAR": 21600.0,
+        "KYBER": 23760.0,
+        "KYBER_GREEN": 71280.0,
+        "KYBER_BLUE": 77220.0,
+        "KYBER_PURPLE": 85536.0,
+        "SCOURGE": 19440
+      }
+    },
+    "LNGSHOT": {
+      "name": "LNG-SHOT",
+      "rarity": "EPIC",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 450.0,
+        "GOLD": 900.0,
+        "DIAMOND": 1800.0,
+        "RAINBOW": 3600.0,
+        "BESKAR": 15300.0,
+        "GALACTIC": 23400.0,
+        "STELLAR": 36000.0,
+        "KYBER": 39600.0,
+        "KYBER_GREEN": 118800.0,
+        "KYBER_BLUE": 128700.0,
+        "KYBER_PURPLE": 142560.0,
+        "SCOURGE": 32400
+      }
+    },
+    "PROTOROLLER": {
+      "name": "PROTO-ROLLER",
+      "rarity": "LEGENDARY",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 972.0,
+        "GOLD": 1944.0,
+        "DIAMOND": 3888.0,
+        "RAINBOW": 7776.0,
+        "BESKAR": 23328.0,
+        "GALACTIC": 58320.0,
+        "STELLAR": 145800.0,
+        "KYBER": 160380.0,
+        "KYBER_GREEN": 481140.0,
+        "KYBER_BLUE": 521235.0,
+        "KYBER_PURPLE": 577368.0,
+        "SCOURGE": 131220
+      }
+    },
+    "MECHADROID": {
+      "name": "MECHA-DROID",
+      "rarity": "LEGENDARY",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 1244.0,
+        "GOLD": 2488.0,
+        "DIAMOND": 4976.0,
+        "RAINBOW": 9952.0,
+        "BESKAR": 29856.0,
+        "GALACTIC": 74640.0,
+        "STELLAR": 186600.0,
+        "KYBER": 205260.0,
+        "KYBER_GREEN": 615780.0,
+        "KYBER_BLUE": 667095.0,
+        "KYBER_PURPLE": 738936.0,
+        "SCOURGE": 167940
+      }
+    },
+    "MONOWLKR": {
+      "name": "MONO-WALKER",
+      "rarity": "LEGENDARY",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 1500.0,
+        "GOLD": 3000.0,
+        "DIAMOND": 6000.0,
+        "RAINBOW": 12000.0,
+        "BESKAR": 36000.0,
+        "GALACTIC": 90000.0,
+        "STELLAR": 225000.0,
+        "KYBER": 247500.0,
+        "KYBER_GREEN": 742500.0,
+        "KYBER_BLUE": 804375.0,
+        "KYBER_PURPLE": 891000.0,
+        "SCOURGE": 202500
+      }
+    },
+    "BB9": {
+      "name": "BB9",
+      "rarity": "LEGENDARY",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 1300.0,
+        "GOLD": 2600.0,
+        "DIAMOND": 5200.0,
+        "RAINBOW": 10400.0,
+        "BESKAR": 31200.0,
+        "GALACTIC": 78000.0,
+        "STELLAR": 195000.0,
+        "KYBER": 214500.0,
+        "KYBER_GREEN": 643500.0,
+        "KYBER_BLUE": 697125.0,
+        "KYBER_PURPLE": 772200.0,
+        "SCOURGE": 175500
+      }
+    },
+    "R7": {
+      "name": "R7",
+      "rarity": "LEGENDARY",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 1500.0,
+        "GOLD": 3000.0,
+        "DIAMOND": 6000.0,
+        "RAINBOW": 12000.0,
+        "BESKAR": 36000.0,
+        "GALACTIC": 90000.0,
+        "STELLAR": 225000.0,
+        "KYBER": 247500.0,
+        "KYBER_GREEN": 742500.0,
+        "KYBER_BLUE": 804375.0,
+        "KYBER_PURPLE": 891000.0,
+        "SCOURGE": 202500
+      }
+    },
+    "B2RP": {
+      "name": "B2-RP",
+      "rarity": "LEGENDARY",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 1304.0,
+        "GOLD": 2608.0,
+        "DIAMOND": 5216.0,
+        "RAINBOW": 10432.0,
+        "BESKAR": 31296.0,
+        "GALACTIC": 78240.0,
+        "STELLAR": 195600.0,
+        "KYBER": 215160.0,
+        "KYBER_GREEN": 645480.0,
+        "KYBER_BLUE": 699270.0,
+        "KYBER_PURPLE": 774576.0,
+        "SCOURGE": 176040
+      }
+    },
+    "CYCLOGRAV": {
+      "name": "CYCLO-GRAV",
+      "rarity": "LEGENDARY",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 1260.0,
+        "GOLD": 2520.0,
+        "DIAMOND": 5040.0,
+        "RAINBOW": 10080.0,
+        "BESKAR": 30240.0,
+        "GALACTIC": 75600.0,
+        "STELLAR": 189000.0,
+        "KYBER": 207900.0,
+        "KYBER_GREEN": 623700.0,
+        "KYBER_BLUE": 675675.0,
+        "KYBER_PURPLE": 748440.0,
+        "SCOURGE": 170100
+      }
+    },
+    "OPTISTRK": {
+      "name": "OPTI-STRIKE",
+      "rarity": "LEGENDARY",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 1500.0,
+        "GOLD": 3000.0,
+        "DIAMOND": 6000.0,
+        "RAINBOW": 12000.0,
+        "BESKAR": 36000.0,
+        "GALACTIC": 90000.0,
+        "STELLAR": 225000.0,
+        "KYBER": 247500.0,
+        "KYBER_GREEN": 742500.0,
+        "KYBER_BLUE": 804375.0,
+        "KYBER_PURPLE": 891000.0,
+        "SCOURGE": 202500
+      }
+    },
+    "SNOWMOUSE": {
+      "name": "SNOW MOUSE",
+      "rarity": "MYTHIC",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 4400.0,
+        "GOLD": 8800.0,
+        "DIAMOND": 17600.0,
+        "RAINBOW": 35200.0,
+        "BESKAR": 70400.0,
+        "GALACTIC": 193600.0,
+        "STELLAR": 550000.0,
+        "KYBER": 605000.0,
+        "KYBER_GREEN": 1815000.0,
+        "KYBER_BLUE": 1966250.0,
+        "KYBER_PURPLE": 2178000.0,
+        "SCOURGE": 492800
+      }
+    },
+    "RIC": {
+      "name": "RIC",
+      "rarity": "MYTHIC",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 5100.0,
+        "GOLD": 10200.0,
+        "DIAMOND": 20400.0,
+        "RAINBOW": 40800.0,
+        "BESKAR": 81600.0,
+        "GALACTIC": 224400.0,
+        "STELLAR": 637500.0,
+        "KYBER": 701250.0,
+        "KYBER_GREEN": 2103750.0,
+        "KYBER_BLUE": 2279062.5,
+        "KYBER_PURPLE": 2524500.0,
+        "SCOURGE": 571200
+      }
+    },
+    "LOADLIFTER": {
+      "name": "LOADLIFTER",
+      "rarity": "MYTHIC",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 7200.0,
+        "GOLD": 14400.0,
+        "DIAMOND": 28800.0,
+        "RAINBOW": 57600.0,
+        "BESKAR": 115200.0,
+        "GALACTIC": 316800.0,
+        "STELLAR": 900000.0,
+        "KYBER": 990000.0,
+        "KYBER_GREEN": 2970000.0,
+        "KYBER_BLUE": 3217500.0,
+        "KYBER_PURPLE": 3564000.0,
+        "SCOURGE": 806400
+      }
+    },
+    "LEP": {
+      "name": "LEP",
+      "rarity": "MYTHIC",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 6500.0,
+        "GOLD": 13000.0,
+        "DIAMOND": 26000.0,
+        "RAINBOW": 52000.0,
+        "BESKAR": 104000.0,
+        "GALACTIC": 286000.0,
+        "STELLAR": 812500.0,
+        "KYBER": 893750.0,
+        "KYBER_GREEN": 2681250.0,
+        "KYBER_BLUE": 2904687.5,
+        "KYBER_PURPLE": 3217500.0,
+        "SCOURGE": 728000
+      }
+    },
+    "RIC1200": {
+      "name": "RIC-1200",
+      "rarity": "MYTHIC",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 5800.0,
+        "GOLD": 11600.0,
+        "DIAMOND": 23200.0,
+        "RAINBOW": 46400.0,
+        "BESKAR": 92800.0,
+        "GALACTIC": 255200.0,
+        "STELLAR": 725000.0,
+        "KYBER": 797500.0,
+        "KYBER_GREEN": 2392500.0,
+        "KYBER_BLUE": 2591875.0,
+        "KYBER_PURPLE": 2871000.0,
+        "SCOURGE": 649600
+      }
+    },
+    "DRFTR": {
+      "name": "DRFT-R",
+      "rarity": "MYTHIC",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 5800.0,
+        "GOLD": 11600.0,
+        "DIAMOND": 23200.0,
+        "RAINBOW": 46400.0,
+        "BESKAR": 92800.0,
+        "GALACTIC": 255200.0,
+        "STELLAR": 725000.0,
+        "KYBER": 797500.0,
+        "KYBER_GREEN": 2392500.0,
+        "KYBER_BLUE": 2591875.0,
+        "KYBER_PURPLE": 2871000.0,
+        "SCOURGE": 649600
+      }
+    },
+    "CYCLENS": {
+      "name": "CYCLENS",
+      "rarity": "MYTHIC",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 4400.0,
+        "GOLD": 8800.0,
+        "DIAMOND": 17600.0,
+        "RAINBOW": 35200.0,
+        "BESKAR": 70400.0,
+        "GALACTIC": 193600.0,
+        "STELLAR": 550000.0,
+        "KYBER": 605000.0,
+        "KYBER_GREEN": 1815000.0,
+        "KYBER_BLUE": 1966250.0,
+        "KYBER_PURPLE": 2178000.0,
+        "SCOURGE": 492800
+      }
+    },
+    "MOTRAK": {
+      "name": "MO-TRAK",
+      "rarity": "MYTHIC",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 7200.0,
+        "GOLD": 14400.0,
+        "DIAMOND": 28800.0,
+        "RAINBOW": 57600.0,
+        "BESKAR": 115200.0,
+        "GALACTIC": 316800.0,
+        "STELLAR": 900000.0,
+        "KYBER": 990000.0,
+        "KYBER_GREEN": 2970000.0,
+        "KYBER_BLUE": 3217500.0,
+        "KYBER_PURPLE": 3564000.0,
+        "SCOURGE": 806400
+      }
+    },
+    "TRITEK": {
+      "name": "TRI-TEK",
+      "rarity": "MYTHIC",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 6500.0,
+        "GOLD": 13000.0,
+        "DIAMOND": 26000.0,
+        "RAINBOW": 52000.0,
+        "BESKAR": 104000.0,
+        "GALACTIC": 286000.0,
+        "STELLAR": 812500.0,
+        "KYBER": 893750.0,
+        "KYBER_GREEN": 2681250.0,
+        "KYBER_BLUE": 2904687.5,
+        "KYBER_PURPLE": 3217500.0,
+        "SCOURGE": 728000
+      }
+    },
+    "IG": {
+      "name": "IG",
+      "rarity": "MYTHIC",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 5800.0,
+        "GOLD": 11600.0,
+        "DIAMOND": 23200.0,
+        "RAINBOW": 46400.0,
+        "BESKAR": 92800.0,
+        "GALACTIC": 255200.0,
+        "STELLAR": 725000.0,
+        "KYBER": 797500.0,
+        "KYBER_GREEN": 2392500.0,
+        "KYBER_BLUE": 2591875.0,
+        "KYBER_PURPLE": 2871000.0,
+        "SCOURGE": 649600
+      }
+    },
+    "KX": {
+      "name": "KX",
+      "rarity": "MYTHIC",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 7200.0,
+        "GOLD": 14400.0,
+        "DIAMOND": 28800.0,
+        "RAINBOW": 57600.0,
+        "BESKAR": 115200.0,
+        "GALACTIC": 316800.0,
+        "STELLAR": 900000.0,
+        "KYBER": 990000.0,
+        "KYBER_GREEN": 2970000.0,
+        "KYBER_BLUE": 3217500.0,
+        "KYBER_PURPLE": 3564000.0,
+        "SCOURGE": 806400
+      }
+    },
+    "WHLEX": {
+      "name": "WHL-EX",
+      "rarity": "RARE",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 72.0,
+        "GOLD": 144.0,
+        "DIAMOND": 288.0,
+        "RAINBOW": 576.0,
+        "BESKAR": 864.0,
+        "GALACTIC": 1728.0,
+        "STELLAR": 2304.0,
+        "KYBER": 2534.4,
+        "KYBER_GREEN": 7603.2,
+        "KYBER_BLUE": 8236.8,
+        "KYBER_PURPLE": 9123.84,
+        "SCOURGE": 2073.6
+      }
+    },
+    "ZROTEC": {
+      "name": "ZRO-TEC",
+      "rarity": "RARE",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 72.0,
+        "GOLD": 144.0,
+        "DIAMOND": 288.0,
+        "RAINBOW": 576.0,
+        "BESKAR": 864.0,
+        "GALACTIC": 1728.0,
+        "STELLAR": 2304.0,
+        "KYBER": 2534.4,
+        "KYBER_GREEN": 7603.2,
+        "KYBER_BLUE": 8236.8,
+        "KYBER_PURPLE": 9123.84,
+        "SCOURGE": 2073.6
+      }
+    },
+    "BTLR": {
+      "name": "BTL-R",
+      "rarity": "RARE",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 72.0,
+        "GOLD": 144.0,
+        "DIAMOND": 288.0,
+        "RAINBOW": 576.0,
+        "BESKAR": 864.0,
+        "GALACTIC": 1728.0,
+        "STELLAR": 2304.0,
+        "KYBER": 2534.4,
+        "KYBER_GREEN": 7603.2,
+        "KYBER_BLUE": 8236.8,
+        "KYBER_PURPLE": 9123.84,
+        "SCOURGE": 2073.6
+      }
+    },
+    "NUL": {
+      "name": "N-UL",
+      "rarity": "EPIC",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 1080.0,
+        "GOLD": 2160.0,
+        "DIAMOND": 4320.0,
+        "RAINBOW": 8640.0,
+        "BESKAR": 36720.0,
+        "GALACTIC": 56160.0,
+        "STELLAR": 86400.0,
+        "KYBER": 95040.0,
+        "KYBER_GREEN": 285120.0,
+        "KYBER_BLUE": 308880.0,
+        "KYBER_PURPLE": 342144.0,
+        "SCOURGE": 77760
+      }
+    },
+    "SCRPR": {
+      "name": "SCRP-R",
+      "rarity": "EPIC",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 1080.0,
+        "GOLD": 2160.0,
+        "DIAMOND": 4320.0,
+        "RAINBOW": 8640.0,
+        "BESKAR": 36720.0,
+        "GALACTIC": 56160.0,
+        "STELLAR": 86400.0,
+        "KYBER": 95040.0,
+        "KYBER_GREEN": 285120.0,
+        "KYBER_BLUE": 308880.0,
+        "KYBER_PURPLE": 342144.0,
+        "SCOURGE": 77760
+      }
+    },
+    "ARMCORE": {
+      "name": "ARM-CORE",
+      "rarity": "EPIC",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 1035.0,
+        "GOLD": 2070.0,
+        "DIAMOND": 4140.0,
+        "RAINBOW": 8280.0,
+        "BESKAR": 35190.0,
+        "GALACTIC": 53820.0,
+        "STELLAR": 82800.0,
+        "KYBER": 91080.0,
+        "KYBER_GREEN": 273240.0,
+        "KYBER_BLUE": 296010.0,
+        "KYBER_PURPLE": 327888.0,
+        "SCOURGE": 74520
+      }
+    },
+    "OPTAR": {
+      "name": "OPT-AR",
+      "rarity": "EPIC",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 1080.0,
+        "GOLD": 2160.0,
+        "DIAMOND": 4320.0,
+        "RAINBOW": 8640.0,
+        "BESKAR": 36720.0,
+        "GALACTIC": 56160.0,
+        "STELLAR": 86400.0,
+        "KYBER": 95040.0,
+        "KYBER_GREEN": 285120.0,
+        "KYBER_BLUE": 308880.0,
+        "KYBER_PURPLE": 342144.0,
+        "SCOURGE": 77760
+      }
+    },
+    "ROTOR": {
+      "name": "RO-TOR",
+      "rarity": "LEGENDARY",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 2250.0,
+        "GOLD": 4500.0,
+        "DIAMOND": 9000.0,
+        "RAINBOW": 18000.0,
+        "BESKAR": 54000.0,
+        "GALACTIC": 135000.0,
+        "STELLAR": 337500.0,
+        "KYBER": 371250.0,
+        "KYBER_GREEN": 1113750.0,
+        "KYBER_BLUE": 1206562.5,
+        "KYBER_PURPLE": 1336500.0,
+        "SCOURGE": 303750
+      }
+    },
+    "FUS3": {
+      "name": "FUS-3",
+      "rarity": "LEGENDARY",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 2400.0,
+        "GOLD": 4800.0,
+        "DIAMOND": 9600.0,
+        "RAINBOW": 19200.0,
+        "BESKAR": 57600.0,
+        "GALACTIC": 144000.0,
+        "STELLAR": 360000.0,
+        "KYBER": 396000.0,
+        "KYBER_GREEN": 1188000.0,
+        "KYBER_BLUE": 1287000.0,
+        "KYBER_PURPLE": 1425600.0,
+        "SCOURGE": 324000
+      }
+    },
+    "QIKBIT": {
+      "name": "QIK-BIT",
+      "rarity": "LEGENDARY",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 2400.0,
+        "GOLD": 4800.0,
+        "DIAMOND": 9600.0,
+        "RAINBOW": 19200.0,
+        "BESKAR": 57600.0,
+        "GALACTIC": 144000.0,
+        "STELLAR": 360000.0,
+        "KYBER": 396000.0,
+        "KYBER_GREEN": 1188000.0,
+        "KYBER_BLUE": 1287000.0,
+        "KYBER_PURPLE": 1425600.0,
+        "SCOURGE": 324000
+      }
+    },
+    "ORBXL": {
+      "name": "ORB-XL",
+      "rarity": "LEGENDARY",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 2400.0,
+        "GOLD": 4800.0,
+        "DIAMOND": 9600.0,
+        "RAINBOW": 19200.0,
+        "BESKAR": 57600.0,
+        "GALACTIC": 144000.0,
+        "STELLAR": 360000.0,
+        "KYBER": 396000.0,
+        "KYBER_GREEN": 1188000.0,
+        "KYBER_BLUE": 1287000.0,
+        "KYBER_PURPLE": 1425600.0,
+        "SCOURGE": 324000
+      }
+    },
+    "RIV3T": {
+      "name": "RIV-3T",
+      "rarity": "MYTHIC",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 12600.0,
+        "GOLD": 25200.0,
+        "DIAMOND": 50400.0,
+        "RAINBOW": 100800.0,
+        "BESKAR": 201600.0,
+        "GALACTIC": 554400.0,
+        "STELLAR": 1575000.0,
+        "KYBER": 1732500.0,
+        "KYBER_GREEN": 5197500.0,
+        "KYBER_BLUE": 5630625.0,
+        "KYBER_PURPLE": 6237000.0,
+        "SCOURGE": 1411200
+      }
+    },
+    "LUGG": {
+      "name": "LUG-G",
+      "rarity": "MYTHIC",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 11400.0,
+        "GOLD": 22800.0,
+        "DIAMOND": 45600.0,
+        "RAINBOW": 91200.0,
+        "BESKAR": 182400.0,
+        "GALACTIC": 501600.0,
+        "STELLAR": 1425000.0,
+        "KYBER": 1567500.0,
+        "KYBER_GREEN": 4702500.0,
+        "KYBER_BLUE": 5094375.0,
+        "KYBER_PURPLE": 5643000.0,
+        "SCOURGE": 1276800
+      }
+    },
+    "LOWMO": {
+      "name": "LOW-MO",
+      "rarity": "MYTHIC",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 11700.0,
+        "GOLD": 23400.0,
+        "DIAMOND": 46800.0,
+        "RAINBOW": 93600.0,
+        "BESKAR": 187200.0,
+        "GALACTIC": 514800.0,
+        "STELLAR": 1462500.0,
+        "KYBER": 1608750.0,
+        "KYBER_GREEN": 4826250.0,
+        "KYBER_BLUE": 5228437.5,
+        "KYBER_PURPLE": 5791500.0,
+        "SCOURGE": 1310400
+      }
+    },
+    "AXIPOD": {
+      "name": "AXI-POD",
+      "rarity": "MYTHIC",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 12000.0,
+        "GOLD": 24000.0,
+        "DIAMOND": 48000.0,
+        "RAINBOW": 96000.0,
+        "BESKAR": 192000.0,
+        "GALACTIC": 528000.0,
+        "STELLAR": 1500000.0,
+        "KYBER": 1650000.0,
+        "KYBER_GREEN": 4950000.0,
+        "KYBER_BLUE": 5362500.0,
+        "KYBER_PURPLE": 5940000.0,
+        "SCOURGE": 1344000
+      }
+    },
+    "SRVO": {
+      "name": "SRV-O",
+      "rarity": "MYTHIC",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 11400.0,
+        "GOLD": 22800.0,
+        "DIAMOND": 45600.0,
+        "RAINBOW": 91200.0,
+        "BESKAR": 182400.0,
+        "GALACTIC": 501600.0,
+        "STELLAR": 1425000.0,
+        "KYBER": 1567500.0,
+        "KYBER_GREEN": 4702500.0,
+        "KYBER_BLUE": 5094375.0,
+        "KYBER_PURPLE": 5643000.0,
+        "SCOURGE": 1276800
+      }
+    },
+    "XONK": {
+      "name": "X-ONK",
+      "rarity": "MYTHIC",
+      "role": "BATTLE",
+      "income": {
+        "DEFAULT": 12000.0,
+        "GOLD": 24000.0,
+        "DIAMOND": 48000.0,
+        "RAINBOW": 96000.0,
+        "BESKAR": 192000.0,
+        "GALACTIC": 528000.0,
+        "STELLAR": 1500000.0,
+        "KYBER": 1650000.0,
+        "KYBER_GREEN": 4950000.0,
+        "KYBER_BLUE": 5362500.0,
+        "KYBER_PURPLE": 5940000.0,
+        "SCOURGE": 1344000
+      }
+    },
+    "SA5": {
+      "name": "SA-5",
+      "rarity": "RARE",
+      "role": "PROTOCOL",
+      "income": {
+        "DEFAULT": 14.0,
+        "GOLD": 28.0,
+        "DIAMOND": 56.0,
+        "RAINBOW": 112.0,
+        "BESKAR": 168.0,
+        "GALACTIC": 336.0,
+        "STELLAR": 448.0,
+        "KYBER": 492.8,
+        "KYBER_GREEN": 1478.4,
+        "KYBER_BLUE": 1601.6,
+        "KYBER_PURPLE": 1774.08,
+        "SCOURGE": 403.2
+      }
+    },
+    "LOM": {
+      "name": "LOM",
+      "rarity": "EPIC",
+      "role": "PROTOCOL",
+      "income": {
+        "DEFAULT": 105.0,
+        "GOLD": 210.0,
+        "DIAMOND": 420.0,
+        "RAINBOW": 840.0,
+        "BESKAR": 3570.0,
+        "GALACTIC": 5460.0,
+        "STELLAR": 8400.0,
+        "KYBER": 9240.0,
+        "KYBER_GREEN": 27720.0,
+        "KYBER_BLUE": 30030.0,
+        "KYBER_PURPLE": 33264.0,
+        "SCOURGE": 7560
+      }
+    },
+    "PZ": {
+      "name": "PZ",
+      "rarity": "LEGENDARY",
+      "role": "PROTOCOL",
+      "income": {
+        "DEFAULT": 900.0,
+        "GOLD": 1800.0,
+        "DIAMOND": 3600.0,
+        "RAINBOW": 7200.0,
+        "BESKAR": 21600.0,
+        "GALACTIC": 54000.0,
+        "STELLAR": 135000.0,
+        "KYBER": 148500.0,
+        "KYBER_GREEN": 445500.0,
+        "KYBER_BLUE": 482625.0,
+        "KYBER_PURPLE": 534600.0,
+        "SCOURGE": 121500
+      }
+    },
+    "TDA": {
+      "name": "TDA",
+      "rarity": "MYTHIC",
+      "role": "PROTOCOL",
+      "income": {
+        "DEFAULT": 4000.0,
+        "GOLD": 8000.0,
+        "DIAMOND": 16000.0,
+        "RAINBOW": 32000.0,
+        "BESKAR": 64000.0,
+        "GALACTIC": 176000.0,
+        "STELLAR": 500000.0,
+        "KYBER": 550000.0,
+        "KYBER_GREEN": 1650000.0,
+        "KYBER_BLUE": 1787500.0,
+        "KYBER_PURPLE": 1980000.0,
+        "SCOURGE": 448000
+      }
+    },
+    "EG58": {
+      "name": "EG-58",
+      "rarity": "RARE",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 70.0,
+        "GOLD": 140.0,
+        "DIAMOND": 280.0,
+        "RAINBOW": 560.0,
+        "BESKAR": 840.0,
+        "GALACTIC": 1680.0,
+        "STELLAR": 2240.0,
+        "KYBER": 2464.0,
+        "KYBER_GREEN": 7392.0,
+        "KYBER_BLUE": 8008.0,
+        "KYBER_PURPLE": 8870.4,
+        "SCOURGE": 2016
+      }
+    },
+    "EGL": {
+      "name": "EGL",
+      "rarity": "EPIC",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 300.0,
+        "GOLD": 600.0,
+        "DIAMOND": 1200.0,
+        "RAINBOW": 2400.0,
+        "BESKAR": 10200.0,
+        "GALACTIC": 15600.0,
+        "STELLAR": 24000.0,
+        "KYBER": 26400.0,
+        "KYBER_GREEN": 79200.0,
+        "KYBER_BLUE": 85800.0,
+        "KYBER_PURPLE": 95040.0,
+        "SCOURGE": 21600
+      }
+    },
+    "KT": {
+      "name": "KT",
+      "rarity": "EPIC",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 450.0,
+        "GOLD": 900.0,
+        "DIAMOND": 1800.0,
+        "RAINBOW": 3600.0,
+        "BESKAR": 15300.0,
+        "GALACTIC": 23400.0,
+        "STELLAR": 36000.0,
+        "KYBER": 39600.0,
+        "KYBER_GREEN": 118800.0,
+        "KYBER_BLUE": 128700.0,
+        "KYBER_PURPLE": 142560.0,
+        "SCOURGE": 32400
+      }
+    },
+    "MPH": {
+      "name": "MPH",
+      "rarity": "EPIC",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 690.0,
+        "GOLD": 1380.0,
+        "DIAMOND": 2760.0,
+        "RAINBOW": 5520.0,
+        "BESKAR": 23460.0,
+        "GALACTIC": 35880.0,
+        "STELLAR": 55200.0,
+        "KYBER": 60720.0,
+        "KYBER_GREEN": 182160.0,
+        "KYBER_BLUE": 197340.0,
+        "KYBER_PURPLE": 218592.0,
+        "SCOURGE": 49680
+      }
+    },
+    "JO94MN": {
+      "name": "JO9-4MN",
+      "rarity": "LEGENDARY",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 1300.0,
+        "GOLD": 2600.0,
+        "DIAMOND": 5200.0,
+        "RAINBOW": 10400.0,
+        "BESKAR": 31200.0,
+        "GALACTIC": 78000.0,
+        "STELLAR": 195000.0,
+        "KYBER": 214500.0,
+        "KYBER_GREEN": 643500.0,
+        "KYBER_BLUE": 697125.0,
+        "KYBER_PURPLE": 772200.0,
+        "SCOURGE": 175500
+      }
+    },
+    "PLNK": {
+      "name": "PLNK",
+      "rarity": "LEGENDARY",
+      "role": "WORKER",
+      "income": {
+        "DEFAULT": 1400.0,
+        "GOLD": 2800.0,
+        "DIAMOND": 5600.0,
+        "RAINBOW": 11200.0,
+        "BESKAR": 33600.0,
+        "GALACTIC": 84000.0,
+        "STELLAR": 210000.0,
+        "KYBER": 231000.0,
+        "KYBER_GREEN": 693000.0,
+        "KYBER_BLUE": 750750.0,
+        "KYBER_PURPLE": 831600.0,
+        "SCOURGE": 189000
+      }
+    },
+    "ECG": {
+      "name": "ECG",
+      "rarity": "MYTHIC",
+      "role": "ASTROMECH",
+      "income": {
+        "DEFAULT": 6200.0,
+        "GOLD": 12400.0,
+        "DIAMOND": 24800.0,
+        "RAINBOW": 49600.0,
+        "BESKAR": 99200.0,
+        "GALACTIC": 272800.0,
+        "STELLAR": 775000.0,
+        "KYBER": 852500.0,
+        "KYBER_GREEN": 2557500.0,
+        "KYBER_BLUE": 2770625.0,
+        "KYBER_PURPLE": 3069000.0,
+        "SCOURGE": 694400
+      }
+    }
+  }
+}

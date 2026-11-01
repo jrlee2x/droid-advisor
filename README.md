@@ -4,7 +4,11 @@ Droid Advisor is a free, community-built Windows companion for Fortnite Droid Ty
 
 ## Current status
 
-This project is community software under active development. Version 1.3.10 includes:
+This project is community software under active development. Version 1.4.0 includes:
+
+- Scourge OCR, Sandcrawler alerts, inventory finishes and rebirth coverage, including Kyber requirements.
+- Scourge collection/fusion reminders after a droid's last rebirth use, plus cautious guidance when its finish is unreadable.
+- Current income for all nine variants, all 17 fusion recipes and the Iconic Scourge Prime.
 
 - Automatic RBC and rebirth-rank detection from the View Rebirth menu.
 - Explicit PATH label recognition for shared requirements and visual validation of slow rebirth OCR.
@@ -13,7 +17,7 @@ This project is community software under active development. Version 1.3.10 incl
 - Periodic card scans when lounge controls miss the legacy color gates, with unchanged identity and button-layout checks.
 - Faster repeat card reads using validated panel geometry; the droid name and badge are read anew on every capture.
 - Stable advice when optional finish labels are missed, with separate confirmation before inventory updates.
-- A 100-droid catalog including Power Droids, WG-22 and Protocol droids.
+- A 101-droid catalog including Power Droids, WG-22 and Protocol droids.
 - Held-blueprint recognition.
 - Optional Sandcrawler spawn alerts with configurable minimum variant and rarity, bundled or user-selected WAV sounds, and volume control.
 - A `Ctrl+Shift+Z` overlay listing previously required droids with no remaining use in the current cycle.
@@ -78,7 +82,7 @@ powershell -ExecutionPolicy Bypass -File .\droid_advisor\build_release.ps1
 
 ## Guide artwork
 
-Guide artwork is not stored in this source repository. `download_guide_assets.ps1` downloads the original thumbnail charts for visual reference. `download_rebirth_tiles.ps1` retains the credited legacy charts as reference sources, then generates all 200 overlay cards in one consistent, screen-safe Droid Advisor layout from the verified requirement data. See `droid_advisor/assets/ATTRIBUTION.txt`.
+Guide artwork is not stored in this source repository. `download_guide_assets.ps1` downloads the original thumbnail charts for visual reference. `download_rebirth_tiles.ps1` retains the credited legacy charts as reference sources, then generates all 240 overlay cards in one consistent, screen-safe Droid Advisor layout from the verified requirement data. See `droid_advisor/assets/ATTRIBUTION.txt`.
 
 Before mirroring or redistributing the guide-derived thumbnails outside release binaries, obtain permission from the guide creator and follow the applicable platform and game-art terms.
 
@@ -95,3 +99,7 @@ The source code is licensed under the MIT License. Third-party guide and game ar
 ## Kyber update (1.3.0)
 
 Adds Kyber recognition, Sandcrawler alerts, inventory forms and income, and all five rebirth paths through RB40. Groundmech titles with a missing final letter are recognized, and owned-panel guidance stays visible while the card is open. [Sources and verification notes](docs/kyber-update-2026-09-27.md).
+
+## Scourge update (1.4.0)
+
+Scourge satisfies any rebirth variant for the same droid. Named recipes need a Scourge ingredient in the left-most slot and Stellar/Kyber/Scourge for the other two. Upgrade Chips cannot produce Scourge. Base income excludes Hive Mind. [Sources and verification](docs/scourge-update-2026-11-01.md).
