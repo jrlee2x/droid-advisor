@@ -1,0 +1,44 @@
+[
+  {
+    "title": "R4",
+    "read": [
+      "R4",
+      0.9993385076522827,
+      "SCOURGE",
+      "RARE"
+    ],
+    "tokens": [
+      "R4",
+      "SCOURGE",
+      "RARE"
+    ]
+  },
+  {
+    "title": "GROUNDMECH",
+    "read": [
+      "GROUNDMECH",
+      0.9930586457252503,
+      "SCOURGE",
+      "EPIC"
+    ],
+    "tokens": [
+      "GROUNDMECH",
+      "SCOURGE",
+      "EPIC"
+    ]
+  },
+  {
+    "title": "SCOURGE PRIME",
+    "read": [
+      "SCOURGE PRIME",
+      0.9938647300004959,
+      "DEFAULT",
+      "ICONIC"
+    ],
+    "tokens": [
+      "SCOURGEPRIME",
+      "DEFAULT",
+      "ICONIC"
+    ]
+  }
+]

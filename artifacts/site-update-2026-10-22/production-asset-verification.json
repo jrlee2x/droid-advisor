@@ -1,0 +1,284 @@
+{
+  "base": "https://droid-advisor-rebirth-chart.vercel.app",
+  "deployment_id": "dpl_5xHdUt8hdShYTwVA2P4i6DnkvwED",
+  "files_verified": 46,
+  "all_match": true,
+  "files": [
+    {
+      "file": "droids.css",
+      "status": 200,
+      "sha256": "907741df9ab31824ffc70a3c269b5b2d8b454d66f7d92134c1fe5ae0d3c86b24",
+      "bytes": 3833
+    },
+    {
+      "file": "droids.html",
+      "status": 200,
+      "sha256": "4c49406d774d8624a0b29f50745511bce1de0834e16de686c4a1a03e21ce9fa6",
+      "bytes": 6391
+    },
+    {
+      "file": "droids.js",
+      "status": 200,
+      "sha256": "f3fe2030c38ec9012220465b158bd8f4a4ecf65e5eb6a3c8b40d74625e293a7c",
+      "bytes": 4521
+    },
+    {
+      "file": "fusion.css",
+      "status": 200,
+      "sha256": "0e722be74eb65a0cfc365d1fd0709b0e312690f0cfae17ecc8ebd20b74c290ea",
+      "bytes": 11958
+    },
+    {
+      "file": "fusion.html",
+      "status": 200,
+      "sha256": "b766af602578fc39d4c24244944a5c3a789903d15529de3124f579cb528fc75c",
+      "bytes": 9554
+    },
+    {
+      "file": "fusion.js",
+      "status": 200,
+      "sha256": "bf45dfe276ff7a7526de064fdccaf0e97b2a613d10e5781c3b390fde7768d5b5",
+      "bytes": 14306
+    },
+    {
+      "file": "index.html",
+      "status": 200,
+      "sha256": "f5dc78a0e9815746ed267b8360aa7e065abda0946a42715b47f6174d03d00a82",
+      "bytes": 11691
+    },
+    {
+      "file": "script.js",
+      "status": 200,
+      "sha256": "7c0a31e32ce36aa385e121546a7c6324380717dc21f620e61cbfa86e2b99d919",
+      "bytes": 4164
+    },
+    {
+      "file": "styles.css",
+      "status": 200,
+      "sha256": "af1810989d4ae0928065a754ad3787abcf2093fd59cea20d9fe2bfbfe1ff965d",
+      "bytes": 10202
+    },
+    {
+      "file": "assets/all-droid-income.json",
+      "status": 200,
+      "sha256": "ec430efb270b02b0195628f869a9ad0d26d09148fd0dcf80df0a165e4ac99663",
+      "bytes": 32048
+    },
+    {
+      "file": "assets/droid-advisor-all-droid-income-preview.jpg",
+      "status": 200,
+      "sha256": "b11c5fb0fd773a3ca4b5de534d0fe74b09bd4c431b8232629b44e2f6d0f54aa0",
+      "bytes": 130748
+    },
+    {
+      "file": "assets/droid-advisor-all-droid-income-web.webp",
+      "status": 200,
+      "sha256": "4973959625bdfb2a90a2753d60c21521b4f390cf77db7de4afef2d408f2f8711",
+      "bytes": 166820
+    },
+    {
+      "file": "assets/droid-advisor-all-droid-income.png",
+      "status": 200,
+      "sha256": "7fae1883e3df9a522358fd9623623f5a96f8e8823ddf9a111a59d4e1b6e1988c",
+      "bytes": 811389
+    },
+    {
+      "file": "assets/droid-advisor-all-rebirth-cycles-web.webp",
+      "status": 200,
+      "sha256": "043b8bf7218b91519e682e266ad039317aeaa6c26a372315ad924a3f4498707a",
+      "bytes": 250678
+    },
+    {
+      "file": "assets/droid-advisor-all-rebirth-cycles.png",
+      "status": 200,
+      "sha256": "55aeffaeb2a48d6b71bed74953715c4d33444a1cbbf3baa3151cbbc47e6e24fa",
+      "bytes": 1365277
+    },
+    {
+      "file": "assets/droid-advisor-fusion-chart-web.webp",
+      "status": 200,
+      "sha256": "22c4033097dba720cc7be12237c070a741b0d2eeeeeff9a7ec5d69fdfeca611e",
+      "bytes": 56410
+    },
+    {
+      "file": "assets/droid-advisor-fusion-chart.png",
+      "status": 200,
+      "sha256": "538b31aad82471d733df4484103881aa64902e290f84a60025d1c6ce0f781a6b",
+      "bytes": 214147
+    },
+    {
+      "file": "assets/droid-advisor-fusion-income-impact-web.webp",
+      "status": 200,
+      "sha256": "2cf7d933bf6ebb383b866ad75273d2f7c085d316287cedeb877b051174836807",
+      "bytes": 66866
+    },
+    {
+      "file": "assets/droid-advisor-fusion-income-impact.png",
+      "status": 200,
+      "sha256": "b003d1e23cad69370a390b34eca59eacfdb1d95b2be95e50b770fa04e58dba17",
+      "bytes": 266061
+    },
+    {
+      "file": "assets/droid-advisor-fusion-preview.jpg",
+      "status": 200,
+      "sha256": "2d178785bf6d640c73ee2775f65bbc5c15cbb1085f7b6a37e05d27348f28ac3d",
+      "bytes": 139460
+    },
+    {
+      "file": "assets/droid-advisor-logo.png",
+      "status": 200,
+      "sha256": "f6886b2e02b0dcf048885f70fd845b4ea570e34591b3b812694cd8b8d2735212",
+      "bytes": 94817
+    },
+    {
+      "file": "assets/droid-advisor-rebirth-chart-preview.jpg",
+      "status": 200,
+      "sha256": "43d7972b60210ba0bec162e570c9861b0e753fc8144b856035eb8953f8d267e2",
+      "bytes": 170132
+    },
+    {
+      "file": "assets/droid-advisor-upgrade-chip-costs-web.webp",
+      "status": 200,
+      "sha256": "a9f3f81a88d5c8bac13e6f217941771be656943ddd267d56cc67161f352dd121",
+      "bytes": 33676
+    },
+    {
+      "file": "assets/droid-advisor-upgrade-chip-costs.png",
+      "status": 200,
+      "sha256": "361116341d65e9a0cf53318e3f3c5160493323d95cba4758cbf13823ac2c2364",
+      "bytes": 108637
+    },
+    {
+      "file": "assets/fusion-profitability.json",
+      "status": 200,
+      "sha256": "81fbe98410615d06ed1b612659841771812af05fde8ebd968999a21518e3b3b1",
+      "bytes": 43820
+    },
+    {
+      "file": "assets/fusion-recipes.json",
+      "status": 200,
+      "sha256": "f73d320c601ec487797c7d93cc3fb215d3f5a89f5bdd6c3c2ecc649363235441",
+      "bytes": 13641
+    },
+    {
+      "file": "assets/rebirth-cycle-1-web.webp",
+      "status": 200,
+      "sha256": "d14f9b63ed5153bf231c4edfcf5d626efc44cd15effe33be0c1a71017bcf5476",
+      "bytes": 224022
+    },
+    {
+      "file": "assets/rebirth-cycle-1.png",
+      "status": 200,
+      "sha256": "e7b1176d7c0c87c134f25032a16de33feef55282d3d63fe356698157e08c2b00",
+      "bytes": 631454
+    },
+    {
+      "file": "assets/rebirth-cycle-2-web.webp",
+      "status": 200,
+      "sha256": "92e9f5c488800d8158e63d9df74767e55bddb44c3f4d6b4da485f4853b9a47a2",
+      "bytes": 223774
+    },
+    {
+      "file": "assets/rebirth-cycle-2.png",
+      "status": 200,
+      "sha256": "1ce4126b9082e69ef38469271083c0cb8237f2b010327915c6455b5607fa5709",
+      "bytes": 628382
+    },
+    {
+      "file": "assets/rebirth-cycle-3-web.webp",
+      "status": 200,
+      "sha256": "7f22e36f7204b67ab9469d0cb040e24013ba64a0eddd0573b19cf053d473c26b",
+      "bytes": 224224
+    },
+    {
+      "file": "assets/rebirth-cycle-3.png",
+      "status": 200,
+      "sha256": "34824a5b9c9a76cfd2dc6d3bb2e4ad3dcb09366bed210c3bc17834372710ea6d",
+      "bytes": 631397
+    },
+    {
+      "file": "assets/rebirth-cycle-4-web.webp",
+      "status": 200,
+      "sha256": "12241632cd19c966ba6275c95421d7b8a9951b209d8424e68306c16a891e74ab",
+      "bytes": 223968
+    },
+    {
+      "file": "assets/rebirth-cycle-4.png",
+      "status": 200,
+      "sha256": "047a105841fa10bc53282843108fe29a1734fa01f1cff678346db3ae75a606a2",
+      "bytes": 631185
+    },
+    {
+      "file": "assets/rebirth-cycle-5-web.webp",
+      "status": 200,
+      "sha256": "a0cff5eaff84abecda2193ac1d8e33634227ab9f9234c32899333e6a4c419db8",
+      "bytes": 222854
+    },
+    {
+      "file": "assets/rebirth-cycle-5.png",
+      "status": 200,
+      "sha256": "6f2f0cb693d14e3730ff254695446f3a64af7be3674112d3a1f38bfda8e05d23",
+      "bytes": 623031
+    },
+    {
+      "file": "assets/rebirth-cycle-6-web.webp",
+      "status": 200,
+      "sha256": "30fbb6dd375c01963591ed34a65afb350d41fa8e4ef73d416e6e3b12477ab29d",
+      "bytes": 218224
+    },
+    {
+      "file": "assets/rebirth-cycle-6.png",
+      "status": 200,
+      "sha256": "c488a9fca290e08c302807d54109c98cd3ee03f99cd4c182a197249c01f94c5b",
+      "bytes": 606303
+    },
+    {
+      "file": "assets/rebirth-quick-list-cycle-1.png",
+      "status": 200,
+      "sha256": "5f4cbd88628a542ea9dcd16806711e2179823eeb15ce492b0ae019a1e6848023",
+      "bytes": 140506
+    },
+    {
+      "file": "assets/rebirth-quick-list-cycle-2.png",
+      "status": 200,
+      "sha256": "06429f933015672ce86bc9626bf29303e32272c04d006e4fd05d8603d593dd2c",
+      "bytes": 150122
+    },
+    {
+      "file": "assets/rebirth-quick-list-cycle-3.png",
+      "status": 200,
+      "sha256": "f1b28c40663b86b4794e691400576aca275391482f07cadd104a370e23607455",
+      "bytes": 147404
+    },
+    {
+      "file": "assets/rebirth-quick-list-cycle-4.png",
+      "status": 200,
+      "sha256": "5abca71049f7b7fe424ef996904abe070cedba6c2c51dc5acea38a09317d8a3f",
+      "bytes": 149146
+    },
+    {
+      "file": "assets/rebirth-quick-list-cycle-5.png",
+      "status": 200,
+      "sha256": "60a0d6d535ef69194d816996f374af78e560384f2d0e663338b24906fcdfe53d",
+      "bytes": 151610
+    },
+    {
+      "file": "assets/rebirth-quick-list-cycle-6.png",
+      "status": 200,
+      "sha256": "d667bfa033e350e640cc292f483764f453a754391054a81fab82bd14780d3806",
+      "bytes": 120736
+    },
+    {
+      "file": "assets/rebirth-quick-lists.json",
+      "status": 200,
+      "sha256": "30b72fb4c4a63aff2d3a21e88295e0a8e8320bbfd8b5d0b2f568ae92b9aac402",
+      "bytes": 27541
+    },
+    {
+      "file": "assets/upgrade-chip-costs.json",
+      "status": 200,
+      "sha256": "3946b1aa212b45bdbffb726307cad7df0d95d8245132ad6be2733c353a217be1",
+      "bytes": 615
+    }
+  ]
+}

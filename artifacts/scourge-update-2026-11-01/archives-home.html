@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en" data-ui-style="next" data-theme="dark" data-ui-fixed>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A community-built Droid Tycoon wiki and base planner.">
+  <title>Droid Archives</title>
+  <link rel="icon" type="image/png" sizes="64x64" href="assets/other/icon-christmas-64.png?v=2026-11-01-christmas">
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/other/icon-christmas-180.png?v=2026-11-01-christmas">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto+Slab:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=2026-11-01-christmas">
+  <link rel="stylesheet" href="cantina.css?v=2026-07-25-2">
+  <link rel="stylesheet" href="archive-experience.css?v=2026-09-16-card-redesign">
+  <link rel="stylesheet" href="next/theme.css?v=2026-09-18-2">
+  <link rel="stylesheet" href="next/shell.css?v=2026-09-30-companion-download">
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <link rel="stylesheet" href="kyber.css?v=2026-10-31-trait-guide">
+  <link rel="stylesheet" href="test-map.css?v=2026-10-05-map-selection">
+  <link rel="stylesheet" href="event.css?v=2026-10-05-event">
+  <link rel="stylesheet" href="ui-labels.css?v=2026-10-08-title-case">
+  <link rel="stylesheet" href="traits.css?v=2026-10-31-mobile-surge">
+  <link rel="stylesheet" href="seasonal-snow.css?v=2026-11-01-snow-counts">
+  <link rel="stylesheet" href="floating-panels.css?v=2026-11-01-rebirth-drag">
+  <link rel="stylesheet" href="guide.css?v=2026-11-01-guide-spacing">
+  <link rel="stylesheet" href="site-help.css?v=2026-11-01-tour-heading">
+</head>
+<body>
+  <!-- Recolour crystal-green pixels while retaining the original metal and accents. -->
+  <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" aria-hidden="true" style="position:absolute;pointer-events:none"><defs>
+    <filter id="kyber-portrait-blue" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">
+      <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -4 4 -1 0 0" result="crystalMask"/>
+      <feColorMatrix in="SourceGraphic" type="hueRotate" values="100" result="coloured"/>
+      <feComposite in="coloured" in2="crystalMask" operator="in" result="crystal"/>
+      <feComposite in="crystal" in2="SourceGraphic" operator="atop"/>
+    </filter>
+    <filter id="kyber-portrait-purple" color-interpolation-filters="sRGB" x="0" y="0" width="100%" height="100%">
+      <feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -4 4 -1 0 0" result="crystalMask"/>
+      <feColorMatrix in="SourceGraphic" type="hueRotate" values="155" result="coloured"/>
+      <feComposite in="coloured" in2="crystalMask" operator="in" result="crystal"/>
+      <feComposite in="crystal" in2="SourceGraphic" operator="atop"/>
+    </filter>
+  </defs></svg>
+
+  <header class="site-header">
+    <a class="brand" href="#/">
+      <span class="brand-mark christmas-logo"><picture style="display:contents"><source media="(prefers-reduced-motion: no-preference)" srcset="assets/other/icon-christmas-header.webp?v=2026-11-01-christmas" type="image/webp"><img src="assets/other/icon-christmas.webp?v=2026-11-01-christmas" alt="Droid Archives"></picture></span>
+      <span><strong>Droid Archives</strong><small>Tycoon wiki &amp; planner</small></span>
+    </a>
+    <div class="header-search" id="headerSearch"><label><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg><input id="globalSearch" type="search" placeholder="Search droids…" autocomplete="off" spellcheck="false" aria-label="Search droids" aria-expanded="false" aria-controls="searchResults"></label><ul class="search-results" id="searchResults" role="listbox" hidden></ul></div>
+    <div class="header-cloud" id="headerCloud"></div>
+    <a class="patch-icon-button" href="#/todo" aria-label="View Patch Notes" title="Patch Notes">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h14v18H5V3Zm3 4h8V5H8v2Zm0 4h8V9H8v2Zm0 4h8v-2H8v2Zm0 4h5v-2H8v2Z"/></svg>
+    </a>
+    <a class="discord-button" href="https://discord.gg/droidarchives" target="_blank" rel="noopener noreferrer" aria-label="Join the Droid Archives Discord" title="Join our Discord">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19.5 5.3A16 16 0 0 0 15.7 4l-.5 1.1a14 14 0 0 0-6.4 0L8.3 4a16 16 0 0 0-3.8 1.3C2.1 8.8 1.4 12.2 1.7 15.6A15 15 0 0 0 6.4 18l1.2-1.7-1.8-.9.4-.3c3.6 1.7 7.8 1.7 11.6 0l.4.3-1.8.9 1.2 1.7a15 15 0 0 0 4.7-2.4c.4-4-1-7.4-2.8-10.3ZM8.7 14.2c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Zm6.6 0c-1.1 0-2-1-2-2.2s.9-2.2 2-2.2 2 1 2 2.2-.9 2.2-2 2.2Z"/></svg>
+    </a>
+    <a class="donate-icon-button" href="#/donate" aria-label="Donate to support Droid Archives" title="Donate">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h13v3h1.5a3.5 3.5 0 0 1 0 7H17v1a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V4Zm13 5v3h1.5a1.5 1.5 0 0 0 0-3H17ZM6 6v9a3 3 0 0 0 3 3h3a3 3 0 0 0 3-3V6H6Z"/></svg>
+    </a>
+    <a class="classic-link" href="classic.html" title="Open the classic interface">Classic</a>
+    <button class="menu-button" id="menuButton" aria-label="Toggle navigation">☰</button>
+  </header>
+  <div class="toolbar">
+    <nav id="nav">
+      <span class="tool-group" aria-label="Plan"><a href="#/">Home</a><a href="#/base">Base</a><a href="#/optimise">Optimise</a><a href="#/rebirth">Rebirth</a><a href="#/fusion-lab">Fusion Lab</a></span>
+      <span class="tool-group" aria-label="Browse"><a href="#/droids">Droids</a><a href="#/droidex">Droidex</a><a href="#/traits">Traits</a><a href="#/nova-shop">Nova Shop</a><a href="#/cantina-shop">Cantina Shop</a></span>
+      <span class="tool-group" aria-label="Tools"><a href="#/droid-calc">Droid Calc</a><a href="#/crit-calc">Crit Calc</a><a href="#/lucky-droid">Lucky Droid</a><a href="#/groups">Groups</a><a href="#/event">Event</a></span>
+    </nav>
+    <div class="toolbar-actions"><a class="companion-download" href="#/companion"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5"/></svg><span>Download Companion</span></a><button class="drawer-button" id="baseDrawerButton" type="button" hidden>Settings</button></div>
+  </div>
+  <div class="layout">
+    <div class="drawer-backdrop" id="baseDrawerBackdrop" hidden></div>
+    <aside class="sidebar" aria-label="Profile and Base settings">
+      <div class="drawer-head"><p class="side-title">Profile &amp; Base settings</p><button class="drawer-close" id="baseDrawerClose" type="button" aria-label="Close">×</button></div>
+      <div id="baseSidebarControls"></div>
+    </aside>
+    <main id="app" tabindex="-1"><div class="loading">Loading archive data…</div></main>
+  </div>
+  <footer><span>Unofficial community tool for Fortnite: Droid Tycoon · Protocol data checked 13 September 2026</span><span>Issues, feedback or corrections? Add <strong>.saltea</strong> on Discord. <button id="copyDiscord" type="button">Copy username</button></span></footer>
+  <div id="toast" role="status"></div>
+  <div id="modalRoot"></div>
+  <script>
+    // Shell behaviour the app does not know about.
+    // 1. The Settings drawer: the app fills #baseSidebarControls on every page;
+    //    the toolbar shows a button for it whenever there is something inside.
+    // 2. --shell-top: the height of the sticky top bar plus the toolbar, so page
+    //    elements that stick (the Base action row) sit just beneath them.
+    // 3. Spawn timers: past the top of the page the strip becomes a compact
+    //    floating panel that can be dragged anywhere; its spot is remembered.
+    const TIMER_POS_KEY='droid-archive-next-timers-pos';
+    const shell={
+      drawer(){
+        const controls=document.querySelector('#baseSidebarControls'),button=document.querySelector('#baseDrawerButton'),drawer=document.querySelector('.sidebar');
+        const has=Boolean(controls&&controls.children.length);
+        button.hidden=!has;
+        if(!has)drawer.classList.remove('mobile-open');
+      },
+      top(){
+        const header=document.querySelector('.site-header'),toolbar=document.querySelector('.toolbar');
+        // The toolbar only counts while it is sticky (on phones it scrolls away).
+        const top=(header?.offsetHeight||0)+(toolbar&&getComputedStyle(toolbar).position==='sticky'?toolbar.offsetHeight:0);
+        document.documentElement.style.setProperty('--shell-top',top+'px');
+        return top;
+      },
+      timerPos(){try{const p=JSON.parse(localStorage.getItem(TIMER_POS_KEY)||'null');return p&&Number.isFinite(p.x)&&Number.isFinite(p.y)?p:null}catch{return null}},
+      placeTimers(strip,pos){
+        // A fixed box near the right edge is squeezed by its own left offset, so
+        // the natural size measured at left:0 is what the clamp uses.
+        const margin=8,w=Number(strip.dataset.floatWidth)||strip.offsetWidth,h=Number(strip.dataset.floatHeight)||strip.offsetHeight;
+        const x=Math.min(Math.max(margin,pos.x),Math.max(margin,innerWidth-w-margin)),y=Math.min(Math.max(margin,pos.y),Math.max(margin,innerHeight-h-margin));
+        strip.style.left=x+'px';strip.style.top=y+'px';
+        return {x,y};
+      },
+      timers(){
+        const strip=document.querySelector('#app .archive-timers');
+        if(!strip)return;
+        const floating=strip.classList.contains('timers-float');
+        if(!floating){
+          // Remember where the strip sits in the page while it is still in flow.
+          strip.dataset.flowTop=String(Math.round(strip.getBoundingClientRect().top+scrollY));
+          strip.dataset.flowHeight=String(strip.offsetHeight);
+        }
+        const flowTop=Number(strip.dataset.flowTop||0),height=Number(strip.dataset.flowHeight||0),top=shell.top();
+        // Float once the strip has scrolled under the bars; come back only when
+        // it is comfortably in view again, so the two states cannot flip-flop.
+        // Engage once most of the strip has gone under the bars; release as soon as
+        // its place in the page would show again. The spacer keeps the page height
+        // steady, so the two states cannot flip-flop.
+        const shouldFloat=floating?scrollY>flowTop-top-4:scrollY>flowTop-top+height*0.6;
+        if(shouldFloat&&!floating){
+          const spacer=document.createElement('div');spacer.className='timers-spacer';spacer.style.height=height+'px';
+          strip.before(spacer);strip.classList.add('timers-float');
+          // Measure at the left edge, place, then measure again now that the panel
+          // has its final layout, and place once more with the true size.
+          const place=()=>shell.placeTimers(strip,shell.timerPos()||{x:innerWidth-(Number(strip.dataset.floatWidth)||strip.offsetWidth)-16,y:innerHeight-(Number(strip.dataset.floatHeight)||strip.offsetHeight)-76});
+          strip.style.left='0px';strip.style.top='0px';strip.dataset.floatWidth=String(strip.offsetWidth>50?strip.offsetWidth:strip.scrollWidth);strip.dataset.floatHeight=String(strip.offsetHeight);place();
+          strip.dataset.floatWidth=String(strip.offsetWidth);strip.dataset.floatHeight=String(strip.offsetHeight);place();
+        }else if(!shouldFloat&&floating){
+          strip.classList.remove('timers-float');strip.style.left='';strip.style.top='';
+          document.querySelector('#app .timers-spacer')?.remove();
+        }else if(floating){
+          shell.placeTimers(strip,{x:parseFloat(strip.style.left)||0,y:parseFloat(strip.style.top)||0});
+        }
+      }
+    };
+    window.uiHooks={afterRoute(){shell.drawer();shell.top();requestAnimationFrame(shell.timers)}};
+    addEventListener('DOMContentLoaded',()=>{
+      const drawer=document.querySelector('.sidebar'),backdrop=document.querySelector('#baseDrawerBackdrop');
+      // The app also closes the drawer itself (any route or re-render removes the
+      // class), so the backdrop and the scroll lock follow the drawer's real state
+      // rather than only our own clicks.
+      const syncDrawer=()=>{const open=drawer.classList.contains('mobile-open');backdrop.hidden=!open;document.documentElement.classList.toggle('drawer-open',open)};
+      new MutationObserver(syncDrawer).observe(drawer,{attributes:true,attributeFilter:['class']});
+      const setDrawer=open=>{drawer.classList.toggle('mobile-open',open);syncDrawer()};
+      document.querySelector('#baseDrawerButton').onclick=()=>setDrawer(!drawer.classList.contains('mobile-open'));
+      document.querySelector('#baseDrawerClose').onclick=()=>setDrawer(false);
+      backdrop.onclick=()=>setDrawer(false);
+      document.addEventListener('keydown',e=>{if(e.key==='Escape')setDrawer(false)});
+      // Search suggestions: the app exposes searchDroids once its data is loaded.
+      const box=document.querySelector('#headerSearch'),input=box.querySelector('input'),list=box.querySelector('.search-results');let picked=-1,rows=[];
+      const render=()=>{list.innerHTML=rows.map((r,i)=>`<li role="option" aria-selected="${i===picked}" class="${i===picked?'picked':''}" data-href="${r.href}"><img src="${r.image}" alt="" loading="lazy"><span class="search-name">${r.name}</span><span class="search-meta rarity-${String(r.rarity).toLowerCase()}">${r.rarity}</span><span class="search-meta">${r.type}</span></li>`).join('');list.hidden=!rows.length;input.setAttribute('aria-expanded',String(!list.hidden))};
+      const close=()=>{rows=[];picked=-1;render()};
+      const go=href=>{close();input.value='';input.blur();location.hash=href};
+      input.addEventListener('input',()=>{rows=window.searchDroids?window.searchDroids(input.value):[];picked=rows.length?0:-1;render()});
+      input.addEventListener('focus',()=>{if(input.value){rows=window.searchDroids?window.searchDroids(input.value):[];picked=rows.length?0:-1;render()}});
+      input.addEventListener('keydown',e=>{if(e.key==='ArrowDown'&&rows.length){picked=(picked+1)%rows.length;render();e.preventDefault()}else if(e.key==='ArrowUp'&&rows.length){picked=(picked-1+rows.length)%rows.length;render();e.preventDefault()}else if(e.key==='Enter'&&picked>=0&&rows[picked]){e.preventDefault();e.stopImmediatePropagation();go(rows[picked].href)}else if(e.key==='Escape'){close();input.blur()}},true);
+      list.addEventListener('pointerdown',e=>{const li=e.target.closest('li');if(li){e.preventDefault();go(li.dataset.href)}});
+      document.addEventListener('pointerdown',e=>{if(!box.contains(e.target))close()});
+      new MutationObserver(shell.drawer).observe(document.querySelector('#baseSidebarControls'),{childList:true});
+      // The app rebuilds the timer strip after every render; keep its state.
+      // A page re-render loses the button icons the app adds; ask for them back.
+      let frame=0;const schedule=()=>{cancelAnimationFrame(frame);frame=requestAnimationFrame(()=>{window.redecorate?.();shell.timers()})};
+      new MutationObserver(schedule).observe(document.querySelector('#app'),{childList:true});
+      new ResizeObserver(()=>{shell.top();schedule()}).observe(document.querySelector('.toolbar'));
+      addEventListener('scroll',schedule,{passive:true});addEventListener('resize',schedule);
+      // Dragging the floating strip. The collapse button keeps working as a button.
+      let drag=null;
+      document.addEventListener('pointerdown',e=>{
+        const strip=e.target.closest?.('#app .archive-timers.timers-float');
+        if(!strip||e.target.closest('button,a,input'))return;
+        drag={strip,dx:e.clientX-strip.getBoundingClientRect().left,dy:e.clientY-strip.getBoundingClientRect().top};
+        strip.classList.add('timers-dragging');strip.setPointerCapture?.(e.pointerId);e.preventDefault();
+      });
+      document.addEventListener('pointermove',e=>{if(!drag)return;shell.placeTimers(drag.strip,{x:e.clientX-drag.dx,y:e.clientY-drag.dy})});
+      const drop=e=>{if(!drag)return;const pos=shell.placeTimers(drag.strip,{x:e.clientX-drag.dx,y:e.clientY-drag.dy});try{localStorage.setItem(TIMER_POS_KEY,JSON.stringify(pos))}catch{}drag.strip.classList.remove('timers-dragging');drag=null};
+      document.addEventListener('pointerup',drop);document.addEventListener('pointercancel',drop);
+      shell.top();
+    });
+  </script>
+  <script type="module" src="app.js?v=2026-11-01-tour-navigation"></script>
+  <script type="module" src="seasonal-snow.js?v=2026-11-01-snow-v22"></script>
+  <script type="module" src="floating-panels.js?v=2026-11-01-rebirth-drag"></script>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/vce701823e78c4301a35b7e07294d87301792088814092" integrity="sha512-UKNk8GbxkABxKcXYuLkO16EleLGUkcvJWtpSNmExE0Too3ZaFAxTscNWEc1OdAv5/BikHawapSCaiD2XCmp+Bw==" data-cf-beacon='{"version":"2024.11.0","token":"6f3764f14b1c4be7bce5115c8bf09f6e","r":1,"spa":2}' crossorigin="anonymous"></script>
+</body>
+</html>

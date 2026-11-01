@@ -1,0 +1,645 @@
+[
+  {
+    "to": 1,
+    "creditsCost": 10000,
+    "requiredDroids": [
+      {
+        "droidName": "MOUSE",
+        "variant": "DEFAULT"
+      },
+      {
+        "droidName": "PIT",
+        "variant": "DEFAULT"
+      },
+      {
+        "droidName": "GONK",
+        "variant": "DEFAULT"
+      }
+    ]
+  },
+  {
+    "to": 2,
+    "creditsCost": 150000,
+    "requiredDroids": [
+      {
+        "droidName": "2BB",
+        "variant": "DEFAULT"
+      },
+      {
+        "droidName": "R3",
+        "variant": "DEFAULT"
+      },
+      {
+        "droidName": "SENATE HOVERCAM",
+        "variant": "DEFAULT"
+      }
+    ]
+  },
+  {
+    "to": 3,
+    "creditsCost": 975000,
+    "requiredDroids": [
+      {
+        "droidName": "R4",
+        "variant": "DEFAULT"
+      },
+      {
+        "droidName": "R5",
+        "variant": "DEFAULT"
+      },
+      {
+        "droidName": "R8",
+        "variant": "DEFAULT"
+      }
+    ]
+  },
+  {
+    "to": 4,
+    "creditsCost": 2950000,
+    "requiredDroids": [
+      {
+        "droidName": "R9",
+        "variant": "GOLD"
+      },
+      {
+        "droidName": "B1 BATTLE",
+        "variant": "GOLD"
+      },
+      {
+        "droidName": "B1 SECURITY",
+        "variant": "GOLD"
+      }
+    ]
+  },
+  {
+    "to": 5,
+    "creditsCost": 5350000,
+    "requiredDroids": [
+      {
+        "droidName": "2BB",
+        "variant": "GOLD"
+      },
+      {
+        "droidName": "R3",
+        "variant": "GOLD"
+      },
+      {
+        "droidName": "SENATE HOVERCAM",
+        "variant": "GOLD"
+      }
+    ]
+  },
+  {
+    "to": 6,
+    "creditsCost": 9850000,
+    "requiredDroids": [
+      {
+        "droidName": "BDX EXPLORER",
+        "variant": "DIAMOND"
+      },
+      {
+        "droidName": "R4",
+        "variant": "DIAMOND"
+      },
+      {
+        "droidName": "R5",
+        "variant": "DIAMOND"
+      }
+    ]
+  },
+  {
+    "to": 7,
+    "creditsCost": 14500000,
+    "requiredDroids": [
+      {
+        "droidName": "R8",
+        "variant": "DIAMOND"
+      },
+      {
+        "droidName": "R9",
+        "variant": "DIAMOND"
+      },
+      {
+        "droidName": "B1 BATTLE",
+        "variant": "DIAMOND"
+      }
+    ]
+  },
+  {
+    "to": 8,
+    "creditsCost": 36000000,
+    "requiredDroids": [
+      {
+        "droidName": "B1 SECURITY",
+        "variant": "RAINBOW"
+      },
+      {
+        "droidName": "R3",
+        "variant": "RAINBOW"
+      },
+      {
+        "droidName": "2BB",
+        "variant": "RAINBOW"
+      }
+    ]
+  },
+  {
+    "to": 9,
+    "creditsCost": 89000000,
+    "requiredDroids": [
+      {
+        "droidName": "BDX EXPLORER",
+        "variant": "RAINBOW"
+      },
+      {
+        "droidName": "R4",
+        "variant": "RAINBOW"
+      },
+      {
+        "droidName": "R5",
+        "variant": "RAINBOW"
+      }
+    ]
+  },
+  {
+    "to": 10,
+    "creditsCost": 220000000,
+    "requiredDroids": [
+      {
+        "droidName": "TRAK-R",
+        "variant": "DEFAULT"
+      },
+      {
+        "droidName": "GROUNDMECH",
+        "variant": "DEFAULT"
+      },
+      {
+        "droidName": "SENATE HOVERCAM",
+        "variant": "RAINBOW"
+      }
+    ]
+  },
+  {
+    "to": 11,
+    "creditsCost": 550000000,
+    "requiredDroids": [
+      {
+        "droidName": "B2 HEAVY",
+        "variant": "DEFAULT"
+      },
+      {
+        "droidName": "B2 SUPER",
+        "variant": "DEFAULT"
+      },
+      {
+        "droidName": "UTIL-TEC",
+        "variant": "DEFAULT"
+      }
+    ]
+  },
+  {
+    "to": 12,
+    "creditsCost": 1360000000,
+    "requiredDroids": [
+      {
+        "droidName": "TRAK-R",
+        "variant": "GOLD"
+      },
+      {
+        "droidName": "GROUNDMECH",
+        "variant": "GOLD"
+      },
+      {
+        "droidName": "BAL-CORE",
+        "variant": "RAINBOW"
+      }
+    ]
+  },
+  {
+    "to": 13,
+    "creditsCost": 3400000000,
+    "requiredDroids": [
+      {
+        "droidName": "B2 SUPER",
+        "variant": "RAINBOW"
+      },
+      {
+        "droidName": "MECHA-DROID",
+        "variant": "DEFAULT"
+      },
+      {
+        "droidName": "PROTO-ROLLER",
+        "variant": "DEFAULT"
+      }
+    ]
+  },
+  {
+    "to": 14,
+    "creditsCost": 8450000000,
+    "requiredDroids": [
+      {
+        "droidName": "B2 HEAVY",
+        "variant": "RAINBOW"
+      },
+      {
+        "droidName": "B2-RP",
+        "variant": "DEFAULT"
+      },
+      {
+        "droidName": "R7",
+        "variant": "GOLD"
+      }
+    ]
+  },
+  {
+    "to": 15,
+    "creditsCost": 21000000000,
+    "requiredDroids": [
+      {
+        "droidName": "STRIKE-ORB",
+        "variant": "RAINBOW"
+      },
+      {
+        "droidName": "BB9",
+        "variant": "GOLD"
+      },
+      {
+        "droidName": "PROTO-ROLLER",
+        "variant": "GOLD"
+      }
+    ]
+  },
+  {
+    "to": 16,
+    "creditsCost": 52000000000,
+    "requiredDroids": [
+      {
+        "droidName": "AMP WALKER",
+        "variant": "RAINBOW"
+      },
+      {
+        "droidName": "B2-RP",
+        "variant": "DIAMOND"
+      },
+      {
+        "droidName": "MECHA-DROID",
+        "variant": "GOLD"
+      }
+    ]
+  },
+  {
+    "to": 17,
+    "creditsCost": 130000000000,
+    "requiredDroids": [
+      {
+        "droidName": "OPTI-POD",
+        "variant": "RAINBOW"
+      },
+      {
+        "droidName": "R7",
+        "variant": "DIAMOND"
+      },
+      {
+        "droidName": "MONO-WALKER",
+        "variant": "GOLD"
+      }
+    ]
+  },
+  {
+    "to": 18,
+    "creditsCost": 325000000000,
+    "requiredDroids": [
+      {
+        "droidName": "UTIL-TEC",
+        "variant": "RAINBOW"
+      },
+      {
+        "droidName": "BB9",
+        "variant": "DIAMOND"
+      },
+      {
+        "droidName": "PROTO-ROLLER",
+        "variant": "DIAMOND"
+      }
+    ]
+  },
+  {
+    "to": 19,
+    "creditsCost": 810000000000,
+    "requiredDroids": [
+      {
+        "droidName": "MECHA-DROID",
+        "variant": "DIAMOND"
+      },
+      {
+        "droidName": "R7",
+        "variant": "RAINBOW"
+      },
+      {
+        "droidName": "B2-RP",
+        "variant": "RAINBOW"
+      }
+    ]
+  },
+  {
+    "to": 20,
+    "creditsCost": 2000000000000,
+    "requiredDroids": [
+      {
+        "droidName": "MONO-WALKER",
+        "variant": "RAINBOW"
+      },
+      {
+        "droidName": "OPTI-STRIKE",
+        "variant": "RAINBOW"
+      },
+      {
+        "droidName": "CYCLO-GRAV",
+        "variant": "RAINBOW"
+      }
+    ]
+  },
+  {
+    "to": 21,
+    "creditsCost": 3000000000000,
+    "requiredDroids": [
+      {
+        "droidName": "B2 SUPER",
+        "variant": "BESKAR"
+      },
+      {
+        "droidName": "OPTI-POD",
+        "variant": "BESKAR"
+      },
+      {
+        "droidName": "R2",
+        "variant": "BESKAR"
+      }
+    ]
+  },
+  {
+    "to": 22,
+    "creditsCost": 4500000000000,
+    "requiredDroids": [
+      {
+        "droidName": "GUNRUNNER",
+        "variant": "BESKAR"
+      },
+      {
+        "droidName": "LNG-SHOT",
+        "variant": "BESKAR"
+      },
+      {
+        "droidName": "B2-RP",
+        "variant": "BESKAR"
+      }
+    ]
+  },
+  {
+    "to": 23,
+    "creditsCost": 6000000000000,
+    "requiredDroids": [
+      {
+        "droidName": "MONO-WALKER",
+        "variant": "BESKAR"
+      },
+      {
+        "droidName": "MECHA-DROID",
+        "variant": "BESKAR"
+      },
+      {
+        "droidName": "CYCLO-GRAV",
+        "variant": "BESKAR"
+      }
+    ]
+  },
+  {
+    "to": 24,
+    "creditsCost": 9000000000000,
+    "requiredDroids": [
+      {
+        "droidName": "BB9",
+        "variant": "BESKAR"
+      },
+      {
+        "droidName": "B2-RP",
+        "variant": "BESKAR"
+      },
+      {
+        "droidName": "RIC",
+        "variant": "DEFAULT"
+      }
+    ]
+  },
+  {
+    "to": 25,
+    "creditsCost": 13500000000000,
+    "requiredDroids": [
+      {
+        "droidName": "PROTO-ROLLER",
+        "variant": "BESKAR"
+      },
+      {
+        "droidName": "LOADLIFTER",
+        "variant": "DEFAULT"
+      },
+      {
+        "droidName": "MO-TRAK",
+        "variant": "GOLD"
+      }
+    ]
+  },
+  {
+    "to": 26,
+    "creditsCost": 21000000000000,
+    "requiredDroids": [
+      {
+        "droidName": "LEP",
+        "variant": "GOLD"
+      },
+      {
+        "droidName": "TRI-TEK",
+        "variant": "DIAMOND"
+      },
+      {
+        "droidName": "SNOW MOUSE",
+        "variant": "RAINBOW"
+      }
+    ]
+  },
+  {
+    "to": 27,
+    "creditsCost": 32000000000000,
+    "requiredDroids": [
+      {
+        "droidName": "RIC-1200",
+        "variant": "DIAMOND"
+      },
+      {
+        "droidName": "IG",
+        "variant": "RAINBOW"
+      },
+      {
+        "droidName": "DRFT-R",
+        "variant": "BESKAR"
+      }
+    ]
+  },
+  {
+    "to": 28,
+    "creditsCost": 45000000000000,
+    "requiredDroids": [
+      { "droidName": "RIC", "variant": "RAINBOW" },
+      { "droidName": "MO-TRAK", "variant": "BESKAR" },
+      { "droidName": "BB9", "variant": "GALACTIC" }
+    ]
+  },
+  {
+    "to": 29,
+    "creditsCost": 68000000000000,
+    "requiredDroids": [
+      { "droidName": "IG", "variant": "BESKAR" },
+      { "droidName": "MECHA-DROID", "variant": "GALACTIC" },
+      { "droidName": "OPTI-STRIKE", "variant": "GALACTIC" }
+    ]
+  },
+  {
+    "to": 30,
+    "creditsCost": 100000000000000,
+    "requiredDroids": [
+      { "droidName": "R7", "variant": "GALACTIC" },
+      { "droidName": "LEP", "variant": "BESKAR" },
+      { "droidName": "DRFT-R", "variant": "GALACTIC" }
+    ]
+  },
+  {
+    "to": 31, "creditsCost": 150000000000000,
+    "requiredDroids": [
+      { "droidName": "B2 HEAVY", "variant": "STELLAR" },
+      { "droidName": "MECHA-DROID", "variant": "BESKAR" },
+      { "droidName": "RIC-1200", "variant": "BESKAR" }
+    ]
+  },
+  {
+    "to": 32, "creditsCost": 230000000000000,
+    "requiredDroids": [
+      { "droidName": "GROUNDMECH", "variant": "GALACTIC" },
+      { "droidName": "BB", "variant": "GALACTIC" },
+      { "droidName": "MO-TRAK", "variant": "BESKAR" }
+    ]
+  },
+  {
+    "to": 33, "creditsCost": 345000000000000,
+    "requiredDroids": [
+      { "droidName": "TRAK-R", "variant": "STELLAR" },
+      { "droidName": "MONO-WALKER", "variant": "GALACTIC" },
+      { "droidName": "LOADLIFTER", "variant": "GALACTIC" }
+    ]
+  },
+  {
+    "to": 34, "creditsCost": 520000000000000,
+    "requiredDroids": [
+      { "droidName": "ORB-WALKER", "variant": "STELLAR" },
+      { "droidName": "B2 SUPER", "variant": "STELLAR" },
+      { "droidName": "LEP", "variant": "GALACTIC" }
+    ]
+  },
+  {
+    "to": 35, "creditsCost": 778000000000000,
+    "requiredDroids": [
+      { "droidName": "PROTO-ROLLER", "variant": "STELLAR" },
+      { "droidName": "KX", "variant": "STELLAR" },
+      { "droidName": "RIC", "variant": "STELLAR" }
+    ]
+  },
+  {
+    "to": 36,
+    "creditsCost": 1200000000000000,
+    "requiredDroids": [
+      {
+        "droidName": "ARG",
+        "variant": "KYBER"
+      },
+      {
+        "droidName": "SENATE HOVERCAM",
+        "variant": "KYBER"
+      },
+      {
+        "droidName": "B-U4D",
+        "variant": "KYBER"
+      }
+    ]
+  },
+{
+    "to": 37,
+    "creditsCost": 2500000000000000,
+    "requiredDroids": [
+      {
+        "droidName": "STRIKE-ORB",
+        "variant": "KYBER"
+      },
+      {
+        "droidName": "AMP WALKER",
+        "variant": "KYBER"
+      },
+      {
+        "droidName": "UTIL-TEC",
+        "variant": "KYBER"
+      }
+    ]
+  },
+{
+    "to": 38,
+    "creditsCost": 4500000000000000,
+    "requiredDroids": [
+      {
+        "droidName": "HAUL-R",
+        "variant": "KYBER"
+      },
+      {
+        "droidName": "LNG-SHOT",
+        "variant": "KYBER"
+      },
+      {
+        "droidName": "OPTI-STRIKE",
+        "variant": "KYBER"
+      }
+    ]
+  },
+{
+    "to": 39,
+    "creditsCost": 8000000000000000,
+    "requiredDroids": [
+      {
+        "droidName": "MONO-WALKER",
+        "variant": "KYBER"
+      },
+      {
+        "droidName": "BB9",
+        "variant": "KYBER"
+      },
+      {
+        "droidName": "RIC-1200",
+        "variant": "KYBER"
+      }
+    ]
+  },
+{
+    "to": 40,
+    "creditsCost": 15000000000000000,
+    "requiredDroids": [
+      {
+        "droidName": "MO-TRAK",
+        "variant": "KYBER"
+      },
+      {
+        "droidName": "TRI-TEK",
+        "variant": "KYBER"
+      },
+      {
+        "droidName": "IG",
+        "variant": "KYBER"
+      }
+    ]
+  }
+]

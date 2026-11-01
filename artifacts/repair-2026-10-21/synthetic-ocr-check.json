@@ -1,0 +1,35 @@
+{
+  "fixture": "synthetic text only; no screen capture",
+  "header": [
+    [
+      "Rank 10",
+      1.0
+    ]
+  ],
+  "requirements": [
+    [
+      "Senate Hovercam",
+      0.997
+    ],
+    [
+      "Groundmech",
+      0.999
+    ],
+    [
+      "Trak-R",
+      0.999
+    ]
+  ],
+  "path": [
+    [
+      "PATH 3",
+      0.99
+    ]
+  ],
+  "progress_match": [
+    3,
+    10
+  ],
+  "visual_matches": true,
+  "elapsed_seconds": 0.5
+}

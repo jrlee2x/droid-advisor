@@ -1,0 +1,47 @@
+{
+  "update": "1.37",
+  "note": "Scourge cannot be reached with Upgrade Chips.",
+  "rarities": [
+    "EPIC",
+    "LEGENDARY",
+    "MYTHIC"
+  ],
+  "qualities": [
+    "GOLD",
+    "DIAMOND",
+    "RAINBOW",
+    "BESKAR",
+    "GALACTIC",
+    "STELLAR",
+    "KYBER"
+  ],
+  "costs": {
+    "EPIC": {
+      "GOLD": 120,
+      "DIAMOND": 180,
+      "RAINBOW": 240,
+      "BESKAR": 2000,
+      "GALACTIC": 5000,
+      "STELLAR": 8000,
+      "KYBER": 12000
+    },
+    "LEGENDARY": {
+      "GOLD": 400,
+      "DIAMOND": 1200,
+      "RAINBOW": 2500,
+      "BESKAR": 6000,
+      "GALACTIC": 16000,
+      "STELLAR": 24000,
+      "KYBER": 30000
+    },
+    "MYTHIC": {
+      "GOLD": 4000,
+      "DIAMOND": 8000,
+      "RAINBOW": 14000,
+      "BESKAR": 30000,
+      "GALACTIC": 60000,
+      "STELLAR": 90000,
+      "KYBER": 110000
+    }
+  }
+}

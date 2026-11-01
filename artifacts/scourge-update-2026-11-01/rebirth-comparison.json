@@ -1,0 +1,69 @@
+{
+  "targets": 240,
+  "differences": [
+    {
+      "cycle": 2,
+      "rank": 14,
+      "ours": [
+        [
+          "B2HEAVY",
+          "RAINBOW"
+        ],
+        [
+          "B2RP",
+          "GOLD"
+        ],
+        [
+          "R7",
+          "GOLD"
+        ]
+      ],
+      "source": [
+        [
+          "B2HEAVY",
+          "RAINBOW"
+        ],
+        [
+          "B2RP",
+          "BASE"
+        ],
+        [
+          "R7",
+          "GOLD"
+        ]
+      ]
+    },
+    {
+      "cycle": 3,
+      "rank": 14,
+      "ours": [
+        [
+          "B2HEAVY",
+          "RAINBOW"
+        ],
+        [
+          "B2RP",
+          "GOLD"
+        ],
+        [
+          "R7",
+          "GOLD"
+        ]
+      ],
+      "source": [
+        [
+          "B2HEAVY",
+          "RAINBOW"
+        ],
+        [
+          "B2RP",
+          "BASE"
+        ],
+        [
+          "R7",
+          "GOLD"
+        ]
+      ]
+    }
+  ]
+}

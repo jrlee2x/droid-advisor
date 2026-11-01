@@ -1,0 +1,26 @@
+{
+  "base": "https://droid-advisor-rebirth-chart.vercel.app",
+  "results": [
+    {
+      "viewport": "desktop",
+      "cycles": 6,
+      "targetCards": 240,
+      "droids": 100,
+      "path6QuickList": 40,
+      "downloads": true,
+      "fusionViewer": true,
+      "noPageOverflow": true
+    },
+    {
+      "viewport": "mobile",
+      "cycles": 6,
+      "targetCards": 240,
+      "droids": 100,
+      "path6QuickList": 40,
+      "downloads": true,
+      "fusionViewer": true,
+      "noPageOverflow": true
+    }
+  ],
+  "errors": []
+}

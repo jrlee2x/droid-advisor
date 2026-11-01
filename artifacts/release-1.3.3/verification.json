@@ -1,0 +1,14 @@
+{
+  "version": "1.3.3",
+  "source_commit": "f1cbeb63860a654b332af7da90c72ea0c5682281",
+  "tests_passed": 506,
+  "packaged_health_exit": 0,
+  "installed_health_exit": 0,
+  "profile_preserved": [
+    "config.json",
+    "inventory.json"
+  ],
+  "installed_executable_matches_build": true,
+  "installer_bytes": 88008667,
+  "installer_sha256": "7d48afc3732bb46e183072c54fd36bbb7c2bee7936fc6b981cb265febe4194c5"
+}

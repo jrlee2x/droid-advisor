@@ -1,0 +1,12 @@
+﻿{
+    "version":  "1.3.2",
+    "installer_exit":  0,
+    "health_exit":  0,
+    "preserved_profile_files":  [
+                                    "inventory.json",
+                                    "config.json"
+                                ],
+    "sha256":  "3DF87166802785E6B76CCE5161FE48E997A742FF881D64830357333965A84DF2",
+    "bytes":  87453488,
+    "signature":  "NotSigned"
+}

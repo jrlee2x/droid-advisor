@@ -1,0 +1,10 @@
+﻿{
+    "version":  "1.3.10",
+    "config_unchanged":  true,
+    "installer_sha256":  "5C895C0701C1DDDC77EB4FAEC9A853ECB26DB6A03CA29205AC45A897397452CC",
+    "installer_exit":  0,
+    "inventory_unchanged":  true,
+    "health_exit":  0,
+    "installed_exe_sha256":  "41FEE1E393C3B70553E5BC7B5F60A92CCDA1C4EBA516A6A8F83C36183B1FE78B",
+    "tests_passed":  708
+}

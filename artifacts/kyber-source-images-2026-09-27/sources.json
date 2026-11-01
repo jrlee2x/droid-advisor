@@ -1,0 +1,527 @@
+{
+  "retrieved": "2026-09-27",
+  "source": "https://droidarchives.co.uk/",
+  "scope": "Every distinct droid needed in RB36-40, all five paths",
+  "images": [
+    {
+      "name": "MOUSE",
+      "canonical": "MOUSE",
+      "file": "MOUSE_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/MOUSE_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "BDX EXPLORER",
+      "canonical": "BDXEXPLORER",
+      "file": "BDX_EXPLORER_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/BDX_EXPLORER_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "ARG",
+      "canonical": "ARG",
+      "file": "ARG_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/ARG_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "SENATE HOVERCAM",
+      "canonical": "SENATEHOVERCAM",
+      "file": "SENATE_HOVERCAM_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/SENATE_HOVERCAM_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "B-U4D",
+      "canonical": "BU4D",
+      "file": "B-U4D_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/B-U4D_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "BAL-CORE",
+      "canonical": "BALCORE",
+      "file": "BAL-CORE_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/BAL-CORE_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "ROLL-R",
+      "canonical": "ROLLR",
+      "file": "ROLL-R_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/ROLL-R_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "2BB",
+      "canonical": "2BB",
+      "file": "2BB_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/2BB_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "A-LT",
+      "canonical": "ALT",
+      "file": "A-LT_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/A-LT_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "R4",
+      "canonical": "R4",
+      "file": "R4_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/R4_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "R9",
+      "canonical": "R9",
+      "file": "R9_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/R9_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "B1 SECURITY",
+      "canonical": "B1SECURITY",
+      "file": "B1_SECURITY_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/B1_SECURITY_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "NAV-EX",
+      "canonical": "NAVEX",
+      "file": "NAV-EX_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/NAV-EX_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "VECT-ARM",
+      "canonical": "VECTARM",
+      "file": "VECT-ARM_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/VECT-ARM_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "HOV-R",
+      "canonical": "HOVR",
+      "file": "HOV-R_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/HOV-R_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "GROUNDMECH",
+      "canonical": "GROUNDMECH",
+      "file": "GROUNDMECH_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/GROUNDMECH_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "LO",
+      "canonical": "LO",
+      "file": "LO_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/LO_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "AMP WALKER",
+      "canonical": "AMPWALKER",
+      "file": "AMP_WALKER_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/AMP_WALKER_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "SEN-TRI",
+      "canonical": "SENTRI",
+      "file": "SEN-TRI_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/SEN-TRI_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "OPTI-POD",
+      "canonical": "OPTIPOD",
+      "file": "OPTI-POD_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/OPTI-POD_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "GUNRUNNER",
+      "canonical": "GUNRUNNER",
+      "file": "GUNRUNNER_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/GUNRUNNER_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "BB",
+      "canonical": "BB",
+      "file": "BB_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/BB_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "R2",
+      "canonical": "R2",
+      "file": "R2_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/R2_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "R6",
+      "canonical": "R6",
+      "file": "R6_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/R6_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "TRAK-R",
+      "canonical": "TRAKR",
+      "file": "TRAK-R_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/TRAK-R_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "ORB-WALKER",
+      "canonical": "ORBWALKER",
+      "file": "ORB-WALKER_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/ORB-WALKER_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "UTIL-TEC",
+      "canonical": "UTILTEC",
+      "file": "UTIL-TEC_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/UTIL-TEC_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "B1 HEAVY",
+      "canonical": "B1HEAVY",
+      "file": "B1_HEAVY_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/B1_HEAVY_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "B2 SUPER",
+      "canonical": "B2SUPER",
+      "file": "B2_SUPER_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/B2_SUPER_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "B2 HEAVY",
+      "canonical": "B2HEAVY",
+      "file": "B2_HEAVY_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/B2_HEAVY_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "STRIKE-ORB",
+      "canonical": "STRIKEORB",
+      "file": "STRIKE-ORB_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/STRIKE-ORB_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "HAUL-R",
+      "canonical": "HAULR",
+      "file": "HAUL-R_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/HAUL-R_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "LNG-SHOT",
+      "canonical": "LNGSHOT",
+      "file": "LNG-SHOT_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/LNG-SHOT_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "PROTO-ROLLER",
+      "canonical": "PROTOROLLER",
+      "file": "PROTO-ROLLER_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/PROTO-ROLLER_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "MECHA-DROID",
+      "canonical": "MECHADROID",
+      "file": "MECHA-DROID_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/MECHA-DROID_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "MONO-WALKER",
+      "canonical": "MONOWLKR",
+      "file": "MONO-WALKER_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/MONO-WALKER_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "BB9",
+      "canonical": "BB9",
+      "file": "BB9_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/BB9_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "R7",
+      "canonical": "R7",
+      "file": "R7_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/R7_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "B2-RP",
+      "canonical": "B2RP",
+      "file": "B2-RP_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/B2-RP_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "CYCLO-GRAV",
+      "canonical": "CYCLOGRAV",
+      "file": "CYCLO-GRAV_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/CYCLO-GRAV_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "OPTI-STRIKE",
+      "canonical": "OPTISTRK",
+      "file": "OPTI-STRIKE_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/OPTI-STRIKE_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "SNOW MOUSE",
+      "canonical": "SNOWMOUSE",
+      "file": "SNOW_MOUSE_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/SNOW_MOUSE_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "RIC",
+      "canonical": "RIC",
+      "file": "RIC_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/RIC_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "LOADLIFTER",
+      "canonical": "LOADLIFTER",
+      "file": "LOADLIFTER_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/LOADLIFTER_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "LEP",
+      "canonical": "LEP",
+      "file": "LEP_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/LEP_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "RIC-1200",
+      "canonical": "RIC1200",
+      "file": "RIC-1200_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/RIC-1200_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "DRFT-R",
+      "canonical": "DRFTR",
+      "file": "DRFT-R_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/DRFT-R_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "CYCLENS",
+      "canonical": "CYCLENS",
+      "file": "CYCLENS_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/CYCLENS_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "MO-TRAK",
+      "canonical": "MOTRAK",
+      "file": "MO-TRAK_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/MO-TRAK_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "TRI-TEK",
+      "canonical": "TRITEK",
+      "file": "TRI-TEK_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/TRI-TEK_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "IG",
+      "canonical": "IG",
+      "file": "IG_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/IG_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    },
+    {
+      "name": "KX",
+      "canonical": "KX",
+      "file": "KX_Kyber.png",
+      "url": "https://droidarchives.co.uk/assets/droids/kyber/KX_Kyber.png",
+      "dimensions": [
+        309,
+        325
+      ]
+    }
+  ]
+}

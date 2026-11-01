@@ -1,0 +1,11 @@
+{
+  "version": "1.4.0",
+  "release_url": "https://github.com/jrlee2x/droid-advisor/releases/tag/v1.4.0",
+  "installer_url": "https://github.com/jrlee2x/droid-advisor/releases/download/v1.4.0/DroidAdvisor-Setup-1.4.0.exe",
+  "sha256": "e393de9c7eff28e5cd3346c7d4aa611a384f8743dbf0a8b780a4dffce3144ad4",
+  "bytes": 88021918,
+  "upgrade_from_1.3.10": true,
+  "current_1.4.0_no_update": true,
+  "download_verified": true,
+  "installer_started": false
+}

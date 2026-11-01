@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#07111f" />
+    <title>Droid Advisor All-Droid Income Chart</title>
+    <meta
+      name="description"
+      content="Income per second for all 87 Droid Tycoon droids: 62 standard droids, 17 fusion droids, and 8 Iconics."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Droid Advisor All-Droid Income Chart" />
+    <meta property="og:description" content="Every Droid Tycoon droid with base income per second for all documented variants." />
+    <meta property="og:image" content="/assets/droid-advisor-all-droid-income-preview.jpg?v=1" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/assets/droid-advisor-logo.png" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/droids.css" />
+  </head>
+  <body>
+    <main>
+      <header class="hero droids-hero">
+        <img class="logo" src="/assets/droid-advisor-logo.png" alt="Droid Advisor logo" />
+        <div>
+          <p class="eyebrow">DROID ADVISOR • COMPLETE INCOME REFERENCE</p>
+          <h1>Every droid, every variant</h1>
+          <p class="lede">Base credits per second for all standard and fusion droids, plus the percentage income used by Iconics.</p>
+          <p class="hero-link-row chart-actions">
+            <a class="download" href="/">Open rebirth charts</a>
+            <a class="download" href="/fusion">Open fusion recipes</a>
+          </p>
+        </div>
+      </header>
+
+      <section class="stats" aria-label="Droid chart coverage">
+        <div><strong>87</strong><span>unique droids</span></div>
+        <div><strong>62</strong><span>standard</span></div>
+        <div><strong>17</strong><span>fusion</span></div>
+        <div><strong>8</strong><span>Iconic</span></div>
+      </section>
+
+      <section class="all-droids-chart-section">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">DOWNLOADABLE CHART</p>
+            <h2>All-droid income chart</h2>
+          </div>
+          <a class="download" href="/assets/droid-advisor-all-droid-income.png?v=1" download>Download full-resolution chart</a>
+        </div>
+        <div class="all-droids-chart-frame">
+          <img
+            src="/assets/droid-advisor-all-droid-income-web.webp?v=1"
+            alt="Droid Advisor income-per-second chart for all 87 Droid Tycoon droids"
+          />
+        </div>
+        <p class="chart-note">Basic applies to standard droids. Default applies to fusion droids. Open or download the full-resolution PNG for the clearest text.</p>
+      </section>
+
+      <section class="all-droids-table-section" id="income-table">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">SEARCHABLE REFERENCE</p>
+            <h2>Income per second</h2>
+          </div>
+          <p class="result-count" id="result-count" aria-live="polite">Loading droids...</p>
+        </div>
+
+        <div class="droid-filters" aria-label="Filter droid income table">
+          <label>
+            <span>Search</span>
+            <input id="droid-search" type="search" placeholder="Search droid name" autocomplete="off" />
+          </label>
+          <label>
+            <span>Rarity</span>
+            <select id="rarity-filter">
+              <option value="ALL">All rarities</option>
+              <option value="MYTHIC">Mythic</option>
+              <option value="LEGENDARY">Legendary</option>
+              <option value="EPIC">Epic</option>
+              <option value="RARE">Rare</option>
+              <option value="COMMON">Common</option>
+              <option value="ICONIC">Iconic</option>
+            </select>
+          </label>
+          <label>
+            <span>Role</span>
+            <select id="role-filter">
+              <option value="ALL">All roles</option>
+              <option value="WORKER">Worker</option>
+              <option value="ASTRO">Astromech</option>
+              <option value="BATTLE">Battle</option>
+            </select>
+          </label>
+          <label>
+            <span>Type</span>
+            <select id="kind-filter">
+              <option value="ALL">All types</option>
+              <option value="STANDARD">Standard</option>
+              <option value="FUSION">Fusion</option>
+              <option value="ICONIC">Iconic</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="all-droids-table-wrap">
+          <table class="all-droids-table" id="all-droids-table">
+            <caption>Loading all-droid income data...</caption>
+          </table>
+        </div>
+        <p class="income-method-note">
+          Values are base credits per second before workstation, Droidex, rebirth, event, and other multipliers.
+          N/A means the current public sources do not document that value. Iconics use percentage-based income and have no variants.
+        </p>
+        <p class="income-sources">
+          Cross-checked against the
+          <a href="https://droidex.nackz.dev/value-list/">Droidex value list</a>,
+          <a href="https://github.com/n4ckz/droidex/blob/main/site/data.js">its public source data</a>,
+          the <a href="https://docs.google.com/spreadsheets/d/1otLCKSCMKICMlnefirQ8KZhh_rdZTd5Mp8h0UYFUiqg/edit?usp=sharing">community income sheet</a>,
+          and the <a href="https://www.reddit.com/r/StarWarsDroidTycoon/comments/1uh8t08/droid_earnings/">Reddit earnings discussion</a>.
+          Community values can change after game updates.
+        </p>
+      </section>
+
+      <footer>
+        <img src="/assets/droid-advisor-logo.png" alt="" />
+        <p>Complete Droid Advisor base-income reference, checked August 28, 2026.</p>
+      </footer>
+    </main>
+    <script src="/droids.js"></script>
+  </body>
+</html>

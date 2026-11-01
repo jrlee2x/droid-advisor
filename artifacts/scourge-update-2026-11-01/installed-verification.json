@@ -1,0 +1,13 @@
+﻿{
+    "version":  "1.4.0",
+    "installed_health":  0,
+    "profile_files_unchanged":  [
+                                    "inventory.json",
+                                    "config.json"
+                                ],
+    "computer_control":  "off",
+    "installer_exit":  0,
+    "launched_pid":  70916,
+    "live_game_check":  "not performed",
+    "installed_exe_sha256":  "FBEBBA2BA667BF28F2648E023707F59308198D45FE316CE0546E5E265A961E75"
+}

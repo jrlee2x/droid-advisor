@@ -1,0 +1,15 @@
+{
+  "cycle": 3,
+  "completed_rebirth": 10,
+  "paused": false,
+  "interval_seconds": 1.25,
+  "requirements_overlay_visible": true,
+  "requirements_overlay_x": 2108,
+  "requirements_overlay_y": 78,
+  "spawn_alerts_enabled": true,
+  "spawn_alert_min_variant": "GALACTIC",
+  "spawn_alert_min_rarity": "LEGENDARY",
+  "spawn_alert_sound": "droid_chime",
+  "spawn_alert_volume": 15,
+  "automatic_updates": true
+}
